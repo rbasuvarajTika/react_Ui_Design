@@ -1,5 +1,5 @@
 import Login from "./components/Login"
-import Table from "./components/Table"
+import Table from "./components/table/Table"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Forgot_Page from "./pages/forgot _page/Forgot_Page"
 

@@ -6,7 +6,7 @@ import {
     Logout,
 } from "@mui/icons-material";
 import TableList from "./TableList";
-import Background from "./Background";
+import Background from "../Background";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
