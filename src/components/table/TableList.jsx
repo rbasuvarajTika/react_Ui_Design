@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { data } from "../../Data/Data";
 import Pagination from "../Pagination";
 import FaxId_Form from "./FaxId_Form";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { DuplicateContext } from "../../context/DuplicateContext";
+import Duplicate_Fax from "../fax/Duplicate_Fax";
 
-const TableList = ({ search }) => {
+const TableList = ({ search,  }) => {
     const [currentpage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostPerPage] = useState(14)
     const [showForm, setShoeForm] = useState(false)
+    const {setOpenDuplicate, openDuplicate, showForms, setShoeForms} = useContext(DuplicateContext) 
 
 
     const lastPostIndex = currentpage * postsPerPage;
@@ -14,30 +18,45 @@ const TableList = ({ search }) => {
     const currentPosts = data.slice(firstPostIndex, lastPostIndex)
     const npage = Math.ceil(data.length / postsPerPage)
 
-    const open_form = () => {
-        setShoeForm(true)
-
+    const open_form = ({showForm}) => {
+        setShoeForms(true)
         console.log(!showForm);
     }
 
-    const close_Form =() => {
-        setShoeForm(false)
+    const close_Form = () => {
+        setShoeForms(false)
     }
 
 
     return (
         <>
-        
-            {/* <div className="z-50">
+            <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar"> 
                 {
-                    showForm&&  <FaxId_Form />
-                }
-                 
-            </div> */}
-               
-            
-            <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-40rem) no-scrollbar">
-                <div className="w-full h-full flex justify-end items-center p-2 ">
+                    !openDuplicate ?
+                <>
+                <div className="w-full h-ful flex justify-between items-center p-2 ">
+                    <div className="flex gap-5">
+                        <span className="hidden md:flex items-center gap-1 z-50 text-black  relative">
+                            OCR Status:
+                            <input
+                                type="search"
+                                // onChange={(e) => setSearch(e.target.value)}
+                                className="w rounded-full outline-none px-2 py-1.5 text-black border border-black "
+                            />
+                            <div className="absolute right-2">
+                                <IoMdArrowDropdown size={20} />
+                            </div>
+                        </span>
+                        <div>
+                            <span>
+                                 <input type="search" 
+                                 className="border  px-4 shadow-lg rounded-md py-2 placeholder:text-black text-gray-500"
+                                  placeholder="search here.."  />
+                            </span>
+                           
+                        </div>
+                    </div>
+
                     <Pagination
                         totalPosts={data.length}
                         postsPerPage={postsPerPage}
@@ -46,12 +65,16 @@ const TableList = ({ search }) => {
                         lastPostIndex={lastPostIndex}
                         npage={npage}
                     />
+
+                </div>
+                <div>
+
                 </div>
                 <div className="relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll xl:h-[600px]  h-[500px]   no-scrollbar ">
                     <table className="w-full text-sm text-center table-auto  ">
                         <thead className="">
-                            <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl">
-                                <th className="px-6 py-3">Fax ID</th>
+                            <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
+                                <th className="px-6 py-3 ">Fax ID</th>
                                 <th className="px-6 py-3">Case ID</th>
                                 <th className="px-6 py-3">Fax Status</th>
                                 <th className="px-6 py-3">Verified</th>
@@ -69,7 +92,7 @@ const TableList = ({ search }) => {
                             }).map((item, index) => (
                                 <tr
                                     key={index}
-                                    className={`${index % 2 === 0 ? "" : "bg-[#e2e2e2]"
+                                    className={`${index % 2 === 0 ? "" : "bg-[#f8f8f8]  "
                                         } bg-white text-black/70 text-xs`}
                                 >
 
@@ -91,11 +114,23 @@ const TableList = ({ search }) => {
                         </tbody>
                     </table>
                 </div>
-                {
-                    showForm &&   <FaxId_Form  close_Form={close_Form} setShoeForm={setShoeForm} />
+                </> : 
+                 <Duplicate_Fax />
                 }
-             
+
+
+                {
+                     showForms && <FaxId_Form close_Form={close_Form} setShoeForm={setShoeForm} />
+                }
+
+                {/* {
+                    openDuplicate && <Duplicate_Fax />
+                } */}
+
+ 
+
             </div>
+ 
         </>
     );
 };

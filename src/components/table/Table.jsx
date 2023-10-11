@@ -7,18 +7,32 @@ import {
 } from "@mui/icons-material";
 import TableList from "./TableList";
 import Background from "../Background";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Children, useContext, useState } from "react";
+import Duplicate_Fax from "../fax/Duplicate_Fax";
+import { DuplicateContext } from "../../context/DuplicateContext";
 
 function Table() {
     const [search, setSearch] = useState("")
     const navigate = useNavigate();
+    const location = useLocation();
+    const { setOpenDuplicate, openDuplicate, showForms,setShoeForms } = useContext(DuplicateContext)
 
-   
+    const fax_handleClick = () => {
+        setOpenDuplicate(false)
+        navigate("/table")
+        setShoeForms(false)
+    }
+
+    console.log("showForm", showForms);
+    
+
+
+
 
     return (
         <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative z-50 h-screen">
-            
+
             <div className="w-full text-xs flex items-center justify-between py-1 font-bold z-50">
                 <div className="flex items-center gap-6">
                     <span className="uppercase flex items-center gap-1">
@@ -31,24 +45,24 @@ function Table() {
                         <AccountCircle />
                         <span className="underline hidden md:block z-50">Erica Fernandes</span>
                     </span>
-                    <span className="hidden md:flex items-center gap-1 z-50  ">
+                    {/* <span className="hidden md:flex items-center gap-1 z-50  ">
                         OCR Status:
                         <input
                             type="search"
                             onChange={(e) => setSearch(e.target.value)}
                             className="w rounded-full outline-none px-2 py-1.5 text-black "
                         />
-                    </span>
+                    </span> */}
                 </div>
                 <div>
-                    <span className="uppercase text-[#FE7D00] text-sm font-bold z-50">
+                    <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
                         Fax list
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
-                    <span className="text-[#FE7D00] flex items-center z-50 ">
+                    <span className="text-[#FE7D00] flex items-center z-50 cursor-pointer" onClick={fax_handleClick}>
                         <Lock />
-                        <span className="hidden md:block z-50">Fax List</span>
+                        <span className="hidden md:block z-50" >Fax List</span>
                     </span>
                     <span className="flex items-center z-50">
                         <InsertDriveFile />
@@ -80,7 +94,9 @@ function Table() {
                 />
             </div>
             <Background />
+
             <TableList search={search} />
+
         </div>
     )
 }

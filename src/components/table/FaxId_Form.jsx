@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FaArrowLeft, FaArrowRight, } from 'react-icons/fa';
 import { LuMinus, LuPlus } from 'react-icons/lu';
 import { AiFillCloseCircle } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import { DuplicateContext } from '../../context/DuplicateContext';
 
 const FaxId_Form = ( {close_Form} ) => {
+
+  const navigate = useNavigate();
+  const {setOpenDuplicate, openDuplicate, showForms, setShoeForms} = useContext(DuplicateContext) 
+
+  const handleOpen_Duplicate = () => {
+    setOpenDuplicate(true)
+    setShoeForms(false)
+  }
 
 
 
@@ -23,7 +33,7 @@ const FaxId_Form = ( {close_Form} ) => {
         </div>
 
         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
-          <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer' > <LuPlus /></div>
+          <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer'onClick={handleOpen_Duplicate} > <LuPlus /></div>
           <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus /></div>
         </div>
 

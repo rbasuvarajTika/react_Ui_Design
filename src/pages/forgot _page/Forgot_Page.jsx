@@ -18,7 +18,7 @@ const Forgot_Page = () => {
                     <h1 className="text-xl text-white text-center py-5">Welcome User_name</h1>
                     <form className="flex flex-col items-center  gap-5">
                         <span className="flex md:flex-row flex-col md:items-center items-start md:gap-0 gap-2">
-                            <label htmlFor="userId" className="text-white text-sm ">Enter New Passw ord:</label>
+                            <label htmlFor="userId" className="text-white text-sm ">Enter New Password:</label>
                             <input
                                 type="text"
                                 className="md:ml-5 rounded-full px-2  focus:outline-none "
