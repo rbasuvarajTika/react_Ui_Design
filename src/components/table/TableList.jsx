@@ -6,10 +6,11 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { DuplicateContext } from "../../context/DuplicateContext";
 import Duplicate_Fax from "../fax/Duplicate_Fax";
 
-const TableList = ({ search,  }) => {
+const TableList = ({   }) => {
     const [currentpage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostPerPage] = useState(14)
     const [showForm, setShoeForm] = useState(false)
+    const [search, setSearch] = useState("")
     const {setOpenDuplicate, openDuplicate, showForms, setShoeForms} = useContext(DuplicateContext) 
 
 
@@ -50,6 +51,7 @@ const TableList = ({ search,  }) => {
                         <div>
                             <span>
                                  <input type="search" 
+                                   onChange={(e) => setSearch(e.target.value)}
                                  className="border  px-4 shadow-lg rounded-md py-2 placeholder:text-black text-gray-500"
                                   placeholder="search here.."  />
                             </span>
@@ -95,7 +97,6 @@ const TableList = ({ search,  }) => {
                                     className={`${index % 2 === 0 ? "" : "bg-[#f8f8f8]  "
                                         } bg-white text-black/70 text-xs`}
                                 >
-
                                     <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                         <div className="cursor-pointer" onClick={open_form}>
                                             {item.Fax_ID}

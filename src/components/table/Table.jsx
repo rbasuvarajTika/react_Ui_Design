@@ -8,27 +8,38 @@ import {
 import TableList from "./TableList";
 import Background from "../Background";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Children, useContext, useState } from "react";
+import { Children, useContext, useEffect, useState } from "react";
 import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { DuplicateContext } from "../../context/DuplicateContext";
+import CaseDetails from "../../pages/case_details/CaseDetails";
 
 function Table() {
     const [search, setSearch] = useState("")
+    const [fax_name, set_fax_name] = useState("")
+    const [case_details, set_case_details] = useState("")
+    const [openCase, setOpenCase] = useState(false)
     const navigate = useNavigate();
     const location = useLocation();
-    const { setOpenDuplicate, openDuplicate, showForms,setShoeForms } = useContext(DuplicateContext)
+    const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
+
+    useEffect(() => {
+        set_fax_name("FAX LIST")
+    }, [])
 
     const fax_handleClick = () => {
         setOpenDuplicate(false)
         navigate("/table")
         setShoeForms(false)
+        setOpenCase(false)
+        set_fax_name("FAX LIST")
+        set_case_details("")
     }
 
-    console.log("showForm", showForms);
-    
-
-
-
+    const openCaseDetails = () => {
+        setOpenCase(true)
+        set_case_details("CASE DETAILS")
+        set_fax_name("")
+    }
 
     return (
         <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative z-50 h-screen">
@@ -56,7 +67,10 @@ function Table() {
                 </div>
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
-                        Fax list
+                        {
+                            fax_name? fax_name : case_details? case_details: ""
+                        }
+                       
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
@@ -68,7 +82,7 @@ function Table() {
                         <InsertDriveFile />
                         <span className="hidden md:block z-50"> Rx Tracker List</span>
                     </span>
-                    <span className="flex items-center z-50">
+                    <span className="flex items-center z-50 cursor-pointer" onClick={openCaseDetails}>
                         <InsertDriveFile />
                         <span className="hidden md:block z-50"> Case Details</span>
                     </span>
@@ -95,8 +109,14 @@ function Table() {
             </div>
             <Background />
 
-            <TableList search={search} />
 
+            {
+                openCase ? <CaseDetails />
+                    :
+                     <TableList />
+            }
+
+        
         </div>
     )
 }
