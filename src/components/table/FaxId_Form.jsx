@@ -26,7 +26,7 @@ const FaxId_Form = ( {close_Form} ) => {
         <div className='relative'>
           <p className='text-[#717171] text-sm absolute top-2'>Page:1</p>
         </div>
-
+        
         <div className='flex justify-center gap-2 mt-1'>
           <div className='w-7 h-7 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer'> <FaArrowLeft /></div>
           <div className='w-7 h-7 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer'> <FaArrowRight /></div>
