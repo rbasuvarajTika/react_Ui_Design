@@ -102,7 +102,7 @@ const TableList = ({ }) => {
                                         }).map((item, index) => (
                                             <tr
                                                 key={index}
-                                                className={`${index % 2 === 0 ? "" : "bg-[#f8f8f8]  "
+                                                className={`${index % 2 === 0 ? "" : "bg-[#f6f6f6] "
                                                     } bg-white text-black/70 text-xs`}
                                             >
                                                 <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">

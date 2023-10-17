@@ -12,12 +12,15 @@ import { Children, useContext, useEffect, useState } from "react";
 import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { DuplicateContext } from "../../context/DuplicateContext";
 import CaseDetails from "../../pages/case_details/CaseDetails";
+import Rx_Tracker_List from "../../pages/rx_tracker_list/Rx_Tracker_List";
 
 function Table() {
     const [search, setSearch] = useState("")
     const [fax_name, set_fax_name] = useState("")
     const [case_details, set_case_details] = useState("")
     const [openCase, setOpenCase] = useState(false)
+    const [openTrackerList, setOpenTrackerList] =useState(false)
+    const [TrackerLIst, setTrackerLIst] = useState("")
     const navigate = useNavigate();
     const location = useLocation();
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -27,6 +30,7 @@ function Table() {
     }, [])
 
     const fax_handleClick = () => {
+        setOpenTrackerList(false)
         setOpenDuplicate(false)
         navigate("/table")
         setShoeForms(false)
@@ -36,9 +40,20 @@ function Table() {
     }
 
     const openCaseDetails = () => {
+        setOpenTrackerList(false)
         setOpenCase(true)
         set_case_details("CASE DETAILS")
         set_fax_name("")
+        
+    }
+
+    const openRxTrackerList = () => {
+        setOpenTrackerList(true)
+        setShoeForms(false)
+        setOpenCase(false)
+        set_fax_name("")
+        set_case_details("")
+        setTrackerLIst("Rx Tracker List")
     }
 
     return (
@@ -56,19 +71,11 @@ function Table() {
                         <AccountCircle />
                         <span className="underline hidden md:block z-50">Erica Fernandes</span>
                     </span>
-                    {/* <span className="hidden md:flex items-center gap-1 z-50  ">
-                        OCR Status:
-                        <input
-                            type="search"
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="w rounded-full outline-none px-2 py-1.5 text-black "
-                        />
-                    </span> */}
                 </div>
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
                         {
-                            fax_name? fax_name : case_details? case_details: ""
+                            fax_name? fax_name : case_details? case_details: TrackerLIst ? TrackerLIst : ""
                         }
                        
                     </span>
@@ -78,7 +85,7 @@ function Table() {
                         <Lock />
                         <span className="hidden md:block z-50" >Fax List</span>
                     </span>
-                    <span className="flex items-center z-50">
+                    <span className="flex items-center z-50 cursor-pointer" onClick={openRxTrackerList}>
                         <InsertDriveFile />
                         <span className="hidden md:block z-50"> Rx Tracker List</span>
                     </span>
@@ -112,9 +119,11 @@ function Table() {
 
             {
                 openCase ? <CaseDetails />
-                    :
+                    : openTrackerList ? <Rx_Tracker_List />:
                      <TableList />
             }
+
+           
 
         
         </div>
