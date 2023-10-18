@@ -19,7 +19,7 @@ function Table() {
     const [fax_name, set_fax_name] = useState("")
     const [case_details, set_case_details] = useState("")
     const [openCase, setOpenCase] = useState(false)
-    const [openTrackerList, setOpenTrackerList] =useState(false)
+    const [openTrackerList, setOpenTrackerList] = useState(false)
     const [TrackerLIst, setTrackerLIst] = useState("")
     const navigate = useNavigate();
     const location = useLocation();
@@ -44,7 +44,7 @@ function Table() {
         setOpenCase(true)
         set_case_details("CASE DETAILS")
         set_fax_name("")
-        
+
     }
 
     const openRxTrackerList = () => {
@@ -54,6 +54,11 @@ function Table() {
         set_fax_name("")
         set_case_details("")
         setTrackerLIst("Rx Tracker List")
+    }
+
+    const logout = () => {
+        localStorage.removeItem("tokenTika")
+        navigate("/")
     }
 
     return (
@@ -75,9 +80,9 @@ function Table() {
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
                         {
-                            fax_name? fax_name : case_details? case_details: TrackerLIst ? TrackerLIst : ""
+                            fax_name ? fax_name : case_details ? case_details : TrackerLIst ? TrackerLIst : ""
                         }
-                       
+
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
@@ -93,9 +98,9 @@ function Table() {
                         <InsertDriveFile />
                         <span className="hidden md:block z-50"> Case Details</span>
                     </span>
-                    <span className="flex items-center gap-1 z-50">
+                    <span className="flex items-center gap-1 z-50 cursor-pointer">
                         <Logout />
-                        <span className="hidden md:block z-50" > Logout</span>
+                        <span className="hidden md:block z-50" onClick={logout}> Logout</span>
                     </span>
                     <span className="hidden text-[#FE7D00] text-lg md:hidden lg:flex flex-col items-center leading-[4px] z-50 ">
                         <h3 className="text-3xl z-50">
@@ -119,13 +124,13 @@ function Table() {
 
             {
                 openCase ? <CaseDetails />
-                    : openTrackerList ? <Rx_Tracker_List />:
-                     <TableList />
+                    : openTrackerList ? <Rx_Tracker_List /> :
+                        <TableList />
             }
 
-           
 
-        
+
+
         </div>
     )
 }
