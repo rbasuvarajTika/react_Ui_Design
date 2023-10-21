@@ -2,7 +2,7 @@ import React from 'react'
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
 
-const OrderInformation = () => {
+const OrderInformation = ({ openNetSuit }) => {
     return (
         <div className='w-full h-[300px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
@@ -10,16 +10,21 @@ const OrderInformation = () => {
                 <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
             </div>
             <div>
-                <div className='absolute md:top-1 top-6  right-3 rounded-xl bg-[#00aee6] w-28 py-1'>
-                    <div className=' flex justify-around px-1'>
-                        <div className='flex  relative'>
-                            <MdAddBox className='text-lg' />
-                            <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
-                        </div>
-                        <p className='text-white text-xs'>ADD</p>
-                    </div>
+                {
+                    openNetSuit ? "" :
+                        <div className='absolute md:top-1 top-6  right-3 rounded-xl bg-[#00aee6] w-28 py-1'>
+                            <div className=' flex justify-around px-1'>
+                                <div className='flex  relative'>
+                                    <MdAddBox className='text-lg' />
+                                    <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
+                                </div>
 
-                </div>
+                                <p className='text-white text-xs'>ADD</p>
+                            </div>
+
+                        </div>
+                }
+
 
                 <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll    no-scrollbar md:mt-8 mt-14">
                     <table className="w-f text-sm text-center table-auto  ">
@@ -220,7 +225,10 @@ const OrderInformation = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28 py-1'>
+                {
+                    openNetSuit ? ""
+                    :
+                    <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28 py-1'>
                     <div className=' flex justify-around px-1'>
                         <div className='flex  relative'>
                             <MdAddBox className='text-lg' />
@@ -229,6 +237,8 @@ const OrderInformation = () => {
                         <p className='text-white text-xs'>ADD</p>
                     </div>
                 </div>
+                }
+                
 
                 <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll   no-scrollbar mt-8">
                     <table className="w-f text-sm text-center table-auto  w-full ">
@@ -300,7 +310,7 @@ const OrderInformation = () => {
                                     </select>
                                 </td>
                                 <td className=" ">
-                                <input
+                                    <input
                                         type="checkbox"
                                         className=" elative h-3 w-3 cursor-pointer "
                                         id="checkbox-1"
@@ -308,7 +318,7 @@ const OrderInformation = () => {
                                     />
                                 </td>
                                 <td className=" ">
-                                <input
+                                    <input
                                         type="checkbox"
                                         className=" elative h-3 w-3 cursor-pointer "
                                         id="checkbox-1"
@@ -316,7 +326,7 @@ const OrderInformation = () => {
                                     />
                                 </td>
                                 <td className=" ">
-                                <input
+                                    <input
                                         type="checkbox"
                                         className=" elative h-3 w-3 cursor-pointer "
                                         id="checkbox-1"
@@ -340,7 +350,7 @@ const OrderInformation = () => {
                                     </select>
                                 </td>
                                 <td className=" ">
-                                <input
+                                    <input
                                         type="checkbox"
                                         className=" elative h-3 w-3 cursor-pointer "
                                         id="checkbox-1"
@@ -348,7 +358,7 @@ const OrderInformation = () => {
                                     />
                                 </td>
                                 <td className=" ">
-                                <input
+                                    <input
                                         type="checkbox"
                                         className=" elative h-3 w-3 cursor-pointer "
                                         id="checkbox-1"
@@ -356,7 +366,7 @@ const OrderInformation = () => {
                                     />
                                 </td>
                                 <td className=" ">
-                                <input
+                                    <input
                                         type="checkbox"
                                         className=" elative h-3 w-3 cursor-pointer "
                                         id="checkbox-1"

@@ -11,10 +11,24 @@ const Patients = () => {
         <div className='py-7'>
           <div className='flex flex-col justify-between sm:items-star items-cente h-full   md:px-16 px-2 '>
             <div className='flex flex-col '>
-              <div className=' flex flex-col  items-cente w-full '>
-                <label className='text-xs text-black w-28 text-start  ' htmlFor="">Patient Name: </label>
-                <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36' type="text" />
+              <div className='flex gap-10'>
+                <div className=' flex flex-col  items-cente w-full '>
+                  <label className='text-xs text-black w-28 text-start  ' htmlFor="">Patient Name:(First Name) </label>
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36' type="text" />
+                </div>
+
+                <div className=' flex flex-col  items-cente w-full '>
+                  <label className='text-xs text-black w-28 text-start  ' htmlFor="">(Middle Name) </label>
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36' type="text" />
+                </div>
+
+                <div className=' flex flex-col  items-cente w-full '>
+                  <label className='text-xs text-black w-28 text-start  ' htmlFor="">(Last Name) </label>
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36' type="text" />
+                </div>
               </div>
+
+
 
               <div className='flex xl:flex-row flex-col w-full xl:gap-5 gap-1 justify-between '>
                 <div className='flex flex-col'>

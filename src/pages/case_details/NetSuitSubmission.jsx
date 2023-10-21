@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Patients from '../../components/case_details/Patients'
 import OrderInformation from '../../components/case_details/OrderInformation'
 import Physician from '../../components/case_details/Physician'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { LuMinus, LuPlus } from 'react-icons/lu'
+import { DuplicateContext } from '../../context/DuplicateContext'
 
 const NetSuitSubmission = () => {
+    const { openNetSuit, setNetSuit} = useContext(DuplicateContext)
+
+    const backToCaseFile = () => {
+        setNetSuit(false)
+    }
+
     return (
         <>
             <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
@@ -14,10 +21,10 @@ const NetSuitSubmission = () => {
                         <div className='md:w-[calc(100vw-50vw)] h-screen  flex flex-col gap-2'>
 
                             {/* Patient */}
-                            <Patients />
+                            <Patients  />
 
                             {/* Order Information */}
-                            <OrderInformation />
+                            <OrderInformation openNetSuit={openNetSuit} />
 
                             {/* Physician */}
                             <Physician />
@@ -151,7 +158,7 @@ const NetSuitSubmission = () => {
                     </div>
 
                     <div className='flex csm:flex-row flex-col  p-1 csm:justify-around justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
-                        <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6]  rounded-lg flex justify-center md:text-sm text-xs'>Back To Case Details</div>
+                        <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6]  rounded-lg flex justify-center md:text-sm text-xs cursor-pointer' onClick={backToCaseFile}>Back To Case Details</div>
 
                         <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#4da12c] rounded-lg flex justify-center md:text-sm text-xs'>Save</div>
                     </div>

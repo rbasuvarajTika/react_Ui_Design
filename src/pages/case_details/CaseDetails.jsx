@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { LuMinus, LuPlus } from 'react-icons/lu'
 import Patients from '../../components/case_details/Patients'
@@ -7,9 +7,11 @@ import { MdAddBox } from 'react-icons/md';
 import OrderInformation from '../../components/case_details/OrderInformation';
 import Physician from '../../components/case_details/Physician';
 import NetSuitSubmission from './NetSuitSubmission';
+import { DuplicateContext } from '../../context/DuplicateContext';
 
 const CaseDetails = () => {
-  const [openNetSuit, setNetSuit] = useState(false)
+  // const [openNetSuit, setNetSuit] = useState(false)
+  const { openNetSuit, setNetSuit} = useContext(DuplicateContext)
 
   const handle_netSuitSubmission = () => {
     setNetSuit(true)
@@ -69,7 +71,7 @@ const CaseDetails = () => {
           </>
           :
           <>
-            <NetSuitSubmission />
+            <NetSuitSubmission openNetSuit={openNetSuit}/>
           </>
       }
 

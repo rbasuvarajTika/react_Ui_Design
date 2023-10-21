@@ -25,6 +25,8 @@ function Table() {
     const location = useLocation();
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
 
+    
+
     useEffect(() => {
         set_fax_name("FAX LIST")
     }, [])

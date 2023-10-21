@@ -1,10 +1,17 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { data } from "../../Data/Data";
 import Pagination from "../Pagination";
 import FaxId_Form from "./FaxId_Form";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { DuplicateContext } from "../../context/DuplicateContext";
 import Duplicate_Fax from "../fax/Duplicate_Fax";
+import { ToastContainer, toast } from 'react-toast'
+import axios from "axios";
+import fax from "../../assets/pdf/fax.pdf"
+
+
+
+
 
 const TableList = ({ }) => {
     const [currentpage, setCurrentPage] = useState(1);
@@ -12,11 +19,19 @@ const TableList = ({ }) => {
     const [showForm, setShoeForm] = useState(false)
     const [search, setSearch] = useState("")
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
+    const [faxData, setFaxData] = useState([])
+
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+
+
+
+
 
 
     const lastPostIndex = currentpage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage
-    const currentPosts = data.slice(firstPostIndex, lastPostIndex)
+    const currentPosts = faxData.slice(firstPostIndex, lastPostIndex)
     const npage = Math.ceil(data.length / postsPerPage)
 
     const open_form = ({ showForm }) => {
@@ -26,11 +41,41 @@ const TableList = ({ }) => {
 
     const close_Form = () => {
         setShoeForms(false)
+
+        useEffect(() => {
+            toast.error("Please enter password")
+        }, [])
     }
 
+    useEffect(() => {
+        try {
+            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/fax/faxList", {
+                headers: { "Content-Type": "application/json" }
+            })
+                .then((res) => {
+                    // console.log(res?.data.data.data);
+                    setFaxData(res?.data.data.data)
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    }, [])
 
+    const handleFaxStatus = (status) => {
+        if(status === "Duplicate"){
+            
+            setOpenDuplicate(true)
+        console.log(!showForm);
+        } else if(status === "Main"){
+            setShoeForms(true)
+            // setShoeForms(false)
+        }
+        
+    }
+    
     return (
         <>
+            <ToastContainer />
             <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
                 {
                     !openDuplicate ?
@@ -98,7 +143,8 @@ const TableList = ({ }) => {
                                     <tbody>
                                         {currentPosts.filter((item) => {
                                             return search === "" ? item :
-                                                item.Case_ID.includes(search)
+                                                item.faxId
+                                                .includes(search)
                                         }).map((item, index) => (
                                             <tr
                                                 key={index}
@@ -107,22 +153,23 @@ const TableList = ({ }) => {
                                             >
                                                 <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                                     <div className="cursor-pointer" onClick={open_form}>
-                                                        {item.Fax_ID}
+                                                        {item.faxId}
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4">{item.Case_ID}</td>
-                                                <td className="px-6 py-4">{item.Fax_Status}</td>
+                                                <td className="px-6 py-4">{item.caseId}</td>
+                                                <td className="px-6 py-4 cursor-pointer" onClick={() => handleFaxStatus(item.faxStatus)}>{item.faxStatus}</td>
                                                 <td className="px-6 py-4">{item.Verified}</td>
-                                                <td className="px-6 py-4">{item.Main_Fax_ID}</td>
-                                                <td className="px-6 py-4">{item.fax_Date}</td>
+                                                <td className="px-6 py-4">{item.dupeFaxId}</td>
+                                                <td className="px-6 py-4">{item.faxDate}</td>
                                                 <td className="px-6 py-4">{item.Fax_Time}</td>
                                                 <td className="px-6 py-4">{item.Sender_Fax}</td>
-                                                <td className="px-6 py-4">{item.OCR_Status}</td>
+                                                <td className="px-6 py-4">{item.ocrStatus}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
+
                         </> :
                         <Duplicate_Fax />
                 }
@@ -139,7 +186,6 @@ const TableList = ({ }) => {
 
 
             </div>
-
         </>
     );
 };

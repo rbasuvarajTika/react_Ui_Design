@@ -21,7 +21,7 @@ function Login() {
             console.log("kjbhbkhbhvbj");
             try {
                 setLoading(true)
-                await axios.post('http://dev.tika.mobi:9090/api/v1/auth/signin',
+                await axios.post('https://dev.tika.mobi:8443/next-service/api/v1/auth/signin',
                     JSON.stringify({ userName, password }),
                     {
                         headers: {
@@ -37,6 +37,9 @@ function Login() {
                         console.log(res);
                     }
                     setLoading(false)
+                    toast.error("Please enter password", {
+                        // backgroundColor: '',
+                    })
                 })
 
             } catch (error) {
@@ -46,11 +49,8 @@ function Login() {
 
             }
         } else {
-            console.log("LLLLLLLLLLLLLLLL");
-            
+            console.log("LLLLLLLLLLLLLLLL");   
         }
-
-
     }
 
     const validateField = () => {

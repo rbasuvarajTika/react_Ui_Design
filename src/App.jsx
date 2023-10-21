@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false)
   const [showForms, setShoeForms] = useState(false)
+  const [openNetSuit, setNetSuit] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -19,7 +20,7 @@ function App() {
   }, [])
 
   return (
-    <DuplicateContext.Provider value={{ setOpenDuplicate, openDuplicate, setShoeForms, showForms }} >
+    <DuplicateContext.Provider value={{ setOpenDuplicate, openDuplicate, setShoeForms, showForms, openNetSuit, setNetSuit}} >
 
       <Routes>
         <Route path="/" element={<Login />} />
