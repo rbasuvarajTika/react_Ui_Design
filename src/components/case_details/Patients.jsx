@@ -14,17 +14,17 @@ const Patients = () => {
               <div className='flex gap-10'>
                 <div className=' flex flex-col  items-cente w-full '>
                   <label className='text-xs text-black w-28 text-start  ' htmlFor="">Patient Name:(First Name) </label>
-                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36' type="text" />
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36 text-black py-1 text-xs ' type="text" />
                 </div>
 
                 <div className=' flex flex-col  items-cente w-full '>
                   <label className='text-xs text-black w-28 text-start  ' htmlFor="">(Middle Name) </label>
-                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36' type="text" />
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36 text-black py-1 text-xs' type="text" />
                 </div>
 
                 <div className=' flex flex-col  items-cente w-full '>
                   <label className='text-xs text-black w-28 text-start  ' htmlFor="">(Last Name) </label>
-                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36' type="text" />
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 xl:w-full md:w-56 w-36 text-black py-1 text-xs' type="text" />
                 </div>
               </div>
 
@@ -35,7 +35,7 @@ const Patients = () => {
                   <div className=' flex items-center flex-row w-full g '>
                     <div className=' flex  justify-start  flex-col w-full '>
                       <label className='text-xs text-black w-28 text-start' htmlFor="">Cell Phone: </label>
-                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36' type="text" />
+                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36 text-black py-1 text-xs' type="text" />
                     </div>
                   </div>
                 </div>
@@ -54,7 +54,7 @@ const Patients = () => {
                   <div className=' flex items-center flex-row w-full g '>
                     <div className=' flex  justify-start  flex-col w-full '>
                       <label className='text-xs text-black w-28 text-start' htmlFor="">Ship to Address: </label>
-                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36' type="text" />
+                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36 text-black py-1 text-xs' type="text" />
                     </div>
                   </div>
                 </div>
@@ -62,7 +62,7 @@ const Patients = () => {
                   <div className=' flex items-center flex-row w-full g '>
                     <div className=' flex  justify-start  flex-col w-full '>
                       <label className='text-xs text-black w-28 text-start' htmlFor="">Last 4 of SSN: </label>
-                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36' type="text" />
+                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36 text-black py-1 text-xs' type="text" />
                     </div>
                   </div>
                 </div>
@@ -73,7 +73,7 @@ const Patients = () => {
                   <div className=' flex items-center flex-row w-full g '>
                     <div className=' flex  justify-start  flex-col w-full '>
                       <label className='text-xs text-black w-28 text-start' htmlFor="">City: </label>
-                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36' type="text" />
+                      <input className='bg-gray-200 rounded-2xl border border-gray-300 md:w-56 w-36 text-black py-1 text-xs' type="text" />
                     </div>
                   </div>
                 </div>
@@ -85,7 +85,7 @@ const Patients = () => {
                     <div className=' flex items-center flex-row w-full g '>
                       <div className=' flex  justify-start  flex-col w-full '>
                         <label className='text-xs text-black w-20 text-start' htmlFor="">State: </label>
-                        <input className='bg-gray-200 rounded-2xl border border-gray-300 w-16' type="text" />
+                        <input className='bg-gray-200 rounded-2xl border border-gray-300 w-16 text-black py-1 text-xs' type="text" />
                       </div>
                     </div>
                   </div>
@@ -93,7 +93,7 @@ const Patients = () => {
                     <div className=' flex items-center flex-row w-full g '>
                       <div className=' flex  justify-start  flex-col w-full '>
                         <label className='text-xs text-black w-28 text-start' htmlFor="">Zip: </label>
-                        <input className='bg-gray-200 rounded-2xl border border-gray-300 w-16' type="text" />
+                        <input className='bg-gray-200 rounded-2xl border border-gray-300 w-16 text-black py-1 text-xs' type="text" />
                       </div>
                     </div>
                   </div>

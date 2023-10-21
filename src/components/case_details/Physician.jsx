@@ -26,7 +26,7 @@ const Physician = () => {
                         <td className="    p-1 rounded-2xl ">
                           <input
                             type="checkbox"
-                            className=" elative h-3 w-3 cursor-pointer "
+                            className=" elative h-3 w-3 cursor-pointer  "
                             id="checkbox-1"
                             defaultChecked
                           />
@@ -97,33 +97,33 @@ const Physician = () => {
               <div className='fle flex-col  hidde md:pt-10 pt-5'>
                 <div className='flex items-center'>
                   <label className='text-black text-xs' htmlFor="">Office Name:</label>
-                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-3' type="text" />
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-3 text-black py-1 text-xs' type="text" />
                 </div>
 
                 <div className='flex items-center pt-1'>
                   <label className='text-black text-xs' htmlFor="">Cell Phone:</label>
-                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-5' type="text" />
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-5 text-black py-1 text-xs' type="text" />
                 </div>
 
                 <div className='flex items-center pt-1'>
                   <label className='text-black text-xs' htmlFor="">Email:</label>
-                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-11' type="text" />
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-11 text-black py-1 text-xs' type="text" />
                 </div>
 
                 <div className='flex items-center pt-1'>
                   <label className='text-black text-xs' htmlFor="">City:</label>
-                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-[51px]' type="text" />
+                  <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-56 ml-[51px] text-black py-1 text-xs' type="text" />
                 </div>
 
                 <div className='flex csm:gap-10 gap-9 pt-1'>
                   <div>
                     <label className='text-black text-xs' htmlFor="">State:</label>
-                    <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-20 w-14 ml-12' type="text" />
+                    <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-20 w-14 ml-12 text-black py-1 text-xs' type="text" />
                   </div>
 
                   <div>
                     <label className='text-black text-xs' htmlFor="">Zip:</label>
-                    <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-20 w-14' type="text" />
+                    <input className='bg-gray-200 rounded-2xl border border-gray-300 csm:w-20 w-14 text-black py-1 text-xs' type="text" />
                   </div>
                 </div>
 
