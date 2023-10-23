@@ -36,7 +36,6 @@ function Login() {
                         navigate("/table")
                         console.log(res);
                     }
-                    navigate("/table")
                     setLoading(false)
                     toast.error("Please enter password", {
                         // backgroundColor: '',
@@ -44,7 +43,6 @@ function Login() {
                 })
 
             } catch (error) {
-                navigate("/table")
                 console.log(error);
                 setLoading(false)
                 toast.error("Entered UserId or Password is not correct")

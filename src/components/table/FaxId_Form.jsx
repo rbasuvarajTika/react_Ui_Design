@@ -89,17 +89,22 @@ const FaxId_Form = ({ close_Form }) => {
   return (
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto ">
       <div className="relative  bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300  h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">
-        <div className=' border-2 border-black h-[calc(100%-10px)]   overflow-hidden'>
-          <div className='text-black overflow-hidden '>
+        <div className=' border-2 border-black h-[calc(100%-10px)]   overflow-hidden overflow-y-scroll overflow-x-scroll no-scrollbar'>
+          <div className='text-blac sm:flex justify-center items-center  '>
 
             {
               !isloading ?
                 <>
                   <Document className=" "
+                 
                     file={pdfData}
                     onLoadSuccess={onDocumentLoadSuccess}
                   >
-                    <Page pageNumber={pageNumber} />
+                    <Page pageNumber={pageNumber}
+                      width={500} 
+                      height={200} 
+                      
+                    />
                   </Document>
                 </>
                 :
@@ -117,8 +122,8 @@ const FaxId_Form = ({ close_Form }) => {
         </div>
 
         <div className='flex justify-center gap-2 mt-1'>
-          <div className='w-7 h-7 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={previousPage}> <FaArrowLeft /></div>
-          <div className='w-7 h-7 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={nextPage}> <FaArrowRight /></div>
+        <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <=1 ? "bg-[#d9e0e3]": "bg-[#00aee6]" }`} onClick={previousPage}> <FaArrowLeft /></div>
+                            <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
         </div>
 
         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>

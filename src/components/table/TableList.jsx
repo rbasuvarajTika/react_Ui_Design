@@ -153,13 +153,13 @@ const TableList = ({ }) => {
                                             >
                                                 <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                                     <div className="cursor-pointer" 
-                                                    // onClick={open_form}
+                                                   onClick={() => handleFaxStatus(item.faxStatus)}
                                                     >
                                                         {item.faxId}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4">{item.caseId}</td>
-                                                <td className="px-6 py-4 cursor-pointer" onClick={() => handleFaxStatus(item.faxStatus)}>{item.faxStatus}</td>
+                                                <td className="px-6 py-4 cursor-pointer" >{item.faxStatus}</td>
                                                 <td className="px-6 py-4">{item.Verified}</td>
                                                 <td className="px-6 py-4">{item.dupeFaxId}</td>
                                                 <td className="px-6 py-4">{item.faxDate}</td>

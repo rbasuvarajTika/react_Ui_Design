@@ -13,7 +13,6 @@ import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { DuplicateContext } from "../../context/DuplicateContext";
 import CaseDetails from "../../pages/case_details/CaseDetails";
 import Rx_Tracker_List from "../../pages/rx_tracker_list/Rx_Tracker_List";
-import Admin_User_List from "../../pages/user_details/Admin_User_list";
 
 function Table() {
     const [search, setSearch] = useState("")
@@ -22,8 +21,6 @@ function Table() {
     const [openCase, setOpenCase] = useState(false)
     const [openTrackerList, setOpenTrackerList] = useState(false)
     const [TrackerLIst, setTrackerLIst] = useState("")
-    const [adminUserList, setAdminUserList] = useState(false)
-    const [UserList, setUserLIst] = useState("")
     const navigate = useNavigate();
     const location = useLocation();
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -36,7 +33,6 @@ function Table() {
 
     const fax_handleClick = () => {
         setOpenTrackerList(false)
-        setAdminUserList(false)
         setOpenDuplicate(false)
         navigate("/table")
         setShoeForms(false)
@@ -47,32 +43,19 @@ function Table() {
 
     const openCaseDetails = () => {
         setOpenTrackerList(false)
-        setAdminUserList(false)
         setOpenCase(true)
         set_case_details("CASE DETAILS")
         set_fax_name("")
-        
+
     }
 
     const openRxTrackerList = () => {
         setOpenTrackerList(true)
         setShoeForms(false)
         setOpenCase(false)
-        setAdminUserList(false)
         set_fax_name("")
         set_case_details("")
         setTrackerLIst("Rx Tracker List")
-    }
-
-    const openAdminUserList = () => {
-        setAdminUserList(true)
-        setOpenTrackerList(false)
-        setShoeForms(false)
-        setOpenCase(false)
-        set_fax_name("")
-        set_case_details("")
-        setTrackerLIst("")
-        setUserLIst("User List")
     }
 
     const logout = () => {
@@ -99,7 +82,7 @@ function Table() {
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
                         {
-                            fax_name ? fax_name : case_details ? case_details : TrackerLIst ? TrackerLIst : UserList ? UserList : ""
+                            fax_name ? fax_name : case_details ? case_details : TrackerLIst ? TrackerLIst : ""
                         }
 
                     </span>
@@ -109,15 +92,11 @@ function Table() {
                         <Lock />
                         <span className="hidden md:block z-50" >Fax List</span>
                     </span>
-                    <span className="flex items-center z-50 cursor-pointer" onClick={openAdminUserList}>
-                        <InsertDriveFile />
-                        <span className="hidden md:block z-50"> User List</span>
-                    </span>
                     <span className="flex items-center z-50 cursor-pointer" onClick={openRxTrackerList}>
                         <InsertDriveFile />
                         <span className="hidden md:block z-50"> Rx Tracker List</span>
                     </span>
-                                        <span className="flex items-center z-50 cursor-pointer" onClick={openCaseDetails}>
+                    <span className="flex items-center z-50 cursor-pointer" onClick={openCaseDetails}>
                         <InsertDriveFile />
                         <span className="hidden md:block z-50"> Case Details</span>
                     </span>
@@ -147,7 +126,7 @@ function Table() {
 
             {
                 openCase ? <CaseDetails />
-                    : openTrackerList ? <Rx_Tracker_List /> : adminUserList ? <Admin_User_List /> :
+                    : openTrackerList ? <Rx_Tracker_List /> :
                         <TableList />
             }
 
