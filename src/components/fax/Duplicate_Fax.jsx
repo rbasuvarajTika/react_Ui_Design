@@ -1,15 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from '../table/Table'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { LuMinus, LuPlus } from 'react-icons/lu'
 import { Document, Page, pdfjs } from 'react-pdf';
 import fax from "../../assets/pdf/fax.pdf"
+import axios from 'axios';
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css"
+import Loader from '../Loader';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const Duplicate_Fax = () => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [numPages2, setNumPages2] = useState(null);
+    const [pageNumber2, setPageNumber2] = useState(1);
+    const [pdfData, setPdfData] = useState(null);
+    const [isloading, setIsLoading] = useState(false)
 
 
 
@@ -24,6 +32,39 @@ const Duplicate_Fax = () => {
     const nextPage = () => {
         setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
     }
+
+
+    const onDocumentLoadSuccess2 = ({numPages2}) => {
+        setNumPages2(numPages2);
+    }
+
+    const previousPage2 = () => {
+        setPageNumber2(pageNumber2 <= 1 ? 1 : pageNumber2 - 1);
+    }
+
+    const nextPage2 = () => {
+        setPageNumber2(pageNumber2 >= numPages2 ? pageNumber2 : pageNumber2 + 1);
+    }
+
+    useEffect(() => {
+        const fetchPdf = async () => {
+            setIsLoading(true)
+            try {
+                const response = await axios.get(
+                    "https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370",
+                    { responseType: 'arraybuffer' }
+                );
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                setIsLoading(false)
+                setPdfData(url);
+            } catch (error) {
+                console.error("Error fetching PDF:", error);
+            }
+        };
+
+        fetchPdf();
+    }, []);
 
     return (
         <div className="w-ful  relative  overflow-x-auto rounded-xl lg:px-8 md:px-4   overflow-y-scroll  h-[640px] no-scrollbar ">
@@ -47,16 +88,28 @@ const Duplicate_Fax = () => {
                             <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus /></div>
                         </div>
 
-                        <div className='xl:w-[calc(100%-250px)] w-[calc(100%-120px)]  h-[calc(100%-100px)]  absolute overflow-hidden '>
+                        <div className='xl:w-[calc(100%-250px)] w-[calc(100%-120px)]  h-[calc(100%-100px)] border absolute overflow-hidden '>
                             <div className=' w-full h-full '>
-                                <div className='text-black overflow-hidden overflow-y-scroll no-scrollbar border-2 '>
+                                <div className='text-black overflow-hidden overflow-y-scroll no-scrollbar  '>
 
-                                    <Document className=""
-                                        file={fax}
-                                        onLoadSuccess={onDocumentLoadSuccess}
-                                    >
-                                        <Page pageNumber={pageNumber} />
-                                    </Document>
+                                    {
+                                        !isloading ?
+                                            <>
+                                                <Document className=" "
+                                                    file={pdfData}
+                                                    onLoadSuccess={onDocumentLoadSuccess}
+                                                >
+                                                    <Page pageNumber={pageNumber} />
+                                                </Document>
+                                            </>
+                                            :
+                                            <>
+                                                <div className='w-full flex justify-center items-center mt-32'>
+                                                    <Loader />
+                                                </div>
+
+                                            </>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -84,31 +137,43 @@ const Duplicate_Fax = () => {
                     </div>
                     <div className='text-white w-full h-[calc(100%-1rem)] bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
                         <div className='flex justify-center gap-2 mt-1 absolute bottom-3 w-full'>
-                            <div className='sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50' > <FaArrowLeft /></div>
-                            <div className='sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50'> <FaArrowRight /></div>
+                            <div className='sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50' onClick={previousPage2}> <FaArrowLeft /></div>
+                            <div className='sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50' onClick={nextPage2}> <FaArrowRight /></div>
                         </div>
 
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
                             <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer' > <LuPlus /></div>
                             <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus /></div>
-                        </div> 
+                        </div>
 
-                        <div className='xl:w-[calc(100%-250px)] w-[calc(100%-120px)]  h-[calc(100%-100px)]  absolute overflow-hidden '>
+                        <div className='xl:w-[calc(100%-250px)] w-[calc(100%-120px)]  h-[calc(100%-100px)] border  absolute overflow-hidden '>
                             <div className=' w-full h-full '>
-                                <div className='text-black overflow-hidden overflow-y-scroll no-scrollbar border-2 '>
+                                <div className='text-black overflow-hidden overflow-y-scroll no-scrollbar  '>
 
-                                    <Document className=""
-                                        file={fax}
-                                        onLoadSuccess={onDocumentLoadSuccess}
-                                    >
-                                        <Page pageNumber={pageNumber} />
-                                    </Document>
+                                    {
+                                        !isloading ?
+                                            <>
+                                                <Document className=" "
+                                                    file={pdfData}
+                                                    onLoadSuccess={onDocumentLoadSuccess2}
+                                                >
+                                                    <Page pageNumber={pageNumber2} />
+                                                </Document>
+                                            </>
+                                            :
+                                            <>
+                                                <div className='w-full flex justify-center items-center mt-32'>
+                                                    <Loader />
+                                                </div>
+
+                                            </>
+                                    }
                                 </div>
                             </div>
                         </div>
 
                         <div className='absolute bottom-20 left-4'>
-                            <p className='text-[#717171] text-sm absolute top-2 w-20'>Page: {pageNumber}</p>
+                            <p className='text-[#717171] text-sm absolute top-2 w-20'>Page: {pageNumber2}</p>
                         </div>
 
                         <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
@@ -117,8 +182,8 @@ const Duplicate_Fax = () => {
                         </div>
 
                         <div className='absolute bottom-2 flex  w-full justify-around'>
-                            <div className=' xl:w-44 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[10px]'>Make Master</div>
-                            <div className=' xl:w-44 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[10px]'>Keep Duplicate</div>
+                            <div className=' xl:w-44 lg:w-32 md:w-24 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[10px]'>Make Master</div>
+                            <div className=' xl:w-44 lg:w-32 md:w-24 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[10px]'>Keep Duplicate</div>
                         </div>
                     </div>
                 </div>

@@ -66,7 +66,7 @@ const TableList = ({ }) => {
             
             setOpenDuplicate(true)
         console.log(!showForm);
-        } else if(status === "Main"){
+        } else if(status === "Main"||"New"){
             setShoeForms(true)
             // setShoeForms(false)
         }
@@ -152,7 +152,9 @@ const TableList = ({ }) => {
                                                     } bg-white text-black/70 text-xs`}
                                             >
                                                 <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
-                                                    <div className="cursor-pointer" onClick={open_form}>
+                                                    <div className="cursor-pointer" 
+                                                    // onClick={open_form}
+                                                    >
                                                         {item.faxId}
                                                     </div>
                                                 </td>
