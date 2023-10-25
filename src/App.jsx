@@ -5,11 +5,17 @@ import Forgot_Page from "./pages/forgot _page/Forgot_Page"
 import Duplicate_Fax from "./components/fax/Duplicate_Fax"
 import { DuplicateContext } from "./context/DuplicateContext"
 import { useEffect, useState } from "react"
+import Admin_User_List from "./pages/admin_Pages/Admin_User_List"
+import { AdminContext } from "./context/AdminContext"
 
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false)
   const [showForms, setShoeForms] = useState(false)
   const [openNetSuit, setNetSuit] = useState(false)
+
+  //admin section 
+  const [openNewUser, setOpenNewUser] = useState(false)
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -21,12 +27,14 @@ function App() {
 
   return (
     <DuplicateContext.Provider value={{ setOpenDuplicate, openDuplicate, setShoeForms, showForms, openNetSuit, setNetSuit}} >
-
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/table" element={<Table />} />
-        <Route path="/forgot" element={<Forgot_Page />} />
-      </Routes>
+      <AdminContext.Provider value={{setOpenNewUser, openNewUser}}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/table" element={<Table />} />
+          <Route path="/forgot" element={<Forgot_Page />} />
+          <Route path="/admin-user-list" element={<Admin_User_List />} />
+        </Routes>
+      </AdminContext.Provider>
 
     </DuplicateContext.Provider>
 

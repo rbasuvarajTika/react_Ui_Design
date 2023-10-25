@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import TableList from "./TableList";
 import Background from "../Background";
+import { IoMdSettings } from  "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Children, useContext, useEffect, useState } from "react";
 import Duplicate_Fax from "../fax/Duplicate_Fax";
@@ -45,6 +46,14 @@ function Table() {
         setOpenTrackerList(false)
         setOpenCase(true)
         set_case_details("CASE DETAILS")
+        set_fax_name("")
+
+    }
+
+    const Admin_User_List = () => {
+        setOpenTrackerList(false)
+        setOpenCase(true)
+        setOpenNewUser("ADMINUSERLIST")
         set_fax_name("")
 
     }
@@ -104,6 +113,12 @@ function Table() {
                         <Logout />
                         <span className="hidden md:block z-50" onClick={logout}> Logout</span>
                     </span>
+                    <span className="flex items-center gap-1 z-50 cursor-pointer">
+  <IoMdSettings size={20} />
+  <span className="hidden md:block z-50">
+    <button onClick={() => navigate('/admin-user-list')}>Admin Page</button>
+  </span>
+</span>
                     <span className="hidden text-[#FE7D00] text-lg md:hidden lg:flex flex-col items-center leading-[4px] z-50 ">
                         <h3 className="text-3xl z-50">
                             Tika<span className="text-blue-500 z-50">Rx</span>

@@ -96,23 +96,23 @@ const FaxId_Form = ({ close_Form }) => {
               !isloading ?
                 <>
                   <Document className=" "
-                 
+
                     file={pdfData}
                     onLoadSuccess={onDocumentLoadSuccess}
                   >
                     <Page pageNumber={pageNumber}
-                      width={500} 
-                      height={200} 
-                      
+                      width={500}
+                      height={200}
+
                     />
                   </Document>
                 </>
                 :
                 <>
-                <div className='w-full flex justify-center items-center mt-32'>
-                   <Loader />
-                </div>
-                
+                  <div className='w-full flex justify-center items-center mt-32'>
+                    <Loader />
+                  </div>
+
                 </>
             }
           </div>
@@ -122,8 +122,8 @@ const FaxId_Form = ({ close_Form }) => {
         </div>
 
         <div className='flex justify-center gap-2 mt-1'>
-        <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <=1 ? "bg-[#d9e0e3]": "bg-[#00aee6]" }`} onClick={previousPage}> <FaArrowLeft /></div>
-                            <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
+          <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <= 1 ? "bg-[#d9e0e3]" : "bg-[#00aee6]"}`} onClick={previousPage}> <FaArrowLeft /></div>
+          <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
         </div>
 
         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
