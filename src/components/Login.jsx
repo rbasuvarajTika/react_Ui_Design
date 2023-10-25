@@ -4,6 +4,7 @@ import logo from "../assets/images/logo.jpeg"
 import { useState } from "react";
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toast'
+import axiosBaseURL from './axios.js';
 
 function Login() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ function Login() {
             console.log("kjbhbkhbhvbj");
             try {
                 setLoading(true)
-                await axios.post('https://dev.tika.mobi:8443/next-service/api/v1/auth/signin',
+                await axiosBaseURL.post('/api/v1/auth/signin',
                     JSON.stringify({ userName, password }),
                     {
                         headers: {
