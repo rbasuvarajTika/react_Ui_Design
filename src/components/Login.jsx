@@ -34,7 +34,7 @@ function Login() {
                     if (res.data.token) {
                         localStorage.setItem("tokenTika", res.data.token)
                         console.log("tokenTika", res.data.token);
-                        navigate("/table")
+                        navigate("/nsrxmgt/table")
                         console.log(res);
                     }
                     setLoading(false)

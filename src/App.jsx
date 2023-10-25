@@ -29,9 +29,9 @@ function App() {
     <DuplicateContext.Provider value={{ setOpenDuplicate, openDuplicate, setShoeForms, showForms, openNetSuit, setNetSuit}} >
       <AdminContext.Provider value={{setOpenNewUser, openNewUser}}>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/table" element={<Table />} />
-          <Route path="/forgot" element={<Forgot_Page />} />
+          <Route path="/nsrxmgt" element={<Login />} />
+          <Route path="/nsrxmgt/table" element={<Table />} />
+          <Route path="/nsrxmgt/forgot" element={<Forgot_Page />} />
         </Routes>
       </AdminContext.Provider>
 

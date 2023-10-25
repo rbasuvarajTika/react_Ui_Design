@@ -41,7 +41,7 @@ function Table() {
         setOpenDuplicate(false)
         setOpenAdminList(false)
         setAdminList("")
-        navigate("/table")
+        navigate("/nsrxmgt/table")
         setShoeForms(false)
         setOpenCase(false)
         set_fax_name("FAX LIST")
@@ -83,7 +83,7 @@ function Table() {
 
     const logout = () => {
         localStorage.removeItem("tokenTika")
-        navigate("/")
+        navigate("/nsrxmgt")
     }
 
     return (
@@ -93,7 +93,7 @@ function Table() {
                 <div className="flex items-center gap-6">
                     <span className="uppercase flex items-center gap-1">
                         <span className="bg-white rounded-full z-50">
-                            <ArrowBack className="text-teal-400" onClick={() => navigate("/")} />
+                            <ArrowBack className="text-teal-400" onClick={() => navigate("/nsrxmgt")} />
                         </span>
                         <span className="hidden md:block z-50">Next science</span>
                     </span>
