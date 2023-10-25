@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Children, useContext, useEffect, useState } from "react";
 import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { DuplicateContext } from "../../context/DuplicateContext";
+import { AdminContext } from "../../context/AdminContext";
 import CaseDetails from "../../pages/case_details/CaseDetails";
 import Rx_Tracker_List from "../../pages/rx_tracker_list/Rx_Tracker_List";
 import Admin_User_List from "../admin_page/Admin_User_Table";
@@ -28,7 +29,7 @@ function Table() {
     const navigate = useNavigate();
     const location = useLocation();
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
-
+    const { setOpenNewUser, openNewUser } = useContext(AdminContext)
     
 
     useEffect(() => {
@@ -73,9 +74,11 @@ function Table() {
         setOpenTrackerList(false)
         setShoeForms(false)
         setOpenCase(false)
+        setOpenNewUser(false)
         set_fax_name("")
         set_case_details("")
         setTrackerLIst("")
+        setOpenDuplicate(false)
     }
 
     const logout = () => {
