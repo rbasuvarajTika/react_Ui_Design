@@ -2,6 +2,8 @@
 import { AiFillCloseSquare } from 'react-icons/ai'
 import React, { useState, useEffect } from 'react';
 import axiosBaseURL from '../axios';
+import { useParams } from 'react-router-dom';
+
 const Physician = () => {
 
   //const [trnFaxId, setTrnFaxId] = useState([]);
@@ -18,6 +20,7 @@ const Physician = () => {
 });
 const [states, setStates] = useState([]);
 
+const { trnRxId } = useParams();
 
   useEffect(() => {
       const fetchData = async () => {
@@ -29,7 +32,7 @@ const [states, setStates] = useState([]);
                   },
               };
 
-              const response = await axiosBaseURL.get(`/api/v1/fax/hcpInfo/1`, config);
+              const response = await axiosBaseURL.get(`/api/v1/fax/hcpInfo/${trnRxId}`, config);
               //const trnFaxId = response.data.data[0].trnFaxId;
              // setTrnFaxId(trnFaxId);
               setApiData(response.data.data);
@@ -54,7 +57,7 @@ useEffect(() => {
                 },
             };
 
-            const response = await axiosBaseURL.get(`/api/v1/fax/officeInfo/1`, config);
+            const response = await axiosBaseURL.get(`/api/v1/fax/officeInfo/${trnRxId}`, config);
             const officeInfo = response.data.data;
             const officeDataArray = officeInfo[0];
           // console.log(officeInfo);

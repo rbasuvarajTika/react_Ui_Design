@@ -3,17 +3,20 @@ import { IoMdArrowDropdown } from 'react-icons/io'
 import { data } from '../../Data/Data'
 import axiosBaseURL from '../../components/axios'
 import Pagination from '../../components/Pagination'
-import { DuplicateContext } from '../../context/DuplicateContext'
+import { useNavigate } from 'react-router-dom';
+
 const Rx_Tracker_List = () => {
 
+    const navigate = useNavigate();
 
 const [currentpage, setCurrentPage] = useState(1);
 const [postsPerPage, setPostPerPage] = useState(10);
 const [rxTrackerData, setRxTrackerData] = useState([]);
 const [loading, setLoading] = useState(true);
+const [trnRxId, settrnRxId] = useState([]);
+
  const [patientData, setPatientData] = useState({});
 const [isLoading, setIsLoading] = useState(true);
-const { setOpenCase,openCase } = useContext(DuplicateContext)
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
@@ -44,7 +47,8 @@ useEffect(() => {
     })
     .then((response) => {
         setRxTrackerData(response.data.data); 
-        console.log(response.data.data);// Set the fetched data in the state
+        console.log(response.data.data[0].trnRxId);
+        settrnRxId(response.data.data[0].trnRxId);
         setLoading(false); // Set loading to false
     })
     .catch((error) => {
@@ -56,11 +60,11 @@ useEffect(() => {
 
 const handleRxId = (trnRxId) => {
     console.log("handleRxId is called");
-     setOpenCase(true)
+    navigate(`/nsrxmgt/case-details/${trnRxId}`);
     
 }
 
-console.log(setOpenCase);
+console.log(trnRxId);
 const lastPostIndex = currentpage * postsPerPage;
 const firstPostIndex = lastPostIndex - postsPerPage;
 const currentPosts = rxTrackerData.slice(firstPostIndex, lastPostIndex);

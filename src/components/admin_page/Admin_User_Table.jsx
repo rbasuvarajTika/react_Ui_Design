@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { IoMdArrowDropdown } from "react-icons/io";
 import { DuplicateContext } from "../../context/DuplicateContext";
-
+import Pagination from "../Pagination";
 import { ToastContainer, toast } from 'react-toast'
 import axios from "axios";
 import { MdEditDocument } from "react-icons/md";
@@ -10,8 +10,8 @@ import Admin_Create_New_User from "../../pages/admin_Pages/Admin_Create_New_User
 import { AdminContext } from "../../context/AdminContext";
 
 const Admin_User_Table = () => {
-    // const [currentpage, setCurrentPage] = useState(1);
-    // const [postsPerPage, setPostPerPage] = useState(14)
+     const [currentpage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostPerPage] = useState(14)
     // const [showForm, setShoeForm] = useState(false)
     // const [search, setSearch] = useState("")
     // const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -22,7 +22,15 @@ const Admin_User_Table = () => {
 
     useEffect(() => {
         try {
-            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/users/usersList", {
+            const token = localStorage.getItem('tokenTika');
+    
+            // Include the token in the request headers
+            const config = {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            };
+            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/users/usersList",config, {
                 headers: { "Content-Type": "application/json" }
             })
                 .then((res) => {
@@ -38,7 +46,10 @@ const Admin_User_Table = () => {
         setOpenNewUser(true)
     }
 
-
+    const lastPostIndex = currentpage * postsPerPage;
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    const currentPosts = faxData.slice(firstPostIndex, lastPostIndex);
+    const npage = Math.ceil(faxData.length / postsPerPage);
     return (
         <>
   
@@ -50,6 +61,14 @@ const Admin_User_Table = () => {
                     <div className="flex gap-5">
                         <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={CreateNewUser}>Create New User</div>
                         <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'>Report Fields</div>
+                        <Pagination
+                                        totalPosts={faxData.length}
+                                        postsPerPage={postsPerPage}
+                                        setCurrentPage={setCurrentPage}
+                                        currentPage={currentpage}
+                                        lastPostIndex={lastPostIndex}
+                                        npage={npage}
+                                    />
                     </div>
                 </div>
                 <div>
@@ -70,7 +89,7 @@ const Admin_User_Table = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {faxData.map((item, index) => (
+                            {currentPosts.map((item, index) => (
                                 <tr
                                     key={index}
                                     className={`${index % 2 === 0 ? "" : "bg-[#f6f6f6] "
@@ -80,7 +99,7 @@ const Admin_User_Table = () => {
                                         <div className="cursor-pointer"
                                             onClick={() => handleFaxStatus(item.faxStatus)}
                                         >
-                                            {item.userId}
+                                            {item.username}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">{item.firstName}</td>

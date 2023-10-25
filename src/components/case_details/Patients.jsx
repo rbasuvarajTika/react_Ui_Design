@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axiosBaseURL from '../axios';
+import { useParams } from 'react-router-dom';
+
 const Patients = () => {
   const [patientFirstName, setPatientFirstName] = useState('');
   const [patientMiddleName, setPatientMiddleName] = useState('');
@@ -24,11 +26,11 @@ const Patients = () => {
   const [patientData, setPatientData] = useState({
     state: '', // Initialize patientData with an object containing 'state' property
   });  
-
+  const { trnRxId } = useParams();
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-        const response = await axiosBaseURL.get('/api/v1/fax/rxpatient/1');
+        const response = await axiosBaseURL.get(`/api/v1/fax/rxpatient/${trnRxId}`);
         const responseData = response.data;
         console.log("responseData",responseData);
        // console.log("patientData",patientData);
