@@ -1,8 +1,83 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
+import axiosBaseURL from '../axios';
 
 const OrderInformation = ({ openNetSuit }) => {
+   // const [trnFaxId, setTrnFaxId] = useState([]);
+   // const [woundNo, setwoundNo] = useState([]);
+    const [woundData, setWoundData] = useState([]);
+    const [kitData, setKitData] = useState([]);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const token = localStorage.getItem('tokenTika');
+            const config = {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            };
+    
+            // Make a GET request to the API to fetch wound data
+            const response = await axiosBaseURL.get(`/api/v1/fax/woundInfo/1`, config);
+            const responseData = response.data;
+           // const trnFaxId = responseData.data[0].trnFaxId;
+          //  const woundNo = responseData.data[0].woundNo;
+         //   setwoundNo(woundNo);
+          //  console.log("woundN  ssso", woundNo);
+    
+            // setTrnFaxId(trnFaxId);
+            // console.log("woundInforesponse",trnFaxId);
+            console.log(responseData);
+            if (responseData && responseData.data && responseData.data.length > 0) {
+              // Update the woundData state variable with the retrieved data
+              setWoundData(responseData.data);
+             
+              console.log(response.data);
+            } else {
+              // Handle the case where no wound data is found.
+              console.error('No wound data found.');
+            }
+          } catch (error) {
+            console.error('Error fetching wound data:', error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+      useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem('tokenTika');
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+
+                // Make a GET request to the API to fetch product data
+                const response = await axiosBaseURL.get(`/api/v1/fax/productInfo/1`, config);
+                const responseData = response.data;
+
+                if (responseData && responseData.data && responseData.data.length > 0) {
+                   // const trnFaxId = responseData.data[0].trnFaxId;
+                   // const productCode = responseData.data[0].productCode;
+                   // setProductCode(productCode);
+                    setKitData(responseData.data);
+             //        console.log(responseData.data);
+                    // Handle the case where no data is found.
+                 //   console.error('No data found.');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+     }, );
+
     return (
         <div className='w-full h-[300px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
@@ -44,61 +119,71 @@ const OrderInformation = ({ openNetSuit }) => {
                                 <th className="px-2 py-3 ">Delete</th>
                             </tr>
                         </thead>
+                        
+
                         <tbody>
-
-                            <tr className=' bg-white text-black/70 text-xs'>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1</p>
+                        {woundData.map((row, index) => (
+                            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}>
+                                <td className="p-1 rounded-2xl">
+                                    <p className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-'>
+                                        {row.woundNo}
+                                    </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1 rounded-2xl">
                                     <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                        <option className='' value="">Right</option>
+                                        <option value={row.woundLocation}>{row.woundLocation}</option>
                                     </select>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1.2</p>
+                                <td className="p-1 rounded-2xl">
+                                    <p className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-'>
+                                        {row.woundLength}
+                                    </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1.0</p>
+                                <td className="p-1 rounded-2xl">
+                                    <p className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-'>
+                                        {row.woundWidth}
+                                    </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1.5</p>
+                                <td className="p-1 rounded-2xl">
+                                    <p className='bg-gray-200 text-gray-600   rounded-3xl py-1 px-'>
+                                        {row.woundDepth}
+                                    </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1 rounded-2xl">
                                     <p className='bg-gray-200 rounded-3xl py- px-'>
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">iv</option>
+                                            <option value={row.woundThickness}>{row.woundThickness}</option>
                                         </select>
                                     </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1 rounded-2xl">
                                     <p className='bg-gray-200 rounded-3xl py- px-'>
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">Med</option>
+                                            <option value={row.drainage}>{row.drainage}</option>
                                         </select>
                                     </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1 rounded-2xl">
                                     <p className='bg-gray-200 rounded-3xl py- px-'>
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">Yes</option>
+                                            <option value={row.debrided}>{row.debrided}</option>
                                         </select>
                                     </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1</p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py- px-'>
-                                        <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">07/17/2023</option>
-                                        </select>
+                                <td className="p-1 rounded-2xl">
+                                    <p className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-'>
+                                        {row.icdCode}
                                     </p>
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1 rounded-2xl">
+                                    <p className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-'>
+                                        {row.debridedDate}
+                                    </p>
+                                </td>
+                                <td className="p-1 rounded-2xl">
                                     <p className='bg-gray-200 rounded-3xl px-'>
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">Superficial</option>
+                                            <option value={row.debridedType}>{row.debridedType}</option>
                                         </select>
                                     </p>
                                 </td>
@@ -106,125 +191,11 @@ const OrderInformation = ({ openNetSuit }) => {
                                     <AiFillCloseSquare />
                                 </td>
                             </tr>
-
-                            <tr className=' bg-gray-200 text-black/70 text-xs'>
-                                <td className=" p-1 ">
-                                    <p className='bg-gray-300 rounded-2xl py-1 px-'>1</p>
-                                </td>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-1'>
-                                        <option className='' value="">Right</option>
-                                    </select>
-                                </td>
-                                <td className=" ">
-                                    <p className='bg-gray-300 rounded-2xl py-1 px-'>1</p>
-                                </td>
-                                <td className=" ">
-                                    <p className='bg-gray-300 rounded-2xl py-1 px-'>1</p>
-                                </td>
-                                <td className=" ">
-                                    <p className='bg-gray-300 rounded-2xl py-1 px-'>1</p>
-                                </td>
-                                <td className="p-1">
-                                    <p className='bg-gray-200 rounded-3xl py- px-'>
-                                        <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-2'>
-                                            <option className='' value="">ii</option>
-                                        </select>
-                                    </p>
-                                </td>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-1'>
-                                        <option className='' value="">Low</option>
-                                    </select>
-                                </td>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-1'>
-                                        <option className='' value="">No</option>
-                                    </select>
-                                </td>
-                                <td className="px-6 ">A6021</td>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-1'>
-                                        <option className='' value="">07/17/2023</option>
-                                    </select>
-                                </td>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-1'>
-                                        <option className='' value="">Superficial</option>
-                                    </select>
-                                </td>
-                                <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center">
-                                    <AiFillCloseSquare />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className=' bg-white text-black/70 text-xs'>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1</p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                        <option className='' value="">Right</option>
-                                    </select>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1.2</p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1.0</p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1.5</p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py- px-'>
-                                        <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">iv</option>
-                                        </select>
-                                    </p>
-                                </td>
-
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py- px-'>
-                                        <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">Med</option>
-                                        </select>
-                                    </p>
-                                </td>
-
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py- px-'>
-                                        <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">Yes</option>
-                                        </select>
-                                    </p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py-1 px-'>1</p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl py- px-'>
-                                        <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">07/17/2023</option>
-                                        </select>
-                                    </p>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
-                                    <p className='bg-gray-200 rounded-3xl px-'>
-                                        <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-1'>
-                                            <option className='' value="">Superficial</option>
-                                        </select>
-                                    </p>
-                                </td>
-                                <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center">
-                                    <AiFillCloseSquare />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+                
                 {
                     openNetSuit ? ""
                     :
@@ -252,133 +223,51 @@ const OrderInformation = ({ openNetSuit }) => {
                                 <th className="px-2 py-3 ">Delete</th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                            <tr className=' bg-white text-black/70 text-xs'>
-                                <td className=" ">
+                    
+                            <tbody>
+                        {kitData.map((kit, index) => (
+                            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}>
+                                <td className="p-1">
+                                <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-7'>
+                                        <option value={kit.productCode}>{kit.productCode}</option>
+                                    </select>
+                                </td>
+                                <td className="p-1">
                                     <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-7'>
-                                        <option className='' value="">WK-D002BK</option>
+                                        <option value={kit.frequency}>{kit.frequency}</option>
                                     </select>
                                 </td>
-
-                                <td className="    p-1 rounded-2xl ">
-                                    <select className='bg-gray-200 text-gray-600 rounded-3xl py-1 px-7'>
-                                        <option className='' value="">15 Day Supply</option>
-                                    </select>
-                                </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1">
                                     <input
                                         type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
+                                        className="relative h-3 w-3 cursor-pointer"
+                                        id={`checkbox-${index}`}
+                                        defaultChecked={kit.wnd1}
                                     />
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1">
                                     <input
                                         type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
+                                        className="relative h-3 w-3 cursor-pointer"
+                                        id={`checkbox-${index}`}
+                                        defaultChecked={kit.wnd2}
                                     />
                                 </td>
-                                <td className="    p-1 rounded-2xl ">
+                                <td className="p-1">
                                     <input
                                         type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
+                                        className="relative h-3 w-3 cursor-pointer"
+                                        id={`checkbox-${index}`}
+                                        defaultChecked={kit.wnd3}
                                     />
                                 </td>
-                                <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center">
-                                    <AiFillCloseSquare />
-                                </td>
-
-
-
-                            </tr>
-
-                            <tr className=' bg-gray-200 text-black/70 text-xs'>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-7'>
-                                        <option className='' value="">WK-D002BK</option>
-                                    </select>
-                                </td>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-7'>
-                                        <option className='' value="">30 Day Supply</option>
-                                    </select>
-                                </td>
-                                <td className=" ">
-                                    <input
-                                        type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
-                                    />
-                                </td>
-                                <td className=" ">
-                                    <input
-                                        type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
-                                    />
-                                </td>
-                                <td className=" ">
-                                    <input
-                                        type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
-                                    />
-                                </td>
-                                <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center">
+                                <td className="p-1 rounded-2xl flex justify-center text-xl text-red-600 mt-2 items-center">
                                     <AiFillCloseSquare />
                                 </td>
                             </tr>
-
-                            <tr className=' bg-gray-200 text-black/70 text-xs'>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-7'>
-                                        <option className='' value="">WK-D002BK</option>
-                                    </select>
-                                </td>
-                                <td className=" ">
-                                    <select className='bg-gray-300 text-gray-600 rounded-3xl py-1 px-7'>
-                                        <option className='' value="">30 Day Supply</option>
-                                    </select>
-                                </td>
-                                <td className=" ">
-                                    <input
-                                        type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
-                                    />
-                                </td>
-                                <td className=" ">
-                                    <input
-                                        type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
-                                    />
-                                </td>
-                                <td className=" ">
-                                    <input
-                                        type="checkbox"
-                                        className=" elative h-3 w-3 cursor-pointer "
-                                        id="checkbox-1"
-                                        defaultChecked
-                                    />
-                                </td>
-                                <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center">
-                                    <AiFillCloseSquare />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        ))}
+                    </tbody>
+                </table>
                 </div>
 
             </div>

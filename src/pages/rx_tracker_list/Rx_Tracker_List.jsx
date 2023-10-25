@@ -11,6 +11,23 @@ const [currentpage, setCurrentPage] = useState(1);
 const [postsPerPage, setPostPerPage] = useState(10);
 const [rxTrackerData, setRxTrackerData] = useState([]);
 const [loading, setLoading] = useState(true);
+ const [patientData, setPatientData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      try {
+        const response = await axios.get('/api/v1/fax/rxpatient/1');
+        setPatientData(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching patient data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchPatientData();
+  }, []);
 
 useEffect(() => {
     
