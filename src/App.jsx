@@ -32,7 +32,6 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/table" element={<Table />} />
           <Route path="/forgot" element={<Forgot_Page />} />
-          <Route path="/admin-user-list" element={<Admin_User_List />} />
         </Routes>
       </AdminContext.Provider>
 
