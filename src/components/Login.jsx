@@ -50,7 +50,7 @@ function Login() {
 
             }
         } else {
-            console.log("LLLLLLLLLLLLLLLL");   
+            console.log("nO DATA");   
         }
     }
 
