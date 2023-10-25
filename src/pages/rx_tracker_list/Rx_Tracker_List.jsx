@@ -3,7 +3,7 @@ import { IoMdArrowDropdown } from 'react-icons/io'
 import { data } from '../../Data/Data'
 import axiosBaseURL from '../../components/axios'
 import Pagination from '../../components/Pagination'
-
+import { DuplicateContext } from '../../context/DuplicateContext'
 const Rx_Tracker_List = () => {
 
 
@@ -12,12 +12,12 @@ const [postsPerPage, setPostPerPage] = useState(10);
 const [rxTrackerData, setRxTrackerData] = useState([]);
 const [loading, setLoading] = useState(true);
  const [patientData, setPatientData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
+const [isLoading, setIsLoading] = useState(true);
+const { setOpenCase,openCase } = useContext(DuplicateContext)
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-        const response = await axios.get('/api/v1/fax/rxpatient/1');
+        const response = await axiosBaseURL.get('/api/v1/fax/rxpatient/1');
         setPatientData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -53,10 +53,20 @@ useEffect(() => {
     });
 }, []); // The empty array ensures the effect runs only once on component mount
 
+
+const handleRxId = (trnRxId) => {
+    console.log("handleRxId is called");
+     setOpenCase(true)
+    
+}
+
+console.log(setOpenCase);
 const lastPostIndex = currentpage * postsPerPage;
 const firstPostIndex = lastPostIndex - postsPerPage;
 const currentPosts = rxTrackerData.slice(firstPostIndex, lastPostIndex);
 const npage = Math.ceil(rxTrackerData.length / postsPerPage);
+
+
     return (
         <>
             <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
@@ -147,9 +157,9 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                         } bg-white text-black/70 text-xs`}
                                 >
                                     <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
-                                        <div className="cursor-pointer" >
-                                            {item.trnRxId}
-                                        </div>
+                                    <div className="cursor-pointer" onClick={() => handleRxId(item.trnRxId)}>
+                                   {item.trnRxId}
+                                    </div>
                                     </td>
                                     <td className="px-6 py-4">{item.process}</td>
                                     <td className="px-6 py-4">{item.process}</td>
