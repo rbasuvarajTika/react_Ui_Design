@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
 import axiosBaseURL from '../axios';
+import { useParams } from 'react-router-dom';
 
 const OrderInformation = ({ openNetSuit }) => {
    // const [trnFaxId, setTrnFaxId] = useState([]);
@@ -9,6 +10,7 @@ const OrderInformation = ({ openNetSuit }) => {
     const [woundData, setWoundData] = useState([]);
     const [kitData, setKitData] = useState([]);
 
+    const { trnRxId } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,7 +23,7 @@ const OrderInformation = ({ openNetSuit }) => {
             };
     
             // Make a GET request to the API to fetch wound data
-            const response = await axiosBaseURL.get(`/api/v1/fax/woundInfo/1`, config);
+            const response = await axiosBaseURL.get(`/api/v1/fax/woundInfo/${trnRxId}`, config);
             const responseData = response.data;
            // const trnFaxId = responseData.data[0].trnFaxId;
           //  const woundNo = responseData.data[0].woundNo;
@@ -58,7 +60,7 @@ const OrderInformation = ({ openNetSuit }) => {
                 };
 
                 // Make a GET request to the API to fetch product data
-                const response = await axiosBaseURL.get(`/api/v1/fax/productInfo/1`, config);
+                const response = await axiosBaseURL.get(`/api/v1/fax/productInfo/${trnRxId}`, config);
                 const responseData = response.data;
 
                 if (responseData && responseData.data && responseData.data.length > 0) {
