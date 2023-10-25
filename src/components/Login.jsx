@@ -34,6 +34,7 @@ function Login() {
                 ).then((res) => {
                     if (res.data.token) {
                         localStorage.setItem("tokenTika", res.data.token)
+                        console.log("tokenTika", res.data.token);
                         navigate("/table")
                         console.log(res);
                     }
