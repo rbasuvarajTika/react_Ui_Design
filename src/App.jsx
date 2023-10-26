@@ -8,6 +8,8 @@ import { DuplicateContext } from "./context/DuplicateContext"
 import { useEffect, useState } from "react"
 import { AdminContext } from "./context/AdminContext"
 import CaseDetails from "./pages/case_details/CaseDetails"
+import Duplicate_Fax from "./components/fax/Duplicate_Fax"
+import Admin_User_List from "./pages/admin_Pages/Admin_User_List"
 
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false)
@@ -39,6 +41,7 @@ function App() {
           <Route path="/nsrxmgt/forgot" element={<Forgot_Page />} />
           <Route path="/nsrxmgt/forgotpassword" element={<Forgot_Password />} />
           <Route path="/nsrxmgt/forgotuserid" element={<Forgot_UserId />} />
+          <Route path="/admin-user-list" element={<Admin_User_List />} />
         </Routes>
         
       </AdminContext.Provider>

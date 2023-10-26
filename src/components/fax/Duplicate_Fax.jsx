@@ -11,13 +11,15 @@ import Loader from '../Loader';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const Duplicate_Fax = () => {
+const Duplicate_Fax = ({ sendFaxId }) => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [numPages2, setNumPages2] = useState(null);
     const [pageNumber2, setPageNumber2] = useState(1);
     const [pdfData, setPdfData] = useState(null);
     const [isloading, setIsLoading] = useState(false)
+
+    console.log("sendFaxId...", sendFaxId);
 
 
 

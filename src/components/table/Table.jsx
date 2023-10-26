@@ -6,6 +6,7 @@ import {
     Logout,
 } from "@mui/icons-material";
 import TableList from "./TableList";
+import { RiAdminFill } from 'react-icons/ri';
 import Background from "../Background";
 import { IoMdSettings } from  "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -128,11 +129,9 @@ function Table() {
                         <span className="hidden md:block z-50" onClick={logout}> Logout</span>
                     </span>
                     <span className="flex items-center gap-1 z-50 cursor-pointer">
-  <IoMdSettings size={20} />
-  <span className="hidden md:block z-50">
-    <button onClick={openAdminUserList}>Admin Page</button>
-  </span>
-</span>
+                    <RiAdminFill size={21} />
+                    <span className="hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
+                    </span>
                     <span className="hidden text-[#FE7D00] text-lg md:hidden lg:flex flex-col items-center leading-[4px] z-50 ">
                         <h3 className="text-3xl z-50">
                             Tika<span className="text-blue-500 z-50">Rx</span>

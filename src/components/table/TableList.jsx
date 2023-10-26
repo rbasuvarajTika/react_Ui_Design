@@ -20,6 +20,7 @@ const TableList = ({ }) => {
     const [search, setSearch] = useState("")
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
     const [faxData, setFaxData] = useState([])
+    const [sendFaxId, setSendFaxId] =useState(null)
 
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
@@ -61,8 +62,12 @@ const TableList = ({ }) => {
         }
     }, [])
 
-    const handleFaxStatus = (status) => {
+    const handleFaxStatus = (status, faxId) => {
+        
+        setSendFaxId(faxId)
+     
         if(status === "Duplicate"){
+            setSendFaxId(faxId)
             
             setOpenDuplicate(true)
         console.log(!showForm);
@@ -153,7 +158,7 @@ const TableList = ({ }) => {
                                             >
                                                 <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                                     <div className="cursor-pointer" 
-                                                   onClick={() => handleFaxStatus(item.faxStatus)}
+                                                   onClick={() => handleFaxStatus(item.faxStatus, item.faxId)}
                                                     >
                                                         {item.faxId}
                                                     </div>
@@ -173,12 +178,12 @@ const TableList = ({ }) => {
                             </div>
 
                         </> :
-                        <Duplicate_Fax />
+                        <Duplicate_Fax sendFaxId={sendFaxId} />
                 }
 
 
                 {
-                    showForms && <FaxId_Form close_Form={close_Form} setShoeForm={setShoeForm} />
+                    showForms && <FaxId_Form close_Form={close_Form} setShoeForm={setShoeForm} sendFaxId={sendFaxId}/>
                 }
 
                 {/* {

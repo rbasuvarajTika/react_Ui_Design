@@ -15,12 +15,14 @@ import Loader from '../Loader';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const FaxId_Form = ({ close_Form }) => {
+const FaxId_Form = ({ close_Form, sendFaxId }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [faxdata, setFaxData] = useState("")
   const [pdfData, setPdfData] = useState(null);
   const [isloading, setIsLoading] = useState(false)
+
+
 
   const navigate = useNavigate();
   const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
