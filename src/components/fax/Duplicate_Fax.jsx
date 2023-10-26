@@ -91,7 +91,7 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus className='md:text-base text-xs' /></div>
                         </div>
 
-                        <div className='xl:w-[calc(100%-250px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]  h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar  '>
+                        <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]  h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar  '>
                             <div className=' w-full h-full '>
                                 <div className='text-black overflow-hidden overflow-x-scroll overflow-y-scroll no-scrollbar  '>
 
@@ -104,7 +104,7 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                                                         onLoadSuccess={onDocumentLoadSuccess}
                                                     >
                                                         <Page pageNumber={pageNumber}
-                                                            width={400} height={500}
+                                                            width={500} height={500}
                                                             className="responsive-pdf-container "
 
                                                         />
@@ -154,7 +154,7 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus className='md:text-base text-xs' /></div>
                         </div>
 
-                        <div className='xl:w-[calc(100%-250px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
+                        <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
                             <div className=' w-full h-full  '>
                                 <div className='text-black overflow-hidden  no-scrollbar overflow-x-scroll overflow-y-scroll'>
 
@@ -167,9 +167,9 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                                                     file={pdfData}
                                                     onLoadSuccess={onDocumentLoadSuccess}
                                                 >
-                                                    <Page pageNumber={pageNumber2}
-                                                        width={400}
-                                                        height={200}
+                                                    <Page pageNumber={pageNumber2} 
+                                                        width={500}
+                                                        height={500}
 
                                                     />
                                                 </Document>
