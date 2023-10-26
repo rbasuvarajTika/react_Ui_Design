@@ -89,9 +89,10 @@ function Login() {
                         <span>
                             <label htmlFor="userId" className="text-white text-sm pl-2">User ID:</label>
                             <input
+                                type="email"
                                 onChange={(e) => setUserName(e.target.value)}
                                 value={userName}
-                                type="text"
+                                required
                                 className="ml-5 rounded-full px-2  focus:outline-none "
                             />
                         </span>
@@ -106,10 +107,10 @@ function Login() {
                             />
                         </span>
                         <span className="w-full flex items-center justify-end">
-                            <input type="checkbox" className="rounded-3xl mr-1" />
+                            <input type="checkbox" name ="rememberMeCheck" className="rounded-3xl mr-1" />
                             <label htmlFor="rememberMe" className="text-white text-[9px] font-light font-sans italic">Remember Me</label>
                             <a href="#" className="ml-2 text-white text-[9px] font-sans italic" >
-                            <span onClick={() => navigate("/nsrxmgt/forgotuserid")}>Forgot UserID</span>/<span onClick={() => navigate("/nsrxmgt/forgotpassword")}>Password</span>
+                            <span onClick={() => navigate("/nsrxmgt/forgotpassword")}>Forgot Password</span>
                             </a>
                         </span>
                         <button className="relative self-end rounded-full text-xs px-12 py-1 button-85 bg-white border-2 text-black" onClick={login}>

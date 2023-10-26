@@ -1,8 +1,40 @@
 import Background from "../../components/Background"
 import { useNavigate } from "react-router-dom";
+import axiosBaseURL from '../../components/axios'
+import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toast'
 
 const Forgot_Password = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+      };
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        try {
+          // Send a POST request to your API with the email data
+          const response = await axiosBaseURL.post('/api/v1/notification/emails/forgotpassword', {
+            email: email,
+            resetLink:'https://dev.tika.mobi/nsrxmgt/forgot'
+          });
+    
+          if (response.data.message == 'Email Sent Successfully') {
+            toast.success("Email Sent Successfully");
+            setEmail("");
+          } else {
+            toast.error("Please enter Valid Email");
+          }
+        } catch (error) {
+          // Handle errors, e.g., show an error message to the user
+          toast.error("Please enter Valid Email");
+          console.error('Error sending confirmation email:', error);
+        }
+      };
+
   return (
    <>
      <div className='bg-[#1B4A68] w-screen h-screen flex items-center justify-center relative z-20'>
@@ -16,23 +48,28 @@ const Forgot_Password = () => {
                 </span>
                 <div className="">
                     <h1 className="text-xl text-white text-center py-5"></h1>
-                    <form className="flex flex-col items-center  gap-5">
+                    <form className="flex flex-col items-center  gap-5" onSubmit={handleSubmit}>
                         <span className="flex md:flex-row flex-col md:items-center items-start md:gap-0 gap-2">
                             <label htmlFor="userId" className="text-white text-sm ">Enter User Id :</label>
                             <input
-                                type="text"
+                                onChange={handleEmailChange}
+                                name="userId"
+                                type="email"
+                                value={email}
+                                required
                                 className="md:ml-5 rounded-full px-2  focus:outline-none "
                             />
                         </span>
                         <div className="flex gap-5">
                              <button className="relative mt-5 self-en rounded-full text-xs px-12 py-1 button-85 bg-white border-2 text-black" onClick={() => navigate("/nsrxmgt")}>Back</button>
-                             <button type="button" className="relative mt-5 self-end rounded-full text-xs px-12 py-1 button-85 bg-white border-2 text-black" >Submit</button>
+                             <button type="submit" className="relative mt-5 self-end rounded-full text-xs px-12 py-1 button-85 bg-white border-2 text-black" >Submit</button>
                         </div>
                        
                     </form>
                 </div>
             </div>
             <Background />
+            <ToastContainer />
         </div>
    </>
   )
