@@ -8,12 +8,16 @@ import axios from 'axios';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const Duplicate_Fax = ({ sendFaxId }) => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [scale, setScale] = useState(1);
+    const [scale2, setScale2] = useState(1);
     const [numPages2, setNumPages2] = useState(null);
     const [pageNumber2, setPageNumber2] = useState(1);
     const [pdfData, setPdfData] = useState(null);
@@ -34,8 +38,21 @@ const Duplicate_Fax = ({ sendFaxId }) => {
     const nextPage = () => {
         setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
     }
+    const zoomOut = () => {
+        setScale(scale -0.2);
+    }
 
+    const zoomIn = () => {
+        setScale(scale+0.2);
+    }
 
+    const zoomOutSecond = () => {
+        setScale2(scale2 -0.2);
+    }
+
+    const zoomInSecond = () => {
+        setScale2(scale2+0.2);
+    }
     // const onDocumentLoadSuccess = ({ numPages2 }) => {
     //     setNumPages2(numPages2);
     // }
@@ -87,8 +104,8 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                         </div>
 
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
-                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer '> <LuPlus className='md:text-base text-xs' /></div>
-                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
                         </div>
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]  h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar  '>
@@ -103,7 +120,7 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                                                         file={pdfData}
                                                         onLoadSuccess={onDocumentLoadSuccess}
                                                     >
-                                                        <Page pageNumber={pageNumber}
+                                                        <Page pageNumber={pageNumber} scale={scale}
                                                             width={500} height={500}
                                                             className="responsive-pdf-container "
 
@@ -150,8 +167,8 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                         </div>
 
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
-                        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer '> <LuPlus className='md:text-base text-xs' /></div>
-                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomInSecond}> <ZoomInIcon className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
                         </div>
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
@@ -167,7 +184,7 @@ const Duplicate_Fax = ({ sendFaxId }) => {
                                                     file={pdfData}
                                                     onLoadSuccess={onDocumentLoadSuccess}
                                                 >
-                                                    <Page pageNumber={pageNumber2} 
+                                                    <Page pageNumber={pageNumber2} scale={scale2}
                                                         width={500}
                                                         height={500}
 
