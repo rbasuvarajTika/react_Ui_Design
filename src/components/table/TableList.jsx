@@ -8,7 +8,7 @@ import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { ToastContainer, toast } from 'react-toast'
 import axios from "axios";
 import fax from "../../assets/pdf/fax.pdf"
-
+import { MdOutlineArrowDropDown } from "react-icons/md";
 
 
 
@@ -21,9 +21,11 @@ const TableList = ({ }) => {
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
     const [faxData, setFaxData] = useState([])
     const [sendFaxId, setSendFaxId] =useState(null)
-
+    const[sendDate, setSendDate] = useState(null)
+    const[sendFaxNumber, setSendFaxNumber]=useState(null)
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [selectedOcrStatus, setSelectedOcrStatus] = useState(''); // State for selected ocrStatus
 
 
 
@@ -31,10 +33,10 @@ const TableList = ({ }) => {
 
 
     const lastPostIndex = currentpage * postsPerPage;
-    const firstPostIndex = lastPostIndex - postsPerPage
-    const currentPosts = faxData.slice(firstPostIndex, lastPostIndex)
-    const npage = Math.ceil(data.length / postsPerPage)
-
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    const currentPosts = faxData.slice(firstPostIndex, lastPostIndex);
+    const npage = Math.ceil(faxData.length / postsPerPage);
+    
     const open_form = ({ showForm }) => {
         setShoeForms(true)
         console.log(!showForm);
@@ -56,6 +58,10 @@ const TableList = ({ }) => {
                 .then((res) => {
                     // console.log(res?.data.data.data);
                     setFaxData(res?.data.data.data)
+                    setSendDate(res?.data.data.data[0].faxDate)
+                    setSendFaxNumber(res?.data.data.data[0].faxNumber)
+                    console.log(sendDate);
+                    console.log(sendFaxNumber);
                 })
         } catch (error) {
             console.log(error);
@@ -77,7 +83,9 @@ const TableList = ({ }) => {
         }
         
     }
-    
+    const handleOcrStatusChange = (event) => {
+        setSelectedOcrStatus(event.target.value);
+    };
     return (
         <>
             <ToastContainer />
@@ -88,33 +96,35 @@ const TableList = ({ }) => {
                             <div className="w-full h-ful flex justify-between items-center p-2 ">
                                 <div className="flex gap-5">
                                     <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                        Fax Status:
-                                        <input
-                                            // onChange={(e) => setSearch(e.target.value)}
-                                            className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
-                                        />
-                                        <div className="absolute right-2 text-gray-500">
-                                            <IoMdArrowDropdown size={20} />
+                                    OCR Status:
+                                        <div className=' flex  justify-start  flex-col w-full  relative'>
+                                                <label className='text-xs text-black w-full text-start' htmlFor=""> </label>
+                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                                            type="text" 
+                                                
+                                               value={selectedOcrStatus}
+                                                onChange={handleOcrStatusChange}
+                                               
+                                                                >
+                                         
+                                        <option></option>
+                                        <option value="All Status">All Status</option>
+                                        <option value="Complete">Complete</option>
+                                        <option value="Incomplete ">Incomplete</option>
+                                        
+                                        </select>
+                                        
                                         </div>
                                     </span>
 
-                                    <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                        OCR Status:
-                                        <input
-                                            // onChange={(e) => setSearch(e.target.value)}
-                                            className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
-                                        />
-                                        <div className="absolute right-2 text-gray-500">
-                                            <IoMdArrowDropdown size={20} />
-                                        </div>
-                                    </span>
+                                    
                                 </div>
                                 <div className="flex items-center gap-10 ">
                                     <div>
                                         <input type="search"
                                             onChange={(e) => setSearch(e.target.value)}
                                             className="border  px-4 shadow-lg rounded-md py-2 placeholder:text-black text-gray-500"
-                                            placeholder="search here.." />
+                                            placeholder="Search Fax ID.." />
                                     </div>
 
                                     <Pagination
@@ -139,7 +149,7 @@ const TableList = ({ }) => {
                                             <th className="px-6 py-3">Fax Status</th>
                                             <th className="px-6 py-3">Verified</th>
                                             <th className="px-6 py-3">Main Fax ID</th>
-                                            <th className="px-6 py-3">fax Date</th>
+                                            <th className="px-6 py-3">Fax Date</th>
                                             <th className="px-6 py-3">Fax Time</th>
                                             <th className="px-6 py-3 ">Sender Fax #</th>
                                             <th className="px-6 py-3 ">OCR Status</th>
@@ -147,9 +157,14 @@ const TableList = ({ }) => {
                                     </thead>
                                     <tbody>
                                         {currentPosts.filter((item) => {
-                                            return search === "" ? item :
-                                                item.faxId
-                                                .includes(search)
+                                          const matchesSearch = search === "" || item.faxId.includes(search);
+                                         if (selectedOcrStatus === "All Status") {
+                                         return matchesSearch;
+                                         } else {
+                                           const matchesOcrStatus =
+                                             selectedOcrStatus === "" || item.ocrStatus === selectedOcrStatus;
+                                             return matchesSearch && matchesOcrStatus;
+                                          }
                                         }).map((item, index) => (
                                             <tr
                                                 key={index}
@@ -169,7 +184,7 @@ const TableList = ({ }) => {
                                                 <td className="px-6 py-4">{item.dupeFaxId}</td>
                                                 <td className="px-6 py-4">{item.faxDate}</td>
                                                 <td className="px-6 py-4">{item.Fax_Time}</td>
-                                                <td className="px-6 py-4">{item.Sender_Fax}</td>
+                                                <td className="px-6 py-4">{item.faxNumber}</td>
                                                 <td className="px-6 py-4">{item.ocrStatus}</td>
                                             </tr>
                                         ))}
@@ -178,7 +193,7 @@ const TableList = ({ }) => {
                             </div>
 
                         </> :
-                        <Duplicate_Fax sendFaxId={sendFaxId} />
+                        <Duplicate_Fax sendFaxId={sendFaxId} sendDate={sendDate} sendFaxNumber={sendFaxNumber}/>
                 }
 
 
