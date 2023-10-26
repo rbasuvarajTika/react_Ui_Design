@@ -1,7 +1,7 @@
 import Background from "../../components/Background"
 import { useNavigate } from "react-router-dom";
 
-const Forgot_Page = () => {
+const Forgot_UserId = () => {
     const navigate = useNavigate();
   return (
    <>
@@ -18,17 +18,10 @@ const Forgot_Page = () => {
                     <h1 className="text-xl text-white text-center py-5"></h1>
                     <form className="flex flex-col items-center  gap-5">
                         <span className="flex md:flex-row flex-col md:items-center items-start md:gap-0 gap-2">
-                            <label htmlFor="userId" className="text-white text-sm ">Enter New Password:</label>
+                            <label htmlFor="userId" className="text-white text-sm ">Enter Email :</label>
                             <input
                                 type="text"
                                 className="md:ml-5 rounded-full px-2  focus:outline-none "
-                            />
-                        </span>
-                        <span className="flex md:flex-row flex-col md:items-center items-start md:gap-0 gap-2">
-                            <label htmlFor="passcode" className="text-white text-sm ">Confirm Password:</label>
-                            <input
-                                type="password"
-                                className="md:ml-8 rounded-full px-2 focus:outline-none"
                             />
                         </span>
                         <div className="flex gap-5">
@@ -45,4 +38,4 @@ const Forgot_Page = () => {
   )
 }
 
-export default Forgot_Page
+export default Forgot_UserId

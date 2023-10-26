@@ -109,7 +109,7 @@ function Login() {
                             <input type="checkbox" className="rounded-3xl mr-1" />
                             <label htmlFor="rememberMe" className="text-white text-[9px] font-light font-sans italic">Remember Me</label>
                             <a href="#" className="ml-2 text-white text-[9px] font-sans italic" >
-                                Forgot UserID/<span onClick={() => navigate("/forgot")}>Password</span>
+                            <span onClick={() => navigate("/nsrxmgt/forgotuserid")}>Forgot UserID</span>/<span onClick={() => navigate("/nsrxmgt/forgotpassword")}>Password</span>
                             </a>
                         </span>
                         <button className="relative self-end rounded-full text-xs px-12 py-1 button-85 bg-white border-2 text-black" onClick={login}>

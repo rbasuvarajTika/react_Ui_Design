@@ -2,6 +2,8 @@ import Login from "./components/Login"
 import Table from "./components/table/Table"
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom"
 import Forgot_Page from "./pages/forgot _page/Forgot_Page"
+import Forgot_Password from "./pages/forgot _page/Forgot_Password"
+import Forgot_UserId from "./pages/forgot _page/Forgot_UserId"
 import { DuplicateContext } from "./context/DuplicateContext"
 import { useEffect, useState } from "react"
 import { AdminContext } from "./context/AdminContext"
@@ -35,6 +37,8 @@ function App() {
           <Route path="/nsrxmgt/case-details/:trnRxId" element={<CaseDetails />} />
 
           <Route path="/nsrxmgt/forgot" element={<Forgot_Page />} />
+          <Route path="/nsrxmgt/forgotpassword" element={<Forgot_Password />} />
+          <Route path="/nsrxmgt/forgotuserid" element={<Forgot_UserId />} />
         </Routes>
         
       </AdminContext.Provider>
