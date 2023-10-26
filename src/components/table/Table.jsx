@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import TableList from "./TableList";
 import { RiAdminFill } from 'react-icons/ri';
+import FaxIcon from '@mui/icons-material/Fax';
 import Background from "../Background";
 import { IoMdSettings } from  "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -112,25 +113,21 @@ function Table() {
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
-                    <span className="text-[#FE7D00] flex items-center z-50 cursor-pointer" onClick={fax_handleClick}>
-                        <Lock />
-                        <span className="hidden md:block z-50" >Fax List</span>
+                <span className="text-[#FE7D00] flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
+                    <RiAdminFill size={21} />
+                    <span className="hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
+                </span>
+                    <span className="flex items-center z-50 cursor-pointer" onClick={fax_handleClick}>
+                        <FaxIcon />
+                        <span className="hidden md:block z-50" onClick={fax_handleClick}>Fax List</span>
                     </span>
                     <span className="flex items-center z-50 cursor-pointer" onClick={openRxTrackerList}>
                         <InsertDriveFile />
-                        <span className="hidden md:block z-50"> Rx Tracker List</span>
+                        <span className="hidden md:block z-50" onClick={openRxTrackerList}> Rx Tracker List</span>
                     </span>
-                    <span className="flex items-center z-50 cursor-pointer" onClick={openCaseDetails}>
-                        <InsertDriveFile />
-                        <span className="hidden md:block z-50"> Case Details</span>
-                    </span>
-                    <span className="flex items-center gap-1 z-50 cursor-pointer">
+                    <span className="flex items-center gap-1 z-50 cursor-pointer" onClick={logout}>
                         <Logout />
                         <span className="hidden md:block z-50" onClick={logout}> Logout</span>
-                    </span>
-                    <span className="flex items-center gap-1 z-50 cursor-pointer">
-                    <RiAdminFill size={21} />
-                    <span className="hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
                     </span>
                     <span className="hidden text-[#FE7D00] text-lg md:hidden lg:flex flex-col items-center leading-[4px] z-50 ">
                         <h3 className="text-3xl z-50">
