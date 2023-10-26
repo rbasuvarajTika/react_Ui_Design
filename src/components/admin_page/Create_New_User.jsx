@@ -183,6 +183,7 @@
                         <div className=' flex  flex-col xl:items-start items-center'>
 
 
+
                             <div className='px-5 pt-10'>
                                 <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                     <div className='flex flex-col'>
@@ -194,7 +195,6 @@
                                                 type="text" 
                                                 value={userData.userName}
                                                 onChange={handleInputChange}
-
                                                 />
                                                 <p className="text-red-500 text-xs">{requiredFieldError}</p>
 
