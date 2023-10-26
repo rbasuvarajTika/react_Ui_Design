@@ -18,6 +18,7 @@ import { AdminContext } from "../../context/AdminContext";
 import CaseDetails from "../../pages/case_details/CaseDetails";
 import Rx_Tracker_List from "../../pages/rx_tracker_list/Rx_Tracker_List";
 import Admin_User_List from "../admin_page/Admin_User_Table";
+import Edit_Profile from "../admin_page/Edit_Profile";
 
 function Table() {
     const [search, setSearch] = useState("")
@@ -28,6 +29,9 @@ function Table() {
     const [TrackerLIst, setTrackerLIst] = useState("")
     const [openAdminList, setOpenAdminList] = useState(false)
     const [AdminLIst, setAdminList] = useState("")
+    const [openEditProfile, setOpenEditProfile] = useState(false)
+    const [EditProfile, setEditProfile] = useState("")
+
     const navigate = useNavigate();
     const location = useLocation();
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -48,6 +52,8 @@ function Table() {
         setOpenCase(false)
         set_fax_name("FAX LIST")
         set_case_details("")
+        setOpenEditProfile(false)
+        setEditProfile("")
     }
 
     const openCaseDetails = () => {
@@ -57,6 +63,8 @@ function Table() {
         set_fax_name("")
         setOpenAdminList(false)
         setAdminList("")
+        setOpenEditProfile(false)
+        setEditProfile("")
 
     }
     const openRxTrackerList = () => {
@@ -68,11 +76,30 @@ function Table() {
         setOpenAdminList(false)
         setAdminList("")
         setTrackerLIst("Rx Tracker List")
+        setOpenEditProfile(false)
+        setEditProfile("")
     }
 
     const openAdminUserList = () => {
         setOpenAdminList(true)
         setAdminList("User List")
+        setOpenTrackerList(false)
+        setShoeForms(false)
+        setOpenCase(false)
+        setOpenNewUser(false)
+        set_fax_name("")
+        set_case_details("")
+        setTrackerLIst("")
+        setOpenDuplicate(false)
+        setOpenEditProfile(false)
+        setEditProfile("")
+    }
+
+    const openEditUserProfile = () => {
+        setOpenEditProfile(true)
+        setEditProfile("Edit User Profile")
+        setOpenAdminList(false)
+        setAdminList("")
         setOpenTrackerList(false)
         setShoeForms(false)
         setOpenCase(false)
@@ -95,25 +122,25 @@ function Table() {
                 <div className="flex items-center gap-6">
                     <span className="uppercase flex items-center gap-1">
                         <span className="bg-white rounded-full z-50">
-                            <ArrowBack className="text-teal-400" onClick={() => navigate("/nsrxmgt")} />
+                            <ArrowBack className="text-teal-400" onClick={() => navigate(-1)} />
                         </span>
                         <span className="hidden md:block z-50">Next science</span>
                     </span>
-                    <span className="flex items-center gap-1 z-50">
+                    <span className="flex items-center gap-1 z-50" onClick={openEditUserProfile}>
                         <AccountCircle />
-                        <span className="underline hidden md:block z-50">Erica Fernandes</span>
+                        <span className="underline hidden md:block z-50" onClick={openEditUserProfile}>Erica Fernandes</span>
                     </span>
                 </div>
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
                         {
-                            fax_name ? fax_name : case_details ? case_details : TrackerLIst ? TrackerLIst : AdminLIst ? AdminLIst : ""
+                            fax_name ? fax_name : case_details ? case_details : TrackerLIst ? TrackerLIst : AdminLIst ? AdminLIst : EditProfile ? EditProfile :""
                         }
 
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
-                <span className="text-[#FE7D00] flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
+                <span className="flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
                     <RiAdminFill size={21} />
                     <span className="hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
                 </span>
@@ -151,7 +178,7 @@ function Table() {
 
             {
                 openCase ? <CaseDetails />
-                    : openTrackerList ? <Rx_Tracker_List /> :openAdminList ? <Admin_User_List /> :
+                    : openTrackerList ? <Rx_Tracker_List /> :openAdminList ? <Admin_User_List /> : openEditProfile ? <Edit_Profile /> :
                         <TableList />
             }
 
