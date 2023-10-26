@@ -165,15 +165,15 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                    {item.trnRxId}
                                     </div>
                                     </td>
-                                    <td className="px-6 py-4">{item.process}</td>
-                                    <td className="px-6 py-4">{item.process}</td>
-                                    <td className="px-6 py-4">{item.Verified}</td>
+                                    <td className="px-6 py-4">{item.processStatus}</td>
+                                    <td className="px-6 py-4">{item.rxFulfilmentStatus}</td>
+                                    <td className="px-6 py-4">{item.netsuiteRxId}</td>
                                     <td className="px-6 py-4">{item.faxId}</td>
                                     <td className="px-6 py-4">{item.patientId}</td>
                                     <td className="px-6 py-4">{item.hcpName}</td>
                                     <td className="px-6 py-4">{item.accountName}</td>
-                                    <td className="px-6 py-4">{item.payer}</td>
-                                    <td className="px-6 py-4">{item.payerName}</td>
+                                    <td className="px-6 py-4">{item.primaryPayerName}</td>
+                                    <td className="px-6 py-4">{item.payerType}</td>
                                 </tr>
                             ))}
                         </tbody>
