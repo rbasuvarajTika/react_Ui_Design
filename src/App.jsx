@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     let isAdminpresent = localStorage.getItem("tokenTika");
     if (isAdminpresent === "" || isAdminpresent === null) {
-      navigate("/")
+      navigate("/nsrxmgt")
     }
   }, [])
 
