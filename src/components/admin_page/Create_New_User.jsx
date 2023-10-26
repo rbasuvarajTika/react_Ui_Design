@@ -129,7 +129,7 @@ const Create_New_User = () => {
                                 <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
                                         <div className=' flex  justify-start  flex-col w-full '>
-                                            <label className='text-xs text-black w-full text-start' htmlFor="">User Id (primary email) </label>
+                                            <label className='text-xs text-black w-full text-start' htmlFor="">*User Id (primary email) </label>
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56  text-black py-0.5 text-xs t-1' 
                                              name="userName"
                                             type="text" 
