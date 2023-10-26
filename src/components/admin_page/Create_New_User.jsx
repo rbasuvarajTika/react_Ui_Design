@@ -6,6 +6,8 @@ import axiosBaseURL from '../axios';
 import axios from 'axios';
 const Create_New_User = () => {
     const navigate = useNavigate();
+    const [phoneError, setPhoneError] = useState('');
+    const [zipError, setZipError] = useState('');
 
     const [userData, setUserData] = useState({
         userName: '',
@@ -42,7 +44,7 @@ const Create_New_User = () => {
       
           if (response.status === 201 || response.status === 200) {
             alert('User Created Successfully');
-            navigate("/nsrxmgt/adminpage");
+            navigate("/nsrxmgt/table");
             // Handle success here, e.g., show a success message
           } else if (response.status === 409) {
             alert('User Already Exists');
@@ -60,10 +62,37 @@ const Create_New_User = () => {
       
         // Use the spread operator to create a copy of the current userData
         const updatedUserData = { ...userData };
-      
+        if (name === 'zip') {
+            // Phone number validation
+            const numericValue = value.replace(/\D/g, ''); // Remove non-digit characters
+            const truncatedValue = numericValue.slice(0, 5);
+            if (numericValue.length === 5) {
+                setZipError(''); // No error
+                updatedUserData[name] = truncatedValue; // Update with cleaned numeric value
+            } else {
+                setZipError('Zip Code must be exactly 5 digits');
+                updatedUserData[name] = truncatedValue; // Update with cleaned numeric value
+            }
+        } else {
+            updatedUserData[name] = value;
+        }
+
         // Set the value for the changed field
-        updatedUserData[name] = value;
-      
+        if (name === 'phone') {
+            // Phone number validation
+            const numericValue = value.replace(/\D/g, ''); // Remove non-digit characters
+            const truncatedValue = numericValue.slice(0, 10);
+            if (numericValue.length === 10) {
+                setPhoneError(''); // No error
+                updatedUserData[name] = truncatedValue; // Update with cleaned numeric value
+            } else {
+                setPhoneError('Phone number must be exactly 10 digits');
+                updatedUserData[name] = truncatedValue; // Update with cleaned numeric value
+            }
+        } else {
+            updatedUserData[name] = value;
+        }
+
         // Set default values of null for fields that are not in the form
         const fieldsNotInForm = [
           'middleName', 'email', 'confirmPassword', 'otherPassword', 'passwordUpdatedDate',
@@ -201,6 +230,9 @@ const Create_New_User = () => {
                                             value={userData.zip}
                                             onChange={handleInputChange}
                                             />
+                                             {zipError && (
+                                <p className='text-red-500 text-xs'>{zipError}</p>
+                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -214,6 +246,9 @@ const Create_New_User = () => {
                                              value={userData.phone}
                                              onChange={handleInputChange}
                                              />
+                                              {phoneError && (
+                                <p className='text-red-500 text-xs'>{phoneError}</p>
+                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -227,6 +262,7 @@ const Create_New_User = () => {
                                             name="password"
                                             value={userData.password}
                                             onChange={handleInputChange}
+                                            
                                             />
                                         </div>
                                     </div>
@@ -240,15 +276,19 @@ const Create_New_User = () => {
                                     <div className=' flex items-center flex-row w-full g '>
                                         <div className=' flex  justify-start  flex-col w-full  relative'>
                                             <label className='text-xs text-black w-full text-start' htmlFor="">Role: </label>
-                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1'
-                                             type="text" 
+                                            <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                                          type="text" 
                                              name="role"
                                              value={userData.role}
                                              onChange={handleInputChange}
-                                             />
-                                            <div className='absolute  text-black top-4 right-1'>
-                                                <MdOutlineArrowDropDown size={20} />
-                                            </div>
+                                                              >
+									 <MdOutlineArrowDropDown size={20} />
+                                      <option value={userData.role}>{userData.role}</option>
+                                      <option value="Admin">Admin</option>
+                                      <option value="Power User">Power User</option>
+                                      <option value="Reviewer ">Reviewer</option>
+
+                                      </select>
                                         </div>
                                     </div>
                                 </div>
