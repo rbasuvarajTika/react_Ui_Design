@@ -22,7 +22,6 @@ const Duplicate_Fax = ({ sendFaxId }) => {
     console.log("sendFaxId...", sendFaxId);
 
 
-
     const onDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
         setNumPages2(numPages);
@@ -52,9 +51,10 @@ const Duplicate_Fax = ({ sendFaxId }) => {
     useEffect(() => {
         const fetchPdf = async () => {
             setIsLoading(true)
+            console.log("sendFaxId...", sendFaxId);
             try {
                 const response = await axios.get(
-                    "https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370",
+                    "https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/"+sendFaxId,
                     { responseType: 'arraybuffer' }
                 );
                 const blob = new Blob([response.data], { type: 'application/pdf' });
