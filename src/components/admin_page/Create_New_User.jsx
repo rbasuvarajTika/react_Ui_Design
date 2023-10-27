@@ -95,8 +95,7 @@
                 setPasswordError(''); // Clear the error message
             }
     
-            try {
-                setLoading(true)
+            setLoading(true)
             // Get the token from local storage
             const token = localStorage.getItem('tokenTika');
         
@@ -107,24 +106,21 @@
                 },
             };
             userData.email=userData.userName;
-            const response = await axiosBaseURL.post('/api/v1/users/create/user', userData, config);
-        
-            if (response.status === 201 || response.status === 200) {
-                alert('User Created Successfully');
-                setLoading(false)
-                navigate("/nsrxmgt/admin-user-list");
-                // Handle success here, e.g., show a success message
-            } else if (response.status === 409) {
-                alert('User Already Exists');
-            } else {
-                // Handle other errors, e.g., show an error message
-            }
+
+            try {
+                await axiosBaseURL.post("/api/v1/users/create/user",userData, config, {
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then((res) => {
+                        setLoading(false)
+                        console.log(res);
+                    })
             } catch (error) {
-            setLoading(false)
-            console.error('Error creating user:', error);
-            // Handle network or other errors
+                setLoading(false)
+                console.log(error);
             }
         };
+
         
         const handleInputChange = (e) => {
           
@@ -410,7 +406,7 @@
                                         <div className=' flex items-center flex-row w-full g '>
                                             <div className=' flex  justify-start  flex-col w-full  relative'>
                                                 <label className='text-xs text-black w-full text-start' htmlFor="">* Role: </label>
-                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                                 type="text" 
                                                 name="role"
                                                 value={userData.role}

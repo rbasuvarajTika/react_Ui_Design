@@ -10,7 +10,7 @@ import axios from "axios";
 import fax from "../../assets/pdf/fax.pdf"
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-
+import SearchIcon from '@mui/icons-material/Search';
 
 
 
@@ -106,7 +106,7 @@ const TableList = ({ }) => {
                                     <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
                                     OCR Status:
                             
-                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1' 
                                             type="text" 
                                                 
                                                value={selectedOcrStatus}
@@ -125,7 +125,7 @@ const TableList = ({ }) => {
                                     <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
                                     Fax Status:
                             
-                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black text-cen py-0.5 text-xs t-1' 
                                             type="text" 
                                                 
                                             value={selectedFaxStatus}
@@ -141,22 +141,24 @@ const TableList = ({ }) => {
                         
                                     </span>
                                 </div>
-                                <div className="flex items-center gap-10 ">
-                                    <div>
-                                        <input type="search"
-                                            onChange={(e) => setSearch(e.target.value)}
-                                            className="border  px-4 shadow-lg rounded-md py-2 placeholder:text-black text-gray-500"
-                                            placeholder="Search Fax ID.." />
-                                    </div>
-
+                                <div className="flex gap-5">
+                                    <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                                    <label className='text-xs text-black  text-start' htmlFor="">Search Fax :</label>   
+                                    <input type="search" 
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"/>
+                                    </span>
+                                 
+                                    <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                                    </span>
                                     <Pagination
-                                        totalPosts={data.length}
-                                        postsPerPage={postsPerPage}
-                                        setCurrentPage={setCurrentPage}
-                                        currentPage={currentpage}
-                                        lastPostIndex={lastPostIndex}
-                                        npage={npage}
-                                    />
+                                                totalPosts={data.length}
+                                                postsPerPage={postsPerPage}
+                                                setCurrentPage={setCurrentPage}
+                                                currentPage={currentpage}
+                                                lastPostIndex={lastPostIndex}
+                                                npage={npage}
+                                            />
                                 </div>
                             </div>
                             <div>

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "calibri-bold";
-    src: url(./assets/fonts/calibri-bold.ttf);
+    font-family: "JosefinSans-Regular";
+    src: url(./assets/fonts/JosefinSans-Regular.ttf);
 }
 
 /* @font-face {
@@ -36,7 +36,7 @@
     margin: 0; 
     padding: 0;
     box-sizing: border-box;
-    font-family: "calibri-bold";
+    font-family: "JosefinSans-Regular";
 }
 
 

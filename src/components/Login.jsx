@@ -13,12 +13,8 @@ function Login() {
 
     const login = async (e) => {
         e.preventDefault()
-        // navigate("/table")
-
-
         if (validateField()) {
             let userDetails = { userName, password };
-            console.log("kjbhbkhbhvbj");
             try {
                 setLoading(true)
                 await axios.post('https://dev.tika.mobi:8443/next-service/api/v1/auth/signin',
@@ -84,7 +80,7 @@ function Login() {
                 </span>
                 <div className="">
                     <h1 className="text-4xl text-white text-center py-5">Login</h1>
-                    <form className="flex flex-col items-center gap-5">
+                    <form className="flex flex-col items-center gap-5" autocomplete="on">
 
                         <span>
                             <label htmlFor="userId" className="text-white text-sm pl-2">User ID:</label>

@@ -14,6 +14,8 @@ import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useNavigate } from 'react-router';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 import { useParams } from 'react-router-dom';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 const Duplicate_Fax = () => {
     const navigate = useNavigate()
@@ -292,8 +294,8 @@ const Duplicate_Fax = () => {
                             </div>
                         </div>
 
-                        <div className='absolute top-30 left-1'>
-                            <p className='text-[#717171] text-sm absolute md:top-2 md:bottom-0 -bottom-10 w-20'>Page: {pageNumber}</p>
+                        <div className='absolute top-1 flex  w-full left-1'>
+                            <p className='text-[#717171] text-sm absolute md:top-2 md:bottom-0 -bottom-10 w-20'> Page : {pageNumber}</p>
                         </div>
 
                         <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
@@ -371,7 +373,7 @@ const Duplicate_Fax = () => {
                             </div>
                         </div>
 
-                        <div className='absolute top-30 left-1'>
+                        <div className='absolute top-1 flex  w-full left-1'>
                             <p className='text-[#717171] text-sm absolute md:top-2 md:bottom-0 -bottom-10 w-20'>Page: {pageNumber2}</p>
                         </div>
 
@@ -380,13 +382,13 @@ const Duplicate_Fax = () => {
                             <p className='absolute top-0 text-[#e36c09] text-sm'>Duplicate Fax</p>
                         </div>
 
-                        <div className='absolute top-0 flex  w-full justify-around'>
-                            <div className=' xl:w-44 lg:w-32 md:w-24 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[10px]'
+                        <div className='absolute top-1 flex  w-full justify-around'>
+                            <div className=' xl:w-38 lg:w-32 md:w-24 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[8px] cursor-pointer'
                              onClick={handleMakeMaster} 
                             >
                                 Make Master
                                 </div>
-                            <div className=' xl:w-44 lg:w-32 md:w-24 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[10px]'
+                            <div className=' xl:w-38 lg:w-32 md:w-24 sm:w-32 csm:w-32 vsm:w-20 w-20 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-xs text-[10px] cursor-pointer'
                              onClick={handleKeepDuplicate} 
                             >Keep Duplicate</div>
                         </div>
