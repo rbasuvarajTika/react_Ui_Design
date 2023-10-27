@@ -1,16 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-
-import { IoMdArrowDropdown } from "react-icons/io";
-import { DuplicateContext } from "../../context/DuplicateContext";
 import Pagination from "../Pagination";
-import { ToastContainer, toast } from 'react-toast'
 import axios from "axios";
 import { MdEditDocument } from "react-icons/md";
-import Admin_Create_New_User from "../../pages/admin_Pages/Admin_Create_New_User";
-import Admin_Edit_User from "../../pages/admin_Pages/Admin_Edit_User";
 import { AdminContext } from "../../context/AdminContext";
 import { EditUserContext } from "../../context/EditUserContext";
 import { useNavigate } from 'react-router-dom';
+
 
 const Admin_User_Table = () => {
      const [currentpage, setCurrentPage] = useState(1);
@@ -18,6 +13,7 @@ const Admin_User_Table = () => {
     const [faxData, setFaxData] = useState([]);
     const [search, setSearch] = useState("")
     const navigate = useNavigate()
+    const [selectedUserStatus, setSelectedUserStatus] = useState('');
 
     const { setOpenNewUser, openNewUser} = useContext(AdminContext)
     const { setOpenEditUser, openEditUser} = useContext(EditUserContext)
@@ -47,25 +43,43 @@ const Admin_User_Table = () => {
     const handleEditUser = (userId) => {
         navigate(`/nsrxmgt/admin-edit-user/${userId}`);
     } 
-
+    const handleUserStatusChange = (event) => {
+        console.log(event.target.value);
+        setSelectedUserStatus(event.target.value);
+    };
     const lastPostIndex = currentpage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = faxData.slice(firstPostIndex, lastPostIndex);
     const npage = Math.ceil(faxData.length / postsPerPage);
     return (
         <>
-  
 
          {
-             <div className="w-ful pt- relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
+             <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
                 <div className=''>
                     <div className="w-full  h-ful flex justify-between items-center p-2 ">
+                    <div className="flex gap-5">
+                                    <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
+                                    User Status:
+                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                                            type="text" 
+                                               value={selectedUserStatus}
+                                                onChange={handleUserStatusChange}>
+                                        <option value="All Status">All Status</option>
+                                        <option value="Acitve">Acitve</option>
+                                        <option value="Deactivated">Deactivated</option>
+                                        
+                                        </select>
+                        
+                                    </span>
+                    </div>
+
                         <div className="flex gap-5">
                             <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                    <input type="search"
+                            <label className='text-xs text-black  text-start' htmlFor="">Search User :</label>   
+                            <input type="search"
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="border  px-4 shadow-lg rounded-md py-2 placeholder:text-black text-gray-500"
-                                placeholder="Search User.." />
+                                className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"/>
                             </span>
 
                             <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
@@ -73,12 +87,12 @@ const Admin_User_Table = () => {
                         </div>
                         <div className='lg:block hidden'>
                             <div className="flex items-center xl:gap-10 gap-4 ">
-                                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={CreateNewUser}>Create New User</div>
+                                <span className="hidden md:flex items-center gap-1 z-50 text-[#ffffff] text-sm  relative">
+                                <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={CreateNewUser}>Create New User</div>
                                 </span>
 
-                                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'>Report Fields</div>
+                                <span className="hidden md:flex items-center gap-1 z-50 text-[#ffffff] text-sm  relative">
+                                <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#e60000] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'>Report Fields</div>
                                 </span>
                                 <Pagination
                                         totalPosts={faxData.length}
@@ -112,11 +126,19 @@ const Admin_User_Table = () => {
                         <tbody>
                             {currentPosts.filter((item) => {
                                           const matchesSearch = search === "" || item.username.includes(search);
-                                          return matchesSearch;
+                                          if (selectedUserStatus === "All Status") {
+                                            return matchesSearch;
+                                            } else if(selectedUserStatus === "Active"){
+                                                const matchesUserStatus = selectedUserStatus === "" || item.userStatusFlag === "Active";
+                                                return matchesSearch && matchesUserStatus;
+                                            }else{
+                                                const matchesUserStatus = selectedUserStatus === "" || item.userStatusFlag === "Deactivated";
+                                                return matchesSearch && matchesUserStatus;
+                                            }
                                         }).map((item, index) => (
                                 <tr
                                     key={index}
-                                    className={`${index % 2 === 0 ? "" : "bg-[#f6f6f6] "
+                                    className={`${index % 2 === 0 ? "" : "bg-[#f5f5f0] "
                                         } bg-white text-black/70 text-xs`}
                                 >
                                     <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
