@@ -3,7 +3,6 @@
     import { useNavigate } from "react-router-dom";
 
     import axiosBaseURL from '../axios';
-    import axios from 'axios';
     const Create_New_User = () => {
         const navigate = useNavigate();
         const [loading, setLoading] = useState(false)
@@ -38,11 +37,18 @@
         //   };
         
         const createUser = async () => {
-            if (userData.userName.trim() === '' ) {
+            if (userData.userName.trim() === '') {
                 setRequiredFieldError('User Id is required');
                 return; // Do not proceed with user creation
             } else {
-                setRequiredFieldError(''); 
+                setRequiredFieldError('');
+            }
+        
+            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(userData.userName)) {
+                setRequiredEmailError('Valid Email Id is Required');
+                return; // Do not proceed with user creation
+            } else {
+                setRequiredEmailError('');
             }
 
             if(userData.firstName.trim() === ''){
@@ -74,29 +80,14 @@
                 setRoleError('')
             }
             
-            if(userData.state.trim() !== ''){
-                    if (userData.state.length == 2) {
+          
+                    if (userData.state.length !== 2) {
                         setStateError('State Length Should be 2');
                         return;
                     } else {
                         setStateError(''); // Clear the error message
                     }
-            }
-            // Validate other fields (e.g., zip, phone, password)
-            if (userData.zip.length !== 5) {
-                setZipError('Zip Code must be exactly 5 digits');
-                return;
-            } else {
-                setZipError(''); // Clear the error message
-            }
-    
-            if (userData.phone.length !== 10) {
-                setPhoneError('Phone number must be exactly 10 digits');
-                return;
-            } else {
-                setPhoneError(''); // Clear the error message
-            }
-    
+
             if (userData.password.length < 6) {
                 setPasswordError('Password must be at least 6 characters');
                 return;
@@ -168,7 +159,7 @@
                 // Check if "userName" is left blank
 
                 if (value.trim() !== '') {
-                    if(!new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(value)){
+                    if(!new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(value)) {
                         console.log("Email Validation")
                         setRequiredEmailError('Valid Email Id is Required');
                     }else{
