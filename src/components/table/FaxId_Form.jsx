@@ -21,7 +21,7 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
   const [faxdata, setFaxData] = useState("")
   const [pdfData, setPdfData] = useState(null);
   const [isloading, setIsLoading] = useState(false)
-  const [scale, setScale] = useState(1);
+  const [scalePopUp, setScalePopoup] = useState(1);
 
 
 
@@ -90,13 +90,12 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
 
   const handleZoomOut = () => {
     console.log("clicked");
-    setScale(scale - 0.2);
+    setScalePopoup(scalePopUp - 0.2);
 }
 
 const handleZoomIn = () => {
   console.log("clicked");
-
-    setScale(scale + 0.2);
+  setScalePopoup(scalePopUp + 0.2);
 }
 
 
@@ -115,7 +114,7 @@ const handleZoomIn = () => {
                     file={pdfData}
                     onLoadSuccess={onDocumentLoadSuccess}
                   >
-                    <Page pageNumber={pageNumber}
+                    <Page pageNumber={pageNumber} scale={scalePopUp}
                       width={500}
                       height={200}
 
