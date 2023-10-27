@@ -66,7 +66,7 @@ const Admin_User_Table = () => {
                                                value={selectedUserStatus}
                                                 onChange={handleUserStatusChange}>
                                         <option value="All Status">All Status</option>
-                                        <option value="Acitve">Acitve</option>
+                                        <option value="Active">Active</option>
                                         <option value="Deactivated">Deactivated</option>
                                         
                                         </select>
