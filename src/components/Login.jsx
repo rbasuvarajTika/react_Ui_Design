@@ -34,7 +34,7 @@ function Login() {
                     if (res.data.token) {
                         localStorage.setItem("tokenTika", res.data.token)
                         console.log("tokenTika", res.data.token);
-                        navigate("/nsrxmgt/fax-list")
+                        navigate("/nsrxmgt/admin-user-list")
                         console.log(res);
                     }
                     setLoading(false)

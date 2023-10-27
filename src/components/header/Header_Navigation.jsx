@@ -31,28 +31,29 @@ function Header_Navigation() {
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
     const { setOpenNewUser, openNewUser } = useContext(AdminContext)
 
-    useEffect(() => {
-        set_fax_name("FAX LIST")
-    }, [])
 
     const fax_handleClick = () => {
-        navigate("/nsrxmgt/fax-list")
         set_fax_name("FAX LIST")
+        navigate("/nsrxmgt/fax-list")
+        
     }
 
     const openRxTrackerList = () => {
-        navigate("/nsrxmgt/rx-tracker-list")
+        setOpenTrackerList(true)
         setTrackerLIst("RX Tracker List")
+        navigate("/nsrxmgt/rx-tracker-list")
     }
 
     const openAdminUserList = () => {
-        navigate("/nsrxmgt/admin-user-list")
         setAdminList("User List")
+        navigate("/nsrxmgt/admin-user-list")
+       
     }
 
     const openEditUserProfile = () => {
-        navigate("/nsrxmgt/admin-edit-profile")
         setEditProfile("Edit Profile")
+        navigate("/nsrxmgt/admin-edit-profile")
+      
     }
 
     const logout = () => {

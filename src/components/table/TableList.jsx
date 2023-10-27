@@ -176,10 +176,10 @@ const TableList = ({ }) => {
                                                 </td>
                                                 <td className="px-6 py-4">{item.caseId}</td>
                                                 <td className="px-6 py-4 cursor-pointer" >{item.faxStatus}</td>
-                                                <td className="px-6 py-4">{item.Verified}</td>
+                                                <td className="px-6 py-4">{item.verifiedFlag}</td>
                                                 <td className="px-6 py-4">{item.dupeFaxId}</td>
                                                 <td className="px-6 py-4">{item.faxDate}</td>
-                                                <td className="px-6 py-4">{item.Fax_Time}</td>
+                                                <td className="px-6 py-4">{item.faxDateTime}</td>
                                                 <td className="px-6 py-4">{item.faxNumber}</td>
                                                 <td className="px-6 py-4">{item.ocrStatus}</td>
                                             </tr>

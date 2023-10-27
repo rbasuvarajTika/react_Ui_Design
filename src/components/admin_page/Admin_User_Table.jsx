@@ -121,7 +121,6 @@ const Admin_User_Table = () => {
                                 >
                                     <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                         <div className="cursor-pointer"
-                                           onClick={() => handleEditUser(item.userId)}
                                         >
                                             {item.username}
                                         </div>
@@ -133,7 +132,7 @@ const Admin_User_Table = () => {
                                     <td className="px-6 py-4">{item.userType}</td>
                                     <td className="px-6 py-4">{item.userStatusFlag}</td>
                                     <td className="px-6 py-4">
-                                        <MdEditDocument className="text-[#1b5d7d]" size={25} />
+                                        <MdEditDocument className="text-[#1b5d7d]" size={25} onClick={() => handleEditUser(item.userId)}/>
                                     </td>
 
                                 </tr>
