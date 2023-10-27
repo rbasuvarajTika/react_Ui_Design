@@ -9,9 +9,10 @@
         const [phoneError, setPhoneError] = useState('');
         const [zipError, setZipError] = useState('');
         const [requiredFieldError, setRequiredFieldError] = useState('');
+        const [requiredEmailError, setRequiredEmailError] = useState('');
+        const [roleError, setRoleError] = useState('');
         const [requiredFirstName, setRequiredFirstName] = useState('');
-       const [requiredLastName, setRequiredLastName] = useState('');
-       
+        const [requiredLastName, setRequiredLastName] = useState('');
         const [passwordError, setPasswordError] = useState('');
 
 
@@ -24,7 +25,7 @@
             state:'',
             zip:'',
             phone: '',
-            password: '', 
+            password: '',
             type:'Standard',
             userStatusFlag:'Active',
         });
@@ -35,16 +36,40 @@
         //   };
         
         const createUser = async () => {
-            if (userData.userName.trim() === '' || userData.firstName.trim() === '' || userData.lastName.trim() === '') {
-                setRequiredFieldError('Please fill in the required fields.');
-                setRequiredFirstName('Please fill in the required fields.')
-                setRequiredLastName('Please fill in the required fields.')
+            if (userData.userName.trim() === '' ) {
+                setRequiredFieldError('User Id is required');
                 return; // Do not proceed with user creation
             } else {
                 setRequiredFieldError(''); 
+            }
+
+            if(userData.firstName.trim() === ''){
+                setRequiredFirstName('First Name is required')
+                return; // Do not proceed with user creation
+            }else{
                 setRequiredFirstName('')
+            }
+
+            if(userData.lastName.trim() === ''){
+                setRequiredLastName('Last Name is required')
+                return; // Do not proceed with user creation
+            }else{
                 setRequiredLastName('')
-            
+            }
+
+
+            if(userData.password.trim() === ''){
+                setPasswordError('Password is required')
+                return; // Do not proceed with user creation
+            }else{
+                setPasswordError('')
+            }
+
+            if(userData.role.trim() === ''){
+                setRoleError('Role is required')
+                return; // Do not proceed with user creation
+            }else{
+                setRoleError('')
             }
     
             // Validate other fields (e.g., zip, phone, password)
@@ -102,7 +127,7 @@
         
             // Use the spread operator to create a copy of the current userData
             const updatedUserData = { ...userData };
-        
+
             if (name === 'zip') {
                 // ZIP code validation
                 const numericValues = value.replace(/\D/g, ''); // Remove non-digit characters
@@ -125,15 +150,42 @@
                     setPhoneError('Phone number Should be 10 digits');
                     updatedUserData[name] = truncatedValue; // Update with cleaned numeric value
                 }
-            } else if (name === 'userName'||name === 'firstName'||name === 'lastName') {
+            } else if (name === 'userName') {
                 // Check if "userName" is left blank
+
+                if (value.trim() !== '') {
+                    if(!new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(value)){
+                        console.log("Email Validation")
+                        setRequiredEmailError('Valid Email Id is Required');
+                    }else{
+                        setRequiredEmailError('')
+                    }
+                }
                 if (value.trim() === '') {
+                    console.log("Username Trim Validation")
                     setRequiredFieldError('User Id is required');
-                    setRequiredFirstName('First Name is required')
-                    setRequiredLastName('Last Name is required')
                 } else {
                     setRequiredFieldError(''); 
+                }
+        
+                updatedUserData[name] = value;
+            }else if (name === 'firstName') {
+                // Check if "userName" is left blank
+
+                if (value.trim() === '') {
+                    setRequiredFirstName('First Name is required')
+
+                } else {
                     setRequiredFirstName('')
+                }
+        
+                updatedUserData[name] = value;
+            }else if (name === 'lastName') {
+                // Check if "userName" is left blank
+                if (value.trim() === '') {
+
+                    setRequiredLastName('Last Name is required')
+                } else {
                     setRequiredLastName('')
                 }
         
@@ -197,6 +249,7 @@
                                                 onChange={handleInputChange}
                                                 />
                                                 <p className="text-red-500 text-xs">{requiredFieldError}</p>
+                                                <p className="text-red-500 text-xs">{requiredEmailError}</p>
 
                                             </div>
                                         </div>
@@ -321,7 +374,7 @@
                                     <div className='flex flex-col'>
                                         <div className=' flex items-center flex-row w-full g '>
                                             <div className=' flex  justify-start  flex-col w-full '>
-                                                <label className='text-xs text-black w- text-start' htmlFor="">Standard Login Password:</label>
+                                                <label className='text-xs text-black w- text-start' htmlFor="">* Standard Login Password:</label>
                                                 <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
                                                 type="password"
                                                 name="password"
@@ -341,9 +394,9 @@
                                     <div className='flex flex-col'>
                                         <div className=' flex items-center flex-row w-full g '>
                                             <div className=' flex  justify-start  flex-col w-full  relative'>
-                                                <label className='text-xs text-black w-full text-start' htmlFor="">Role: </label>
+                                                <label className='text-xs text-black w-full text-start' htmlFor="">* Role: </label>
                                                 <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
-                                            type="text" 
+                                                type="text" 
                                                 name="role"
                                                 value={userData.role}
                                                 onChange={handleInputChange}
@@ -355,6 +408,7 @@
                                         <option value="Reviewer ">Reviewer</option>
 
                                         </select>
+                                            <p className="text-red-500 text-xs">{roleError}</p>
                                             </div>
                                         </div>
                                     </div>
