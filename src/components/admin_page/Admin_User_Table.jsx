@@ -16,6 +16,7 @@ const Admin_User_Table = () => {
      const [currentpage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostPerPage] = useState(14);
     const [faxData, setFaxData] = useState([]);
+    const [search, setSearch] = useState("")
     const navigate = useNavigate()
 
     const { setOpenNewUser, openNewUser} = useContext(AdminContext)
@@ -57,11 +58,29 @@ const Admin_User_Table = () => {
 
          {
              <div className="w-ful pt- relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
-                <div className="w-full h-ful flex justify-end items-center p-2 ">
-                    <div className="flex gap-5">
-                        <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={CreateNewUser}>Create New User</div>
-                        <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'>Report Fields</div>
-                        <Pagination
+                <div className=''>
+                    <div className="w-full  h-ful flex justify-between items-center p-2 ">
+                        <div className="flex gap-5">
+                            <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                                    <input type="search"
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="border  px-4 shadow-lg rounded-md py-2 placeholder:text-black text-gray-500"
+                                placeholder="Search User.." />
+                            </span>
+
+                            <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                            </span>
+                        </div>
+                        <div className='lg:block hidden'>
+                            <div className="flex items-center xl:gap-10 gap-4 ">
+                                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                                <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={CreateNewUser}>Create New User</div>
+                                </span>
+
+                                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                                <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'>Report Fields</div>
+                                </span>
+                                <Pagination
                                         totalPosts={faxData.length}
                                         postsPerPage={postsPerPage}
                                         setCurrentPage={setCurrentPage}
@@ -69,6 +88,8 @@ const Admin_User_Table = () => {
                                         lastPostIndex={lastPostIndex}
                                         npage={npage}
                                     />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -89,7 +110,10 @@ const Admin_User_Table = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentPosts.map((item, index) => (
+                            {currentPosts.filter((item) => {
+                                          const matchesSearch = search === "" || item.username.includes(search);
+                                          return matchesSearch;
+                                        }).map((item, index) => (
                                 <tr
                                     key={index}
                                     className={`${index % 2 === 0 ? "" : "bg-[#f6f6f6] "
