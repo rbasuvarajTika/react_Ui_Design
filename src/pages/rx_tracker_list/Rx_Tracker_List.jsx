@@ -16,6 +16,10 @@ const [postsPerPage, setPostPerPage] = useState(10);
 const [rxTrackerData, setRxTrackerData] = useState([]);
 const [loading, setLoading] = useState(true);
 const [trnRxId, settrnRxId] = useState([]);
+const [selectedRxStatus, setSelectedRxStatus] = useState('');
+const [searchHCP, setSearchHCP] = useState('');
+const [searchAccount, setSearchAccount] = useState('');
+
 
  const [patientData, setPatientData] = useState({});
 const [isLoading, setIsLoading] = useState(true);
@@ -82,26 +86,19 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                 <div className=''>
                     <div className="w-full  h-ful flex justify-between items-center p-2 ">
                         <div className="flex gap-5">
-                            <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                Verified:
-                                <input
-                                    // onChange={(e) => setSearch(e.target.value)}
-                                    className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
-                                />
-                                <div className="absolute right-2 text-gray-500">
-                                    <IoMdArrowDropdown size={20} />
-                                </div>
-                            </span>
-
-                            <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                            
+                            <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm relative">
                                 Rx Status:
-                                <input
-                                    // onChange={(e) => setSearch(e.target.value)}
-                                    className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
-                                />
-                                <div className="absolute right-2 text-gray-500">
-                                    <IoMdArrowDropdown size={20} />
-                                </div>
+                                <select
+                                    value={selectedRxStatus}
+                                    onChange={(e) => setSelectedRxStatus(e.target.value)}
+                                    className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100"
+                                >
+                                    <option value="">All</option>
+                                    <option value="Submitted">Submitted</option>
+                                    <option value="Pending">Pending</option>
+                                </select>
+                                
                             </span>
                         </div>
                         <div className='lg:block hidden'>
@@ -109,23 +106,20 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                 <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
                                     Search HCP:
                                     <input
-                                        // onChange={(e) => setSearch(e.target.value)}
+                                       value={searchHCP}
+                                       onChange={(e) => setSearchHCP(e.target.value)}
                                         className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
                                     />
-                                    <div className="absolute right-2 text-gray-500">
-                                        <IoMdArrowDropdown size={20} />
-                                    </div>
+                                    
                                 </span>
 
                                 <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
                                     Search Account:
                                     <input
-                                        // onChange={(e) => setSearch(e.target.value)}
+                                       value={searchAccount}
+                                       onChange={(e) => setSearchAccount(e.target.value)}
                                         className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
                                     />
-                                    <div className="absolute right-2 text-gray-500">
-                                        <IoMdArrowDropdown size={20} />
-                                    </div>
                                 </span>
                                 <Pagination
                                         totalPosts={data.length}
@@ -159,7 +153,25 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                             </tr>
                         </thead>
                         <tbody>
-                            {currentPosts.map((item, index) => (
+                            {currentPosts.filter((item) => {
+                                    if (selectedRxStatus === '' || item.processStatus === selectedRxStatus) {
+                                        return true;
+                                    }
+                                    return false;
+                                })
+                                .filter((item) => {
+                                    if (searchHCP === '' || item.hcpName.toLowerCase().includes(searchHCP.toLowerCase())) {
+                                        return true;
+                                    }
+                                    return false;
+                                })
+                                .filter((item) => {
+                                    if (searchAccount === '' || item.accountName.toLowerCase().includes(searchAccount.toLowerCase())) {
+                                        return true;
+                                    }
+                                    return false;
+                                })
+                                .map((item, index) => (
                                 <tr
                                     key={index}
                                     className={`${index % 2 === 0 ? "" : "bg-[#f6f6f6]  "

@@ -26,7 +26,8 @@ const TableList = ({ }) => {
     const[sendFaxNumber, setSendFaxNumber]=useState(null)
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
-    const [selectedOcrStatus, setSelectedOcrStatus] = useState(''); // State for selected ocrStatus
+    const [selectedOcrStatus, setSelectedOcrStatus] = useState('All Status'); // State for selected ocrStatus
+    const [selectedFaxStatus, setSelectedFaxStatus] = useState('All Status');
 
 
 
@@ -89,6 +90,11 @@ const TableList = ({ }) => {
     const handleOcrStatusChange = (event) => {
         setSelectedOcrStatus(event.target.value);
     };
+    const handleFaxStatusChange = (event) => {
+        setSelectedFaxStatus(event.target.value);
+    };
+
+    
     return (
         <>
             <ToastContainer />
@@ -110,6 +116,26 @@ const TableList = ({ }) => {
                                         <option value="All Status">All Status</option>
                                         <option value="Complete">Complete</option>
                                         <option value="Incomplete ">Incomplete</option>
+                                        
+                                        </select>
+                        
+                                    </span>
+                                </div>
+                                 <div className="flex gap-5">
+                                    <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
+                                    Fax Status:
+                            
+                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                                            type="text" 
+                                                
+                                            value={selectedFaxStatus}
+                                            onChange={handleFaxStatusChange}
+                                           
+                                                            >
+                                    <option value="All Status">All Status</option>
+                                    <option value="Duplicate">Duplicate</option>
+                                    <option value="New">New</option>
+                                    <option value="Main">Main</option>
                                         
                                         </select>
                         
@@ -153,14 +179,13 @@ const TableList = ({ }) => {
                                     </thead>
                                     <tbody>
                                         {currentPosts.filter((item) => {
-                                          const matchesSearch = search === "" || item.faxId.includes(search);
-                                         if (selectedOcrStatus === "All Status") {
-                                         return matchesSearch;
-                                         } else {
+                                           const matchesSearch = search === "" || item.faxId.includes(search);
                                            const matchesOcrStatus =
-                                             selectedOcrStatus === "" || item.ocrStatus === selectedOcrStatus;
-                                             return matchesSearch && matchesOcrStatus;
-                                          }
+                                               selectedOcrStatus === "All Status" || item.ocrStatus === selectedOcrStatus;
+                                           const matchesFaxStatus =
+                                               selectedFaxStatus === "All Status" || item.faxStatus === selectedFaxStatus;
+                                       
+                                           return matchesSearch && matchesOcrStatus && matchesFaxStatus;
                                         }).map((item, index) => (
                                             <tr
                                                 key={index}
