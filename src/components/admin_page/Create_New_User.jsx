@@ -1,6 +1,7 @@
     import React, { useState, useEffect } from 'react';
     import { MdOutlineArrowDropDown } from 'react-icons/md';
     import { useNavigate } from "react-router-dom";
+    import { ToastContainer, toast } from 'react-toast'
 
     import axiosBaseURL from '../axios';
     const Create_New_User = () => {
@@ -113,6 +114,15 @@
                 })
                     .then((res) => {
                         setLoading(false)
+                        if (res.data.success === true) {
+                            toast.success("User Created Successfully")
+                            setLoading(false)
+                            navigate("/nsrxmgt/admin-user-list");
+                            // Handle success here, e.g., show a success message
+                        } 
+                        if(res.data.success === false){
+                        toast.error("Email Already Exists")
+                        }
                         console.log(res);
                     })
             } catch (error) {
@@ -232,12 +242,14 @@
         
         return (
             <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
+               
                 <div className="bg-[#ffffff] shadow-xl border rounded-3xl max-w-[800px] max-h-[450px] w-full h-full  mt-5 overflow-hidden overflow-y-scroll pb-5 no-scrollbar">
                     <div className='pt-5 flex justify-center'>
                         <div className=' border  h-5 rounded-xl w-40 relative'>
                             <div className='bg-orange-500 w-20 h-6 rounded-xl flex justify-center items-center absolute -top-[3px] text-xs'>Standard</div>
                             <p className='text-gray-400 absolute right-7 flex justify-center items-cente text-xs'>SMAL</p>
                         </div>
+                        <ToastContainer />
                     </div>
 
 
