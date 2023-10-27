@@ -81,7 +81,7 @@ const OrderInformation = ({ openNetSuit }) => {
      }, );
 
     return (
-        <div className='w-full h-[300px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll'>
+        <div className='w-full h-[300px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll no-scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
                 <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>

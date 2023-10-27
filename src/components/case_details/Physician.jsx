@@ -104,7 +104,7 @@ useEffect(() => {
   fetchStateData();
 }, []);
   return (
-    <div className='w-full h-[calc(100vh-27rem)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-5'>
+    <div className='w-full h-[calc(100vh-27rem)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-5 no-scrollbar'>
 
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09] absolute top-0  '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />

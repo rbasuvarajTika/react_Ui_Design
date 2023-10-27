@@ -118,7 +118,7 @@ const Patients = () => {
   }, []);
   return (
     <>
-      <div className='w-full h-[calc(100vh-23rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll '>
+      <div className='w-full h-[calc(100vh-23rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
         <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
           <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
           <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
