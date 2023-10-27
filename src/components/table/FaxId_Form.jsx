@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaArrowLeft, FaArrowRight, } from 'react-icons/fa';
-import { LuMinus, LuPlus } from 'react-icons/lu';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { DuplicateContext } from '../../context/DuplicateContext';
-
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import fax from "../../assets/pdf/fax.pdf"
 
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -21,6 +21,7 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
   const [faxdata, setFaxData] = useState("")
   const [pdfData, setPdfData] = useState(null);
   const [isloading, setIsLoading] = useState(false)
+  const [scale, setScale] = useState(1);
 
 
 
@@ -43,7 +44,7 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
   const nextPage = () => {
     setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
   }
-
+ 
   // useEffect(() => {
   //   try {
   //     axios.get("https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370", {
@@ -87,6 +88,18 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
     fetchPdf();
   }, []);
 
+  const handleZoomOut = () => {
+    console.log("clicked");
+    setScale(scale - 0.2);
+}
+
+const handleZoomIn = () => {
+  console.log("clicked");
+
+    setScale(scale + 0.2);
+}
+
+
 
   return (
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto ">
@@ -129,10 +142,8 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
         </div>
 
         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
-          <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer'
-          // onClick={handleOpen_Duplicate} 
-          > <LuPlus /></div>
-          <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus /></div>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
         </div>
 
         <div className='text-blue-400 text-2xl absolute top-2 right-2 cursor-pointer' onClick={close_Form}>

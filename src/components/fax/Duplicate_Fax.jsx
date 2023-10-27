@@ -213,7 +213,7 @@ const Duplicate_Fax = () => {
                 alert('Fax has been kept as a duplicate.');
     
                 // Redirect to the fax page
-                navigate("/nsrxmgt/table");
+                navigate("/nsrxmgt/fax-list");
             })
             .catch((error) => {
               // Handle error
