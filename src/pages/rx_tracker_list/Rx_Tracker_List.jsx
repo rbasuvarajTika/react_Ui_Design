@@ -4,6 +4,8 @@ import { data } from '../../Data/Data'
 import axiosBaseURL from '../../components/axios'
 import Pagination from '../../components/Pagination'
 import { useNavigate } from 'react-router-dom';
+import Background from '../../components/Background';
+import Header_Navigation from '../../components/header/Header_Navigation'
 
 const Rx_Tracker_List = () => {
 
@@ -72,6 +74,9 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
 
 
     return (
+        <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative z-50 h-screen">
+        <Header_Navigation/>
+        <Background/>
         <>
             <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
                 <div className=''>
@@ -182,6 +187,7 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
             </div>
 
         </>
+        </div>
     )
 }
 

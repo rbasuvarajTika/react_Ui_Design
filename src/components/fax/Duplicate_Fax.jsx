@@ -13,8 +13,9 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useNavigate } from 'react-router';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import { useParams } from 'react-router-dom';
 
-const Duplicate_Fax = ({ sendFaxId,sendDate ,sendFaxNumber}) => {
+const Duplicate_Fax = () => {
     const navigate = useNavigate()
 
     const [numPages, setNumPages] = useState(null);
@@ -35,8 +36,8 @@ const Duplicate_Fax = ({ sendFaxId,sendDate ,sendFaxNumber}) => {
     const [duplicateTrnFaxId, setDuplicateTrnFaxId] = useState(null);
 
 
-
-    console.log("sendFaxId...", sendFaxId);
+    const { faxId } = useParams();
+    console.log("sendFaxId...", faxId);
 
 
     const onDocumentLoadSuccess = ({ numPages }) => {
@@ -84,7 +85,7 @@ const Duplicate_Fax = ({ sendFaxId,sendDate ,sendFaxNumber}) => {
         if (token) {
           axiosBaseURL({
             method: 'GET',
-            url: `/api/v1/fax/faxDupeById/${sendFaxId}`, // Use the endpoint that provides both IDs
+            url: `/api/v1/fax/faxDupeById/${faxId}`, // Use the endpoint that provides both IDs
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -153,7 +154,7 @@ const Duplicate_Fax = ({ sendFaxId,sendDate ,sendFaxNumber}) => {
     
       useEffect(() => {
         // Fetch PDF data for both main and duplicate fax when the component mounts
-        fetchPdfData(sendFaxId);
+        fetchPdfData(faxId);
       }, []);
 
       const handleMakeMaster = () => {
@@ -174,7 +175,7 @@ const Duplicate_Fax = ({ sendFaxId,sendDate ,sendFaxNumber}) => {
               if (confirmation) {
                 // Replace 'fax-page-url' with the actual URL of your fax page
                console.log("clicked");
-                navigate("/nsrxmgt/table");
+                navigate("/nsrxmgt/fax-list");
                 
               }
            
@@ -190,7 +191,7 @@ const Duplicate_Fax = ({ sendFaxId,sendDate ,sendFaxNumber}) => {
         }
       };
     
-    console.log("sendFaxId...", sendFaxId);
+    console.log("sendFaxId...", faxId);
     const handleKeepDuplicate = () => {
         console.log("duplicateTrnFaxId",duplicateTrnFaxId);
         // Add your logic here to handle keeping the current fax as a duplicate

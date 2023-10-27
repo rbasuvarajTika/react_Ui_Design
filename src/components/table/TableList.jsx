@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toast'
 import axios from "axios";
 import fax from "../../assets/pdf/fax.pdf"
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -36,6 +37,7 @@ const TableList = ({ }) => {
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = faxData.slice(firstPostIndex, lastPostIndex);
     const npage = Math.ceil(faxData.length / postsPerPage);
+    const navigate = useNavigate();
     
     const open_form = ({ showForm }) => {
         setShoeForms(true)
@@ -75,7 +77,8 @@ const TableList = ({ }) => {
         if(status === "Duplicate"){
             setSendFaxId(faxId)
             
-            setOpenDuplicate(true)
+            //setOpenDuplicate(true)
+            navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
         console.log(!showForm);
         } else if(status === "Main"||"New"){
             setShoeForms(true)
@@ -91,33 +94,26 @@ const TableList = ({ }) => {
             <ToastContainer />
             <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
                 {
-                    !openDuplicate ?
                         <>
                             <div className="w-full h-ful flex justify-between items-center p-2 ">
                                 <div className="flex gap-5">
-                                    <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                                    <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
                                     OCR Status:
-                                        <div className=' flex  justify-start  flex-col w-full  relative'>
-                                                <label className='text-xs text-black w-full text-start' htmlFor=""> </label>
-                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
+                            
+                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300w-56 text-black py-0.5 text-xs t-1' 
                                             type="text" 
                                                 
                                                value={selectedOcrStatus}
                                                 onChange={handleOcrStatusChange}
                                                
                                                                 >
-                                         
-                                        <option></option>
                                         <option value="All Status">All Status</option>
                                         <option value="Complete">Complete</option>
                                         <option value="Incomplete ">Incomplete</option>
                                         
                                         </select>
-                                        
-                                        </div>
+                        
                                     </span>
-
-                                    
                                 </div>
                                 <div className="flex items-center gap-10 ">
                                     <div>
@@ -192,21 +188,13 @@ const TableList = ({ }) => {
                                 </table>
                             </div>
 
-                        </> :
-                        <Duplicate_Fax sendFaxId={sendFaxId} sendDate={sendDate} sendFaxNumber={sendFaxNumber}/>
+                        </> 
                 }
 
 
                 {
                     showForms && <FaxId_Form close_Form={close_Form} setShoeForm={setShoeForm} sendFaxId={sendFaxId}/>
                 }
-
-                {/* {
-                    openDuplicate && <Duplicate_Fax />
-                } */}
-
-
-
             </div>
         </>
     );

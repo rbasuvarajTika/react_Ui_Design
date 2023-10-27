@@ -7,30 +7,27 @@ import { ToastContainer, toast } from 'react-toast'
 import axios from "axios";
 import { MdEditDocument } from "react-icons/md";
 import Admin_Create_New_User from "../../pages/admin_Pages/Admin_Create_New_User";
+import Admin_Edit_User from "../../pages/admin_Pages/Admin_Edit_User";
 import { AdminContext } from "../../context/AdminContext";
+import { EditUserContext } from "../../context/EditUserContext";
+import { useNavigate } from 'react-router-dom';
 
 const Admin_User_Table = () => {
      const [currentpage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostPerPage] = useState(14)
-    // const [showForm, setShoeForm] = useState(false)
-    // const [search, setSearch] = useState("")
-    // const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
-    const [faxData, setFaxData] = useState([])
-    // const [openNewUser, setOpenNewUser] = useState(false)
+    const [postsPerPage, setPostPerPage] = useState(14);
+    const [faxData, setFaxData] = useState([]);
+    const navigate = useNavigate()
 
-    const { setOpenNewUser, openNewUser } = useContext(AdminContext)
+    const { setOpenNewUser, openNewUser} = useContext(AdminContext)
+    const { setOpenEditUser, openEditUser} = useContext(EditUserContext)
+    const [sendUserId, setUserId] =useState(null)
 
     useEffect(() => {
         try {
             const token = localStorage.getItem('tokenTika');
     
             // Include the token in the request headers
-            const config = {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            };
-            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/users/usersList",config, {
+            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/users/usersList", {
                 headers: { "Content-Type": "application/json" }
             })
                 .then((res) => {
@@ -43,8 +40,12 @@ const Admin_User_Table = () => {
     }, [])
 
     const CreateNewUser = () => {
-        setOpenNewUser(true)
+        navigate(`/nsrxmgt/admin-create-user`);
     }
+
+    const handleEditUser = (userId) => {
+        navigate(`/nsrxmgt/admin-edit-user/${userId}`);
+    } 
 
     const lastPostIndex = currentpage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
@@ -55,7 +56,6 @@ const Admin_User_Table = () => {
   
 
          {
-            !openNewUser ? <>
              <div className="w-ful pt- relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
                 <div className="w-full h-ful flex justify-end items-center p-2 ">
                     <div className="flex gap-5">
@@ -97,7 +97,7 @@ const Admin_User_Table = () => {
                                 >
                                     <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                         <div className="cursor-pointer"
-                                            onClick={() => handleFaxStatus(item.faxStatus)}
+                                           onClick={() => handleEditUser(item.userId)}
                                         >
                                             {item.username}
                                         </div>
@@ -118,10 +118,6 @@ const Admin_User_Table = () => {
                     </table>
                 </div>
             </div>
-            </> : <> 
-            
-             <Admin_Create_New_User />
-            </>
          }
 
            
