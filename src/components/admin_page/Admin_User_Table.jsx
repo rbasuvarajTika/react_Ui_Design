@@ -128,11 +128,8 @@ const Admin_User_Table = () => {
                                           const matchesSearch = search === "" || item.username.includes(search);
                                           if (selectedUserStatus === "All Status") {
                                             return matchesSearch;
-                                            } else if(selectedUserStatus === "Active"){
-                                                const matchesUserStatus = selectedUserStatus === "" || item.userStatusFlag === "Active";
-                                                return matchesSearch && matchesUserStatus;
-                                            }else{
-                                                const matchesUserStatus = selectedUserStatus === "" || item.userStatusFlag === "Deactivated";
+                                            } else{
+                                                const matchesUserStatus = selectedUserStatus === "" || item.userStatusFlag === selectedUserStatus;
                                                 return matchesSearch && matchesUserStatus;
                                             }
                                         }).map((item, index) => (
