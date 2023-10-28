@@ -43,7 +43,7 @@ useEffect(() => {
         const token = localStorage.getItem('tokenTika');
         const config = {
           headers: {
-            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json', // Set the content type to JSON
           },
         };
@@ -87,12 +87,12 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                     <div className="w-full  h-ful flex justify-between items-center p-2 ">
                         <div className="flex gap-5">
                             
-                            <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm relative">
+                            <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
                                 Rx Status:
                                 <select
                                     value={selectedRxStatus}
                                     onChange={(e) => setSelectedRxStatus(e.target.value)}
-                                    className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100"
+                                    className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1'
                                 >
                                     <option value="">All</option>
                                     <option value="Submitted">Submitted</option>
@@ -104,21 +104,21 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                         <div className='lg:block hidden'>
                             <div className="flex items-center xl:gap-10 gap-4 ">
                                 <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                    Search HCP:
+                                <label className='text-xs text-black  text-start' htmlFor="">Search HCP:</label>
                                     <input
                                        value={searchHCP}
                                        onChange={(e) => setSearchHCP(e.target.value)}
-                                        className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
+                                       className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                                     />
                                     
                                 </span>
 
                                 <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                    Search Account:
+                                <label className='text-xs text-black  text-start' htmlFor="">Search Account:</label>
                                     <input
                                        value={searchAccount}
                                        onChange={(e) => setSearchAccount(e.target.value)}
-                                        className="w rounded-full outline-none px-2 py-1.5 text-black border border-black bg-gray-100 "
+                                       className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                                     />
                                 </span>
                                 <Pagination
