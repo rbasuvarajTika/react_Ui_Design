@@ -14,7 +14,7 @@ const Edit_User = () =>{
     const location = useLocation();
     const navigate  = useNavigate();
     const [userData, setUserData] = useState(null);
-
+    const [space, setSpacData] = useState("  ");
     
     const fetchUserData = (userId) => {
           try {
@@ -29,13 +29,13 @@ const Edit_User = () =>{
                 },
               })
                 .then((mainResponse) => {
-                    console.log(mainResponse.data.data[0]);
+                  console.log(mainResponse.data.data[0]);
                   setUserData(mainResponse.data.data[0]);
                   console.log(userData);
                 })
                 .catch((error) => {
                   //setError('Error fetching main PDF. Please try again later.');
-                  console.error('Error fetching main PDF:', error);
+                  console.error('Error fetching main Data:', error);
                 });
            
           } catch (error) {
@@ -54,9 +54,9 @@ const Edit_User = () =>{
           const token = localStorage.getItem('token');
     
           const config = {
-            headers: {
+            /* headers: {
               Authorization: `Bearer ${token}`,
-            },
+            }, */
           };
     
           const response = await axiosBaseURL.put(
@@ -69,8 +69,7 @@ const Edit_User = () =>{
             // User was successfully updated
             // You can handle success here, e.g., show a success message
             alert('User Updated Successfully');
-           
-            navigate("/nsrxmgt/adminPage");
+            navigate("/nsrxmgt/admin-user-list");
           } else {
             // Handle errors, e.g., show an error message
           }
@@ -109,12 +108,13 @@ const Edit_User = () =>{
                                     <div className=' flex items-center flex-row w-full g '>
                                         <div className=' flex  justify-start  flex-col w-full '>
                                             <label className='text-xs text-black w-full text-start' htmlFor="">*User Id (primary email) </label>
-                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56  text-black py-0.5 text-xs t-1' 
+                                            <input className='gap-1 bg-[#919194] rounded-2xl border border-gray-300 w-56  text-black py-0.5 text-xs t-1' 
                                             name="username"
                                             type="text" 
-                                            value={userData.username}
+                                            value={space+userData.username}
                                             onChange={handleInputChange}
                                             readOnly
+    
                                             />
                                         </div>
                                     </div>
@@ -172,6 +172,7 @@ const Edit_User = () =>{
                                             type="text"
                                             name="city"
                                             value={userData.city}
+                                            onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -185,6 +186,7 @@ const Edit_User = () =>{
                                             type="text"
                                             name="state"
                                             value={userData.state}
+                                            onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -202,6 +204,7 @@ const Edit_User = () =>{
                                             name="zip"
                                             type="text"
                                             value={userData.zip}
+                                            onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -214,6 +217,7 @@ const Edit_User = () =>{
                                             type="text"
                                             name="phone"
                                             value={userData.phone}
+                                            onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -227,7 +231,7 @@ const Edit_User = () =>{
                                             name="role"
                                                             >
                                     <MdOutlineArrowDropDown size={20} />
-                                    <option value={userData.role}>{userData.role}</option>
+                                    <option value={userData.role}>{space+userData.role}</option>
                                     <option value="Admin">Admin</option>
                                     <option value="Power User">Power User</option>
                                     <option value="Reviewer ">Reviewer</option>
@@ -277,6 +281,7 @@ const Edit_User = () =>{
                                             name="status"
                                                             >
                                     <MdOutlineArrowDropDown size={20} />
+                                    <option value={userData.userStatusFlag}>{space+userData.userStatusFlag}</option>
                                     <option value="Active">Active</option>
                                     <option value="Deactivated">Deactivated</option>
                                     </select>
@@ -289,7 +294,7 @@ const Edit_User = () =>{
                     </div>
                     <div className='flex justify-center item pt-5'>
                         <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'
-                        >Submit</div>
+                        onClick={updateUser}>Submit</div>
                     </div>
                        
                 </form>
