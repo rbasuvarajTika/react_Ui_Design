@@ -3,6 +3,8 @@ import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
 import { useParams ,useLocation} from 'react-router-dom';
 import axiosBaseURL from '../axios';
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 
 const Edit_User = () =>{
 
@@ -11,65 +13,41 @@ const Edit_User = () =>{
 
     const location = useLocation();
     const navigate  = useNavigate();
-    const selectedUser = location.state?.user || null;
-    const [alignment, setAlignment] = React.useState('web');
-    const [userData, setUserData] = React.useState(selectedUser || {
-        userName: '',
-        firstName: '',
-        lastName: '',
-        phone: '',
-        email: '',
-        address: '',
-        password: '',
-    });
+    const [userData, setUserData] = useState(null);
 
-
-    useEffect(() => {
-        const fetchUserData = async () => {
+    
+    const fetchUserData = (userId) => {
           try {
             const token = localStorage.getItem('token');
             const config = {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
             };
-    
-            let userDataToSet = selectedUser || { // Use selectedUser if available, otherwise initialize with empty values
-              userName: '',
-              firstName: '',
-              lastName: '',
-              phone: '',
-              email: '',
-              address: '',
-              password: '',
-            };
-    
-            if (!selectedUser && userId) {
-              // Fetch user data only when userId is available and selectedUser is not set
-              const response = await axiosBaseURL.get(`/api/v1/users/user/${userId}`, config);
-              if (response.status === 200) {
-                alert('User Created Successfully');
-                userDataToSet = response.data.data.data; // Assuming the response contains user data
-               
-              } else {
-                // Handle errors
-                alert('Failed to Update')
-              }
-            }
-    
-            setUserData(userDataToSet);
+            axiosBaseURL({
+                method: 'GET',
+                url: `/api/v1/users/usersList/userId/${userId}`,
+                headers: {
+                 // Authorization: `Bearer ${token}`,
+                },
+              })
+                .then((mainResponse) => {
+                    console.log(mainResponse.data.data[0]);
+                  setUserData(mainResponse.data.data[0]);
+                  console.log(userData);
+                })
+                .catch((error) => {
+                  //setError('Error fetching main PDF. Please try again later.');
+                  console.error('Error fetching main PDF:', error);
+                });
+           
           } catch (error) {
             console.error('Error fetching user data:', error);
             // Handle network or other errors
           }
         };
-    
-        fetchUserData();
-      }, [userId, selectedUser]);
-
-      const handleChange = (event, newAlignment) => {
-        setAlignment(newAlignment);
-      };
+ 
+        useEffect(() => {
+            // Fetch PDF data for both main and duplicate fax when the component mounts
+            fetchUserData(userId);
+          }, []);
     
       const updateUser = async () => {
         try {
@@ -111,7 +89,9 @@ const Edit_User = () =>{
       };
 
     return (
+       
         <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
+            {userData ? (
             <div className="bg-[#ffffff] shadow-xl border rounded-3xl max-w-[800px] max-h-[450px] w-full h-full  mt-5 overflow-hidden overflow-y-scroll pb-5 no-scrollbar">
                 <div className='pt-5 flex justify-center'>
                     <div className=' border  h-5 rounded-xl w-40 relative'>
@@ -120,12 +100,9 @@ const Edit_User = () =>{
                     </div>
                 </div>
 
-
+                
                 <form className=''>
                     <div className=' flex  flex-col xl:items-start items-center'>
-
-
-
                         <div className='px-5 pt-10'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                 <div className='flex flex-col'>
@@ -133,10 +110,11 @@ const Edit_User = () =>{
                                         <div className=' flex  justify-start  flex-col w-full '>
                                             <label className='text-xs text-black w-full text-start' htmlFor="">*User Id (primary email) </label>
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56  text-black py-0.5 text-xs t-1' 
-                                            name="userName"
+                                            name="username"
                                             type="text" 
                                             value={userData.username}
                                             onChange={handleInputChange}
+                                            readOnly
                                             />
                                         </div>
                                     </div>
@@ -193,6 +171,7 @@ const Edit_User = () =>{
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
                                             type="text"
                                             name="city"
+                                            value={userData.city}
                                             />
                                         </div>
                                     </div>
@@ -205,6 +184,7 @@ const Edit_User = () =>{
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs'
                                             type="text"
                                             name="state"
+                                            value={userData.state}
                                             />
                                         </div>
                                     </div>
@@ -221,6 +201,7 @@ const Edit_User = () =>{
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                             name="zip"
                                             type="text"
+                                            value={userData.zip}
                                             />
                                         </div>
                                     </div>
@@ -232,6 +213,7 @@ const Edit_User = () =>{
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs'
                                             type="text"
                                             name="phone"
+                                            value={userData.phone}
                                             />
                                         </div>
                                     </div>
@@ -245,6 +227,7 @@ const Edit_User = () =>{
                                             name="role"
                                                             >
                                     <MdOutlineArrowDropDown size={20} />
+                                    <option value={userData.role}>{userData.role}</option>
                                     <option value="Admin">Admin</option>
                                     <option value="Power User">Power User</option>
                                     <option value="Reviewer ">Reviewer</option>
@@ -308,8 +291,21 @@ const Edit_User = () =>{
                         <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'
                         >Submit</div>
                     </div>
+                       
                 </form>
+               
             </div>
+            ) : (
+            <div className="bg-[#ffffff] max-w-[100px] max-h-[1000px] w-full h-full  mt-5 overflow-hidden overflow-y-scroll pb-5 no-scrollbar">
+            <div role="status center">
+            <svg aria-hidden="true" class="w-25 h-20 mr-20 text-gray-200 text-center animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+            </svg>
+            <span class="sr-only">Loading...</span>
+            </div>
+            </div>
+              )}
         </section>
     )
 }

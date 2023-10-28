@@ -8,44 +8,38 @@ import {
 
 import { RiAdminFill } from 'react-icons/ri';
 import FaxIcon from '@mui/icons-material/Fax';
-import { useLocation, useNavigate } from "react-router-dom";
-import { Children, useContext, useEffect, useState } from "react";
-import { DuplicateContext } from "../../context/DuplicateContext";
-import { AdminContext } from "../../context/AdminContext";
+import {useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 
 function Header_Navigation() {
-    const [search, setSearch] = useState("")
-    const [fax_name, set_fax_name] = useState("")
-    const [case_details, set_case_details] = useState("")
-    const [openCase, setOpenCase] = useState(false)
-    const [openTrackerList, setOpenTrackerList] = useState(false)
-    const [TrackerLIst, setTrackerLIst] = useState("")
-    const [openAdminList, setOpenAdminList] = useState(false)
-    const [AdminLIst, setAdminList] = useState("")
-    const [openEditProfile, setOpenEditProfile] = useState(false)
-    const [EditProfile, setEditProfile] = useState("")
+    const [fax_name, set_fax_name] = useState(null)
+    const [TrackerLIst, setTrackerLIst] = useState(null)
+    const [AdminLIst, setAdminList] = useState(null)
+    const [EditProfile, setEditProfile] = useState(null)
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
-    const { setOpenNewUser, openNewUser } = useContext(AdminContext)
 
 
     const fax_handleClick = () => {
+        console.log("Inside fax")
+        setTrackerLIst(null)
+        setAdminList(null)
+        setEditProfile(null)
         set_fax_name("FAX LIST")
         navigate("/nsrxmgt/fax-list")
-        
     }
 
     const openRxTrackerList = () => {
-        setOpenTrackerList(true)
         setTrackerLIst("RX Tracker List")
         navigate("/nsrxmgt/rx-tracker-list")
     }
 
     const openAdminUserList = () => {
         setAdminList("User List")
+        setTrackerLIst("")
+        setEditProfile("")
+        set_fax_name("")
         navigate("/nsrxmgt/admin-user-list")
        
     }
@@ -60,6 +54,7 @@ function Header_Navigation() {
         localStorage.removeItem("tokenTika")
         navigate("/nsrxmgt")
     }
+
 
     return (
             <div className="w-full text-xs flex items-center justify-between py-1 font-bold z-50">
@@ -78,7 +73,7 @@ function Header_Navigation() {
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
                         {
-                            fax_name ? fax_name : case_details ? case_details : TrackerLIst ? TrackerLIst : AdminLIst ? AdminLIst : EditProfile ? EditProfile :""
+                            fax_name ? fax_name  : TrackerLIst ? TrackerLIst : AdminLIst ? AdminLIst : EditProfile ? EditProfile :""
                         }
 
                     </span>
