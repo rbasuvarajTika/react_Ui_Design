@@ -1,7 +1,7 @@
 import Background from "./Background"
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.jpeg"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toast'
 import Cookies from 'js-cookie'; 
@@ -138,7 +138,13 @@ function Login() {
                             />
                         </span>
                         <span className="w-full flex items-center justify-end">
-                            <input type="checkbox" name ="rememberMeCheck" className="rounded-3xl mr-1" />
+                          <input
+                                type="checkbox"
+                                name="rememberMeCheck"
+                                className="rounded-3xl mr-1"
+                                checked={rememberMe}
+                                onChange={handleRememberMeChange} // Step 1: Handle "Remember Me" checkbox change
+                            />
                             <label htmlFor="rememberMe" className="text-white text-[9px] font-light font-sans italic">Remember Me</label>
                             <a href="#" className="ml-2 text-white text-[9px] font-sans italic" >
                             <span onClick={() => navigate("/nsrxmgt/forgotpassword")}>Forgot Password</span>

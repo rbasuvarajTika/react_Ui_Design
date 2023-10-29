@@ -66,7 +66,7 @@ useEffect(() => {
 
 const handleRxId = (trnRxId) => {
     console.log("handleRxId is called");
-    navigate(`/nsrxmgt/case-details/${trnRxId}`);
+    navigate(`/nsrxmgt/case-details-new/${trnRxId}`);
     
 }
 

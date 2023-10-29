@@ -5,6 +5,7 @@ import { MdEditDocument } from "react-icons/md";
 import { AdminContext } from "../../context/AdminContext";
 import { EditUserContext } from "../../context/EditUserContext";
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
 
 const Admin_User_Table = () => {
@@ -19,6 +20,9 @@ const Admin_User_Table = () => {
     const { setOpenEditUser, openEditUser} = useContext(EditUserContext)
     const [sendUserId, setUserId] =useState(null)
 
+    const [sortedData, setSortedData] = useState([]);
+    const [sortOrder, setSortOrder] = useState('asc');
+
     useEffect(() => {
         try {
             const token = localStorage.getItem('tokenTika');
@@ -30,6 +34,8 @@ const Admin_User_Table = () => {
                 .then((res) => {
                     console.log(res?.data);
                     setFaxData(res?.data.data.data)
+                      // Initialize sortedData with the fetched data
+                    setSortedData(res?.data.data.data);
                 })
         } catch (error) {
             console.log(error);
@@ -51,6 +57,39 @@ const Admin_User_Table = () => {
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = faxData.slice(firstPostIndex, lastPostIndex);
     const npage = Math.ceil(faxData.length / postsPerPage);
+
+    useEffect(() => {
+        setSortOrder(faxData);
+        console.log(";kjbkhbklh");
+    }, [faxData])
+
+    const handleSort = () => {
+        // Toggle the sorting order
+        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        setSortOrder(newSortOrder);
+
+        // Clone the data to avoid mutating the original array
+        const newData = [...faxData];
+
+        // Sort the data based on the "firstName" field
+        newData.sort((a, b) => {
+            // Change the comparison logic based on the sorting order
+            if (newSortOrder === 'asc') {
+                return a.firstName.localeCompare(b.firstName);
+            } else {
+                return b.firstName.localeCompare(a.firstName);
+            }
+        });
+
+        // Update the sorted data
+        setSortedData(newData);
+    };
+
+
+    console.log("sortOrder", sortOrder);
+
+
+
     return (
         <>
 
@@ -112,19 +151,48 @@ const Admin_User_Table = () => {
                     <table className="w-full text-sm text-center table-auto  ">
                         <thead className="">
                             <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                                <th className="px-6 py-3 ">User ID</th>
-                                <th className="px-6 py-3">First Name</th>
-                                <th className="px-6 py-3">Last Name</th>
-                                <th className="px-6 py-3">Phone</th>
-                                <th className="px-6 py-3">Role</th>
-                                <th className="px-6 py-3">Type</th>
-                                <th className="px-6 py-3">Status</th>
+                                <th className="px-6 py-3 ">User ID
+                                <div onClick={handleSort} className="cursor-pointer">
+                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> : 
+                                             <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                </div></th>
+                                <th className="px-6 py-3">First Name
+                                <div onClick={handleSort} className="cursor-pointer">
+                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> : 
+                                             <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                </div>
+                                </th>
+                                <th className="px-6 py-3">Last Name
+                                <div onClick={handleSort} className="cursor-pointer">
+                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> : 
+                                             <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                </div></th>
+                                <th className="px-6 py-3">Phone
+                                <div onClick={handleSort} className="cursor-pointer">
+                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> : 
+                                             <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                </div></th>
+                                <th className="px-6 py-3">Role
+                                <div onClick={handleSort} className="cursor-pointer">
+                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> : 
+                                             <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                </div></th>
+                                <th className="px-6 py-3">Type
+                                <div onClick={handleSort} className="cursor-pointer">
+                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> : 
+                                             <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                </div></th>
+                                <th className="px-6 py-3">Status
+                                <div onClick={handleSort} className="cursor-pointer">
+                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> : 
+                                             <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                </div></th>
                                 <th className="px-6 py-3 ">Edit</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            {currentPosts.filter((item) => {
+                            {sortedData.filter((item) => {
                                           const matchesSearch = search === "" || item.username.includes(search);
                                           if (selectedUserStatus === "All Status") {
                                             return matchesSearch;
