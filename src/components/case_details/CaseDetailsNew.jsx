@@ -273,7 +273,7 @@ const CaseDetailsNew = () => {
 
                    <form className=''>
                        <div className=' flex  flex-col xl:items-start items-center'>
-                           <div className='px-5 pt-4'>
+                           <div className='px-5 pt-2'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
@@ -321,7 +321,7 @@ const CaseDetailsNew = () => {
                                </div>
                            </div>
 
-                           <div className='px-5 pt-4'>
+                           <div className='px-5 pt-2'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
@@ -370,7 +370,7 @@ const CaseDetailsNew = () => {
                                </div>
                            </div>
 
-                           <div className='w-full pt-4 flex flex-col justify-around  px-4'>
+                           <div className='w-full pt-2 flex flex-col justify-around  px-4'>
                                     <div className=' flex flex-col'>
                                     <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
                                     <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-full text-black h-5 text-xs mr-5'
@@ -383,7 +383,7 @@ const CaseDetailsNew = () => {
                                     </div>
                             </div>
 
-                           <div className='px-5 pt-4'>
+                           <div className='px-5 pt-2'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
@@ -437,8 +437,8 @@ const CaseDetailsNew = () => {
                                </div>
                            </div>
                            
-                           <hr className='px-3 w-full my-1 border-center border-gray-300' />
-                           <div className='px-5 pt-4'>
+                           <hr className='px-2 w-full my-1 border-center border-gray-300' />
+                           <div className='px-5 pt-2'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
@@ -491,41 +491,43 @@ const CaseDetailsNew = () => {
                                </div>
                            </div>
                            
-                           <div className='px-5 pt-4'>
+                           <div className='px-5 pt-2'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
-                                        <label className='text-xs text-black w-28 text-start' htmlFor="">Distributer: : </label>
+                                        <label className='text-xs text-black w-28 text-start' htmlFor="">Place of Service: </label>
                                                 <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                    value={distributor}
-                                                    onChange={(e) => setDistributor(e.target.value)}
+                                                    name="placeOfService"
 
-                                                >
-                                                    {distributorData.map((item) => (
-                                                    <option key={item.distributorId} value={item.distributorName}>
-                                                        {item.distributorName}
-                                                    </option>
-                                                    ))}
-                                                </select>
+                                        id="placeOfService"
+                                        value={placeOfService || ''}
+                                        onChange={(e) => setPlaceOfService(e.target.value)}
+
+                                        >
+                                        <option value={placeOfService}>{placeOfService}</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                        </select>
                                            </div>
                                        </div>
                                    </div>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
-                                        <label className='text-xs text-black w-28 text-start' htmlFor="">Distributer: : </label>
+                                        <label className='text-xs text-black w-28 text-start' htmlFor="">Order Information: : </label>
                                                 <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                    value={distributor}
-                                                    onChange={(e) => setDistributor(e.target.value)}
+                                                    name="orderType"
 
-                                                >
-                                                    {distributorData.map((item) => (
-                                                    <option key={item.distributorId} value={item.distributorName}>
-                                                        {item.distributorName}
-                                                    </option>
-                                                    ))}
-                                                </select>
+                                        id="orderType"
+                                        value={orderType || ''}
+                                        onChange={(e) => setOrderType(e.target.value)}
+
+                                    >
+                                        <option value={orderType}>{orderType}</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
                                            </div>
                                        </div>
                                    </div>
@@ -533,18 +535,17 @@ const CaseDetailsNew = () => {
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
-                                        <label className='text-xs text-black w-28 text-start' htmlFor="">Distributer: : </label>
+                                        <label className='text-xs text-black w-full text-start' htmlFor="">Does patient still have an active wound?:</label>
                                                 <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                    value={distributor}
-                                                    onChange={(e) => setDistributor(e.target.value)}
+                                                   name="woundActive"
 
-                                                >
-                                                    {distributorData.map((item) => (
-                                                    <option key={item.distributorId} value={item.distributorName}>
-                                                        {item.distributorName}
-                                                    </option>
-                                                    ))}
-                                                </select>
+                                        id="woundActive"
+                                        value={woundActive || ''}
+                                        onChange={(e) => setActiveWound(e.target.value)} >
+                                        <option value={woundActive}>{woundActive}</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
                                            </div>
                                        </div>
                                    </div>
