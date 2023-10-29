@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { LuMinus, LuPlus } from 'react-icons/lu'
 import { MdOutlineArrowDropDown } from 'react-icons/md';
+import { AiFillCloseSquare } from 'react-icons/ai'
+import { MdAddBox } from 'react-icons/md'
 
 const CaseDetailsNew = () => {
   const { trnRxId } = useParams();
@@ -63,7 +65,11 @@ const CaseDetailsNew = () => {
 
   // Total Save Call
   const handleSavePatientData = () => {
-    handlePatientSave();
+   // handlePatientSave();
+   //handleWoundUpdate();
+  // handleWoundSave();
+  //handleWoundDelete();
+  handleSaveButtonClick();
   };
 // Total Save Call
 
@@ -253,15 +259,269 @@ const CaseDetailsNew = () => {
       setSsnError('');
     }
   };
+
+// WOUND START -------------------------------------------------
+  const [woundData, setWoundData] = useState([]);
+  const [deleteWoundData, setDeleteWoundData] = useState([]);
+  const [woundDataRxId, setWoundDataRxId] = useState(null);
+  const [woundDataTranFaxId, setWoundDataRxIdTranFaxID] = useState(null);
+  const [woundDataFaxId, setWoundDataRxIdFaxID] = useState(null);
+  const [newWound, setNewWound] = useState([]);
+  const [isAddClicked, setIsAddClicked] = useState(false);
+
+
+  useEffect(() => {
+    console.log(newWound);
+  }, [newWound]);
+
+  useEffect(() => {
+    console.log(woundData);
+  }, [woundData]);
+
+  useEffect(() => {
+    console.log(deleteWoundData);
+  }, [deleteWoundData]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const token = localStorage.getItem('tokenTika');
+            const config = {
+                headers: {
+                    //Authorization: `Bearer ${token}`,
+                },
+            };
+
+            // Make a GET request to the API to fetch wound data
+            const response = await axiosBaseURL.get(`/api/v1/fax/woundInfo/${trnRxId}`, config);
+            const responseData = response.data;
+            // const trnFaxId = responseData.data[0].trnFaxId;
+            //  const woundNo = responseData.data[0].woundNo;
+            //   setwoundNo(woundNo);
+            //  console.log("woundN  ssso", woundNo);
+
+            // setTrnFaxId(trnFaxId);
+            // console.log("woundInforesponse",trnFaxId);
+            console.log(responseData);
+            if (responseData && responseData.data && responseData.data.length > 0) {
+                // Update the woundData state variable with the retrieved data
+                console.log("Woun responseData");
+                console.log(responseData);
+                setWoundData(responseData.data);
+                setWoundDataRxId(responseData.data[0].trnRxId);
+                setWoundDataRxIdTranFaxID(responseData.data[0].trnFaxId);
+                setWoundDataRxIdFaxID(responseData.data[0].faxId);
+                console.log(responseData.data);
+            } else {
+                // Handle the case where no wound data is found.
+                console.error('No wound data found.');
+            }
+        } catch (error) {
+            console.error('Error fetching wound data:', error);
+        }
+    };
+
+    fetchData();
+}, []);
+
+const handleEditRowChange = (index, column, value) => {
+    const updatedWoundData = [...woundData];
+    updatedWoundData[index][column] = value;
+    setWoundData(updatedWoundData);
+};
+
+ const handleAddWound = () => {
+    alert("ADD");
+    const updatedWoundData = {
+      trnRxId:woundDataRxId,
+      trnFaxId:woundDataTranFaxId,
+      faxId:woundDataFaxId,
+      woundNo: '',
+      woundLocation: '',
+      woundLength: '',
+      woundWidth: '',
+      woundDepth: '',
+      woundType: '',
+      drainage: '',
+      debrided: '',
+      icdCode: '',
+      debridedDate:'',
+      status:'insert'
+    }
+    console.log(updatedWoundData);
+    setWoundData([...woundData, updatedWoundData]);
+    setIsAddClicked(true);
+  };
+
+  const handleDeleteWound = (index) => {
+    woundData[index]["status"] = "delete";
+    const deletedData =woundData[index]
+    setDeleteWoundData([...deleteWoundData,deletedData]);
+    const updatedWoundData = woundData.filter((_, i) => i !== index);
+    setWoundData(updatedWoundData);
+  };
+
+  const handleWoundUpdate = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: {
+          //Authorization: `Bearer ${token}`,
+        },
+      };
+
+      alert("saving data");
+      const updatedWoundData = woundData;
+      const response = await axiosBaseURL.post(`/api/v1/fax/updateWoundInfoList`, updatedWoundData, config);
+      //const woundNo = response.data.data.woundNo
+    
+      if (response.status === 200) {
+        // The data was successfully updated. You can handle the success here.
+        console.log('Data updated successfully.');
+
+      } else {
+        // Handle any errors or validation issues here.
+        console.error('Error updating data:', response.data);
+      }
+    } catch (error) {
+      console.error('Error updating data:', error);
+    }
+  };
+
+  const handleWoundDelete = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: {
+          //Authorization: `Bearer ${token}`,
+        },
+      };
+
+      alert("deleting data");
+      const updatedWoundData = deleteWoundData;
+      
+
+      console.log("Saving daata-->"+updatedWoundData)
+      const response = await axiosBaseURL.post(`/api/v1/fax/updateWoundInfoList`, updatedWoundData, config);
+      //const woundNo = response.data.data.woundNo
+    
+      if (response.status === 200) {
+        // The data was successfully updated. You can handle the success here.
+        console.log('Deleted updated successfully.');
+
+      } else {
+        // Handle any errors or validation issues here.
+        console.error('Error updating data:', response.data);
+      }
+    } catch (error) {
+      console.error('Error updating data:', error);
+    }
+  };
+ 
+
+  // WOUND END -------------------------------------------------
+
+
+  //KIT START
+  const [kitData, setKitData] = useState([]);
+  const [product, setProductData] = useState([]);
+  const [newKit, setNewKit] = useState({}); // State for the new kit data
+  const [kitDataRxId, setKitDataRxId] = useState(null);
+  const [kitDataTranFaxId, setKitDataRxIdTranFaxID] = useState(null);
+  const [kitDataFaxId, setKitDataRxIdFaxID] = useState(null);
+
+
+  const handleKitEditRowChange = (index, column, value) => {
+    const updateKitData = [...kitData];
+    if(column == "wnd1" || column == "wnd2" || column == "wnd3"){
+       if(value){
+        value=1;
+       }else{
+        value=0;
+       }
+    }
+    updateKitData[index][column] = value;
+    setKitData(updateKitData);
+  };
+
+  const handleAddKit = () => {
+    setKitData([...kitData, newKit]);
+    setNewKit({});
+  };
+
+  const handleDeleteKit = (index) => {
+    const updatedKitData = kitData.filter((_, i) => i !== index);
+    setKitData(updatedKitData);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const token = localStorage.getItem('tokenTika');
+            const config = {
+                headers: {
+                    //Authorization: `Bearer ${token}`,
+                },
+            };
+
+            // Make a GET request to the API to fetch product data
+            const response = await axiosBaseURL.get(`/api/v1/fax/productInfo/${trnRxId}`, config);
+            const responseData = response.data;
+
+            if (responseData && responseData.data && responseData.data.length > 0) {
+                console.log("KIT Datttttt--->",responseData.data);
+                setKitData(responseData.data);
+                setKitDataRxId(responseData.data[0].trnRxId);
+                setKitDataRxIdTranFaxID(responseData.data[0].trnFaxId);
+                setKitDataRxIdFaxID(responseData.data[0].faxId);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    fetchData();
+},[]);
+
+
+const handleSaveButtonClick = () => {
+
+  // Get the token from your authentication mechanism, e.g., localStorage
+  const token = localStorage.getItem('token');
+
+  // Define the request headers with the Authorization header
+  const config = {
+    headers: {
+      //Authorization: `Bearer ${token}`,
+    },
+  };
+   alert("save Kit Data");
+   console.log('Data Saving:', kitData);
+   const dataToSave =kitData;
+  // Send a POST request to the API with the headers
+  axiosBaseURL
+    .post('/api/v1/fax/updateProductInfoList', dataToSave, config)
+    .then((response) => {
+      // Handle the response from the API if needed
+      console.log('Data saved successfully:', response.data);
+    })
+    .catch((error) => {
+      // Handle any errors that occurred during the request
+      console.error('Error saving data:', error);
+    });
+};
+
+
+  //KIT END
+
   return (
     <>
       {
-            <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
-              <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[640px] no-scrollbar ">
-                <div className='flex md:flex-row flex-col gap-5'>
+      <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
+          <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[640px] no-scrollbar ">
+              <div className='flex md:flex-row flex-col gap-5'>
                   <div className='w-full h-screen  flex flex-col gap-2'>
-
-            
 
             {/* Patient Start ---------------------------*/}
             <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
@@ -269,12 +529,14 @@ const CaseDetailsNew = () => {
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                 <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
                                 <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
+                                <p className='text-[#596edb] text-xs absolute top-1 left-4'>Netsuit Patient ID:23214234</p>
+                                <p className='text-[#596edb] text-xs absolute top-1 right-10'>Tika ID:12053</p>
                             </div>
 
 
                    <form className=''>
                        <div className=' flex  flex-col xl:items-start items-center'>
-                           <div className='px-5 pt-2'>
+                           <div className='px-5 pt-5'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
@@ -546,8 +808,8 @@ const CaseDetailsNew = () => {
                                         value={woundActive || ''}
                                         onChange={(e) => setActiveWound(e.target.value)} >
                                         <option value={woundActive}>{woundActive}</option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
                                     </select>
                                            </div>
                                        </div>
@@ -560,10 +822,235 @@ const CaseDetailsNew = () => {
                </div>
            </section>
                    
-                    {/* Patient End ---------------------------*/}
+          {/* Patient End ---------------------------*/}
+
+      {/* Order and Kit Start ---------------------------*/}
+      <div className='w-full h-[500px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
+            <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                <hr className="h-px border-[#e36c09] border w-32  absolut " />
+                <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
+            </div>
+            <div>
+                {}
+                <div className='absolute md:top-1 top-6  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50' onClick={handleAddWound}  >
+                    <div className=' flex justify-around px-1'>
+                        <div className='flex  relative'>
+                            <MdAddBox className='text-lg' />
+                            <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
+                        </div>
+
+                        <p className='text-white text-xs'
+
+                        >ADD</p>
+                    </div>
+
+                </div>
+                {}
 
 
-                  </div>
+                <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll    no-scrollbar md:mt-8 mt-14">
+                    <table className="w-f text-sm text-center table-auto  ">
+                        <thead className="">
+                            <tr className="text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl  ">
+                                <th className="px-2 py-3   border ">Wound <span>(WND)#</span></th>
+                                <th className="px-2 py-3  border ">Location</th>
+                                <th className="px-2 py-3  border ">Length <span>(cm)</span></th>
+                                <th className="px-2 py-3  border ">Width <span>(cm)</span></th>
+                                <th className="px-2 py-3  border ">Depth <span>(cm)</span></th>
+                                <th className="px-2 py-3  border ">Wound <span>Stage</span></th>
+                                <th className="px-2 py-3  border ">Drainage</th>
+                                <th className="px-2 py-3  border  ">Debrided</th>
+                                <th className="px-2 py-3  border  ">ICD-10 <span>Code</span></th>
+                                <th className="px-2 py-3  border  ">Debridement <span>Date</span></th>
+                                <th className="px-2 py-3  border  ">Debridement <span>Type</span></th>
+                                <th className="px-2 py-3  border  ">Delete</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody  >
+                            {woundData.map((row, index) => (
+                                <tr key={index} >
+                                    <td className="p-1 rounded-2xl border">
+                                        <input type="text" name="woundNo" id="woundNo" value={row.woundNo} 
+                                        onChange={(e) => handleEditRowChange(index, 'woundNo', e.target.value)}
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-14 text-xs'
+                                         name="woundLocation" id="woundLocation"
+                                         onChange={(e) => handleEditRowChange(index, 'woundLocation', e.target.value)}>
+                                            <option value={row.woundLocation}>{row.woundLocation}</option>
+                                            <option value="LT">LT</option>
+                                            <option value="RT">RT</option>
+                                        </select>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <input type="text" name="woundLength" id="woundLength" value={row.woundLength} 
+                                        onChange={(e) => handleEditRowChange(index, 'woundLength', e.target.value)}
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <input type="text" name="woundLength" id="woundWidth" value={row.woundWidth} 
+                                        onChange={(e) => handleEditRowChange(index, 'woundWidth', e.target.value)}
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <input type="text" name="woundDepth" id="woundWidth" value={row.woundDepth} 
+                                        onChange={(e) => handleEditRowChange(index, 'woundDepth', e.target.value)}
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <p className='bg-gray-200 rounded-3xl py- px-'>
+                                            <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'   
+                                             name="woundThickness" id="woundThickness"
+                                            onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
+                                                <option value={row.woundThickness}>{row.woundThickness}</option>
+                                            </select>
+                                        </p>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <p className='bg-gray-200 rounded-3xl py- px-'>
+                                            <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
+                                             name="drainage" id="drainage"
+                                            onChange={(e) => handleEditRowChange(index, 'drainage', e.target.value)}>
+                                                <option value={row.drainage}>{row.drainage}</option>
+                                            </select>
+                                        </p>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <p className='bg-gray-200 rounded-3xl py- px-'>
+                                            <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
+                                            name="debrided" id="debrided"
+                                            onChange={(e) => handleEditRowChange(index, 'debrided', e.target.value)}>
+                                                <option value={row.debrided}>{row.debrided}</option>
+                                            </select>
+                                        </p>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <input type="text" name="icdCode" id="icdCode" value={row.icdCode} 
+                                        onChange={(e) => handleEditRowChange(index, 'icdCode', e.target.value)}
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
+                                        onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                    </td>
+                                    <td className="p-1 rounded-2xl border">
+                                        <p className='bg-gray-200 rounded-3xl py- px-'>
+                                            <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
+                                             name="debridedType" id="debridedType"
+                                            onChange={(e) => handleEditRowChange(index, 'debridedType', e.target.value)}>
+                                                <option value={row.debridedType}>{row.debridedType}</option>
+                                            </select>
+                                        </p>
+                                    </td>
+                                    <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center border" onClick={() => handleDeleteWound(index)}>
+                                        <AiFillCloseSquare />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+               </div>
+            </div>
+        </div>
+        {/* Order and Kit End ---------------------------*/}
+
+       {/*  Kit Start ---------------------------*/}
+       <div className='w-full h-[400px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
+            <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                <hr className="h-px border-[#e36c09] border w-32  absolut " />
+                <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
+            </div>
+            <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer' onClick={handleAddKit}>
+                <div className=' flex justify-around px-1'>
+                    <div className='flex  relative'>
+                        <MdAddBox className='text-lg' />
+                        <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
+                    </div>
+                    <p className='text-white text-xs'>ADD</p>
+                </div>
+            </div>
+                <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll   no-scrollbar mt-8">
+                    <table className="w-f text-sm text-center table-auto  w-full ">
+                        <thead className="">
+                            <tr className="text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl  ">
+                                <th className="px-2 py-3 border">Kit Number</th>
+                                <th className="px-2 py-3 border">Frequency</th>
+                                <th className="px-2 py-3 border">(WND)1</th>
+                                <th className="px-2 py-3 border">(WND)2</th>
+                                <th className="px-2 py-3 border">(WND)3</th>
+                                <th className="px-2 py-3 border">Delete</th>
+                            </tr>
+                        </thead>  
+                        <tbody>
+                            {kitData.map((kit, index) => (
+                                <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-[#f2f2f2]'}>
+                                    <td className="p-1 border">
+                                        <select className='bg-[#f2f2f2] text-gray-600 rounded-3xl h-5 w-24 border text-xs'
+                                         value={kit.productCode}
+                                         onChange={(e) => handleKitEditRowChange(index, 'productCode', e.target.value)}>
+                                            <option value={kit.productCode} className=''>{kit.productCode}</option>
+
+                                        {states.map((state) => (
+                                        <option key={state.stateName} value={state.shortName}>
+                                            {state.stateName}
+                                        </option>
+                                        ))}
+                                        </select>
+                                    </td>
+                                    <td className="p-1 border">
+                                        <select className='bg-[#f2f2f2] text-gray-600 rounded-3xl h-5 w-24 border text-xs'
+                                         value={kit.quantity}
+                                         onChange={(e) => handleKitEditRowChange(index, 'quantity', e.target.value)}>
+                                          <option value={kit.quantity}>{kit.quantity}</option>
+                                          <option value="15">15</option>
+                                          <option value="30">30</option>
+                                          <option value="45">45</option>
+                                          <option value="60">60</option>
+                                        </select>
+                                    </td>
+                                    <td className="p-1 border">
+                                        <input
+                                            type="checkbox"
+                                            className="relative h-3 w-3 cursor-pointer"
+                                            id={`checkbox-${index}`}
+                                            defaultChecked={kit.wnd1}
+                                            onChange={(e) => handleKitEditRowChange(index, 'wnd1', e.target.checked)}
+                                        />
+                                    </td>
+                                    <td className="p-1 border">
+                                        <input
+                                            type="checkbox"
+                                            className="relative h-3 w-3 cursor-pointer"
+                                            id={`checkbox-${index}`}
+                                            defaultChecked={kit.wnd2}
+                                            onChange={(e) => handleKitEditRowChange(index, 'wnd2', e.target.checked)}
+                                        />
+                                    </td>
+                                    <td className="p-1 border-2">
+                                        <input
+                                            type="checkbox"
+                                            className="relative h-3 w-3 cursor-pointer"
+                                            id={`checkbox-${index}`}
+                                            defaultChecked={kit.wnd3}
+                                            onChange={(e) => handleKitEditRowChange(index, 'wnd3', e.target.checked)}
+                                        />
+                                    </td>
+                                    <td className="p-1 rounded-2xl flex justify-center text-xl text-red-600 mt-2 items-center" onClick={() => handleDeleteKit(index)}>
+                                        <AiFillCloseSquare />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                {/*  Kit end ---------------------------*/}
+
+      </div>
 
                   <div className='w-full h-screen  bg-white rounded-xl border-2 shadow-xl relative'>
                     <div className='flex justify-center w-full gap-2 mt-1 absolute  bottom-2'>
@@ -581,7 +1068,7 @@ const CaseDetailsNew = () => {
                     </div>
                   </div>
 
-                </div>
+    </div>
                 <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
                   <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-lg flex justify-center md:text-base text-xs'>Discard</div>
                   <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-lg flex justify-center md:text-base text-xs' onClick={handleSavePatientData}>Save</div>
@@ -590,7 +1077,7 @@ const CaseDetailsNew = () => {
               </div>
 
 
-            </div>
+  </div>
       }
     </>
 

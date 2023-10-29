@@ -52,6 +52,7 @@ const OrderInformation = ({ openNetSuit }) => {
 
         fetchData();
     }, []);
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -102,6 +103,49 @@ const OrderInformation = ({ openNetSuit }) => {
         const updatedKitData = kitData.filter((_, i) => i !== index);
         setKitData(updatedKitData);
       };
+
+
+
+      const handleSaveButtonClick = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+      
+          // Make a POST request to the API to save the new row data
+          const response = await axiosBaseURL.post(`/api/v1/fax/woundInfo`, newRowData, config);
+      
+          if (response.status === 200) {
+            // The data was successfully saved. You can handle the success here.
+            console.log('Data saved successfully.');
+      
+            // Reset newRowData and setIsAddClicked to false
+            setNewRowData({
+              trnFaxId:trnFaxId,
+              woundNo: '',
+              woundLocation: '',
+              woundLength: '',
+              woundWidth: '',
+              woundDepth: '',
+              woundType: '',
+              drainage: '',
+              debrided: '',
+              icdCode: '',
+              debridedDate: '',
+            });
+            setIsAddClicked(false);
+          } else {
+            // Handle any errors or validation issues here.
+            console.error('Error saving data:', response.data);
+          }
+        } catch (error) {
+          console.error('Error saving data:', error);
+        }
+      };
+    
 
 
     return (
