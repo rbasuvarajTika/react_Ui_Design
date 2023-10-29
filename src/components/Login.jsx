@@ -4,12 +4,31 @@ import logo from "../assets/images/logo.jpeg"
 import { useState } from "react";
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toast'
+import Cookies from 'js-cookie'; 
 
 function Login() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
+    const [rememberMe, setRememberMe] = useState(false);
+
+    useEffect(() => {
+        // Check cookies for "Remember Me" value
+        const rememberMeValue = Cookies.get('rememberMe');
+        if (rememberMeValue) {
+            setRememberMe(JSON.parse(rememberMeValue));
+            // If "Remember Me" is checked, populate input fields with stored values
+            if (JSON.parse(rememberMeValue)) {
+                const storedUserName = Cookies.get('userName');
+                const storedPassword = Cookies.get('password');
+                if (storedUserName && storedPassword) {
+                    setUserName(storedUserName);
+                    setPassword(storedPassword);
+                }
+            }
+        }
+    }, []);
 
     const login = async (e) => {
         e.preventDefault()
@@ -30,6 +49,18 @@ function Login() {
                     if (res.data.token) {
                         localStorage.setItem("tokenTika", res.data.token)
                         console.log("tokenTika", res.data.token);
+
+                         // Store "Remember Me" in cookies
+                         if (rememberMe) {
+                            Cookies.set('rememberMe', JSON.stringify(rememberMe));
+                            Cookies.set('userName', userName); // Store the username
+                            Cookies.set('password', password); // Store the password
+                        } else {
+                            Cookies.remove('rememberMe');
+                            Cookies.remove('userName');
+                            Cookies.remove('password');
+                        }
+
                         navigate("/nsrxmgt/admin-user-list")
                         console.log(res);
                     }
@@ -65,6 +96,10 @@ function Login() {
         }
         return result
     }
+
+    const handleRememberMeChange = () => {
+        setRememberMe(!rememberMe);
+    };
 
 
 
