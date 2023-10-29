@@ -261,9 +261,10 @@ const CaseDetailsNew = () => {
                 <div className='flex md:flex-row flex-col gap-5'>
                   <div className='w-full h-screen  flex flex-col gap-2'>
 
+            
 
+            {/* Patient Start ---------------------------*/}
             <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
-               
             <div className='w-full h-[calc(130vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                 <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
@@ -340,15 +341,16 @@ const CaseDetailsNew = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Last 4 of SSN : </label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                                 type="text"
                                                 id="ssn"
                                                 name="ssn"
                                                 value={ssn || ''}
                                                 onChange={handleSsnChange}
                                                />
+                                                <p className="text-red-500 text-xs">{ssnError}</p>
                                            </div>
-                                           <p className="text-red-500 text-xs">{ssnError}</p>
+                                          
                                        </div>
                                    </div>
 
@@ -356,15 +358,16 @@ const CaseDetailsNew = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Phone No : </label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs'
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                                type="text"
                                                id="cellPhone"
                                                name="cellPhone"
                                                value={cellPhone || ''}
                                                onChange={handleCellPhoneChange}
                                                />
+                                                <p className="text-red-500 text-xs">{cellPhoneError}</p>
                                            </div>
-                                           <p className="text-red-500 text-xs">{cellPhoneError}</p>
+                                          
                                        </div>
                                    </div>
                                </div>
@@ -373,7 +376,7 @@ const CaseDetailsNew = () => {
                            <div className='w-full pt-2 flex flex-col justify-around  px-4'>
                                     <div className=' flex flex-col'>
                                     <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
-                                    <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-full text-black h-5 text-xs mr-5'
+                                    <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-full text-black h-5 text-xs mr-5 t-1'
                                         type="text"
                                         id="shipToAddress"
                                         name="shipToAddress"
@@ -423,15 +426,16 @@ const CaseDetailsNew = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w- text-start' htmlFor="">Zip :</label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="zip"
                                                name="zip"
                                                value={zip || ''}
                                                onChange={handleZipChange}
                                            />
-                                           </div>
                                            <p className="text-red-500 text-xs">{zipError}</p>
+                                           </div>
+                                           
                                        </div>
                                    </div>
                                </div>
@@ -459,7 +463,7 @@ const CaseDetailsNew = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                            <label className='text-xs text-black w- text-start' htmlFor="">Sales Rep Cell: :</label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="salesRepCell"
                                                 name="salesRepCell"
@@ -477,7 +481,6 @@ const CaseDetailsNew = () => {
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                         value={distributor}
                                         onChange={(e) => setDistributor(e.target.value)}
-
                                     >
                                         {distributorData.map((item) => (
                                         <option key={item.distributorId} value={item.distributorName}>
@@ -536,7 +539,7 @@ const CaseDetailsNew = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
                                         <label className='text-xs text-black w-full text-start' htmlFor="">Does patient still have an active wound?:</label>
-                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
+                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                                    name="woundActive"
 
                                         id="woundActive"
@@ -556,9 +559,6 @@ const CaseDetailsNew = () => {
                    </form>
                </div>
            </section>
-
-
-                    {/* Patient Start ---------------------------*/}
                    
                     {/* Patient End ---------------------------*/}
 
