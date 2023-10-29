@@ -225,9 +225,7 @@ const CaseDetailsNew = () => {
       });
       if (response.status== 200) {
         // Data saved successfully
-        alert('Data saved successfully.');
       } else {
-        alert('Error saving data.');
       }
     } catch (error) {
       console.error('Error saving data:', error);
@@ -350,7 +348,6 @@ const handleEditRowChange = (index, column, value) => {
 };
 
  const handleAddWound = () => {
-    alert("ADD");
     const updatedWoundData = {
       trnRxId:woundDataRxId,
       trnFaxId:woundDataTranFaxId,
@@ -388,8 +385,6 @@ const handleEditRowChange = (index, column, value) => {
           //Authorization: `Bearer ${token}`,
         },
       };
-
-      alert("saving data");
       const updatedWoundData = woundData;
       const response = await axiosBaseURL.post(`/api/v1/fax/updateWoundInfoList`, updatedWoundData, config);
       //const woundNo = response.data.data.woundNo
@@ -416,7 +411,6 @@ const handleEditRowChange = (index, column, value) => {
         },
       };
 
-      alert("deleting data");
       const updatedWoundData = deleteWoundData;
       
 
@@ -470,7 +464,6 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleAddKit = () => {
-    alert("ADD");
     const addKitData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -563,7 +556,6 @@ const handleSaveKitClick = () => {
       //Authorization: `Bearer ${token}`,
     },
   };
-   alert("save Kit Data");
    console.log('Data Saving:', kitData);
    const dataToSave =kitData;
   // Send a POST request to the API with the headers
@@ -590,7 +582,6 @@ const handleDeleteKitClick = () => {
       //Authorization: `Bearer ${token}`,
     },
   };
-   alert("Delete Kit Data");
    console.log('Delete Data Saving:', deleteKit);
    const dataToSave =deleteKit;
   // Send a POST request to the API with the headers
@@ -643,7 +634,6 @@ const handleDeleteKitClick = () => {
   };
 
   const handleAddHcp = () => {
-    alert("ADD HCP");
     const addHcpData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -740,7 +730,6 @@ const handleDeleteKitClick = () => {
         //Authorization: `Bearer ${token}`,
       },
     };
-     alert("save Office Data");
      console.log('Data Saving:', officeData);
      const dataToSave =officeData;
     // Send a POST request to the API with the headers
@@ -768,7 +757,6 @@ const handleDeleteKitClick = () => {
         //Authorization: `Bearer ${token}`,
       },
     };
-     alert("save Hcp Data");
      console.log('Data Saving:', hcpData);
      const dataToSave =hcpData;
     // Send a POST request to the API with the headers
