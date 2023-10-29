@@ -7,6 +7,22 @@ import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
 
+
+import { AiFillCloseCircle } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import { DuplicateContext } from '../../context/DuplicateContext';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import fax from "../../assets/pdf/fax.pdf"
+
+import { Document, Page, pdfjs } from 'react-pdf';
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css"
+import Loader from '../Loader';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+
 const CaseDetailsNew = () => {
   const { trnRxId } = useParams();
 
@@ -67,10 +83,11 @@ const CaseDetailsNew = () => {
   const handleSavePatientData = () => {
    // handlePatientSave();
    //handleWoundUpdate();
-  // handleWoundSave();
   //handleWoundDelete();
  // handleSaveKitClick();
-  handleDeleteKitClick();
+  //handleDeleteKitClick();
+  //handleSaveOfficeClick();
+  handleSaveHcpClick();
   };
 // Total Save Call
 
@@ -592,16 +609,248 @@ const handleDeleteKitClick = () => {
 
   //KIT END
 
+
+  //Physician Start
+  const [newApiData, setNewApiData] = useState([])
+  const [officeData, setOfficeData] = useState([]);
+
+
+  const [hcpData, setHcpData] = useState([]);
+  const [deleteHcp, setDeletHcp] = useState([]); 
+  const [hcpDataRxId, setHcpDataRxId] = useState(null);
+  const [hcpDataTranFaxId, setHcpDataRxIdTranFaxID] = useState(null);
+  const [hcpDataFaxId, setHcpDataRxIdFaxID] = useState(null);
+
+
+  useEffect(() => {
+    console.log(hcpData);
+  }, [hcpData]);
+  useEffect(() => {
+    console.log(deleteHcp);
+  }, [deleteHcp]);
+
+  const handleHcpEditRowChange = (index, column, value) => {
+    const updateHcpData = [...hcpData];
+    if(column == "signature_Flag"){
+       if(value){
+        value=1;
+       }else{
+        value=0;
+       }
+    }
+    updateHcpData[index][column] = value;
+    setHcpData(updateHcpData);
+  };
+
+  const handleAddHcp = () => {
+    alert("ADD HCP");
+    const addHcpData = {
+      trnRxId:kitDataRxId,
+      trnFaxId:kitDataTranFaxId,
+      faxId:kitDataFaxId,
+      hcpId: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      provider_Type: '',
+      npi: '',
+      signature_Flag: '',
+      signature_Date: '',
+      profId:'',
+      status:'insert'
+    }
+    console.log(addHcpData);
+    setHcpData([...hcpData, addHcpData]);
+  };
+
+/*   const handleDeleteHcp = (index) => {
+    hcpData[index]["status"] = "delete";
+    const deletedData =hcpData[index]
+    setDeletKit([...deleteHcp,deletedData]);
+    const updatedHcpData = hcpData.filter((_, i) => i !== index);
+    setHcpData(updatedHcpData);
+  };
+ */
+
+  const handleOfficeInputChange = (e) => {
+    const { name, value } = e.target;
+    setOfficeData({
+      ...officeData,
+      [name]: value,
+    });
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('tokenTika');
+        const config = {
+          headers: {
+           // Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const response = await axiosBaseURL.get(`/api/v1/fax/hcpInfo/${trnRxId}`, config);
+        //const trnFaxId = response.data.data[0].trnFaxId;
+        // setTrnFaxId(trnFaxId);
+        setHcpData(response.data.data);
+        //  setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchOfficeInfo = async () => {
+      try {
+        const token = localStorage.getItem('tokenTika');
+        const config = {
+          headers: {
+           // Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const response = await axiosBaseURL.get(`/api/v1/fax/officeInfo/${trnRxId}`, config);
+        const officeInfo = response.data.data[0];
+        console.log("Office Data---->");
+        console.log(officeInfo);
+        setOfficeData(officeInfo);
+        ///console.log(officeName);
+      } catch (error) {
+        console.error('Error fetching office data:', error);
+      }
+    };
+
+    fetchOfficeInfo();
+  }, []);
+
+
+  const handleSaveOfficeClick = () => {
+
+    // Get the token from your authentication mechanism, e.g., localStorage
+    const token = localStorage.getItem('token');
+  
+    // Define the request headers with the Authorization header
+    const config = {
+      headers: {
+        //Authorization: `Bearer ${token}`,
+      },
+    };
+     alert("save Office Data");
+     console.log('Data Saving:', officeData);
+     const dataToSave =officeData;
+    // Send a POST request to the API with the headers
+    axiosBaseURL
+      .put('/api/v1/fax/officeInfo', dataToSave, config)
+      .then((response) => {
+        // Handle the response from the API if needed
+        console.log('Data saved successfully:', response.data);
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        console.error('Error saving data:', error);
+      });
+  };
+  
+
+  const handleSaveHcpClick = () => {
+
+    // Get the token from your authentication mechanism, e.g., localStorage
+    const token = localStorage.getItem('token');
+  
+    // Define the request headers with the Authorization header
+    const config = {
+      headers: {
+        //Authorization: `Bearer ${token}`,
+      },
+    };
+     alert("save Hcp Data");
+     console.log('Data Saving:', hcpData);
+     const dataToSave =hcpData;
+    // Send a POST request to the API with the headers
+    axiosBaseURL
+      .post('/api/v1/fax/updateHCPInfoList', dataToSave, config)
+      .then((response) => {
+        // Handle the response from the API if needed
+        console.log('Data saved successfully:', response.data);
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        console.error('Error saving data:', error);
+      });
+  };
+  
+
+  //Physician End
+
+
+  //PDF RENDER START
+
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pdfData, setPdfData] = useState(null);
+  const [isPdfloading, setIsPdfLoading] = useState(false)
+  const [scalePopUp, setScalePopoup] = useState(1);
+  const [scale, setScale] = useState(1);
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  }
+
+  const previousPage = () => {
+    setPageNumber(pageNumber <= 1 ? 1 : pageNumber - 1);
+  }
+
+  const nextPage = () => {
+    setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
+  }
+
+  useEffect(() => {
+    const fetchPdf = async () => {
+      setIsPdfLoading(true)
+      try {
+        const response = await axiosBaseURL.get(
+          "https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370",
+          { responseType: 'arraybuffer' }
+        );
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        setIsPdfLoading(false)
+        setPdfData(url);
+      } catch (error) {
+        console.error("Error fetching PDF:", error);
+      }
+    };
+
+    fetchPdf();
+  }, []);
+
+  const zoomOutSecond = () => {
+    setScale(scale -0.2);
+}
+
+const zoomInSecond = () => {
+    setScale(scale+0.2);
+}
+// const onDocumentLoadSuccess = ({ numPages2 }) => {
+//     setNumPages2(numPages2);
+// }
+  //PDF RENDER END 
+
   return (
     <>
       {
-      <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
-          <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[640px] no-scrollbar ">
+      <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
+          <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[620px] scrollbar ">
               <div className='flex md:flex-row flex-col gap-5'>
-                  <div className='w-full h-screen  flex flex-col gap-2'>
+                  <div className='w-full flex flex-col gap-2'>
 
             {/* Patient Start ---------------------------*/}
-            <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
+            <section className=" ">
             <div className='w-full h-[calc(130vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                 <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
@@ -902,7 +1151,7 @@ const handleDeleteKitClick = () => {
           {/* Patient End ---------------------------*/}
 
       {/* Order and Kit Start ---------------------------*/}
-      <div className='w-full h-[500px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
+      <div className='w-full h-[calc(130vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
                 <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
@@ -1036,7 +1285,7 @@ const handleDeleteKitClick = () => {
         {/* Order and Kit End ---------------------------*/}
 
        {/*  Kit Start ---------------------------*/}
-       <div className='w-full h-[400px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
+       <div className='w-full h-[150px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
                 <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
@@ -1127,33 +1376,246 @@ const handleDeleteKitClick = () => {
             </div>
                 {/*  Kit end ---------------------------*/}
 
-      </div>
 
-                  <div className='w-full h-screen  bg-white rounded-xl border-2 shadow-xl relative'>
-                    <div className='flex justify-center w-full gap-2 mt-1 absolute  bottom-2'>
-                      <div className='w-7 h-7 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer'> <FaArrowLeft /></div>
-                      <div className='w-7 h-7 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer'> <FaArrowRight /></div>
+                  {/*  Physician Start ---------------------------*/}
+          <div className='w-full h-[calc(120vh-30rem)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-5 scrollbar'>
+            <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09] absolute top-0  '>
+              <hr className="h-px border-[#e36c09] border w-32  absolut " />
+              <p className='absolute top-0 text-[#e36c09] text-sm'>Physicain</p>
+            </div>
+            <div className='flex flex-col justify-center w-full items-center  md:pt-10 pt-5 pl-5'>
+ 
+
+              <div className=' flex  items-center  gap-5 '>
+                <p className='text-xs text-black' htmlFor="">Office Name:</p>
+                <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                  type="text"
+                  name="accountName"
+                  id='accountName'
+                  value={officeData.accountName}
+                  onChange={handleOfficeInputChange}
+                />
+              </div>
+              
+              <div className=' flex  items-center  gap-5 pt-1'>
+                <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
+                <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                type="text"
+                id='cellPhone'
+                name="cellPhone"
+                value={officeData.cellPhone}
+                onChange={handleOfficeInputChange}
+                />
+              </div>
+
+                    <div className=' flex  items-center  gap-5 pt-1'>
+                      <p className='text-xs text-black pl-7   ' htmlFor="">Email:</p>
+                      <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                      type="text"
+                      id='cellPhone'
+                      name="email"
+                      value={officeData.email}
+                      onChange={handleOfficeInputChange}
+                      />
                     </div>
 
-                    <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
-                      <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer'  > <LuPlus /></div>
-                      <div className=' rounded-lg w-7 h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' > <LuMinus /></div>
+                    <div className=' flex  items-center  gap-5 pt-1'>
+                      <p className='text-xs text-black pl-8   ' htmlFor="">City:</p>
+                      <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                        type="text"
+                        value={officeData.city}
+                        name="city"
+                        onChange={handleOfficeInputChange}
+                      />
                     </div>
-                    <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
-                      <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                      <p className='absolute top-0 text-[#e36c09] text-sm'>Fax</p>
+
+                    <div className=' flex  items-center  gap-5 pt-1'>
+                      <p className='text-xs text-black pl-[25px]   ' htmlFor="">State:</p>
+                      <select className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                          // style={{ width: '7rem', margin: '2px' }}
+                          fullWidth
+                          size="small"
+                          name="state"
+                          value={officeData.state}
+                          onChange={handleOfficeInputChange}
+                        >
+                          {states.map((state) => (
+                            <option key={state.stateName} value={state.shortName}>
+                              {state.stateName}
+                            </option>
+                          ))}
+                        </select>
                     </div>
+
+                    <div className=' flex  items-center  gap-5 pt-1'>
+                      <p className='text-xs text-black pl-8   ' htmlFor="">ZIp:</p>
+                      <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                        type="text"
+                        value={officeData.zip}
+                        name="zip"
+                        onChange={handleOfficeInputChange}
+                      />
+                    </div>
+
                   </div>
 
-    </div>
-                <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
+                  <div className='hidde' >
+                    <div className='flex  justify-end'>
+                      <div className='absolut  md:top-0 top-6  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'
+                        onClick={handleAddHcp}
+                      >
+                        <div className=' flex justify-around px-1'>
+                          <div className='flex  relative'>
+                            <MdAddBox className='text-lg' />
+                            <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
+                          </div>
+
+                          <p className='text-white text-xs'
+
+                          >ADD</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll   no-scrollbar">
+                      <table className=" text-sm text-center table-auto   ">
+                        <thead className="">
+                          <tr className="text-xs text-white font-bold bg-[#246180] rounded-2xl ">
+                            <th className="px-2 py-3  border">Signed</th>
+                            <th className="px-2 py-3 border">First Name</th>
+                            <th className="px-2 py-3 border">Middle Name</th>
+                            <th className="px-2 py-3 border">Last Name</th>
+                            <th className="px-2 py-3 border">NPI</th>
+                           {/*  <th className="px-2 py-3  border">Delete</th> */}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {hcpData.map((data, index) => (
+                            <tr key={index}
+                            // className={index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}
+                            >
+                              <td className="p-1">
+                                <input 
+                                  type="checkbox"
+                                  className="relative h-3 w-3 cursor-pointer"
+                                  id={`checkbox-${index}`}
+                                  defaultChecked={data.signed}
+                                  onChange={(e) => handleHcpEditRowChange(index, 'signed', e.target.checked)}
+                                />
+                              </td>
+                              <td className="p- rounded-2xl border">
+                                <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                            type="text"
+                                            id='firstName'
+                                            name='firstName'
+                                            value= {data.firstName}
+                                            onChange={(e) => handleHcpEditRowChange(index, 'firstName', e.target.value)}
+                                        />
+                              </td>
+                              <td className="p- rounded-2xl border">
+                                <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                            type="text"
+                                            id='middleName'
+                                            name='middleName'
+                                            value= {data.middleName}
+                                            onChange={(e) => handleHcpEditRowChange(index, 'middleName', e.target.value)}
+                                        />
+                                </td>
+                              <td className="p- rounded-2xl border">
+                                <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                            type="text"
+                                            id='lastName'
+                                            name='lastName'
+                                            value= {data.lastName}
+                                            onChange={(e) => handleHcpEditRowChange(index, 'lastName', e.target.value)}
+                                        />
+                              </td>
+                              <td className="p- rounded-2xl border">
+                                <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                            type="text"
+                                            id='npi'
+                                            name='npi'
+                                            value= {data.npi}
+                                            onChange={(e) => handleHcpEditRowChange(index, 'npi', e.target.value)}
+                                        />
+                                
+                                </td>
+{/*                               <td className="className='bg-gray-300 text-gray600 p-1 border   flex justify-center text-xl text-red-600  items-center" onClick={() => handleDeleteKit(index)}>
+                                <AiFillCloseSquare />
+                              </td> */}
+                            </tr>
+                          ))}
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  </div>
+                  {/*  Physician End ---------------------------*/}
+      </div>
+
+            <div className='w-full h-screen  bg-white rounded-xl border-2 shadow-xl relative'>
+            <div className='text-white w-full lg:h-[calc(100%-1rem)] h-screen bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
+                        <div className='flex justify-center gap-2 mt-1 absolute bottom-3 w-full'>
+                            <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <=1 ? "bg-[#d9e0e3]": "bg-[#00aee6]" }`} onClick={previousPage}> <FaArrowLeft /></div>
+                            <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
+                        </div>
+
+                        <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomInSecond}> <ZoomInIcon className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+                        </div>
+
+                        <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
+                            <div className=' w-full h-full  '>
+                                <div className='text-black overflow-hidden  no-scrollbar overflow-x-scroll overflow-y-scroll'>
+
+                                    {
+                                        !isPdfloading ?
+                                            <>
+
+                                                <Document className=" "
+
+                                                    file={pdfData}
+                                                    onLoadSuccess={onDocumentLoadSuccess}
+                                                >
+                                                    <Page pageNumber={pageNumber} scale={scale}
+                                                        width={500}
+                                                        height={500}
+
+                                                    />
+                                                </Document>
+                                            </>
+                                            :
+                                            <>
+                                                <div className='w-full flex justify-center items-center mt-32'>
+                                                    <Loader />
+                                                </div>
+
+                                            </>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='absolute top-1 flex  w-full left-1'>
+                            <p className='text-[#717171] text-sm absolute md:top-2 md:bottom-0 -bottom-10 w-20'>Page: {pageNumber}</p>
+                        </div>
+
+                        <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                            <hr className="h-px border-[#e36c09] border w-32  absolute top-0 " />
+                            <p className='absolute top-0 text-[#e36c09] text-sm'>Fax</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
                   <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-lg flex justify-center md:text-base text-xs'>Discard</div>
                   <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-lg flex justify-center md:text-base text-xs' onClick={handleSavePatientData}>Save</div>
                   <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer'>Ready for Review</div>
                 </div>
-              </div>
-
-
+    </div>
   </div>
       }
     </>
