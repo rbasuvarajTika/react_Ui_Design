@@ -69,7 +69,8 @@ const CaseDetailsNew = () => {
    //handleWoundUpdate();
   // handleWoundSave();
   //handleWoundDelete();
-  handleSaveButtonClick();
+ // handleSaveKitClick();
+  handleDeleteKitClick();
   };
 // Total Save Call
 
@@ -426,11 +427,17 @@ const handleEditRowChange = (index, column, value) => {
   //KIT START
   const [kitData, setKitData] = useState([]);
   const [product, setProductData] = useState([]);
-  const [newKit, setNewKit] = useState({}); // State for the new kit data
+  const [deleteKit, setDeletKit] = useState([]); 
   const [kitDataRxId, setKitDataRxId] = useState(null);
   const [kitDataTranFaxId, setKitDataRxIdTranFaxID] = useState(null);
   const [kitDataFaxId, setKitDataRxIdFaxID] = useState(null);
 
+  useEffect(() => {
+    console.log(kitData);
+  }, [kitData]);
+  useEffect(() => {
+    console.log(deleteKit);
+  }, [deleteKit]);
 
   const handleKitEditRowChange = (index, column, value) => {
     const updateKitData = [...kitData];
@@ -446,14 +453,57 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleAddKit = () => {
-    setKitData([...kitData, newKit]);
-    setNewKit({});
+    alert("ADD");
+    const addKitData = {
+      trnRxId:kitDataRxId,
+      trnFaxId:kitDataTranFaxId,
+      faxId:kitDataFaxId,
+      productId: '',
+      productCode: '',
+      productDisplayName:'',
+      quantity: '',
+      wnd1: 0,
+      wnd2: 0,
+      wnd3: 0,
+      wnd4: 0,
+      wndCode:'',
+      status:'insert'
+    }
+    console.log(addKitData);
+    setKitData([...kitData, addKitData]);
   };
 
   const handleDeleteKit = (index) => {
+    kitData[index]["status"] = "delete";
+    const deletedData =kitData[index]
+    setDeletKit([...deleteKit,deletedData]);
     const updatedKitData = kitData.filter((_, i) => i !== index);
     setKitData(updatedKitData);
   };
+
+  useEffect(() => {
+    // Define a function to fetch the state data from the API
+    const fetchProductData = async () => {
+      try {
+        const token = localStorage.getItem('tokenTika');
+        const config = {
+          headers: {
+            //Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const response = await axiosBaseURL.get('/api/v1/fax/productInfo', config);
+        const productData = response.data.data; // Assuming the API returns an array of states
+        setProductData(productData);
+      } catch (error) {
+        console.error('Error fetching state data:', error);
+      }
+    };
+
+    // Call the fetchStateData function when the component mounts
+    fetchProductData();
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -485,7 +535,7 @@ const handleEditRowChange = (index, column, value) => {
 },[]);
 
 
-const handleSaveButtonClick = () => {
+const handleSaveKitClick = () => {
 
   // Get the token from your authentication mechanism, e.g., localStorage
   const token = localStorage.getItem('token');
@@ -499,6 +549,33 @@ const handleSaveButtonClick = () => {
    alert("save Kit Data");
    console.log('Data Saving:', kitData);
    const dataToSave =kitData;
+  // Send a POST request to the API with the headers
+  axiosBaseURL
+    .post('/api/v1/fax/updateProductInfoList', dataToSave, config)
+    .then((response) => {
+      // Handle the response from the API if needed
+      console.log('Data saved successfully:', response.data);
+    })
+    .catch((error) => {
+      // Handle any errors that occurred during the request
+      console.error('Error saving data:', error);
+    });
+};
+
+const handleDeleteKitClick = () => {
+
+  // Get the token from your authentication mechanism, e.g., localStorage
+  const token = localStorage.getItem('token');
+
+  // Define the request headers with the Authorization header
+  const config = {
+    headers: {
+      //Authorization: `Bearer ${token}`,
+    },
+  };
+   alert("Delete Kit Data");
+   console.log('Delete Data Saving:', deleteKit);
+   const dataToSave =deleteKit;
   // Send a POST request to the API with the headers
   axiosBaseURL
     .post('/api/v1/fax/updateProductInfoList', dataToSave, config)
@@ -992,11 +1069,11 @@ const handleSaveButtonClick = () => {
                                         <select className='bg-[#f2f2f2] text-gray-600 rounded-3xl h-5 w-24 border text-xs'
                                          value={kit.productCode}
                                          onChange={(e) => handleKitEditRowChange(index, 'productCode', e.target.value)}>
-                                            <option value={kit.productCode} className=''>{kit.productCode}</option>
+                                        <option value={kit.productCode} className=''>{kit.productCode}</option>
 
-                                        {states.map((state) => (
-                                        <option key={state.stateName} value={state.shortName}>
-                                            {state.stateName}
+                                        {product.map((product) => (
+                                        <option key={product.productCode} value={product.productCode}>
+                                            {product.productCode}
                                         </option>
                                         ))}
                                         </select>
