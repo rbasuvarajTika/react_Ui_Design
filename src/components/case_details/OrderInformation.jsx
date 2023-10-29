@@ -52,6 +52,7 @@ const OrderInformation = ({ openNetSuit }) => {
 
         fetchData();
     }, []);
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -102,6 +103,49 @@ const OrderInformation = ({ openNetSuit }) => {
         const updatedKitData = kitData.filter((_, i) => i !== index);
         setKitData(updatedKitData);
       };
+
+
+
+      const handleSaveButtonClick = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+      
+          // Make a POST request to the API to save the new row data
+          const response = await axiosBaseURL.post(`/api/v1/fax/woundInfo`, newRowData, config);
+      
+          if (response.status === 200) {
+            // The data was successfully saved. You can handle the success here.
+            console.log('Data saved successfully.');
+      
+            // Reset newRowData and setIsAddClicked to false
+            setNewRowData({
+              trnFaxId:trnFaxId,
+              woundNo: '',
+              woundLocation: '',
+              woundLength: '',
+              woundWidth: '',
+              woundDepth: '',
+              woundType: '',
+              drainage: '',
+              debrided: '',
+              icdCode: '',
+              debridedDate: '',
+            });
+            setIsAddClicked(false);
+          } else {
+            // Handle any errors or validation issues here.
+            console.error('Error saving data:', response.data);
+          }
+        } catch (error) {
+          console.error('Error saving data:', error);
+        }
+      };
+    
 
 
     return (
@@ -227,6 +271,10 @@ const OrderInformation = ({ openNetSuit }) => {
                 {/* {
                     openNetSuit ? ""
                         : */}
+                        <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                <hr className="h-px border-[#e36c09] border w-32  absolut " />
+                <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
+            </div>
                         <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer' onClick={handleAddKit}>
                             <div className=' flex justify-around px-1'>
                                 <div className='flex  relative'>
@@ -250,8 +298,7 @@ const OrderInformation = ({ openNetSuit }) => {
                                 <th className="px-2 py-3 border">(WND)3</th>
                                 <th className="px-2 py-3 border">Delete</th>
                             </tr>
-                        </thead>
-
+                        </thead>  
                         <tbody>
                             {kitData.map((kit, index) => (
                                 <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-[#f2f2f2]'}>

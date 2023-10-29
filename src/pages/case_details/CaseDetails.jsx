@@ -12,6 +12,14 @@ import { DuplicateContext } from '../../context/DuplicateContext';
 const CaseDetails = () => {
   // const [openNetSuit, setNetSuit] = useState(false)
   const { openNetSuit, setNetSuit} = useContext(DuplicateContext)
+  const [patientData, setPatientData] = useState({});
+
+
+  const handleSavePatientData = (data) => {
+    setPatientData(data);
+    console.log('Patient Data Received:', data); // Log received data
+  };
+
 
   const handle_netSuitSubmission = () => {
     setNetSuit(true)
@@ -29,7 +37,7 @@ const CaseDetails = () => {
                   <div className='w-full h-screen  flex flex-col gap-2'>
 
                     {/* Patient */}
-                    <Patients />
+                    <Patients savePatientData={handleSavePatientData} />
 
 
 
@@ -61,7 +69,7 @@ const CaseDetails = () => {
                 </div>
                 <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
                   <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-lg flex justify-center md:text-base text-xs'>Discard</div>
-                  <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-lg flex justify-center md:text-base text-xs'>Save</div>
+                  <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-lg flex justify-center md:text-base text-xs' onClick={handleSavePatientData}>Save</div>
                   <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' onClick={handle_netSuitSubmission}>Ready for Review</div>
                 </div>
               </div>
