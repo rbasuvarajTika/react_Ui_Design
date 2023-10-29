@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosBaseURL from '../axios';
 import { useParams } from 'react-router-dom';
 
-const Patients = ({ sendfaxId }) => {
+const Patients = ({ sendfaxId,savePatientData }) => {
   const [patientFirstName, setPatientFirstName] = useState('');
   const [patientMiddleName, setPatientMiddleName] = useState('');
   const [patientLastName, setPatientLastName] = useState('');
@@ -23,9 +23,38 @@ const Patients = ({ sendfaxId }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [distributorData, setDistributorData] = useState([]);
   const [states, setStates] = useState([]);
+  const [patientId, setPatientId] = useState(''); 
+  const [trnFaxId, setTrnFaxId] = useState('');
+  const [faxId, setFaxId] = useState('');
   const [patientData, setPatientData] = useState({
     state: '', // Initialize patientData with an object containing 'state' property
   });
+  const [patientInfo, setPatientInfo] = useState({ patientId: patientId,
+    trnFaxId:trnFaxId,
+    faxId:faxId,
+    patientFirstName: patientFirstName,
+   patientMiddleName:patientMiddleName,
+   patientLastName:patientLastName,
+   cellPhone: cellPhone,
+   shipToAddress: shipToAddress,
+   ssn: ssn,
+   city:  city,
+   state:patientData.state,
+   zip: zip,
+   dateOfBirth: dateOfBirth,
+   repName:repName ,
+   repPhoneNo:"repPhoneNo",
+   placeOfService: placeOfService,
+   distributorName: distributor,
+   orderType: orderType,
+   woundActive:woundActive, });
+
+   useEffect(() => {
+    // This effect will trigger whenever patientInfo changes
+    savePatientData(patientInfo);
+  }, [patientInfo, savePatientData]);
+
+
   const { trnRxId } = useParams();
   useEffect(() => {
     const fetchPatientData = async () => {
@@ -58,6 +87,9 @@ const Patients = ({ sendfaxId }) => {
           setDistributor(patientData.distributorName);
           setOrderType(patientData.orderType);
           setActiveWound(patientData.woundActive)
+          setPatientId(patientData.patientId);
+          setTrnFaxId(patientData.trnFaxId);
+          setFaxId(patientData.faxId);
           setIsLoading(false);
         } else {
           // Handle the case where no data is returned or the structure is different
@@ -78,7 +110,7 @@ const Patients = ({ sendfaxId }) => {
         const token = localStorage.getItem('tokenTika');
         const config = {
           headers: {
-            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer ${token}`,
           },
         };
 
@@ -101,7 +133,7 @@ const Patients = ({ sendfaxId }) => {
         const token = localStorage.getItem('tokenTika');
         const config = {
           headers: {
-            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer ${token}`,
           },
         };
 
@@ -116,10 +148,12 @@ const Patients = ({ sendfaxId }) => {
     // Call the fetchStateData function when the component mounts
     fetchStateData();
   }, []);
+
+
   return (
     <>
 
-      <div className='w-full h-[calc(100vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
+      <div className='w-full h-[calc(130vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
         <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
           <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
           <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
@@ -155,7 +189,7 @@ const Patients = ({ sendfaxId }) => {
                   />
                 </div>
                 <div className=' flex  items-center '>
-                  <p className='text-xs text-black ' htmlFor="">Middle Name :</p>
+                  <p className='text-xs text-black ' htmlFor="">Last Name :</p>
                   <input className='bg-gray-200 rounded-2xl border border-gray-300 w-20 text-black h-5 text-xs'
                     type="text"
                     id="middleName"
@@ -169,10 +203,10 @@ const Patients = ({ sendfaxId }) => {
               {/* second part */}
               <div className='md:flex justify-around  w-full pt-1'>
                 <div className=' flex  items-center gap-2  '>
-                  <p className='text-xs text-black    ' htmlFor="">Patient Name:</p>
+                  <p className='text-xs text-black    ' htmlFor="">Date Of Birth:</p>
                   <div className='flex items-center'>
                     <input className='bg-gray-200 rounded-2xl border border-gray-300 w-[148px] text-black h-5 text-xs'
-                      type="date"
+                      type="text"
                       id="dateOfBirth"
                       name="dateOfBirth"
                       value={dateOfBirth || ''}

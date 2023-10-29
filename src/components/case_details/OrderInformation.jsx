@@ -227,6 +227,10 @@ const OrderInformation = ({ openNetSuit }) => {
                 {/* {
                     openNetSuit ? ""
                         : */}
+                        <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                <hr className="h-px border-[#e36c09] border w-32  absolut " />
+                <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
+            </div>
                         <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer' onClick={handleAddKit}>
                             <div className=' flex justify-around px-1'>
                                 <div className='flex  relative'>
@@ -250,8 +254,7 @@ const OrderInformation = ({ openNetSuit }) => {
                                 <th className="px-2 py-3 border">(WND)3</th>
                                 <th className="px-2 py-3 border">Delete</th>
                             </tr>
-                        </thead>
-
+                        </thead>  
                         <tbody>
                             {kitData.map((kit, index) => (
                                 <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-[#f2f2f2]'}>
