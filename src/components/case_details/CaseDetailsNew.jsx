@@ -81,12 +81,12 @@ const CaseDetailsNew = () => {
 
   // Total Save Call
   const handleSavePatientData = () => {
-   // handlePatientSave();
-   //handleWoundUpdate();
-  //handleWoundDelete();
- // handleSaveKitClick();
-  //handleDeleteKitClick();
-  //handleSaveOfficeClick();
+   handlePatientSave();
+   handleWoundUpdate();
+  handleWoundDelete();
+  handleSaveKitClick();
+  handleDeleteKitClick();
+  handleSaveOfficeClick();
   handleSaveHcpClick();
   };
 // Total Save Call
