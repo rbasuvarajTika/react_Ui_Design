@@ -21,6 +21,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
 import { ToastContainer, toast } from 'react-toast'
+import { Checkbox } from '@mui/material';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -1464,30 +1465,53 @@ const zoomInSecond = () => {
                                       </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <input type="text" name="woundLength" id="woundLength" value={row.woundLength} 
-                                        onChange={(e) => handleEditRowChange(index, 'woundLength', e.target.value)}
+                                         onChange={(e) => handleEditRowChange(index, 'woundLength', e.target.value)}
+
                                         className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                         </>:<>
+                                      <input type="text" name="woundLength" id="woundLength" value={row.woundLength} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
-                                        <input type="text" name="woundLength" id="woundWidth" value={row.woundWidth} 
+                                    {!openNetSuit ?<>
+                                        <input type="text" name="woundWidth" id="woundWidth" value={row.woundWidth} 
                                         onChange={(e) => handleEditRowChange(index, 'woundWidth', e.target.value)}
                                         className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                           </>:<>
+                                      <input type="text" name="woundWidth" id="woundWidth" value={row.woundWidth} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
-                                        <input type="text" name="woundDepth" id="woundWidth" value={row.woundDepth} 
+                                    {!openNetSuit ?<>
+                                        <input type="text" name="woundDepth" id="woundDepth" value={row.woundDepth} 
                                         onChange={(e) => handleEditRowChange(index, 'woundDepth', e.target.value)}
                                         className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                           </>:<>
+                                      <input type="text" name="woundDepth" id="woundDepth" value={row.woundDepth} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
+                                           
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'   
                                              name="woundThickness" id="woundThickness"
                                             onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
                                                 <option value={row.woundThickness}>{row.woundThickness}</option>
                                             </select>
                                         </p>
+                                        </>:<>
+                                      <input type="text" name="woundThickness" id="woundThickness" value={row.woundThickness} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
                                              name="drainage" id="drainage"
@@ -1495,8 +1519,13 @@ const zoomInSecond = () => {
                                                 <option value={row.drainage}>{row.drainage}</option>
                                             </select>
                                         </p>
+                                        </>:<>
+                                      <input type="text" name="drainage" id="drainage" value={row.drainage} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
                                             name="debrided" id="debrided"
@@ -1504,18 +1533,33 @@ const zoomInSecond = () => {
                                                 <option value={row.debrided}>{row.debrided}</option>
                                             </select>
                                         </p>
+                                        </>:<>
+                                      <input type="text" name="debrided" id="debrided" value={row.debrided} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <input type="text" name="icdCode" id="icdCode" value={row.icdCode} 
                                         onChange={(e) => handleEditRowChange(index, 'icdCode', e.target.value)}
                                         className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                         </>:<>
+                                      <input type="text" name="icdCode" id="icdCode" value={row.icdCode} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                         onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
                                         className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                            </>:<>
+                                      <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
                                              name="debridedType" id="debridedType"
@@ -1523,6 +1567,10 @@ const zoomInSecond = () => {
                                                 <option value={row.debridedType}>{row.debridedType}</option>
                                             </select>
                                         </p>
+                                        </>:<>
+                                      <input type="text" name="debridedType" id="debridedType" value={row.debridedType} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     {!openNetSuit ?<>
                                     <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center border" onClick={() => handleDeleteWound(index)}>
@@ -1577,6 +1625,7 @@ const zoomInSecond = () => {
                             {kitData.map((kit, index) => (
                                 <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-[#f2f2f2]'}>
                                     <td className="p-1 border">
+                                    {!openNetSuit ?<>
                                         <select className='bg-[#f2f2f2] text-gray-600 rounded-3xl h-5 w-24 border text-xs'
                                          value={kit.productCode}
                                          onChange={(e) => handleKitEditRowChange(index, 'productCode', e.target.value)}>
@@ -1588,8 +1637,13 @@ const zoomInSecond = () => {
                                         </option>
                                         ))}
                                         </select>
+                                        </>:<>
+                                      <input type="text" name="productCode" id="productCode" value={kit.productCode} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 border">
+                                    {!openNetSuit ?<>
                                         <select className='bg-[#f2f2f2] text-gray-600 rounded-3xl h-5 w-24 border text-xs'
                                          value={kit.quantity}
                                          onChange={(e) => handleKitEditRowChange(index, 'quantity', e.target.value)}>
@@ -1599,8 +1653,13 @@ const zoomInSecond = () => {
                                           <option value="45">45</option>
                                           <option value="60">60</option>
                                         </select>
+                                        </>:<>
+                                      <input type="text" name="quantity" id="quantity" value={kit.quantity} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 border">
+                                    {!openNetSuit ?<>
                                         <input
                                             type="checkbox"
                                             className="relative h-3 w-3 cursor-pointer"
@@ -1608,8 +1667,13 @@ const zoomInSecond = () => {
                                             defaultChecked={kit.wnd1}
                                             onChange={(e) => handleKitEditRowChange(index, 'wnd1', e.target.checked)}
                                         />
+                                         </>:<>
+                                      <input type="text" name="wnd1" id="wnd1" value={kit.wnd1} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 border">
+                                    {!openNetSuit ?<>
                                         <input
                                             type="checkbox"
                                             className="relative h-3 w-3 cursor-pointer"
@@ -1617,6 +1681,15 @@ const zoomInSecond = () => {
                                             defaultChecked={kit.wnd2}
                                             onChange={(e) => handleKitEditRowChange(index, 'wnd2', e.target.checked)}
                                         />
+                                         </>:<>
+                                         <input
+                                         type="checkbox"
+                                            className="relative h-3 w-3 cursor-pointer"
+                                            id={`checkbox-${index}`}
+                                            defaultChecked={kit.wnd2}
+                                           
+                                        />
+                                      </>}
                                     </td>
                                     <td className="p-1 border-2">
                                         <input
@@ -1762,7 +1835,7 @@ const zoomInSecond = () => {
                       <input className='w-32 text-black py-0.5 text-xs t-1' 
                        type="text"
                        value={officeData.state}
-                       name="cstateity"
+                       name="state"
                        readOnly
                       />
                       </>}
@@ -1840,6 +1913,7 @@ const zoomInSecond = () => {
                                 />
                               </td>
                               <td className="p- rounded-2xl border">
+                              {!openNetSuit ?<>
                                 <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
                                             type="text"
                                             id='firstName'
@@ -1847,8 +1921,13 @@ const zoomInSecond = () => {
                                             value= {data.firstName}
                                             onChange={(e) => handleHcpEditRowChange(index, 'firstName', e.target.value)}
                                         />
+                                         </>:<>
+                                      <input type="text" name="firstName" id="firstName" value={data.firstName} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                               </td>
                               <td className="p- rounded-2xl border">
+                              {!openNetSuit ?<>
                                 <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
                                             type="text"
                                             id='middleName'
@@ -1856,8 +1935,13 @@ const zoomInSecond = () => {
                                             value= {data.middleName}
                                             onChange={(e) => handleHcpEditRowChange(index, 'middleName', e.target.value)}
                                         />
+                                          </>:<>
+                                      <input type="text" name="middleName" id="middleName" value={data.middleName} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                 </td>
                               <td className="p- rounded-2xl border">
+                              {!openNetSuit ?<>
                                 <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
                                             type="text"
                                             id='lastName'
@@ -1865,8 +1949,13 @@ const zoomInSecond = () => {
                                             value= {data.lastName}
                                             onChange={(e) => handleHcpEditRowChange(index, 'lastName', e.target.value)}
                                         />
+                                        </>:<>
+                                      <input type="text" name="lastName" id="lastName" value={data.lastName} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                               </td>
                               <td className="p- rounded-2xl border">
+                              {!openNetSuit ?<>
                                 <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
                                             type="text"
                                             id='npi'
@@ -1874,6 +1963,10 @@ const zoomInSecond = () => {
                                             value= {data.npi}
                                             onChange={(e) => handleHcpEditRowChange(index, 'npi', e.target.value)}
                                         />
+                                          </>:<>
+                                      <input type="text" name="npi" id="npi" value={data.npi} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                 
                                 </td>
                           {!openNetSuit ?<>
