@@ -929,7 +929,7 @@ const zoomInSecond = () => {
   return (
     
       <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
-          <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[620px] scrollbar ">
+          <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[620px] no-scrollbar ">
               <div className='flex md:flex-row flex-col gap-1'>
                   <div className='w-full flex flex-col gap-1'>
             {/* Patient Start ---------------------------*/}
