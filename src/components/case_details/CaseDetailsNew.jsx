@@ -1651,6 +1651,7 @@ const zoomInSecond = () => {
 
                     <div className=' flex  items-center  gap-5 '>
                       <p className='text-xs text-black' htmlFor="">Office Name:</p>
+                      {!openNetSuit ?<>
                       <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                         type="text"
                         name="accountName"
@@ -1658,10 +1659,20 @@ const zoomInSecond = () => {
                         value={officeData.accountName}
                         onChange={handleOfficeInputChange}
                       />
+                      </>:<>
+                      <input className='w-32 text-black py-0.5 text-xs t-1' 
+                       type="text"
+                       name="accountName"
+                       id='accountName'
+                       value={officeData.accountName}
+                       readOnly
+                      />
+                      </>}
                     </div>
               
                     <div className=' flex  items-center  gap-5 pt-1'>
                       <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
+                      {!openNetSuit ?<>
                       <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                       type="text"
                       id='phone'
@@ -1669,31 +1680,60 @@ const zoomInSecond = () => {
                       value={officeData.phone}
                       onChange={handleOfficeInputChange}
                       />
+                       </>:<>
+                      <input className='w-32 text-black py-0.5 text-xs t-1' 
+                       type="text"
+                       id='phone'
+                       name="phone"
+                       value={officeData.phone}
+                       readOnly
+                      />
+                      </>}
                     </div>
 
                     <div className=' flex  items-center  gap-5 pt-1'>
                       <p className='text-xs text-black pl-7   ' htmlFor="">Email:</p>
+                      {!openNetSuit ?<>
                       <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                       type="text"
-                      id='cellPhone'
+                      id='email'
                       name="email"
                       value={officeData.email}
                       onChange={handleOfficeInputChange}
                       />
+                       </>:<>
+                      <input className='w-32 text-black py-0.5 text-xs t-1' 
+                       type="text"
+                       id='email'
+                       name="email"
+                       value={officeData.email}
+                       readOnly
+                      />
+                      </>}
                     </div>
 
                     <div className=' flex  items-center  gap-5 pt-1'>
                       <p className='text-xs text-black pl-8   ' htmlFor="">City:</p>
+                      {!openNetSuit ?<>
                       <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                         type="text"
                         value={officeData.city}
                         name="city"
                         onChange={handleOfficeInputChange}
                       />
+                      </>:<>
+                      <input className='w-32 text-black py-0.5 text-xs t-1' 
+                       type="text"
+                       value={officeData.city}
+                       name="city"
+                       readOnly
+                      />
+                      </>}
                     </div>
 
                     <div className=' flex  items-center  gap-5 pt-1'>
                       <p className='text-xs text-black pl-[25px]   ' htmlFor="">State:</p>
+                      {!openNetSuit ?<>
                       <select className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                           // style={{ width: '7rem', margin: '2px' }}
                           fullWidth
@@ -1708,16 +1748,33 @@ const zoomInSecond = () => {
                             </option>
                           ))}
                         </select>
+                        </>:<>
+                      <input className='w-32 text-black py-0.5 text-xs t-1' 
+                       type="text"
+                       value={officeData.state}
+                       name="cstateity"
+                       readOnly
+                      />
+                      </>}
                     </div>
 
                     <div className=' flex  items-center  gap-5 pt-1'>
                       <p className='text-xs text-black pl-8   ' htmlFor="">ZIp:</p>
+                      {!openNetSuit ?<>
                       <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                         type="text"
                         value={officeData.zip}
                         name="zip"
                         onChange={handleOfficeInputChange}
                       />
+                      </>:<>
+                      <input className='w-32 text-black py-0.5 text-xs t-1' 
+                      type="text"
+                      value={officeData.zip}
+                      name="zip"
+                       readOnly
+                      />
+                      </>}
                     </div>
 
                   </div>

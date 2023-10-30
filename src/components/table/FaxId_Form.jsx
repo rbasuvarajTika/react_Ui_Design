@@ -12,6 +12,7 @@ import axios from 'axios';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
+import axiosBaseURL from '../axios';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -67,26 +68,32 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
   //   }
   // }, [])
 
-
   useEffect(() => {
     const fetchPdf = async () => {
       setIsLoading(true)
-      try {
-        const response = await axios.get(
-          "https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370",
-          { responseType: 'arraybuffer' }
-        );
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        setIsLoading(false)
-        setPdfData(url);
-      } catch (error) {
-        console.error("Error fetching PDF:", error);
-      }
+      axiosBaseURL({
+        method: 'GET',
+        url: `/api/v1/fax/getFaxPdf/${sendFaxId}`,
+        responseType: 'arraybuffer',
+        headers: {
+          //Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: 'application/pdf' });
+          const url = URL.createObjectURL(blob);
+          setIsLoading(false)
+          setPdfData(url);
+        })
+        .catch((error) => {
+          //setError('Error fetching main PDF. Please try again later.');
+          console.error('Error fetching main PDF:', error);
+        });
     };
 
     fetchPdf();
   }, []);
+
 
   const handleZoomOut = () => {
     console.log("clicked");
