@@ -58,7 +58,7 @@ function App() {
           <Route path="/nsrxmgt/fax-list" element={<Fax_List />} />
           <Route path="/nsrxmgt/duplicate-fax/:faxId" element={<Duplicate_Fax_Page />} />
           <Route path="/nsrxmgt/rx-tracker-list" element={<Rx_Tracker_List />} />
-          <Route path="/nsrxmgt/case-details-new/:trnRxId" element={<CaseDetailsNewPage />} />
+          <Route path="/nsrxmgt/case-details-new/:trnRxId/:paramFaxId/:netSuitId/:paramPatientId" element={<CaseDetailsNewPage />} />
         </Routes>
       </EditUserContext.Provider>  
       </AdminContext.Provider>

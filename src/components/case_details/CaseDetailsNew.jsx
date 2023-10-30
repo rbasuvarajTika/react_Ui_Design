@@ -27,6 +27,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const CaseDetailsNew = () => {
   const { trnRxId } = useParams();
+  const { paramFaxId } = useParams();
+  const { netSuitId } = useParams();
+  const { paramPatientId } = useParams();
 
   const [patientFirstName, setPatientFirstName] = useState('');
   const [patientMiddleName, setPatientMiddleName] = useState('');
@@ -876,18 +879,24 @@ const handleDeleteHcp = (index) => {
   useEffect(() => {
     const fetchPdf = async () => {
       setIsPdfLoading(true)
-      try {
-        const response = await axiosBaseURL.get(
-          "https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370",
-          { responseType: 'arraybuffer' }
-        );
-        const blob = new Blob([response.data], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        setIsPdfLoading(false)
-        setPdfData(url);
-      } catch (error) {
-        console.error("Error fetching PDF:", error);
-      }
+      axiosBaseURL({
+        method: 'GET',
+        url: `/api/v1/fax/getFaxPdf/${paramFaxId}`,
+        responseType: 'arraybuffer',
+        headers: {
+          //Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: 'application/pdf' });
+          const url = URL.createObjectURL(blob);
+          setIsPdfLoading(false)
+          setPdfData(url);
+        })
+        .catch((error) => {
+          //setError('Error fetching main PDF. Please try again later.');
+          console.error('Error fetching main PDF:', error);
+        });
     };
 
     fetchPdf();
@@ -925,16 +934,16 @@ const zoomInSecond = () => {
                   <div className='w-full flex flex-col gap-1'>
             {/* Patient Start ---------------------------*/}
             <section className=" ">
-            <div className='w-full h-[calc(115vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
+            <div className='w-full h-[calc(118vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                 <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
                                 <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
-                                <p className='text-[#596edb] text-xs absolute top-1 left-4'>Netsuit Patient ID:23214234</p>
-                                <p className='text-[#596edb] text-xs absolute top-1 right-10'>Tika ID:12053</p>
+                                <p className='text-[#596edb] text-xs absolute top-1 left-4'>Netsuit Patient ID:{netSuitId}</p>
+                                <p className='text-[#596edb] text-xs absolute top-1 right-10'>Tika ID:{paramPatientId}</p>
                             </div>
 
 
-                   <form className=''>
+                   <form className='pt-2'>
                        <div className=' flex  flex-col xl:items-start items-center'>
                            <div className='px-5 pt-4'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
@@ -1821,7 +1830,7 @@ const zoomInSecond = () => {
           !openNetSuit ?
           <>
             <div className='w-full h-screen  bg-white rounded-xl border-2 shadow-xl relative'>
-            <div className='text-white w-full lg:h-[calc(110%-0rem)] h-screen bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
+            <div className='text-white w-full lg:h-[calc(114%-0rem)] h-screen bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
                         <div className='flex justify-center gap-2 mt-1 absolute bottom-3 w-full'>
                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <=1 ? "bg-[#d9e0e3]": "bg-[#00aee6]" }`} onClick={previousPage}> <FaArrowLeft /></div>
                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>

@@ -64,10 +64,9 @@ useEffect(() => {
 }, []); // The empty array ensures the effect runs only once on component mount
 
 
-const handleRxId = (trnRxId) => {
+const handleRxId = (trnRxId,paramFaxId,netSuitId,paramPatientId) => {
     console.log("handleRxId is called");
-    navigate(`/nsrxmgt/case-details-new/${trnRxId}`);
-    
+    navigate(`/nsrxmgt/case-details-new/${trnRxId}/${paramFaxId}/${netSuitId}/${paramPatientId}`);
 }
 
 console.log(trnRxId);
@@ -178,7 +177,7 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                         } bg-white text-black/70 text-xs`}
                                 >
                                     <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
-                                    <div className="cursor-pointer" onClick={() => handleRxId(item.trnRxId)}>
+                                    <div className="cursor-pointer" onClick={() => handleRxId(item.trnRxId,item.faxId,item.netsuiteRxId,item.patientId)}>
                                    {item.trnRxId}
                                     </div>
                                     </td>
