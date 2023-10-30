@@ -45,11 +45,13 @@ function Login() {
                         },
                     }
                     
-                ).then((res) => {
-                    if (res.data.token) {
-                        localStorage.setItem("tokenTika", res.data.token)
-                        console.log("tokenTika", res.data.token);
-
+                ).then((res) => {                
+                        if (res.data && res.data.token) {
+                            const { token,userId } = res.data;
+                            localStorage.setItem('token', token);
+                           
+                            localStorage.setItem('userId', userId);
+                            console.log(      'userId', userId);
                          // Store "Remember Me" in cookies
                          if (rememberMe) {
                             Cookies.set('rememberMe', JSON.stringify(rememberMe));

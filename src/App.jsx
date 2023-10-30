@@ -54,7 +54,7 @@ function App() {
           <Route path="/nsrxmgt/admin-user-list" element={<Admin_User_List />} />
           <Route path="/nsrxmgt/admin-create-user" element={<Admin_Create_New_User />} />
           <Route path="/nsrxmgt/admin-edit-user/:userId" element={<Admin_Edit_User />} />
-          <Route path="/nsrxmgt/admin-edit-profile" element={<Admin_Edit_Profile />} />
+          <Route path="/nsrxmgt/admin-edit-profile/:userId" element={<Admin_Edit_Profile />} />
           <Route path="/nsrxmgt/fax-list" element={<Fax_List />} />
           <Route path="/nsrxmgt/duplicate-fax/:faxId" element={<Duplicate_Fax_Page />} />
           <Route path="/nsrxmgt/rx-tracker-list" element={<Rx_Tracker_List />} />

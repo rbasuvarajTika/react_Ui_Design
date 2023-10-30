@@ -1,5 +1,5 @@
 import React from 'react'
-import CaseDetailsNew from '../../components/case_details/CaseDetailsNew';
+import CaseDetailsNew from '../../components/case_details/caseDetailsNew';
 import Header_Navigation from '../../components/header/Header_Navigation'
 import Background from "../../components/Background";
 
