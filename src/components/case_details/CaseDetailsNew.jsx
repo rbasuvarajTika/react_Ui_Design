@@ -907,11 +907,14 @@ const zoomInSecond = () => {
 
 
   const { openNetSuit, setNetSuit} = useContext(DuplicateContext);
+  const { readyForReview, setReadyForReview} = useState(false);
   const handle_netSuitSubmission = () => {
     setNetSuit(true)
+    setReadyForReview(true);
   }
   const handle_netDeSubmission = () => {
     setNetSuit(false)
+    setReadyForReview(false);
   }
 
   return (
@@ -939,6 +942,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-full text-start' htmlFor="">First Name :</label>
+                                              {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="firstName"
@@ -946,6 +950,15 @@ const zoomInSecond = () => {
                                                     value={patientFirstName || ''}
                                                     onChange={(e) => setPatientFirstName(e.target.value)}
                                                 />
+                                                </>:<>
+                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="firstName"
+                                                    name="firstName"
+                                                    value={patientFirstName || ''}
+                                                />
+                                                </>}
+                                              
                                            </div>
                                        </div>
                                    </div>
@@ -953,6 +966,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Middle Name : </label>
+                                               {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs' 
                                                  type="text"
                                                  id="middleName"
@@ -960,6 +974,14 @@ const zoomInSecond = () => {
                                                  value={patientMiddleName || ''}
                                                  onChange={(e) => setPatientMiddleName(e.target.value)}
                                                />
+                                               </>:<>
+                                               <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                  type="text"
+                                                  id="middleName"
+                                                  name="middleName"
+                                                  value={patientMiddleName || ''}
+                                               />
+                                               </>}
                                            </div>
                                        </div>
                                    </div>
@@ -968,6 +990,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Last Name :</label>
+                                               {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs' 
                                                 type="text"
                                                 id="lastName"
@@ -975,6 +998,14 @@ const zoomInSecond = () => {
                                                 value={patientLastName || ''}
                                                 onChange={(e) => setPatientLastName(e.target.value)}                             
                                                />
+                                                </>:<>
+                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                   type="text"
+                                                   id="lastName"
+                                                   name="lastName"
+                                                   value={patientLastName || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -983,12 +1014,22 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
+                                               {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                 type="text"
                                                 id="dateOfBirth"
                                                 name="dateOfBirth"
                                                 value={dateOfBirth || ''}
                                                 onChange={(e) => setDateOfBirth(e.target.value)}                                        />
+
+</>:<>
+                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="dateOfBirth"
+                                                    name="dateOfBirth"
+                                                    value={dateOfBirth || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -996,6 +1037,7 @@ const zoomInSecond = () => {
                                    <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Last 4 of SSN : </label>
+                                               {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                 type="text"
                                                 id="ssn"
@@ -1004,6 +1046,15 @@ const zoomInSecond = () => {
                                                 onChange={handleSsnChange}
                                                />
                                                 <p className="text-red-500 text-xs">{ssnError}</p>
+                                                </>:<>
+                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                  type="text"
+                                                  id="ssn"
+                                                  name="ssn"
+                                                  value={ssn || ''}
+                                                />
+                                                </>}
+
                                            </div>
                                           
                                        </div>
@@ -1016,6 +1067,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Phone No : </label>
+                                               {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
                                                type="text"
                                                id="cellPhone"
@@ -1024,7 +1076,16 @@ const zoomInSecond = () => {
                                                onChange={handleCellPhoneChange}
                                                />
                                                 <p className="text-red-500 text-xs">{cellPhoneError}</p>
-                                           </div>
+                                                </>:<>
+                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                   type="text"
+                                                   id="cellPhone"
+                                                   name="cellPhone"
+                                                   value={cellPhone || ''}
+                                                />
+                                                </>}
+                                           
+                                              </div>
                                           
                                        </div>
                                    </div>
@@ -1033,6 +1094,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-full text-start' htmlFor="">City: </label>
+                                               {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="city"
@@ -1040,7 +1102,14 @@ const zoomInSecond = () => {
                                                value={city || ''}
                                                onChange={(e) => setCity(e.target.value)}
                                                />
-                               
+                                               </>:<>
+                                               <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                  type="text"
+                                                  id="city"
+                                                  name="city"
+                                                  value={city || ''}
+                                               />
+                                               </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1048,6 +1117,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">State : </label>
+                                    {!openNetSuit ?<>
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
                                         value={patientData.state}
                                         onChange={(e) => setPatientData({ ...patientData, state: e.target.value })}
@@ -1059,6 +1129,14 @@ const zoomInSecond = () => {
                                         </option>
                                         ))}
                                     </select>
+                                    </>:<>
+                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="state"
+                                                    name="state"
+                                                    value={patientData.state}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1067,6 +1145,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w- text-start' htmlFor="">Zip :</label>
+                                               {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="zip"
@@ -1075,6 +1154,14 @@ const zoomInSecond = () => {
                                                onChange={handleZipChange}
                                            />
                                            <p className="text-red-500 text-xs">{zipError}</p>
+                                           </>:<>
+                                           <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                               type="text"
+                                               id="firstName"
+                                               name="firstName"
+                                               value={patientFirstName || ''}
+                                           />
+                                           </>}
                                            </div>
                                            
                                        </div>
@@ -1082,6 +1169,7 @@ const zoomInSecond = () => {
 
                                    <div className=' flex flex-col'>
                                     <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
+                                    {!openNetSuit ?<>
                                     <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black h-5 text-xs mr-5 t-1'
                                         type="text"
                                         id="shipToAddress"
@@ -1089,6 +1177,14 @@ const zoomInSecond = () => {
                                         value={shipToAddress || ''}
                                         onChange={(e) => setShipToAddress(e.target.value)}
                                     />
+                                      </>:<>
+                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="shipToAddress"
+                                                    name="shipToAddress"
+                                                    value={shipToAddress || ''}
+                                                />
+                                                </>}
                                     </div>
 
                                </div>
@@ -1113,6 +1209,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                            <p className='text-xs text-black    ' htmlFor="">Sales Rep Name:</p>
+                                           {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="salesRepName"
@@ -1120,7 +1217,14 @@ const zoomInSecond = () => {
                                                value={repName || ''}
                                                onChange={(e) => setSalesRepName(e.target.value)}
                                                />
-                               
+                                 </>:<>
+                                                <input className='w-56  text-black py-0.5 text-xs t-1' 
+                                                   type="text"
+                                                   id="salesRepName"
+                                                   name="salesRepName"
+                                                   value={repName || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1128,6 +1232,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                            <label className='text-xs text-black w- text-start' htmlFor="">Sales Rep Cell: :</label>
+                                           {!openNetSuit ?<>
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="salesRepCell"
@@ -1135,6 +1240,14 @@ const zoomInSecond = () => {
                                                 value={repCell || ''}
                                                 onChange={(e) => setSalesRepCell(e.target.value)}
                                            />
+                                             </>:<>
+                                                <input className='w-56  text-black py-0.5 text-xs t-1' 
+                                                   type="text"
+                                                   id="salesRepCell"
+                                                    name="salesRepCell"
+                                                    value={repCell || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1143,6 +1256,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Distributer: : </label>
+                                               {!openNetSuit ?<>
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                         value={distributor}
                                         onChange={(e) => setDistributor(e.target.value)}
@@ -1153,6 +1267,14 @@ const zoomInSecond = () => {
                                         </option>
                                         ))}
                                     </select>
+                                    </>:<>
+                                                <input className='w-56  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="distributor"
+                                                    name="distributor"
+                                                    value={distributor || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1165,6 +1287,8 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
                                         <label className='text-xs text-black w-28 text-start' htmlFor="">Place of Service: </label>
+                                                
+                                        {!openNetSuit ?<>
                                                 <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                                     name="placeOfService"
 
@@ -1176,6 +1300,14 @@ const zoomInSecond = () => {
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                         </select>
+                                        </>:<>
+                                                <input className='w-56  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="placeOfService"
+                                                    name="placeOfService"
+                                                    value={placeOfService || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1183,6 +1315,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
                                         <label className='text-xs text-black w-28 text-start' htmlFor="">Order Information: : </label>
+                                        {!openNetSuit ?<>
                                                 <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                                     name="orderType"
 
@@ -1195,6 +1328,14 @@ const zoomInSecond = () => {
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                     </select>
+                                    </>:<>
+                                                <input className='w-56  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="orderType"
+                                                    name="orderType"
+                                                    value={orderType || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1203,6 +1344,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                        <div className=' flex  justify-start  flex-col w-full '>
                                         <label className='text-xs text-black w-full text-start' htmlFor="">Does patient still have an active wound?:</label>
+                                        {!openNetSuit ?<>
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                                    name="woundActive"
 
@@ -1213,6 +1355,14 @@ const zoomInSecond = () => {
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
+                                    </>:<>
+                                                <input className='w-56  text-black py-0.5 text-xs t-1' 
+                                                    type="text"
+                                                    id="woundActive"
+                                                    name="woundActive"
+                                                    value={woundActive || ''}
+                                                />
+                                                </>}
                                            </div>
                                        </div>
                                    </div>
@@ -1235,17 +1385,21 @@ const zoomInSecond = () => {
             <div>
                 {}
                 <div className='absolute md:top-1 top-6  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50' onClick={handleAddWound}  >
+                {!openNetSuit ?<>
                     <div className=' flex justify-around px-1'>
+                    
                         <div className='flex  relative'>
                             <MdAddBox className='text-lg' />
                             <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
                         </div>
+                      
 
                         <p className='text-white text-xs'
 
                         >ADD</p>
                     </div>
-
+                    </>:<>
+                    </>}
                 </div>
                 {}
 
@@ -1265,7 +1419,10 @@ const zoomInSecond = () => {
                                 <th className="px-2 py-3  border  ">ICD-10 <span>Code</span></th>
                                 <th className="px-2 py-3  border  ">Debridement <span>Date</span></th>
                                 <th className="px-2 py-3  border  ">Debridement <span>Type</span></th>
+                                {!openNetSuit ?<>
                                 <th className="px-2 py-3  border  ">Delete</th>
+                                </>:<>
+                                </>}
                             </tr>
                         </thead>
 
@@ -1348,9 +1505,12 @@ const zoomInSecond = () => {
                                             </select>
                                         </p>
                                     </td>
+                                    {!openNetSuit ?<>
                                     <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center border" onClick={() => handleDeleteWound(index)}>
                                         <AiFillCloseSquare />
                                     </td>
+                                    </>:<>
+                                    </>}
                                 </tr>
                             ))}
                         </tbody>
@@ -1366,6 +1526,7 @@ const zoomInSecond = () => {
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
                 <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
             </div>
+            {!openNetSuit ?<>
             <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer' onClick={handleAddKit}>
                 <div className=' flex justify-around px-1'>
                     <div className='flex  relative'>
@@ -1375,6 +1536,8 @@ const zoomInSecond = () => {
                     <p className='text-white text-xs'>ADD</p>
                 </div>
             </div>
+            </>:<>
+             </>}
                 <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll   no-scrollbar mt-8">
                     <table className="w-f text-sm text-center table-auto  w-full ">
                         <thead className="">
@@ -1384,7 +1547,11 @@ const zoomInSecond = () => {
                                 <th className="px-2 py-3 border">(WND)1</th>
                                 <th className="px-2 py-3 border">(WND)2</th>
                                 <th className="px-2 py-3 border">(WND)3</th>
+                                <th className="px-2 py-3 border">(WND)4</th>
+                                {!openNetSuit ?<>
                                 <th className="px-2 py-3 border">Delete</th>
+                                </>:<>
+                                </>}
                             </tr>
                         </thead>  
                         <tbody>
@@ -1441,9 +1608,21 @@ const zoomInSecond = () => {
                                             onChange={(e) => handleKitEditRowChange(index, 'wnd3', e.target.checked)}
                                         />
                                     </td>
+                                    <td className="p-1 border-2">
+                                        <input
+                                            type="checkbox"
+                                            className="relative h-3 w-3 cursor-pointer"
+                                            id={`checkbox-${index}`}
+                                            defaultChecked={kit.wnd4}
+                                            onChange={(e) => handleKitEditRowChange(index, 'wnd4', e.target.checked)}
+                                        />
+                                    </td>
+                                    {!openNetSuit ?<>
                                     <td className="p-1 rounded-2xl flex justify-center text-xl text-red-600 mt-2 items-center" onClick={() => handleDeleteKit(index)}>
                                         <AiFillCloseSquare />
                                     </td>
+                                    </>:<>
+                                    </>}
                                 </tr>
                             ))}
                         </tbody>
@@ -1476,9 +1655,9 @@ const zoomInSecond = () => {
                       <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
                       <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                       type="text"
-                      id='cellPhone'
-                      name="cellPhone"
-                      value={officeData.cellPhone}
+                      id='phone'
+                      name="phone"
+                      value={officeData.phone}
                       onChange={handleOfficeInputChange}
                       />
                     </div>
@@ -1539,6 +1718,7 @@ const zoomInSecond = () => {
                       <div className='right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'
                         onClick={handleAddHcp}
                       >
+                         {!openNetSuit ?<>
                         <div className=' flex justify-around px-1'>
                           <div className='flex  relative'>
                             <MdAddBox className='text-lg' />
@@ -1549,6 +1729,8 @@ const zoomInSecond = () => {
 
                           >ADD</p>
                         </div>
+                        </>:<>
+                        </>}
                       </div>
                     </div>
 
@@ -1561,7 +1743,10 @@ const zoomInSecond = () => {
                             <th className="px-2 py-3 border">Middle Name</th>
                             <th className="px-2 py-3 border">Last Name</th>
                             <th className="px-2 py-3 border">NPI</th>
-                           <th className="px-2 py-3  border">Delete</th> 
+                            {!openNetSuit ?<>
+                           <th className="px-2 py-3  border">Delete</th>
+                           </>:<>
+                             </>} 
                           </tr>
                         </thead>
                         <tbody>
@@ -1615,9 +1800,12 @@ const zoomInSecond = () => {
                                         />
                                 
                                 </td>
+                          {!openNetSuit ?<>
                         <td className="className='bg-gray-300 text-gray600 p-1 border   flex justify-center text-xl text-red-600  items-center" onClick={() => handleDeleteHcp(index)}>
                                 <AiFillCloseSquare />
                               </td> 
+                              </>:<>
+                                                                     </>}
                             </tr>
                           ))}
 
@@ -1705,7 +1893,7 @@ const zoomInSecond = () => {
                                                       id="checkbox-1"
                                                       defaultChecked
                                                   />
-                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                                  <p className='text-gray-600 text-xs' type="text" >is Patient info complete</p>
                                               </div>
                                               <div className='flex items-center gap-3'>
                                                   <input
@@ -1714,7 +1902,7 @@ const zoomInSecond = () => {
                                                       id="checkbox-1"
                                                       defaultChecked
                                                   />
-                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                                  <p className='text-gray-500 text-xs' type="text" >is Insurance Info Missing</p>
                                               </div>
                                               <div className='flex items-center gap-3'>
                                                   <input
@@ -1723,7 +1911,7 @@ const zoomInSecond = () => {
                                                       id="checkbox-1"
                                                       defaultChecked
                                                   />
-                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                                  <p className='text-gray-500 text-xs' type="text" >is Prescription Captured</p>
                                               </div>
                                           </div>
                                           <div className='flex flex-col gap-5'>
@@ -1734,7 +1922,7 @@ const zoomInSecond = () => {
                                                       id="checkbox-1"
                                                       defaultChecked
                                                   />
-                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                                  <p className='text-gray-500 text-xs' type="text" >is Signature Present</p>
                                               </div>
                                               <div className='flex items-center gap-3'>
                                                   <input
@@ -1743,7 +1931,7 @@ const zoomInSecond = () => {
                                                       id="checkbox-1"
                                                       defaultChecked
                                                   />
-                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                                  <p className='text-gray-500 text-xs' type="text" >is Rep Listed</p>
                                               </div>
                                               <div className='flex items-center gap-3'>
                                                   <input
@@ -1752,7 +1940,7 @@ const zoomInSecond = () => {
                                                       id="checkbox-1"
                                                       defaultChecked
                                                   />
-                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                                  <p className='text-gray-500 text-xs' type="text" >Provide Name or NPI is Missing</p>
                                               </div>
                                           </div>
                                       </div>
