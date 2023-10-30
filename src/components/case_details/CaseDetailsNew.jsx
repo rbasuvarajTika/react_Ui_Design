@@ -20,6 +20,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
+import { ToastContainer, toast } from 'react-toast'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -30,6 +31,20 @@ const CaseDetailsNew = () => {
   const [patientFirstName, setPatientFirstName] = useState('');
   const [patientMiddleName, setPatientMiddleName] = useState('');
   const [patientLastName, setPatientLastName] = useState('');
+
+  const [loading, setLoading] = useState(false)
+
+  const [onDirtyPatientSave, setOnDirtyPatientSave] = useState(false)
+
+  const [onDirtyOrdertSave, setOnDirtyOrderSave] = useState(false)
+  const [onDirtyOrderDelete, setOnDirtyOrderDelete] = useState(false)
+
+  const [onDirtyKitSave, setOnDirtyKitSave] = useState(false)
+  const [onDirtyKitDelete, setOnDirtyKitDelete] = useState(false)
+
+  const [onDirtyOfficeSave, setOnDirtyOfficeSave] = useState(false)
+  const [onDirtyHcpSave, setOnDirtyHcpSave] = useState(false)
+
 
   const [dateOfBirth, setDateOfBirth] = useState(null); // Initialize dateOfBirth as null
   const [ssn, setSsn] = useState('');
@@ -82,13 +97,27 @@ const CaseDetailsNew = () => {
 
   // Total Save Call
   const handleSavePatientData = () => {
-   handlePatientSave();
-   handleWoundUpdate();
-  handleWoundDelete();
-  handleSaveKitClick();
-  handleDeleteKitClick();
-  handleSaveOfficeClick();
-  handleSaveHcpClick();
+
+    handlePatientSave();
+    if(onDirtyOrdertSave){
+    handleWoundUpdate();
+    }
+    if(onDirtyOrderDelete){
+      handleWoundDelete();
+    }
+    if(onDirtyKitSave){
+      handleSaveKitClick();
+    }
+    if(onDirtyKitDelete){
+      handleDeleteKitClick();
+    }
+    if(onDirtyOfficeSave){
+      handleSaveOfficeClick();
+    }
+    if(onDirtyHcpSave){
+      handleSaveHcpClick();
+    }
+    
   };
 // Total Save Call
 
@@ -190,7 +219,7 @@ const CaseDetailsNew = () => {
     // Get the token from localStorage
     const token = localStorage.getItem('token');
     console.log("Patient Save Data Call")
-  
+    setLoading(true);
     // Send the data to your API for saving
     const dataToSave = {
     patientId: patientId,
@@ -226,9 +255,14 @@ const CaseDetailsNew = () => {
       });
       if (response.status== 200) {
         // Data saved successfully
+        setLoading(false);
+        toast.success("Patient Details Saved Sucessfully")
       } else {
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
+      toast.error("Error to save Patient Details")
       console.error('Error saving data:', error);
     }
   };
@@ -343,12 +377,14 @@ const CaseDetailsNew = () => {
 }, []);
 
 const handleEditRowChange = (index, column, value) => {
+    setOnDirtyOrderSave(true);
     const updatedWoundData = [...woundData];
     updatedWoundData[index][column] = value;
     setWoundData(updatedWoundData);
 };
 
  const handleAddWound = () => {
+  setOnDirtyOrderSave(true);
     const updatedWoundData = {
       trnRxId:woundDataRxId,
       trnFaxId:woundDataTranFaxId,
@@ -371,6 +407,7 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleDeleteWound = (index) => {
+    setOnDirtyOrderDelete(true);
     woundData[index]["status"] = "delete";
     const deletedData =woundData[index]
     setDeleteWoundData([...deleteWoundData,deletedData]);
@@ -380,6 +417,7 @@ const handleEditRowChange = (index, column, value) => {
 
   const handleWoundUpdate = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem('token');
       const config = {
         headers: {
@@ -393,18 +431,25 @@ const handleEditRowChange = (index, column, value) => {
       if (response.status === 200) {
         // The data was successfully updated. You can handle the success here.
         console.log('Data updated successfully.');
+        setLoading(false);
+        toast.success("Order Information Saved Successfully");
 
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
+        setLoading(false);
+        toast.error("Error in Order Information");
       }
     } catch (error) {
+      setLoading(false);
+      toast.error("Error in Order Information");
       console.error('Error updating data:', error);
     }
   };
 
   const handleWoundDelete = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem('token');
       const config = {
         headers: {
@@ -422,12 +467,17 @@ const handleEditRowChange = (index, column, value) => {
       if (response.status === 200) {
         // The data was successfully updated. You can handle the success here.
         console.log('Deleted updated successfully.');
-
+        setLoading(false);
+        toast.success("Order Information Deleted Sucessfully");
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
+        setLoading(false);
+        toast.success("Error to Delete Order Information");
       }
     } catch (error) {
+      setLoading(false);
+      toast.success("Error to Delete Order Information");
       console.error('Error updating data:', error);
     }
   };
@@ -452,6 +502,9 @@ const handleEditRowChange = (index, column, value) => {
   }, [deleteKit]);
 
   const handleKitEditRowChange = (index, column, value) => {
+
+
+    setOnDirtyKitSave(true);
     const updateKitData = [...kitData];
     if(column == "wnd1" || column == "wnd2" || column == "wnd3"){
        if(value){
@@ -465,6 +518,8 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleAddKit = () => {
+    setOnDirtyKitSave(true);
+
     const addKitData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -485,6 +540,7 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleDeleteKit = (index) => {
+    setOnDirtyKitDelete(true)
     kitData[index]["status"] = "delete";
     const deletedData =kitData[index]
     setDeletKit([...deleteKit,deletedData]);
@@ -550,7 +606,7 @@ const handleSaveKitClick = () => {
 
   // Get the token from your authentication mechanism, e.g., localStorage
   const token = localStorage.getItem('token');
-
+  setLoading(true);
   // Define the request headers with the Authorization header
   const config = {
     headers: {
@@ -565,10 +621,14 @@ const handleSaveKitClick = () => {
     .then((response) => {
       // Handle the response from the API if needed
       console.log('Data saved successfully:', response.data);
+      setLoading(false);
+      toast.success("Kit Information Saved Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
+      setLoading(false);
       console.error('Error saving data:', error);
+      toast.error("Error to Save Kit Information");
     });
 };
 
@@ -576,7 +636,7 @@ const handleDeleteKitClick = () => {
 
   // Get the token from your authentication mechanism, e.g., localStorage
   const token = localStorage.getItem('token');
-
+  setLoading(true);
   // Define the request headers with the Authorization header
   const config = {
     headers: {
@@ -591,10 +651,14 @@ const handleDeleteKitClick = () => {
     .then((response) => {
       // Handle the response from the API if needed
       console.log('Data saved successfully:', response.data);
+      setLoading(false);
+      toast.success("Kit Information Deleted Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
       console.error('Error saving data:', error);
+      setLoading(false);
+      toast.error("Error to Delete to Kit Information");
     });
 };
 
@@ -622,6 +686,7 @@ const handleDeleteKitClick = () => {
   }, [deleteHcp]);
 
   const handleHcpEditRowChange = (index, column, value) => {
+    setOnDirtyOfficeSave(true)
     const updateHcpData = [...hcpData];
     if(column == "signature_Flag"){
        if(value){
@@ -635,6 +700,7 @@ const handleDeleteKitClick = () => {
   };
 
   const handleAddHcp = () => {
+    setOnDirtyHcpSave(true)
     const addHcpData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -724,7 +790,7 @@ const handleDeleteHcp = (index) => {
 
     // Get the token from your authentication mechanism, e.g., localStorage
     const token = localStorage.getItem('token');
-  
+    setLoading(true);
     // Define the request headers with the Authorization header
     const config = {
       headers: {
@@ -739,16 +805,20 @@ const handleDeleteHcp = (index) => {
       .then((response) => {
         // Handle the response from the API if needed
         console.log('Data saved successfully:', response.data);
+        setLoading(false);
+        toast.success("Office Info Saved Sucessfully");
       })
       .catch((error) => {
         // Handle any errors that occurred during the request
+        setLoading(false);
         console.error('Error saving data:', error);
+        toast.error("Error to save Office Info");
       });
   };
   
 
   const handleSaveHcpClick = () => {
-
+    setLoading(true);
     // Get the token from your authentication mechanism, e.g., localStorage
     const token = localStorage.getItem('token');
   
@@ -765,11 +835,15 @@ const handleDeleteHcp = (index) => {
       .post('/api/v1/fax/updateHCPInfoList', dataToSave, config)
       .then((response) => {
         // Handle the response from the API if needed
+        setLoading(false);
         console.log('Data saved successfully:', response.data);
+        toast.success("HCP info Saved SUccessfully");
       })
       .catch((error) => {
+        setLoading(false);
         // Handle any errors that occurred during the request
         console.error('Error saving data:', error);
+        toast.error("Error to save HCP info");
       });
   };
   
@@ -840,11 +914,11 @@ const zoomInSecond = () => {
   }
 
   return (
+    
       <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
           <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[620px] scrollbar ">
               <div className='flex md:flex-row flex-col gap-1'>
                   <div className='w-full flex flex-col gap-1'>
-
             {/* Patient Start ---------------------------*/}
             <section className=" ">
             <div className='w-full h-[calc(115vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
@@ -1701,7 +1775,27 @@ const zoomInSecond = () => {
              {!openNetSuit?
                 <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
                   <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-lg flex justify-center md:text-base text-xs'>Discard</div>
-                  <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-lg flex justify-center md:text-base text-xs' onClick={handleSavePatientData}>Save</div>
+                  <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-lg flex justify-center md:text-base text-xs' onClick={handleSavePatientData}>
+                  {
+                                loading ?
+                                    <>
+
+                                        <div role="status">
+                                            <svg aria-hidden="true" class="w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                            </svg>
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+
+                                    </>
+                                    :
+                                    <>
+                                    <p>Submit</p>
+                                    </>
+                            }
+                    
+                    Save</div>
                   <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' onClick={handle_netSuitSubmission}>Ready for Review</div>
                 </div>
                :<>
@@ -1712,6 +1806,7 @@ const zoomInSecond = () => {
                 </>
               }
           </div>
+          <ToastContainer />
         </div>
        
     
