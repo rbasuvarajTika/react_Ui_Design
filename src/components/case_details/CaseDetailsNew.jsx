@@ -686,7 +686,7 @@ const handleDeleteKitClick = () => {
   }, [deleteHcp]);
 
   const handleHcpEditRowChange = (index, column, value) => {
-    setOnDirtyOfficeSave(true)
+    setOnDirtyHcpSave(true)
     const updateHcpData = [...hcpData];
     if(column == "signature_Flag"){
        if(value){
@@ -730,6 +730,7 @@ const handleDeleteHcp = (index) => {
 
 
   const handleOfficeInputChange = (e) => {
+    setOnDirtyOfficeSave(true)
     const { name, value } = e.target;
     setOfficeData({
       ...officeData,
