@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext,useState, useEffect } from 'react';
 import axiosBaseURL from '../axios';
 import { useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
@@ -6,6 +6,7 @@ import { LuMinus, LuPlus } from 'react-icons/lu'
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
+import NetSuitSubmission from '../../pages/case_details/NetSuitSubmission'
 
 
 import { AiFillCloseCircle } from 'react-icons/ai';
@@ -653,14 +654,14 @@ const handleDeleteKitClick = () => {
     setHcpData([...hcpData, addHcpData]);
   };
 
-/*   const handleDeleteHcp = (index) => {
+const handleDeleteHcp = (index) => {
     hcpData[index]["status"] = "delete";
     const deletedData =hcpData[index]
     setDeletKit([...deleteHcp,deletedData]);
     const updatedHcpData = hcpData.filter((_, i) => i !== index);
     setHcpData(updatedHcpData);
   };
- */
+
 
   const handleOfficeInputChange = (e) => {
     const { name, value } = e.target;
@@ -829,17 +830,21 @@ const zoomInSecond = () => {
 // }
   //PDF RENDER END 
 
+
+  const { openNetSuit, setNetSuit} = useContext(DuplicateContext);
+  const handle_netSuitSubmission = () => {
+    setNetSuit(true)
+  }
+
   return (
-    <>
-      {
       <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
           <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[620px] scrollbar ">
-              <div className='flex md:flex-row flex-col gap-5'>
-                  <div className='w-full flex flex-col gap-2'>
+              <div className='flex md:flex-row flex-col gap-1'>
+                  <div className='w-full flex flex-col gap-1'>
 
             {/* Patient Start ---------------------------*/}
             <section className=" ">
-            <div className='w-full h-[calc(130vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
+            <div className='w-full h-[calc(115vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                 <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
                                 <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
@@ -850,13 +855,13 @@ const zoomInSecond = () => {
 
                    <form className=''>
                        <div className=' flex  flex-col xl:items-start items-center'>
-                           <div className='px-5 pt-5'>
+                           <div className='px-5 pt-4'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-full text-start' htmlFor="">First Name :</label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56  text-black py-0.5 text-xs t-1' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="firstName"
                                                     name="firstName"
@@ -870,7 +875,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Middle Name : </label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs' 
                                                  type="text"
                                                  id="middleName"
                                                  name="middleName"
@@ -885,7 +890,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Last Name :</label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs' 
                                                 type="text"
                                                 id="lastName"
                                                 name="lastName"
@@ -895,16 +900,12 @@ const zoomInSecond = () => {
                                            </div>
                                        </div>
                                    </div>
-                               </div>
-                           </div>
 
-                           <div className='px-5 pt-2'>
-                               <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                 type="text"
                                                 id="dateOfBirth"
                                                 name="dateOfBirth"
@@ -913,11 +914,11 @@ const zoomInSecond = () => {
                                            </div>
                                        </div>
                                    </div>
-                                   <div className='flex flex-col'>
-                                       <div className=' flex items-center flex-row w-full g '>
+
+                                   <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Last 4 of SSN : </label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                 type="text"
                                                 id="ssn"
                                                 name="ssn"
@@ -928,13 +929,16 @@ const zoomInSecond = () => {
                                            </div>
                                           
                                        </div>
-                                   </div>
+                               </div>
+                           </div>
 
+                           <div className='px-5 pt-2'>
+                               <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Phone No : </label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
                                                type="text"
                                                id="cellPhone"
                                                name="cellPhone"
@@ -946,29 +950,12 @@ const zoomInSecond = () => {
                                           
                                        </div>
                                    </div>
-                               </div>
-                           </div>
 
-                           <div className='w-full pt-2 flex flex-col justify-around  px-4'>
-                                    <div className=' flex flex-col'>
-                                    <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
-                                    <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-full text-black h-5 text-xs mr-5 t-1'
-                                        type="text"
-                                        id="shipToAddress"
-                                        name="shipToAddress"
-                                        value={shipToAddress || ''}
-                                        onChange={(e) => setShipToAddress(e.target.value)}
-                                    />
-                                    </div>
-                            </div>
-
-                           <div className='px-5 pt-2'>
-                               <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-full text-start' htmlFor="">City: </label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="city"
                                                name="city"
@@ -983,7 +970,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">State : </label>
-                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
+                                    <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
                                         value={patientData.state}
                                         onChange={(e) => setPatientData({ ...patientData, state: e.target.value })}
 
@@ -1002,7 +989,7 @@ const zoomInSecond = () => {
                                        <div className=' flex items-center flex-row w-full g '>
                                            <div className=' flex  justify-start  flex-col w-full '>
                                                <label className='text-xs text-black w- text-start' htmlFor="">Zip :</label>
-                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
+                                               <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1' 
                                                type="text"
                                                id="zip"
                                                name="zip"
@@ -1014,11 +1001,35 @@ const zoomInSecond = () => {
                                            
                                        </div>
                                    </div>
+
+                                   <div className=' flex flex-col'>
+                                    <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
+                                    <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black h-5 text-xs mr-5 t-1'
+                                        type="text"
+                                        id="shipToAddress"
+                                        name="shipToAddress"
+                                        value={shipToAddress || ''}
+                                        onChange={(e) => setShipToAddress(e.target.value)}
+                                    />
+                                    </div>
+
                                </div>
                            </div>
-                           
+
+                          {/*  <div className='w-full pt-2 flex flex-col justify-around  px-4'>
+                                    <div className=' flex flex-col'>
+                                    <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
+                                    <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-full text-black h-5 text-xs mr-5 t-1'
+                                        type="text"
+                                        id="shipToAddress"
+                                        name="shipToAddress"
+                                        value={shipToAddress || ''}
+                                        onChange={(e) => setShipToAddress(e.target.value)}
+                                    />
+                                    </div>
+                            </div> */}
                            <hr className='px-2 w-full my-1 border-center border-gray-300' />
-                           <div className='px-5 pt-2'>
+                           <div className='px-5 pt-3'>
                                <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                    <div className='flex flex-col'>
                                        <div className=' flex items-center flex-row w-full g '>
@@ -1082,7 +1093,6 @@ const zoomInSecond = () => {
                                         id="placeOfService"
                                         value={placeOfService || ''}
                                         onChange={(e) => setPlaceOfService(e.target.value)}
-
                                         >
                                         <option value={placeOfService}>{placeOfService}</option>
                                         <option value="Yes">Yes</option>
@@ -1139,7 +1149,7 @@ const zoomInSecond = () => {
           {/* Patient End ---------------------------*/}
 
       {/* Order and Kit Start ---------------------------*/}
-      <div className='w-full h-[calc(130vh-30rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
+      <div className='w-full h-[calc(50vh-10rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll scrollbar '>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
                 <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
@@ -1273,7 +1283,7 @@ const zoomInSecond = () => {
         {/* Order and Kit End ---------------------------*/}
 
        {/*  Kit Start ---------------------------*/}
-       <div className='w-full h-[150px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
+       <div className='w-full h-[130px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
                 <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
@@ -1366,7 +1376,7 @@ const zoomInSecond = () => {
 
 
                   {/*  Physician Start ---------------------------*/}
-          <div className='w-full h-[calc(120vh-30rem)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-5 scrollbar'>
+          <div className='w-full h-[calc(110vh-30rem)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-1 scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09] absolute top-0  '>
               <hr className="h-px border-[#e36c09] border w-32  absolut " />
               <p className='absolute top-0 text-[#e36c09] text-sm'>Physicain</p>
@@ -1474,7 +1484,7 @@ const zoomInSecond = () => {
                             <th className="px-2 py-3 border">Middle Name</th>
                             <th className="px-2 py-3 border">Last Name</th>
                             <th className="px-2 py-3 border">NPI</th>
-                           {/*  <th className="px-2 py-3  border">Delete</th> */}
+                           <th className="px-2 py-3  border">Delete</th> 
                           </tr>
                         </thead>
                         <tbody>
@@ -1528,9 +1538,9 @@ const zoomInSecond = () => {
                                         />
                                 
                                 </td>
-{/*                               <td className="className='bg-gray-300 text-gray600 p-1 border   flex justify-center text-xl text-red-600  items-center" onClick={() => handleDeleteKit(index)}>
+                        <td className="className='bg-gray-300 text-gray600 p-1 border   flex justify-center text-xl text-red-600  items-center" onClick={() => handleDeleteHcp(index)}>
                                 <AiFillCloseSquare />
-                              </td> */}
+                              </td> 
                             </tr>
                           ))}
 
@@ -1541,9 +1551,12 @@ const zoomInSecond = () => {
                   </div>
                   {/*  Physician End ---------------------------*/}
       </div>
-
+             {/*  Fax Start ---------------------------*/}
+          {
+          !openNetSuit ?
+          <>
             <div className='w-full h-screen  bg-white rounded-xl border-2 shadow-xl relative'>
-            <div className='text-white w-full lg:h-[calc(100%-1rem)] h-screen bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
+            <div className='text-white w-full lg:h-[calc(110%-0rem)] h-screen bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
                         <div className='flex justify-center gap-2 mt-1 absolute bottom-3 w-full'>
                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <=1 ? "bg-[#d9e0e3]": "bg-[#00aee6]" }`} onClick={previousPage}> <FaArrowLeft /></div>
                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
@@ -1568,7 +1581,7 @@ const zoomInSecond = () => {
                                                     onLoadSuccess={onDocumentLoadSuccess}
                                                 >
                                                     <Page pageNumber={pageNumber} scale={scale}
-                                                        width={500}
+                                                        width={400}
                                                         height={500}
 
                                                     />
@@ -1596,18 +1609,142 @@ const zoomInSecond = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
+            </>
+            :
+            <>
+                     <div className='flex flex-col md:w-[calc(100vw-50vw)] h-screen  p-2 gap-2'>
+                                  <div className='w-full  flex-col] gap-3 h-[200px] bg-white rounded-2xl pt-16   px-10 border-2 shadow-xl relative overflow-y-scroll '>
+                                      <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                                          <hr className="h-px border-[#e36c09] border w-32  absolute top-0 " />
+                                          <p className='absolute top-0 text-[#e36c09] text-sm'>Patient Details</p>
+                                      </div>
+                                      <div className='flex xl:flex-row flex-col justify-between  gap-5 items-center   '>
+                                          <div className='flex flex-col gap-4' >
+                                              <div className=' flex items-center flex-row w-full '>
+                                                  <label className='text-xs text-black md:w-28 w-24 text-start ' htmlFor="">Patient Name: </label>
+                                                  <p className='text-gray-500 text-xs' type="text" >Carl Blaskovish</p>
+                                              </div>
+                                              <div className=' flex items-center flex-row w-full '>
+                                                  <label className='text-xs text-black md:w-28 w-24 text-start ' htmlFor="">Rx Number: </label>
+                                                  <p className='text-gray-500 text-xs' type="text" >Carl Blaskovish</p>
+                                              </div>
+  
+                                              <div className=' flex items-center flex-row w-full '>
+                                                  <label className='text-xs text-black md:w-28 w-24 text-start ' htmlFor="">HCP Name: </label>
+                                                  <p className='text-gray-500 text-xs' type="text" >Carl Blaskovish</p>
+                                              </div>
+                                          </div>
+                                          <div className='flex flex-col gap-4'>
+                                              <div className=' flex items-center flex-row w-full '>
+                                                  <label className='text-xs text-black md:w-28 w-24 text-start ' htmlFor="">Patient Name: </label>
+                                                  <p className='text-gray-500 text-xs' type="text" >Carl Blaskovish</p>
+                                              </div>
+  
+                                              <div className=' flex items-center flex-row w-full '>
+                                                  <label className='text-xs text-black md:w-28 w-24 text-start ' htmlFor="">Rx Number: </label>
+                                                  <p className='text-gray-500 text-xs' type="text" >Carl Blaskovish</p>
+                                              </div>
+  
+                                              <div className=' flex items-center flex-row w-full '>
+                                                  <label className='text-xs text-black md:w-28 w-24 text-start ' htmlFor="">HCP Name: </label>
+                                                  <p className='text-gray-500 text-xs' type="text" >Carl Blaskovish</p>
+                                              </div>
+                                          </div>
+                                      </div>
+  
+                                  </div>
+                                  <div className='w-full h-[calc(100vh-18rem) h-full bg-white rounded-2xl pt-20  border-2 shadow-xl relative overflow-y-scroll '>
+                                      <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                                          <hr className="h-px border-[#e36c09] border w-32  absolute top-0 " />
+                                          <p className='absolute top-0 text-[#e36c09] text-sm'>Check List</p>
+                                      </div>
+  
+                                      <div className='xl:px-28 md:px-10 px-5  flex  gap-4 justify-between'>
+                                          <div className=' flex flex-col gap-5'>
+                                              <div className='flex items-center gap-3'>
+                                                  <input
+                                                      type="checkbox"
+                                                      className=" elative h-3 w-3 cursor-pointer "
+                                                      id="checkbox-1"
+                                                      defaultChecked
+                                                  />
+                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                              </div>
+                                              <div className='flex items-center gap-3'>
+                                                  <input
+                                                      type="checkbox"
+                                                      className=" elative h-3 w-3 cursor-pointer "
+                                                      id="checkbox-1"
+                                                      defaultChecked
+                                                  />
+                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                              </div>
+                                              <div className='flex items-center gap-3'>
+                                                  <input
+                                                      type="checkbox"
+                                                      className=" elative h-3 w-3 cursor-pointer "
+                                                      id="checkbox-1"
+                                                      defaultChecked
+                                                  />
+                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                              </div>
+                                          </div>
+                                          <div className='flex flex-col gap-5'>
+                                              <div className='flex items-center gap-3'>
+                                                  <input
+                                                      type="checkbox"
+                                                      className=" elative h-3 w-3 cursor-pointer "
+                                                      id="checkbox-1"
+                                                      defaultChecked
+                                                  />
+                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                              </div>
+                                              <div className='flex items-center gap-3'>
+                                                  <input
+                                                      type="checkbox"
+                                                      className=" elative h-3 w-3 cursor-pointer "
+                                                      id="checkbox-1"
+                                                      defaultChecked
+                                                  />
+                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                              </div>
+                                              <div className='flex items-center gap-3'>
+                                                  <input
+                                                      type="checkbox"
+                                                      className=" elative h-3 w-3 cursor-pointer "
+                                                      id="checkbox-1"
+                                                      defaultChecked
+                                                  />
+                                                  <p className='text-gray-500 text-xs' type="text" >is Patient info complete</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div className='p-5'>
+                                          <p className='text-xs text-black w-28 text-start pb-2   '>Comments:</p>
+                                          <div className='w-full h-[calc(100vh-30rem)] bg-gray-100 rounded-2xl pt-20  border-2 shadow-xl relative overflow-y-scroll  '>
+  
+                                          </div>
+                                      </div>
+                                      <div className='md:px-10 px-2 pb-3 flex justify-between'>
+                                          <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#00aee6] rounded-3xl flex justify-center text-xs'>Send for Re-Faxing</div>
+                                          <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#4da12c] rounded-3xl flex justify-center text-xs'>Send for Re-Faxing</div>
+                                      </div>
+                                  </div>
+                              </div>
+            </>
+            }
+             {/*  Fax End ---------------------------*/}
+             
+             </div>
+               <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
                   <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#e60000] rounded-lg flex justify-center md:text-base text-xs'>Discard</div>
                   <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-lg flex justify-center md:text-base text-xs' onClick={handleSavePatientData}>Save</div>
-                  <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer'>Ready for Review</div>
+                  <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' onClick={handle_netSuitSubmission}>Ready for Review</div>
                 </div>
-    </div>
-  </div>
-      }
-    </>
-
+          </div>
+        </div>
+       
+    
   )
 }
 
