@@ -1382,29 +1382,28 @@ const zoomInSecond = () => {
               <p className='absolute top-0 text-[#e36c09] text-sm'>Physicain</p>
             </div>
             <div className='flex flex-col justify-center w-full items-center  md:pt-10 pt-5 pl-5'>
- 
 
-              <div className=' flex  items-center  gap-5 '>
-                <p className='text-xs text-black' htmlFor="">Office Name:</p>
-                <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
-                  type="text"
-                  name="accountName"
-                  id='accountName'
-                  value={officeData.accountName}
-                  onChange={handleOfficeInputChange}
-                />
-              </div>
+                    <div className=' flex  items-center  gap-5 '>
+                      <p className='text-xs text-black' htmlFor="">Office Name:</p>
+                      <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                        type="text"
+                        name="accountName"
+                        id='accountName'
+                        value={officeData.accountName}
+                        onChange={handleOfficeInputChange}
+                      />
+                    </div>
               
-              <div className=' flex  items-center  gap-5 pt-1'>
-                <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
-                <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
-                type="text"
-                id='cellPhone'
-                name="cellPhone"
-                value={officeData.cellPhone}
-                onChange={handleOfficeInputChange}
-                />
-              </div>
+                    <div className=' flex  items-center  gap-5 pt-1'>
+                      <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
+                      <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                      type="text"
+                      id='cellPhone'
+                      name="cellPhone"
+                      value={officeData.cellPhone}
+                      onChange={handleOfficeInputChange}
+                      />
+                    </div>
 
                     <div className=' flex  items-center  gap-5 pt-1'>
                       <p className='text-xs text-black pl-7   ' htmlFor="">Email:</p>
@@ -1457,9 +1456,9 @@ const zoomInSecond = () => {
 
                   </div>
 
-                  <div className='hidde' >
-                    <div className='flex  justify-end'>
-                      <div className='absolut  md:top-0 top-6  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'
+                  <div className="flex flex-col justify-center w-full md:pt-20 pt-10 pl-5">
+                    <div className='flex  justify-end md:pt-1' >
+                      <div className='right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'
                         onClick={handleAddHcp}
                       >
                         <div className=' flex justify-around px-1'>
@@ -1475,7 +1474,7 @@ const zoomInSecond = () => {
                       </div>
                     </div>
 
-                    <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll   no-scrollbar">
+                      <div>
                       <table className=" text-sm text-center table-auto   ">
                         <thead className="">
                           <tr className="text-xs text-white font-bold bg-[#246180] rounded-2xl ">
