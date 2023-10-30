@@ -510,7 +510,7 @@ const handleEditRowChange = (index, column, value) => {
 
     setOnDirtyKitSave(true);
     const updateKitData = [...kitData];
-    if(column == "wnd1" || column == "wnd2" || column == "wnd3"){
+    if(column == "wnd1" || column == "wnd2" || column == "wnd3" || column == "wnd4"){
        if(value){
         value=1;
        }else{
@@ -1356,12 +1356,11 @@ const zoomInSecond = () => {
                                         <label className='text-xs text-black w-full text-start' htmlFor="">Does patient still have an active wound?:</label>
                                         {!openNetSuit ?<>
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                   name="woundActive"
-
+                                        name="woundActive"
                                         id="woundActive"
                                         value={woundActive || ''}
                                         onChange={(e) => setActiveWound(e.target.value)} >
-                                        <option value={woundActive}>{woundActive}</option>
+                                        <option value={woundActive}>{woundActive === "1" ? 'Yes' : 'No'}</option>
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
