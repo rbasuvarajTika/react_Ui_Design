@@ -9,7 +9,8 @@ import {
 import { RiAdminFill } from 'react-icons/ri';
 import FaxIcon from '@mui/icons-material/Fax';
 import {useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from 'react';
+import axiosBaseURL from "../axios";
 
 
 function Header_Navigation() {
@@ -17,8 +18,57 @@ function Header_Navigation() {
     const [TrackerLIst, setTrackerLIst] = useState(null)
     const [AdminLIst, setAdminList] = useState(null)
     const [EditProfile, setEditProfile] = useState(null)
-
+    const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
+    const [userData, setUserData] = useState({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        address1: '',
+        city: '',
+        state: '',
+        zip: '',
+        phone: ''
+    });
+    useEffect(() => {
+        // Retrieve userId from localStorage
+        const storedUserId = localStorage.getItem('userId');
+        if (storedUserId) {
+            setUserId(storedUserId);
+        }
+    }, []);
+    
+    const fetchUserData = () => {
+        try {
+         const userId = localStorage.getItem('userId');
+          const config = {
+          };
+          axiosBaseURL({
+              method: 'GET',
+              url: `/api/v1/users/usersList/userId/${userId}`,
+              headers: {
+               // Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((mainResponse) => {
+                console.log(mainResponse.data.data[0]);
+                setUserData(mainResponse.data.data[0]);
+                console.log("userData",userData);
+              })
+              .catch((error) => {
+                //setError('Error fetching main PDF. Please try again later.');
+                console.error('Error fetching main Data:', error);
+              });
+         
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          // Handle network or other errors
+        }
+      };
+      useEffect(() => {
+        // Fetch PDF data for both main and duplicate fax when the component mounts
+        fetchUserData();
+      }, []);
 
 
     const fax_handleClick = () => {
@@ -46,7 +96,7 @@ function Header_Navigation() {
 
     const openEditUserProfile = () => {
         setEditProfile("Edit Profile")
-        navigate("/nsrxmgt/admin-edit-profile")
+        navigate(`/nsrxmgt/admin-edit-profile/${userId}`);
       
     }
 
@@ -59,16 +109,19 @@ function Header_Navigation() {
     return (
             <div className="w-full text-xs flex items-center justify-between py-1 font-bold z-50">
                 <div className="flex items-center gap-6">
+                    
                     <span className="uppercase flex items-center gap-1" onClick={() => navigate(-1)}>
                         <span className="bg-white rounded-full z-50">
                             <ArrowBack className="text-teal-400" onClick={() => navigate(-1)} />
                         </span>
                         <span className="hidden md:block z-50" onClick={() => navigate(-1)}>Next science</span>
                     </span>
+                    {userData && (
                     <span className="flex items-center gap-1 z-50" onClick={openEditUserProfile}>
                         <AccountCircle />
-                        <span className="underline hidden md:block z-50" onClick={openEditUserProfile}>Erica Fernandes</span>
+                        <span className="underline hidden md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
                     </span>
+                    )}
                 </div>
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
