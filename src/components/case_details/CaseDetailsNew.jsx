@@ -1440,11 +1440,17 @@ const zoomInSecond = () => {
                             {woundData.map((row, index) => (
                                 <tr key={index} >
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <input type="text" name="woundNo" id="woundNo" value={row.woundNo} 
                                         onChange={(e) => handleEditRowChange(index, 'woundNo', e.target.value)}
                                         className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                      </>:<>
+                                      <input type="text" name="woundNo" id="woundNo" value={row.woundNo} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
+                                    {!openNetSuit ?<>
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-14 text-xs'
                                          name="woundLocation" id="woundLocation"
                                          onChange={(e) => handleEditRowChange(index, 'woundLocation', e.target.value)}>
@@ -1452,6 +1458,10 @@ const zoomInSecond = () => {
                                             <option value="LT">LT</option>
                                             <option value="RT">RT</option>
                                         </select>
+                                        </>:<>
+                                      <input type="text" name="woundLocation" id="woundLocation" value={row.woundLocation} 
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
                                     </td>
                                     <td className="p-1 rounded-2xl border">
                                         <input type="text" name="woundLength" id="woundLength" value={row.woundLength} 
