@@ -82,15 +82,15 @@ const Duplicate_Fax = () => {
     }
 
     const fetchPdfData = (faxId) => {
-        const token = localStorage.getItem('tokenTika');
+        //const token = localStorage.getItem('tokenTika');
     
-        if (token) {
+      
           axiosBaseURL({
             method: 'GET',
             url: `/api/v1/fax/faxDupeById/${faxId}`, // Use the endpoint that provides both IDs
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //   Authorization: `Bearer ${token}`,
+            // },
           })
             .then((response) => {
               let mainFaxId = response.data.data[0].faxId;
@@ -108,9 +108,9 @@ const Duplicate_Fax = () => {
                 method: 'GET',
                 url: `/api/v1/fax/getFaxPdf/${mainFaxId}`,
                 responseType: 'arraybuffer',
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
+                // headers: {
+                //   Authorization: `Bearer ${token}`,
+                // },
               })
                 .then((mainResponse) => {
                   setPdfResponse(mainResponse.data);
@@ -129,9 +129,9 @@ const Duplicate_Fax = () => {
                 method: 'GET',
                 url: `/api/v1/fax/getFaxPdf/${duplicateFaxId}`,
                 responseType: 'arraybuffer',
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
+                // headers: {
+                //   Authorization: `Bearer ${token}`,
+                // },
               })
                 .then((duplicateResponse) => {
                   setDuplicatePdfResponse(duplicateResponse.data);
@@ -149,9 +149,7 @@ const Duplicate_Fax = () => {
            //   setError('Error fetching fax IDs. Please try again later.');
               console.error('Error fetching fax IDs:', error);
             });
-        } else {
-         // setError('Authentication token not available. Please log in.');
-        }
+       
       };
     
       useEffect(() => {
@@ -160,12 +158,12 @@ const Duplicate_Fax = () => {
       }, []);
 
       const handleMakeMaster = () => {
-        const token = localStorage.getItem('tokenTika');
+       // const token = localStorage.getItem('tokenTika');
           axiosBaseURL
             .put(`/api/v1/fax/updateFax/${duplicateTrnFaxId}/${mainTrnFaxId}`, null, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+              // headers: {
+              //   Authorization: `Bearer ${token}`,
+              // },
             })
             .then((response) => {
               // Handle success
@@ -196,13 +194,13 @@ const Duplicate_Fax = () => {
         // Add your logic here to handle keeping the current fax as a duplicate
         // You may want to make an API call to update the duplicate status in your backend.
         // Example:
-        const token = localStorage.getItem('tokenTika');
-        if (token) {
+        //const token = localStorage.getItem('tokenTika');
+       
             axiosBaseURL
             .put(`/api/v1/fax/keepDuplicate/${duplicateTrnFaxId}`, null, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+              // headers: {
+              //   Authorization: `Bearer ${token}`,
+              // },
             })
             .then((response) => {
               // Handle success
@@ -219,9 +217,7 @@ const Duplicate_Fax = () => {
               console.error('Keep Duplicate Error:', error);
               // You can set an error state or show an error message to the user.
             });
-        } else {
-          setError('Authentication token not available. Please log in.');
-        }
+        
       };
       
     return (

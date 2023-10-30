@@ -23,6 +23,7 @@ import Loader from '../Loader';
 import { ToastContainer, toast } from 'react-toast'
 import { Checkbox } from '@mui/material';
 
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 
@@ -31,6 +32,7 @@ const CaseDetailsNew = () => {
   const { paramFaxId } = useParams();
   const { netSuitId } = useParams();
   const { paramPatientId } = useParams();
+  const navigate = useNavigate();
 
   const [patientFirstName, setPatientFirstName] = useState('');
   const [patientMiddleName, setPatientMiddleName] = useState('');
@@ -39,16 +41,8 @@ const CaseDetailsNew = () => {
   const [loading, setLoading] = useState(false)
 
   const [onDirtyPatientSave, setOnDirtyPatientSave] = useState(false)
-
   const [onDirtyOrdertSave, setOnDirtyOrderSave] = useState(false)
   const [onDirtyOrderDelete, setOnDirtyOrderDelete] = useState(false)
-
-  const [onDirtyKitSave, setOnDirtyKitSave] = useState(false)
-  const [onDirtyKitDelete, setOnDirtyKitDelete] = useState(false)
-
-  const [onDirtyOfficeSave, setOnDirtyOfficeSave] = useState(false)
-  const [onDirtyHcpSave, setOnDirtyHcpSave] = useState(false)
-
 
   const [dateOfBirth, setDateOfBirth] = useState(null); // Initialize dateOfBirth as null
   const [ssn, setSsn] = useState('');
@@ -103,6 +97,7 @@ const CaseDetailsNew = () => {
   const handleSavePatientData = () => {
 
     handlePatientSave();
+
     if(onDirtyOrdertSave){
     handleWoundUpdate();
     }
@@ -121,7 +116,7 @@ const CaseDetailsNew = () => {
     if(onDirtyHcpSave){
       handleSaveHcpClick();
     }
-    
+    navigate(`/nsrxmgt/case-details-new/${trnRxId}/${paramFaxId}/${netSuitId}/${paramPatientId}`);
   };
 // Total Save Call
 
@@ -436,16 +431,19 @@ const handleEditRowChange = (index, column, value) => {
         // The data was successfully updated. You can handle the success here.
         console.log('Data updated successfully.');
         setLoading(false);
+        setOnDirtyOrderSave(false);
         toast.success("Order Information Saved Successfully");
 
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
         setLoading(false);
+        setOnDirtyOrderSave(false);
         toast.error("Error in Order Information");
       }
     } catch (error) {
       setLoading(false);
+      setOnDirtyOrderSave(false);
       toast.error("Error in Order Information");
       console.error('Error updating data:', error);
     }
@@ -454,6 +452,7 @@ const handleEditRowChange = (index, column, value) => {
   const handleWoundDelete = async () => {
     try {
       setLoading(true);
+
       const token = localStorage.getItem('token');
       const config = {
         headers: {
@@ -472,15 +471,18 @@ const handleEditRowChange = (index, column, value) => {
         // The data was successfully updated. You can handle the success here.
         console.log('Deleted updated successfully.');
         setLoading(false);
+        setOnDirtyOrderDelete(false);
         toast.success("Order Information Deleted Sucessfully");
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
         setLoading(false);
+        setOnDirtyOrderDelete(false);
         toast.success("Error to Delete Order Information");
       }
     } catch (error) {
       setLoading(false);
+      setOnDirtyOrderDelete(false);
       toast.success("Error to Delete Order Information");
       console.error('Error updating data:', error);
     }
@@ -497,7 +499,7 @@ const handleEditRowChange = (index, column, value) => {
   const [kitDataRxId, setKitDataRxId] = useState(null);
   const [kitDataTranFaxId, setKitDataRxIdTranFaxID] = useState(null);
   const [kitDataFaxId, setKitDataRxIdFaxID] = useState(null);
-
+  const [onDirtyKitSave, setOnDirtyKitSave] = useState(false)
   useEffect(() => {
     console.log(kitData);
   }, [kitData]);
@@ -508,6 +510,8 @@ const handleEditRowChange = (index, column, value) => {
   const handleKitEditRowChange = (index, column, value) => {
 
 
+    
+    
     setOnDirtyKitSave(true);
     const updateKitData = [...kitData];
     if(column == "wnd1" || column == "wnd2" || column == "wnd3" || column == "wnd4"){
@@ -568,6 +572,7 @@ const handleEditRowChange = (index, column, value) => {
         setProductData(productData);
       } catch (error) {
         console.error('Error fetching state data:', error);
+        setOnDirtyKitSave(false);
       }
     };
 
@@ -599,6 +604,8 @@ const handleEditRowChange = (index, column, value) => {
             }
         } catch (error) {
             console.error('Error fetching data:', error);
+            setOnDirtyKitSave(false);
+
         }
     };
 
@@ -626,11 +633,15 @@ const handleSaveKitClick = () => {
       // Handle the response from the API if needed
       console.log('Data saved successfully:', response.data);
       setLoading(false);
+      setOnDirtyKitSave(false);
+
       toast.success("Kit Information Saved Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
       setLoading(false);
+      setOnDirtyKitSave(false);
+
       console.error('Error saving data:', error);
       toast.error("Error to Save Kit Information");
     });
@@ -656,12 +667,16 @@ const handleDeleteKitClick = () => {
       // Handle the response from the API if needed
       console.log('Data saved successfully:', response.data);
       setLoading(false);
+      setOnDirtyKitSave(false);
+
       toast.success("Kit Information Deleted Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
       console.error('Error saving data:', error);
       setLoading(false);
+      setOnDirtyKitSave(false);
+
       toast.error("Error to Delete to Kit Information");
     });
 };
@@ -680,7 +695,8 @@ const handleDeleteKitClick = () => {
   const [hcpDataRxId, setHcpDataRxId] = useState(null);
   const [hcpDataTranFaxId, setHcpDataRxIdTranFaxID] = useState(null);
   const [hcpDataFaxId, setHcpDataRxIdFaxID] = useState(null);
-
+  const [onDirtyOfficeSave, setOnDirtyOfficeSave] = useState(false)
+  const [onDirtyHcpSave, setOnDirtyHcpSave] = useState(false)
 
   useEffect(() => {
     console.log(hcpData);
@@ -732,7 +748,8 @@ const handleDeleteHcp = (index) => {
     setHcpData(updatedHcpData);
   };
 
-
+  
+    
   const handleOfficeInputChange = (e) => {
     setOnDirtyOfficeSave(true)
     const { name, value } = e.target;
@@ -757,9 +774,11 @@ const handleDeleteHcp = (index) => {
         // setTrnFaxId(trnFaxId);
         setHcpData(response.data.data);
         //  setLoading(false);
+        setOnDirtyHcpSave(false)
       } catch (error) {
         console.error('Error fetching data:', error);
         // setLoading(false);
+        setOnDirtyHcpSave(false)
       }
     };
     fetchData();
@@ -784,6 +803,8 @@ const handleDeleteHcp = (index) => {
         ///console.log(officeName);
       } catch (error) {
         console.error('Error fetching office data:', error);
+        setOnDirtyOfficeSave(false)
+
       }
     };
 
@@ -811,11 +832,15 @@ const handleDeleteHcp = (index) => {
         // Handle the response from the API if needed
         console.log('Data saved successfully:', response.data);
         setLoading(false);
+        setOnDirtyOfficeSave(false)
+
         toast.success("Office Info Saved Sucessfully");
       })
       .catch((error) => {
         // Handle any errors that occurred during the request
         setLoading(false);
+        setOnDirtyOfficeSave(false)
+
         console.error('Error saving data:', error);
         toast.error("Error to save Office Info");
       });
@@ -843,12 +868,16 @@ const handleDeleteHcp = (index) => {
         setLoading(false);
         console.log('Data saved successfully:', response.data);
         toast.success("HCP info Saved SUccessfully");
+        setOnDirtyOfficeSave(false)
+
       })
       .catch((error) => {
         setLoading(false);
         // Handle any errors that occurred during the request
         console.error('Error saving data:', error);
         toast.error("Error to save HCP info");
+        setOnDirtyOfficeSave(false)
+
       });
   };
   
@@ -1990,7 +2019,7 @@ const zoomInSecond = () => {
           <>
             <div className='w-full h-screen  bg-white rounded-xl border-2 shadow-xl relative'>
             <div className='text-white w-full lg:h-[calc(114%-0rem)] h-screen bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
-                        <div className='flex justify-center gap-2 mt-1 absolute bottom-3 w-full'>
+                        <div className='flex justify-center gap-2 mt-1 absolute top-3 w-full'>
                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <=1 ? "bg-[#d9e0e3]": "bg-[#00aee6]" }`} onClick={previousPage}> <FaArrowLeft /></div>
                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
                         </div>
