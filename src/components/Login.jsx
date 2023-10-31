@@ -49,7 +49,8 @@ function Login() {
                         if (res.data && res.data.token) {
                             const { token,userId } = res.data;
                             localStorage.setItem('token', token);
-                           
+                            localStorage.setItem('tokenTika', token);
+                            
                             localStorage.setItem('userId', userId);
                             console.log(      'userId', userId);
                          // Store "Remember Me" in cookies
