@@ -2178,11 +2178,11 @@ const zoomInSecond = () => {
                                     </>
                                     :
                                     <>
-                                    <p>Submit</p>
+                                    <p>Save</p>
                                     </>
                             }
                     
-                    Save</div>
+                    </div>
                   <div className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' onClick={handle_netSuitSubmission}>Ready for Review</div>
                 </div>
                :<>
