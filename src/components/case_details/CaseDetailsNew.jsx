@@ -947,8 +947,9 @@ const zoomInSecond = () => {
 
   const { openNetSuit, setNetSuit} = useContext(DuplicateContext);
   const { readyForReview, setReadyForReview} = useState(false);
+  setNetSuit(false);
   const handle_netSuitSubmission = () => {
-    setNetSuit(true)
+    setNetSuit(true);
     setReadyForReview(true);
   }
   const handle_netDeSubmission = () => {
