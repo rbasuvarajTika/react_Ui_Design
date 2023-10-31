@@ -85,6 +85,7 @@ const CaseDetailsNew = () => {
    const [zipError, setZipError] = useState('');
    const [ssnError, setSsnError] = useState('');
 
+   const[dateOfBirthError,setDateOfBirthError]=useState('');
 
   // Total Save Call
   const handleSavePatientData = () => {
@@ -103,11 +104,20 @@ const CaseDetailsNew = () => {
     if(onDirtyKitDelete){
       handleDeleteKitClick();
     }
+    if(onDirtyHcpDelete){
+      handleDeleteHcpClick();
+    }
+
+
+    
     if(onDirtyOfficeSave){
       handleSaveOfficeClick();
     }
     if(onDirtyHcpSave){
       handleSaveHcpClick();
+    }
+    if(onDirtyOfficeSave){
+      setOnDirtyOfficeSave();
     }
     navigate(`/nsrxmgt/case-details-new/${trnRxId}/${paramFaxId}/${netSuitId}/${paramPatientId}`);
   };
@@ -290,6 +300,19 @@ const CaseDetailsNew = () => {
       setZipError('');
     }
   };
+  const handleDateOfBirthChange = (e) => {
+    const dateValue = e.target.value;
+    const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
+
+    if (dateValue === '' || datePattern.test(dateValue)) {
+        setDateOfBirth(dateValue);
+        setDateOfBirthError('');
+    } else {
+        // Only set an error if the entered value doesn't match the pattern
+        setDateOfBirth(dateValue); // Update the date even if it doesn't match the pattern
+        setDateOfBirthError('Please enter a valid date in MM/DD/YYYY format.');
+    }
+};
 
   const handleSsnChange = (e) => {
     const numericValue = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
@@ -407,6 +430,7 @@ const handleEditRowChange = (index, column, value) => {
     setDeleteWoundData([...deleteWoundData,deletedData]);
     const updatedWoundData = woundData.filter((_, i) => i !== index);
     setWoundData(updatedWoundData);
+    toast.error("Order Information Deleted Sucessfully");
   };
 
   const handleWoundUpdate = async () => {
@@ -464,6 +488,7 @@ const handleEditRowChange = (index, column, value) => {
     
       if (response.status === 200) {
         // The data was successfully updated. You can handle the success here.
+        
         console.log('Deleted updated successfully.');
         setLoading(false);
         setOnDirtyOrderDelete(false);
@@ -495,6 +520,8 @@ const handleEditRowChange = (index, column, value) => {
   const [kitDataTranFaxId, setKitDataRxIdTranFaxID] = useState(null);
   const [kitDataFaxId, setKitDataRxIdFaxID] = useState(null);
   const [onDirtyKitSave, setOnDirtyKitSave] = useState(false)
+  const [onDirtyKitDelete, setOnDirtyKitDelete] = useState(false)
+
   useEffect(() => {
     console.log(kitData);
   }, [kitData]);
@@ -549,6 +576,7 @@ const handleEditRowChange = (index, column, value) => {
     setDeletKit([...deleteKit,deletedData]);
     const updatedKitData = kitData.filter((_, i) => i !== index);
     setKitData(updatedKitData);
+    toast.error("Kit Information Deleted Sucessfully");
   };
 
   useEffect(() => {
@@ -638,7 +666,7 @@ const handleSaveKitClick = () => {
       setOnDirtyKitSave(false);
 
       console.error('Error saving data:', error);
-      toast.error("Error to Save Kit Information");
+      toast.error("Duplicate Kit Number");
     });
 };
 
@@ -691,7 +719,11 @@ const handleDeleteKitClick = () => {
   const [hcpDataTranFaxId, setHcpDataRxIdTranFaxID] = useState(null);
   const [hcpDataFaxId, setHcpDataRxIdFaxID] = useState(null);
   const [onDirtyOfficeSave, setOnDirtyOfficeSave] = useState(false)
+  const [onDirtyHcpDelete, setOnDirtyHcpDelete] = useState(false)
   const [onDirtyHcpSave, setOnDirtyHcpSave] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('');
+
+
 
   useEffect(() => {
     console.log(hcpData);
@@ -701,18 +733,31 @@ const handleDeleteKitClick = () => {
   }, [deleteHcp]);
 
   const handleHcpEditRowChange = (index, column, value) => {
-    setOnDirtyHcpSave(true)
+    setOnDirtyHcpSave(true);
     const updateHcpData = [...hcpData];
-    if(column == "signature_Flag"){
-       if(value){
-        value=1;
-       }else{
-        value=0;
-       }
+    let errorMessage = '';
+
+    if (column === 'npi') {
+        // Check if the entered value matches the format of 10 numeric digits or is an empty string
+        if (value === '' || /^\d{0,10}$/.test(value)) {
+            updateHcpData[index][column] = value; // Update the value as it's either an empty string or matches the format
+        } else {
+            errorMessage = 'Invalid NPI format. Please enter up to 10 numeric digits.';
+        }
+    } else if (column === 'signature_Flag') {
+        if (value) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+        updateHcpData[index][column] = value;
+    } else {
+        updateHcpData[index][column] = value;
     }
-    updateHcpData[index][column] = value;
+
     setHcpData(updateHcpData);
-  };
+    setErrorMessage(errorMessage);
+};
 
   const handleAddHcp = () => {
     setOnDirtyHcpSave(true)
@@ -736,9 +781,10 @@ const handleDeleteKitClick = () => {
   };
 
 const handleDeleteHcp = (index) => {
+  setOnDirtyHcpDelete(true)
     hcpData[index]["status"] = "delete";
     const deletedData =hcpData[index]
-    setDeletKit([...deleteHcp,deletedData]);
+    setDeletHcp([...deleteHcp,deletedData]);
     const updatedHcpData = hcpData.filter((_, i) => i !== index);
     setHcpData(updatedHcpData);
   };
@@ -840,7 +886,36 @@ const handleDeleteHcp = (index) => {
         toast.error("Error to save Office Info");
       });
   };
-  
+  const handleDeleteHcpClick = () => {
+
+    // Get the token from your authentication mechanism, e.g., localStorage
+    const token = localStorage.getItem('token');
+    setLoading(true);
+    // Define the request headers with the Authorization header
+    const config = {
+      headers: {
+        //Authorization: `Bearer ${token}`,
+      },
+    };
+     console.log('Delete Data Saving:', deleteHcp);
+     const dataToSave =deleteHcp;
+    // Send a POST request to the API with the headers
+    axiosBaseURL
+      .post('/api/v1/fax/deleteHcpInfoList', dataToSave, config)
+      .then((response) => {
+        // Handle the response from the API if needed
+        console.log('Data saved successfully:', response.data);
+        setLoading(false);
+        
+        toast.success("Hcp Information Deleted Successfully");
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        console.error('Error saving data:', error);
+        setLoading(false);
+        toast.error("Error to Delete to Hcp Information");
+      });
+  };
 
   const handleSaveHcpClick = () => {
     setLoading(true);
@@ -965,7 +1040,18 @@ const zoomInSecond = () => {
                                 <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
                                 <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
                                 <p className='text-[#596edb] text-xs absolute top-1 left-4'>Netsuit Patient ID:{netSuitId}</p>
-                                <p className='text-[#596edb] text-xs absolute top-1 right-10'>Tika ID:{paramPatientId}</p>
+                                
+                                <label className='text-[#596edb] text-xs absolute top-1 right-11' htmlFor="">Tika Rx ID : </label>
+                                <select className='text-[#596edb] text-xs absolute top-1 right-1 bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
+                                        value={paramPatientId}
+
+                                    >
+                                       
+                                        <option key={paramPatientId} value={paramPatientId}>
+                                            {paramPatientId}
+                                        </option>
+                                       
+                                    </select>
                             </div>
 
 
@@ -1055,9 +1141,9 @@ const zoomInSecond = () => {
                                                 id="dateOfBirth"
                                                 name="dateOfBirth"
                                                 value={dateOfBirth || ''}
-                                                onChange={(e) => setDateOfBirth(e.target.value)}                                        />
-
-</>:<>
+                                                onChange={handleDateOfBirthChange}     />
+                                                         <p className="text-red-500 text-xs">{dateOfBirthError}</p>
+                                              </>:<>
                                                 <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="dateOfBirth"
@@ -1331,7 +1417,7 @@ const zoomInSecond = () => {
                                         value={placeOfService || ''}
                                         onChange={(e) => setPlaceOfService(e.target.value)}
                                         >
-                                        <option value={placeOfService}>{placeOfService}</option>
+                                       
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                         </select>
@@ -1359,7 +1445,6 @@ const zoomInSecond = () => {
                                         onChange={(e) => setOrderType(e.target.value)}
 
                                     >
-                                        <option value={orderType}>{orderType}</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                     </select>
@@ -1385,9 +1470,9 @@ const zoomInSecond = () => {
                                         id="woundActive"
                                         value={woundActive || ''}
                                         onChange={(e) => setActiveWound(e.target.value)} >
-                                        <option value={woundActive}>{woundActive === "1" ? 'Yes' : 'No'}</option>
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
+                                        {/* <option value={woundActive}>{woundActive === 1 ? "Yes" : "No"}</option> */}
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                     </>:<>
                                                 <input className='w-56  text-black py-0.5 text-xs t-1' 
@@ -1414,7 +1499,7 @@ const zoomInSecond = () => {
       <div className='w-full h-[calc(50vh-10rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll scrollbar '>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
+                <p className='absolute top-0 text-[#e36c09] text-sm'>Wound Etiology</p>
             </div>
             <div>
                 {}
@@ -1477,7 +1562,7 @@ const zoomInSecond = () => {
                                     <td className="p-1 rounded-2xl border">
                                     {!openNetSuit ?<>
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-14 text-xs'
-                                         name="woundLocation" id="woundLocation"
+                                         name="woundLocation" id="woundLocation" value={row.woundLocation}
                                          onChange={(e) => handleEditRowChange(index, 'woundLocation', e.target.value)}>
                                             <option value={row.woundLocation}>{row.woundLocation}</option>
                                             <option value="LT">LT</option>
@@ -1524,9 +1609,11 @@ const zoomInSecond = () => {
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                            
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'   
-                                             name="woundThickness" id="woundThickness"
+                                             name="woundThickness" id="woundThickness" value={row.woundThickness}
                                             onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
-                                                <option value={row.woundThickness}>{row.woundThickness}</option>
+                                               
+                                                <option value='P'>P</option>
+                                                <option value='F'>F</option>
                                             </select>
                                         </p>
                                         </>:<>
@@ -1538,9 +1625,11 @@ const zoomInSecond = () => {
                                     {!openNetSuit ?<>
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
-                                             name="drainage" id="drainage"
+                                             name="drainage" id="drainage" value={row.drainage}
                                             onChange={(e) => handleEditRowChange(index, 'drainage', e.target.value)}>
                                                 <option value={row.drainage}>{row.drainage}</option>
+                                                <option value='Mod'>Mod</option>
+                                                <option value='Hvy'>Hvy</option>
                                             </select>
                                         </p>
                                         </>:<>
@@ -1566,7 +1655,7 @@ const zoomInSecond = () => {
                                     {!openNetSuit ?<>
                                         <input type="text" name="icdCode" id="icdCode" value={row.icdCode} 
                                         onChange={(e) => handleEditRowChange(index, 'icdCode', e.target.value)}
-                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>
                                          </>:<>
                                       <input type="text" name="icdCode" id="icdCode" value={row.icdCode} 
                                         className=' text-black h-5 w-10 text-xs'/>
@@ -1576,7 +1665,7 @@ const zoomInSecond = () => {
                                     {!openNetSuit ?<>
                                         <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                         onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
-                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>
                                             </>:<>
                                       <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                         className=' text-black h-5 w-10 text-xs'/>
@@ -1615,7 +1704,7 @@ const zoomInSecond = () => {
        <div className='w-full h-[130px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
+                <p className='absolute top-50  text-[#e36c09] text-sm'>Product  Information</p>
             </div>
             {!openNetSuit ?<>
             <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer' onClick={handleAddKit}>
@@ -1752,7 +1841,7 @@ const zoomInSecond = () => {
           <div className='w-full h-[calc(110vh-30rem)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-1 scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09] absolute top-0  '>
               <hr className="h-px border-[#e36c09] border w-32  absolut " />
-              <p className='absolute top-0 text-[#e36c09] text-sm'>Physicain</p>
+              <p className='absolute top-0 text-[#e36c09] text-sm'>Health Care Provider</p>
             </div>
             <div className='flex flex-col justify-center w-full items-center  md:pt-10 pt-5 pl-5'>
 
@@ -1915,6 +2004,7 @@ const zoomInSecond = () => {
                             <th className="px-2 py-3 border">First Name</th>
                             <th className="px-2 py-3 border">Middle Name</th>
                             <th className="px-2 py-3 border">Last Name</th>
+                            <th className="px-2 py-3 border">Designation</th>
                             <th className="px-2 py-3 border">NPI</th>
                             {!openNetSuit ?<>
                            <th className="px-2 py-3  border">Delete</th>
@@ -1982,11 +2072,27 @@ const zoomInSecond = () => {
                               {!openNetSuit ?<>
                                 <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
                                             type="text"
+                                            id='lastName'
+                                            name='lastName'
+                                           // value= {data.des}
+                                          //  onChange={(e) => handleHcpEditRowChange(index, 'lastName', e.target.value)}
+                                        />
+                                        </>:<>
+                                      <input type="text" name="lastName" id="lastName"  
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
+                              </td>
+                              <td className="p- rounded-2xl border">
+                              {!openNetSuit ?<>
+                                <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-30 text-xs'
+                                            type="text"
                                             id='npi'
                                             name='npi'
                                             value= {data.npi}
                                             onChange={(e) => handleHcpEditRowChange(index, 'npi', e.target.value)}
-                                        />
+                                        />    
+                                            {/* <p className="text-red-500 text-xs">{errorMessage}</p> */}
+
                                           </>:<>
                                       <input type="text" name="npi" id="npi" value={data.npi} 
                                         className=' text-black h-5 w-10 text-xs'/>
