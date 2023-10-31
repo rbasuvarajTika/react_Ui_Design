@@ -2,26 +2,19 @@ import React, { useContext,useState, useEffect } from 'react';
 import axiosBaseURL from '../axios';
 import { useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
-import { LuMinus, LuPlus } from 'react-icons/lu'
-import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
-import NetSuitSubmission from '../../pages/case_details/NetSuitSubmission'
 
-
-import { AiFillCloseCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { DuplicateContext } from '../../context/DuplicateContext';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import fax from "../../assets/pdf/fax.pdf"
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
 import { ToastContainer, toast } from 'react-toast'
-import { Checkbox } from '@mui/material';
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -154,6 +147,8 @@ const CaseDetailsNew = () => {
           setPatientId(patientData.patientId);
           setTrnFaxId(patientData.trnFaxId);
           setFaxId(patientData.faxId);
+
+          
           setIsLoading(false);
         } else {
           // Handle the case where no data is returned or the structure is different
