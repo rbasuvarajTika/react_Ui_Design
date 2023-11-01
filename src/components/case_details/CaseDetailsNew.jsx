@@ -590,13 +590,30 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleDeleteKit = (index) => {
+    confirmAlert({
+      title: 'Confirm to Delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDeleteKitConfirm(index)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+  };
+
+
+  const handleDeleteKitConfirm = (index) => {  
     setOnDirtyKitDelete(true)
     kitData[index]["status"] = "delete";
     const deletedData =kitData[index]
     setDeletKit([...deleteKit,deletedData]);
     const updatedKitData = kitData.filter((_, i) => i !== index);
     setKitData(updatedKitData);
-    toast.error("Kit Information Deleted Sucessfully");
   };
 
   useEffect(() => {
@@ -800,7 +817,28 @@ const handleDeleteKitClick = () => {
     setHcpData([...hcpData, addHcpData]);
   };
 
-const handleDeleteHcp = (index) => {
+
+ 
+
+  const handleDeleteHcp = (index) => {
+    confirmAlert({
+      title: 'Confirm to Delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDeleteHcpConfirm(index)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+    };
+
+
+const handleDeleteHcpConfirm = (index) => {
   setOnDirtyHcpDelete(true)
     hcpData[index]["status"] = "delete";
     const deletedData =hcpData[index]
