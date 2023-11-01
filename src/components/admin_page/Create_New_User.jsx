@@ -114,10 +114,22 @@
                 })
                     .then((res) => {
                         setLoading(false)
-                        if (res.data.success === true) {
+                        if (res.data === 'User created successfully') {
                             setLoading(false)
-                            toast.success("User Created Successfully")
-                            navigate("/nsrxmgt/admin-user-list");
+                            toast.success("User Created Successfully");
+                            setUserData({
+                                userName: '',
+                                firstName: '',
+                                lastName: '',
+                                address: '',
+                                city:'',
+                                state:'',
+                                zip:'',
+                                phone: '',
+                                password: '',
+                                type:'Standard',
+                                userStatusFlag:'Active',
+                            });
                             // Handle success here, e.g., show a success message
                         } 
                         if(res.data.success === false){
