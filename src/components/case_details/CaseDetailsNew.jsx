@@ -1041,17 +1041,7 @@ const zoomInSecond = () => {
                                 <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
                                 <p className='text-[#596edb] text-xs absolute top-1 left-4'>Netsuit Patient ID:{netSuitId}</p>
                                 
-                                <label className='text-[#596edb] text-xs absolute top-1 right-11' htmlFor="">Tika Rx ID : </label>
-                                <select className='text-[#596edb] text-xs absolute top-1 right-1 bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                        value={paramPatientId}
-
-                                    >
-                                       
-                                        <option key={paramPatientId} value={paramPatientId}>
-                                            {paramPatientId}
-                                        </option>
-                                       
-                                    </select>
+                                <label className='text-[#596edb] text-xs absolute top-1 right-11' htmlFor="">Tika Rx ID :{trnRxId} </label>
                             </div>
 
 
