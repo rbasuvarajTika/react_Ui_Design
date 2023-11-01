@@ -29,6 +29,7 @@
             phone: '',
             password: '',
             type:'Standard',
+            role:'',
             userStatusFlag:'Active',
         });
         
@@ -128,6 +129,7 @@
                                 phone: '',
                                 password: '',
                                 type:'Standard',
+                                role:'',
                                 userStatusFlag:'Active',
                             });
                             // Handle success here, e.g., show a success message
@@ -433,14 +435,13 @@
                                                 value={userData.role}
                                                 onChange={handleInputChange}
                                                                 >
-                                        <MdOutlineArrowDropDown size={20} />
-                                        <option value={userData.role}>{userData.role}</option>
-                                        <option value="Admin">Admin</option>
-                                        <option value="Power User">Power User</option>
-                                        <option value="Reviewer ">Reviewer</option>
-
-                                        </select>
-                                            <p className="text-red-500 text-xs">{roleError}</p>
+                                                    <MdOutlineArrowDropDown size={20} />
+                                                    <option value={userData.role}>{userData.role}</option>
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Power User">Power User</option>
+                                                    <option value="Reviewer ">Reviewer</option>
+                                                    </select>
+                                                <p className="text-red-500 text-xs">{roleError}</p>
                                             </div>
                                         </div>
                                     </div>
