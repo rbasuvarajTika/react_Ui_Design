@@ -3,7 +3,8 @@ import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
 import axiosBaseURL from '../axios';
 import axios from 'axios';
-
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 const Edit_Profile =() =>{
  
     const [userData, setUserData] = useState({
@@ -70,7 +71,8 @@ const Edit_Profile =() =>{
           if (response.status === 201 || response.status === 200) {
             // User was successfully updated
             // You can handle success here, e.g., show a success message
-            alert('User Updated Successfully');
+           // alert('User Updated Successfully');
+           toast.success('User Updated Successfully');
             navigate("/nsrxmgt/admin-user-list");
           } else {
             // Handle errors, e.g., show an error message
@@ -99,6 +101,7 @@ const Edit_Profile =() =>{
                         <div className=' border  h-5 rounded-xl w-40 relative'>
                             <div className='bg-orange-500 w-40 h-6 rounded-xl flex justify-center items-center absolute -top-[3px] text-xs'>Edit Profile</div>
                         </div>
+                        <ToastContainer />
                 </div>
                 <form className=''>
                     <div className=' flex  flex-col xl:items-start items-center'>

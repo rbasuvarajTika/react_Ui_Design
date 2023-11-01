@@ -5,7 +5,6 @@ import { useParams ,useLocation} from 'react-router-dom';
 import axiosBaseURL from '../axios';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
-
 const Edit_User = () =>{
 
 

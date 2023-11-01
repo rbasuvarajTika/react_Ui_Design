@@ -17,8 +17,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
-import { ToastContainer, toast } from 'react-toast'
-
+//import { ToastContainer, toast } from 'react-toast'
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -264,6 +265,16 @@ const CaseDetailsNew = () => {
         // Data saved successfully
         setLoading(false);
         toast.success("Patient Details Savedddddddddddd Sucessfully")
+        // toast('Patient Details Saved Sucessfully', {
+        //   position: toast.POSITION.TOP_RIGHT,
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "light",
+        //   });
       } else {
         setLoading(false);
       }
@@ -471,19 +482,19 @@ const handleEditRowChange = (index, column, value) => {
         console.log('Data updated successfully.');
         setLoading(false);
         setOnDirtyOrderSave(false);
-        toast.success("Order Information Saved Successfully");
+        toast.success("Wound Etiology Information Saved Successfully");
 
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
         setLoading(false);
         setOnDirtyOrderSave(false);
-        toast.error("Error in Order Information");
+        toast.error("Error in Wound Etiology Information");
       }
     } catch (error) {
       setLoading(false);
       setOnDirtyOrderSave(false);
-      toast.error("Error in Order Information");
+      toast.error("Error in Wound Etiology Information");
       console.error('Error updating data:', error);
     }
   };
@@ -512,18 +523,18 @@ const handleEditRowChange = (index, column, value) => {
         console.log('Deleted updated successfully.');
         setLoading(false);
         setOnDirtyOrderDelete(false);
-        toast.success("Order Information Deleted Sucessfully");
+        toast.success("Wound Etiology Information Deleted Sucessfully");
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
         setLoading(false);
         setOnDirtyOrderDelete(false);
-        toast.success("Error to Delete Order Information");
+        toast.success("Error to Delete Wound Etiology Information");
       }
     } catch (error) {
       setLoading(false);
       setOnDirtyOrderDelete(false);
-      toast.success("Error to Delete Order Information");
+      toast.success("Error to Delete Wound Etiology Information");
       console.error('Error updating data:', error);
     }
   };
@@ -695,7 +706,7 @@ const handleSaveKitClick = () => {
       setLoading(false);
       setOnDirtyKitSave(false);
 
-      toast.success("Kit Information Saved Successfully");
+      toast.success("Product Information Saved Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
@@ -727,9 +738,8 @@ const handleDeleteKitClick = () => {
       // Handle the response from the API if needed
       console.log('Data saved successfully:', response.data);
       setLoading(false);
-      setOnDirtyKitSave(false);
-
-      toast.success("Kit Information Deleted Successfully");
+        setOnDirtyKitDelete(false)
+      toast.success("Product Information Deleted Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
@@ -737,7 +747,7 @@ const handleDeleteKitClick = () => {
       setLoading(false);
       setOnDirtyKitSave(false);
 
-      toast.error("Error to Delete to Kit Information");
+      toast.error("Error to Delete to Product Information");
     });
 };
 
@@ -874,6 +884,7 @@ const handleDeleteHcpConfirm = (index) => {
         setHcpData(response.data.data);
         //  setLoading(false);
         setOnDirtyHcpSave(false)
+        setOnDirtyHcpDelete(false)
       } catch (error) {
         console.error('Error fetching data:', error);
         // setLoading(false);
@@ -899,10 +910,14 @@ const handleDeleteHcpConfirm = (index) => {
         console.log("Office Data---->");
         console.log(officeInfo);
         setOfficeData(officeInfo);
+        setOnDirtyHcpSave(false)
+        setOnDirtyHcpDelete(false)
         ///console.log(officeName);
       } catch (error) {
         console.error('Error fetching office data:', error);
         setOnDirtyOfficeSave(false)
+        setOnDirtyHcpSave(false)
+        setOnDirtyHcpDelete(false)
 
       }
     };
@@ -933,7 +948,7 @@ const handleDeleteHcpConfirm = (index) => {
         setLoading(false);
         setOnDirtyOfficeSave(false)
 
-        toast.success("Office Info Saved Sucessfully");
+        toast.success("Health Care Provider Information Saved Sucessfully");
       })
       .catch((error) => {
         // Handle any errors that occurred during the request
@@ -941,7 +956,7 @@ const handleDeleteHcpConfirm = (index) => {
         setOnDirtyOfficeSave(false)
 
         console.error('Error saving data:', error);
-        toast.error("Error to save Office Info");
+        toast.error("Error to save Health Care Provider Information");
       });
   };
   const handleDeleteHcpClick = () => {
@@ -965,13 +980,16 @@ const handleDeleteHcpConfirm = (index) => {
         console.log('Data saved successfully:', response.data);
         setLoading(false);
         
-        toast.success("Hcp Information Deleted Successfully");
+        toast.success("Health Care Provider Information Deleted Successfully");
+     
+        setOnDirtyHcpDelete(false)
       })
       .catch((error) => {
         // Handle any errors that occurred during the request
         console.error('Error saving data:', error);
         setLoading(false);
-        toast.error("Error to Delete to Hcp Information");
+        setOnDirtyHcpDelete(false)
+        toast.error("Error to Delete to Health Care Provider Information");
       });
   };
 
@@ -995,15 +1013,15 @@ const handleDeleteHcpConfirm = (index) => {
         // Handle the response from the API if needed
         setLoading(false);
         console.log('Data saved successfully:', response.data);
-        toast.success("HCP info Saved SUccessfully");
-        setOnDirtyOfficeSave(false)
+        toast.success("Health Care Provider Information Saved SUccessfully");
+        setOnDirtyHcpSave(false)
 
       })
       .catch((error) => {
         setLoading(false);
         // Handle any errors that occurred during the request
         console.error('Error saving data:', error);
-        toast.error("Error to save HCP info");
+        toast.error("Error to save Health Care Provider Information");
         setOnDirtyOfficeSave(false)
 
       });
@@ -1690,8 +1708,11 @@ const zoomInSecond = () => {
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
                                             name="debrided" id="debrided"
+                                            value={row.debrided}
                                             onChange={(e) => handleEditRowChange(index, 'debrided', e.target.value)}>
-                                                <option value={row.debrided}>{row.debrided}</option>
+                                               
+                                                <option value={1}>Yes</option>
+                                                <option value={0}>No</option>
                                             </select>
                                         </p>
                                         </>:<>
