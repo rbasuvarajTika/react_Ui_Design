@@ -278,9 +278,9 @@ const Edit_User = () =>{
                                             <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                         type="text" 
                                             name="status"
+                                            value={userData.userStatusFlag}
                                                             >
                                     <MdOutlineArrowDropDown size={20} />
-                                    <option value={userData.userStatusFlag}>{space+userData.userStatusFlag}</option>
                                     <option value="Active">Active</option>
                                     <option value="Deactivated">Deactivated</option>
                                     </select>
