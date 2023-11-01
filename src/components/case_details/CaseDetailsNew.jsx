@@ -264,7 +264,7 @@ const CaseDetailsNew = () => {
       if (response.status== 200) {
         // Data saved successfully
         setLoading(false);
-        toast.success("Patient Details Savedddddddddddd Sucessfully")
+        toast.success("Patient Details Saved Sucessfully")
         // toast('Patient Details Saved Sucessfully', {
         //   position: toast.POSITION.TOP_RIGHT,
         //   autoClose: 5000,
@@ -638,7 +638,7 @@ const handleEditRowChange = (index, column, value) => {
           },
         };
 
-        const response = await axiosBaseURL.get('/api/v1/fax/productInfo', config);
+        const response = await axiosBaseURL.get('/api/v1/fax/productDetailsInfo', config);
         const productData = response.data.data; // Assuming the API returns an array of states
         setProductData(productData);
       } catch (error) {
