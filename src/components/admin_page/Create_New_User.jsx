@@ -1,8 +1,8 @@
     import React, { useState, useEffect } from 'react';
     import { MdOutlineArrowDropDown } from 'react-icons/md';
     import { useNavigate } from "react-router-dom";
-    import { ToastContainer, toast } from 'react-toast'
-
+    import { ToastContainer, toast } from 'react-toastify'
+    import "react-toastify/dist/ReactToastify.css";
     import axiosBaseURL from '../axios';
     const Create_New_User = () => {
         const navigate = useNavigate();
@@ -82,12 +82,12 @@
             }
             
           
-                    if (userData.state.length !== 2) {
-                        setStateError('State Length Should be 2');
-                        return;
-                    } else {
-                        setStateError(''); // Clear the error message
-                    }
+                    // if (userData.state.length !== 2) {
+                    //     setStateError('State Length Should be 2');
+                    //     return;
+                    // } else {
+                    //     setStateError(''); // Clear the error message
+                    // }
 
             if (userData.password.length < 6) {
                 setPasswordError('Password must be at least 6 characters');
@@ -115,8 +115,8 @@
                     .then((res) => {
                         setLoading(false)
                         if (res.data.success === true) {
-                            toast.success("User Created Successfully")
                             setLoading(false)
+                            toast.success("User Created Successfully")
                             navigate("/nsrxmgt/admin-user-list");
                             // Handle success here, e.g., show a success message
                         } 
