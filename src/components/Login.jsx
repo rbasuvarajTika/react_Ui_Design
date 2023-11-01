@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.jpeg"
 import { useEffect, useState } from "react";
 import axios from "axios"
-import { ToastContainer, toast } from 'react-toast'
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie'; 
 
 function Login() {
@@ -68,16 +69,32 @@ function Login() {
                         console.log(res);
                     }
                     setLoading(false)
-                    toast.error("Please enter password", {
-                        // backgroundColor: '',
-                    })
+
+                    toast('Please enter password', {
+                        position: toast.POSITION.BOTTOM_CENTER,
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        });
                 })
 
             } catch (error) {
                 console.log(error);
                 setLoading(false)
-                toast.error("Entered UserId or Password is not correct")
-
+                toast('Entered User Id or Password Incorrect', {
+                    position: toast.POSITION.BOTTOM_CENTER,
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
             }
         } else {
             console.log("LLLLLLLLLLLLLLLL");   
@@ -88,14 +105,30 @@ function Login() {
         let result = true;
         if (userName === "" || userName === null) {
             result = false;
-            toast.error("Please enter username")
+            toast('Please Enter User Name', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         }
 
         if (password === "" || password === null) {
             result = false;
-            toast.error("Please enter password", {
-                backgroundColor: '',
-            })
+            toast('Please Enter Password', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         }
         return result
     }

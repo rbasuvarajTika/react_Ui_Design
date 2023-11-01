@@ -263,7 +263,7 @@ const CaseDetailsNew = () => {
       if (response.status== 200) {
         // Data saved successfully
         setLoading(false);
-        toast.success("Patient Details Saved Sucessfully")
+        toast.success("Patient Details Savedddddddddddd Sucessfully")
       } else {
         setLoading(false);
       }
@@ -2342,7 +2342,7 @@ const zoomInSecond = () => {
                 </>
               }
           </div>
-          <ToastContainer />
+          <ToastContainer/>
         </div>
        
     
