@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 import { useNavigate } from 'react-router-dom';
 import { DuplicateContext } from '../../context/DuplicateContext';
@@ -424,14 +427,31 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleDeleteWound = (index) => {
+    confirmAlert({
+      title: 'Confirm to Delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDeleteWoundConfirm(index)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+
+  };
+
+  const handleDeleteWoundConfirm = (index) => {
     setOnDirtyOrderDelete(true);
     woundData[index]["status"] = "delete";
     const deletedData =woundData[index]
     setDeleteWoundData([...deleteWoundData,deletedData]);
     const updatedWoundData = woundData.filter((_, i) => i !== index);
     setWoundData(updatedWoundData);
-    toast.error("Order Information Deleted Sucessfully");
-  };
+  }
 
   const handleWoundUpdate = async () => {
     try {
