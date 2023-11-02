@@ -350,7 +350,11 @@ const CaseDetailsNew = () => {
   const [woundDataFaxId, setWoundDataRxIdFaxID] = useState(null);
   const [newWound, setNewWound] = useState([]);
   const [isAddClicked, setIsAddClicked] = useState(false);
-
+  
+  const [woundStage, setWoundStage] = useState([]);
+  const [drainage, setdrainage] = useState([]);
+  const [debridementtype ,setdebridementtype] = useState([]);
+  const[dateerrorMessage, setDateErrorMessage] = useState('');
 
   useEffect(() => {
     console.log(newWound);
@@ -539,6 +543,47 @@ const handleEditRowChange = (index, column, value) => {
     }
   };
  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/woundstage');
+        // Assuming the response data is an array of options
+        setWoundStage(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/drainage');
+        // Assuming the response data is an array of options
+        setdrainage(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/debridementtype');
+        // Assuming the response data is an array of options
+        setdebridementtype(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // WOUND END -------------------------------------------------
 
@@ -552,7 +597,7 @@ const handleEditRowChange = (index, column, value) => {
   const [kitDataFaxId, setKitDataRxIdFaxID] = useState(null);
   const [onDirtyKitSave, setOnDirtyKitSave] = useState(false)
   const [onDirtyKitDelete, setOnDirtyKitDelete] = useState(false)
-
+  const [frequency, setfrequency] = useState([]);
   useEffect(() => {
     console.log(kitData);
   }, [kitData]);
@@ -750,6 +795,25 @@ const handleDeleteKitClick = () => {
       toast.error("Error to Delete to Product Information");
     });
 };
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+     // const token = localStorage.getItem('token');
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
+      const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/frequency',);
+      // Assuming the response data is an array of options
+      setfrequency(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchData();
+}, []); 
 
 
   //KIT END
@@ -1630,7 +1694,7 @@ const zoomInSecond = () => {
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-14 text-xs'
                                          name="woundLocation" id="woundLocation" value={row.woundLocation}
                                          onChange={(e) => handleEditRowChange(index, 'woundLocation', e.target.value)}>
-                                            <option value={row.woundLocation}>{row.woundLocation}</option>
+                                            
                                             <option value="LT">LT</option>
                                             <option value="RT">RT</option>
                                         </select>
@@ -1677,9 +1741,11 @@ const zoomInSecond = () => {
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'   
                                              name="woundThickness" id="woundThickness" value={row.woundThickness}
                                             onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
-                                               
-                                                <option value='P'>P</option>
-                                                <option value='F'>F</option>
+                                               {woundStage.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}
                                             </select>
                                         </p>
                                         </>:<>
@@ -1693,9 +1759,11 @@ const zoomInSecond = () => {
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
                                              name="drainage" id="drainage" value={row.drainage}
                                             onChange={(e) => handleEditRowChange(index, 'drainage', e.target.value)}>
-                                                <option value={row.drainage}>{row.drainage}</option>
-                                                <option value='Mod'>Mod</option>
-                                                <option value='Hvy'>Hvy</option>
+                                                {drainage.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}
                                             </select>
                                         </p>
                                         </>:<>
@@ -1746,8 +1814,11 @@ const zoomInSecond = () => {
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
                                              name="debridedType" id="debridedType"
                                             onChange={(e) => handleEditRowChange(index, 'debridedType', e.target.value)}>
-                                                <option value={row.debridedType}>{row.debridedType}</option>
-                                            </select>
+                                             {debridementtype.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}                                            </select>
                                         </p>
                                         </>:<>
                                       <input type="text" name="debridedType" id="debridedType" value={row.debridedType} 
@@ -1825,16 +1896,17 @@ const zoomInSecond = () => {
                                       </>}
                                     </td>
                                     <td className="p-1 border">
+                                      
                                     {!openNetSuit ?<>
                                         <select className='bg-[#f2f2f2] text-gray-600 rounded-3xl h-5 w-24 border text-xs'
                                          value={kit.quantity}
                                          onChange={(e) => handleKitEditRowChange(index, 'quantity', e.target.value)}>
-                                          <option value={kit.quantity}>{kit.quantity}</option>
-                                          <option value="15">15</option>
-                                          <option value="30">30</option>
-                                          <option value="45">45</option>
-                                          <option value="60">60</option>
-                                        </select>
+                                          {frequency.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}
+                                   </select>
                                         </>:<>
                                       <input type="text" name="quantity" id="quantity" value={kit.quantity} 
                                         className=' text-black h-5 w-10 text-xs'/>
