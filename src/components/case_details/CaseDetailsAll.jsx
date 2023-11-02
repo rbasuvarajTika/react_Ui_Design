@@ -15,6 +15,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
 import { ToastContainer, toast } from 'react-toast'
+import './scroll.css'; 
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -955,13 +956,13 @@ const CaseDetailsAll = () => {
 
 
     return (
-        <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
-                <div className="relative  overflow-x-auto rounded-xl  bg-gree-400  overflow-y-scroll  h-[640px no-scrollbar ">
-                    <div className='flex lg:flex-row flex-col gap-5'>
-                        <div className='lg:w-[calc(100vw-50vw)] h-screen  flex flex-col gap-2'>
+        <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-3rem)] no-scrollbar">
+            <div className="relative  overflow-x-auto rounded-xl  bg-gree-400  overflow-y-scroll  h-[640px no-scrollbar ">
+                <div className='flex lg:flex-row flex-col gap-5 h-sc'>
+                    <div className='lg:w-[calc(100vw-50vw)] h-scree flex flex-col gap-2'>
                         {/* Patient Start ---------------------------*/}
                         <section className=" ">
-                            <div className='w-full h-[calc(118vh-30rem)] xl:h-full pb-5 bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
+                            <div className='w-full h-[calc(118vh-30rem) xl:h-full h-[calc(100vh-70vh)] pb-5 bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll no-scrollbar '>
                                 <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                     <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
                                     <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
@@ -971,242 +972,225 @@ const CaseDetailsAll = () => {
 
 
                                 <form className='pt-2'>
-                                    <div className=' flex  flex-col xl:items-start items-center'>
-                                        <div className='px-5 pt-4'>
-                                            <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-full text-start' htmlFor="">First Name :</label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="firstName"
-                                                                    name="firstName"
-                                                                    value={patientFirstName || ''}
-                                                                    onChange={(e) => setPatientFirstName(e.target.value)}
-                                                                />
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="firstName"
-                                                                    name="firstName"
-                                                                    value={patientFirstName || ''}
-                                                                />
-                                                            </>}
+                                    <div className=' flex  flex-col xl:items-start items-center '>
+                                        <div className='px-5 pt-4 xl:w-full'>
+                                            <div className='flex w-ful xl:flex-row flex-col   gap-1'>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-28 text-start' htmlFor="">Middle Name : </label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs'
-                                                                    type="text"
-                                                                    id="middleName"
-                                                                    name="middleName"
-                                                                    value={patientMiddleName || ''}
-                                                                    onChange={(e) => setPatientMiddleName(e.target.value)}
-                                                                />
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="middleName"
-                                                                    name="middleName"
-                                                                    value={patientMiddleName || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-28 text-start' htmlFor="">Last Name :</label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs'
-                                                                    type="text"
-                                                                    id="lastName"
-                                                                    name="lastName"
-                                                                    value={patientLastName || ''}
-                                                                    onChange={(e) => setPatientLastName(e.target.value)}
-                                                                />
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="lastName"
-                                                                    name="lastName"
-                                                                    value={patientLastName || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="dateOfBirth"
-                                                                    name="dateOfBirth"
-                                                                    value={dateOfBirth || ''}
-                                                                    onChange={(e) => setDateOfBirth(e.target.value)} />
-
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="dateOfBirth"
-                                                                    name="dateOfBirth"
-                                                                    value={dateOfBirth || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className=' flex items-center flex-row w-full g '>
-                                                    <div className=' flex  justify-start  flex-col w-full '>
-                                                        <label className='text-xs text-black w-28 text-start' htmlFor="">Last 4 of SSN : </label>
-                                                        {!openNetSuit ? <>
-                                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                                                type="text"
-                                                                id="ssn"
-                                                                name="ssn"
-                                                                value={ssn || ''}
-                                                                onChange={handleSsnChange}
-                                                            />
-                                                            <p className="text-red-500 text-xs">{ssnError}</p>
-                                                        </> : <>
-                                                            <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                type="text"
-                                                                id="ssn"
-                                                                name="ssn"
-                                                                value={ssn || ''}
-                                                            />
-                                                        </>}
-
-                                                    </div>
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-full text-start' htmlFor="">First Name :</label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="firstName"
+                                                            name="firstName"
+                                                            value={patientFirstName || ''}
+                                                            onChange={(e) => setPatientFirstName(e.target.value)}
+                                                        />
+                                                    </> : <>
+                                                        <input className='2xl:w-32 xl:w-24  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="firstName"
+                                                            name="firstName"
+                                                            value={patientFirstName || ''}
+                                                        />
+                                                    </>}
 
                                                 </div>
+
+
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-28 text-start' htmlFor="">Middle Name : </label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs'
+                                                            type="text"
+                                                            id="middleName"
+                                                            name="middleName"
+                                                            value={patientMiddleName || ''}
+                                                            onChange={(e) => setPatientMiddleName(e.target.value)}
+                                                        />
+                                                    </> : <>
+                                                        <input className='2xl:w-32 xl:w-24  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="middleName"
+                                                            name="middleName"
+                                                            value={patientMiddleName || ''}
+                                                        />
+                                                    </>}
+                                                </div>
+
+
+
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-28 text-start' htmlFor="">Last Name :</label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 text-xs'
+                                                            type="text"
+                                                            id="lastName"
+                                                            name="lastName"
+                                                            value={patientLastName || ''}
+                                                            onChange={(e) => setPatientLastName(e.target.value)}
+                                                        />
+                                                    </> : <>
+                                                        <input className='2xl:w-32 xl:w-24  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="lastName"
+                                                            name="lastName"
+                                                            value={patientLastName || ''}
+                                                        />
+                                                    </>}
+                                                </div>
+
+
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="dateOfBirth"
+                                                            name="dateOfBirth"
+                                                            value={dateOfBirth || ''}
+                                                            onChange={(e) => setDateOfBirth(e.target.value)} />
+
+                                                    </> : <>
+                                                        <input className='2xl:w-32 xl:w-24  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="dateOfBirth"
+                                                            name="dateOfBirth"
+                                                            value={dateOfBirth || ''}
+                                                        />
+                                                    </>}
+                                                </div>
+
+
+
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-28 text-start' htmlFor="">Last 4 of SSN : </label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="ssn"
+                                                            name="ssn"
+                                                            value={ssn || ''}
+                                                            onChange={handleSsnChange}
+                                                        />
+                                                        <p className="text-red-500 text-xs">{ssnError}</p>
+                                                    </> : <>
+                                                        <input className='2xl:w-32 xl:w-24  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="ssn"
+                                                            name="ssn"
+                                                            value={ssn || ''}
+                                                        />
+                                                    </>}
+
+                                                </div>
+
+
                                             </div>
                                         </div>
 
-                                        <div className='px-5 pt-2'>
-                                            <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-28 text-start' htmlFor="">Phone No : </label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="cellPhone"
-                                                                    name="cellPhone"
-                                                                    value={cellPhone || ''}
-                                                                    onChange={handleCellPhoneChange}
-                                                                />
-                                                                <p className="text-red-500 text-xs">{cellPhoneError}</p>
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="cellPhone"
-                                                                    name="cellPhone"
-                                                                    value={cellPhone || ''}
-                                                                />
-                                                            </>}
+                                        <div className='px-5 pt-2 xl:w-full'>
+                                            <div className='flex w-full xl:flex-row flex-col  justify-between gap-1 '>
 
-                                                        </div>
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-28 text-start' htmlFor="">Phone No : </label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="cellPhone"
+                                                            name="cellPhone"
+                                                            value={cellPhone || ''}
+                                                            onChange={handleCellPhoneChange}
+                                                        />
+                                                        <p className="text-red-500 text-xs">{cellPhoneError}</p>
+                                                    </> : <>
+                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="cellPhone"
+                                                            name="cellPhone"
+                                                            value={cellPhone || ''}
+                                                        />
+                                                    </>}
 
-                                                    </div>
                                                 </div>
 
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-full text-start' htmlFor="">City: </label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="city"
-                                                                    name="city"
-                                                                    value={city || ''}
-                                                                    onChange={(e) => setCity(e.target.value)}
-                                                                />
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="city"
-                                                                    name="city"
-                                                                    value={city || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-28 text-start' htmlFor="">State : </label>
-                                                            {!openNetSuit ? <>
-                                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                                                    value={patientData.state}
-                                                                    onChange={(e) => setPatientData({ ...patientData, state: e.target.value })}
 
-                                                                >
-                                                                    {states.map((state) => (
-                                                                        <option key={state.stateName} value={state.shortName}>
-                                                                            {state.stateName}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="state"
-                                                                    name="state"
-                                                                    value={patientData.state}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
+
+
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-full text-start' htmlFor="">City: </label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="city"
+                                                            name="city"
+                                                            value={city || ''}
+                                                            onChange={(e) => setCity(e.target.value)}
+                                                        />
+                                                    </> : <>
+                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="city"
+                                                            name="city"
+                                                            value={city || ''}
+                                                        />
+                                                    </>}
                                                 </div>
 
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w- text-start' htmlFor="">Zip :</label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="zip"
-                                                                    name="zip"
-                                                                    value={zip || ''}
-                                                                    onChange={handleZipChange}
-                                                                />
-                                                                <p className="text-red-500 text-xs">{zipError}</p>
-                                                            </> : <>
-                                                                <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="firstName"
-                                                                    name="firstName"
-                                                                    value={patientFirstName || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
 
-                                                    </div>
+                                                <div className=' flex  justify-star  flex-col w-full '>
+                                                    <label className='text-xs text-black w-28 text-start' htmlFor="">State : </label>
+                                                    {!openNetSuit ? <>
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                            value={patientData.state}
+                                                            onChange={(e) => setPatientData({ ...patientData, state: e.target.value })}
+
+                                                        >
+                                                            {states.map((state) => (
+                                                                <option key={state.stateName} value={state.shortName}>
+                                                                    {state.stateName}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </> : <>
+                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="state"
+                                                            name="state"
+                                                            value={patientData.state}
+                                                        />
+                                                    </>}
                                                 </div>
+
+
+
+                                                <div className=' flex  justify-star   flex-col w-full '>
+                                                    <label className='text-xs text-black w- text-start' htmlFor="">Zip :</label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="zip"
+                                                            name="zip"
+                                                            value={zip || ''}
+                                                            onChange={handleZipChange}
+                                                        />
+                                                        <p className="text-red-500 text-xs">{zipError}</p>
+                                                    </> : <>
+                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="firstName"
+                                                            name="firstName"
+                                                            value={patientFirstName || ''}
+                                                        />
+                                                    </>}
+                                                </div>
+
+
 
                                                 <div className=' flex flex-col'>
                                                     <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black h-5 text-xs mr-5 t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black h-5 text-xs mr-5 t-1'
                                                             type="text"
                                                             id="shipToAddress"
                                                             name="shipToAddress"
@@ -1239,168 +1223,150 @@ const CaseDetailsAll = () => {
                               </div>
                       </div> */}
                                         <hr className='px-2 w-full my-1 border-center border-gray-300' />
-                                        <div className='px-5 pt-3'>
-                                            <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <p className='text-xs text-black    ' htmlFor="">Sales Rep Name:</p>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="salesRepName"
-                                                                    name="salesRepName"
-                                                                    value={repName || ''}
-                                                                    onChange={(e) => setSalesRepName(e.target.value)}
-                                                                />
-                                                            </> : <>
-                                                                <input className='w-56  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="salesRepName"
-                                                                    name="salesRepName"
-                                                                    value={repName || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w- text-start' htmlFor="">Sales Rep Cell: :</label>
-                                                            {!openNetSuit ? <>
-                                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="salesRepCell"
-                                                                    name="salesRepCell"
-                                                                    value={repCell || ''}
-                                                                    onChange={(e) => setSalesRepCell(e.target.value)}
-                                                                />
-                                                            </> : <>
-                                                                <input className='w-56  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="salesRepCell"
-                                                                    name="salesRepCell"
-                                                                    value={repCell || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
+                                        <div className='px-5 pt-3 xl:w-full h-full'>
+                                            <div className='flex w-full xl:flex-row flex-col gap-2  items-center justify-betwen '>
+                                                <div className=' flex  justify-star   flex-col w-full '>
+                                                    <p className='text-xs text-black    ' htmlFor="">Sales Rep Name:</p>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="salesRepName"
+                                                            name="salesRepName"
+                                                            value={repName || ''}
+                                                            onChange={(e) => setSalesRepName(e.target.value)}
+                                                        />
+                                                    </> : <>
+                                                        <input className='w-56  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="salesRepName"
+                                                            name="salesRepName"
+                                                            value={repName || ''}
+                                                        />
+                                                    </>}
                                                 </div>
 
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-28 text-start' htmlFor="">Distributer: : </label>
-                                                            {!openNetSuit ? <>
-                                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                                    value={distributor}
-                                                                    onChange={(e) => setDistributor(e.target.value)}
-                                                                >
-                                                                    {distributorData.map((item) => (
-                                                                        <option key={item.distributorId} value={item.distributorName}>
-                                                                            {item.distributorName}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
-                                                            </> : <>
-                                                                <input className='w-56  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="distributor"
-                                                                    name="distributor"
-                                                                    value={distributor || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
+
+                                                <div className=' flex  justify-star   flex-col w-full '>
+                                                    <label className='text-xs text-black w- text-start' htmlFor="">Sales Rep Cell: :</label>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="salesRepCell"
+                                                            name="salesRepCell"
+                                                            value={repCell || ''}
+                                                            onChange={(e) => setSalesRepCell(e.target.value)}
+                                                        />
+                                                    </> : <>
+                                                        <input className='w-56  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="salesRepCell"
+                                                            name="salesRepCell"
+                                                            value={repCell || ''}
+                                                        />
+                                                    </>}
+                                                </div>
+
+
+                                                <div className=' flex  justify-star    flex-col w-full '>
+                                                    <label className='text-xs text-black w- text-start' htmlFor="">Distributer: : </label>
+                                                    {!openNetSuit ? <>
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 ma-56 text-black py-0.5 text-xs t-1'
+                                                            value={distributor}
+                                                            onChange={(e) => setDistributor(e.target.value)}
+                                                        >
+                                                            {distributorData.map((item) => (
+                                                                <option className='bg-[#f2f2f2] rounded-2xl border border-gray-300  text-black py-0.5 text-xs t-1'
+                                                                    key={item.distributorId} value={item.distributorName}>
+                                                                    {item.distributorName}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </> : <>
+                                                        <input className='  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="distributor"
+                                                            name="distributor"
+                                                            value={distributor || ''}
+                                                        />
+                                                    </>}
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className='px-5 pt-2'>
-                                            <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-28 text-start' htmlFor="">Place of Service: </label>
+                                        <div className='px-5 pt-2 xl:w-full '>
+                                            <div className='flex w-full xl:flex-row flex-col gap-2  items-center justify-betwen '>
 
-                                                            {!openNetSuit ? <>
-                                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                                    name="placeOfService"
+                                                <div className=' flex  justify-star    flex-col w-full '>
+                                                    <label className='text-xs text-black w-28 text-start' htmlFor="">Place of Service: </label>
+                                                    {!openNetSuit ? <>
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                            name="placeOfService"
 
-                                                                    id="placeOfService"
-                                                                    value={placeOfService || ''}
-                                                                    onChange={(e) => setPlaceOfService(e.target.value)}
-                                                                >
-                                                                    <option value={placeOfService}>{placeOfService}</option>
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </> : <>
-                                                                <input className='w-56  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="placeOfService"
-                                                                    name="placeOfService"
-                                                                    value={placeOfService || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-28 text-start' htmlFor="">Order Information: : </label>
-                                                            {!openNetSuit ? <>
-                                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                                    name="orderType"
-
-                                                                    id="orderType"
-                                                                    value={orderType || ''}
-                                                                    onChange={(e) => setOrderType(e.target.value)}
-
-                                                                >
-                                                                    <option value={orderType}>{orderType}</option>
-                                                                    <option value="Yes">Yes</option>
-                                                                    <option value="No">No</option>
-                                                                </select>
-                                                            </> : <>
-                                                                <input className='w-56  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="orderType"
-                                                                    name="orderType"
-                                                                    value={orderType || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
+                                                            id="placeOfService"
+                                                            value={placeOfService || ''}
+                                                            onChange={(e) => setPlaceOfService(e.target.value)}
+                                                        >
+                                                            <option value={placeOfService}>{placeOfService}</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </select>
+                                                    </> : <>
+                                                        <input className='  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="placeOfService"
+                                                            name="placeOfService"
+                                                            value={placeOfService || ''}
+                                                        />
+                                                    </>}
                                                 </div>
 
-                                                <div className='flex flex-col'>
-                                                    <div className=' flex items-center flex-row w-full g '>
-                                                        <div className=' flex  justify-start  flex-col w-full '>
-                                                            <label className='text-xs text-black w-full text-start' htmlFor="">Does patient still have an active wound?:</label>
-                                                            {!openNetSuit ? <>
-                                                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                                    name="woundActive"
-                                                                    id="woundActive"
-                                                                    value={woundActive || ''}
-                                                                    onChange={(e) => setActiveWound(e.target.value)} >
-                                                                    <option value={woundActive}>{woundActive === "1" ? 'Yes' : 'No'}</option>
-                                                                    <option value="1">Yes</option>
-                                                                    <option value="0">No</option>
-                                                                </select>
-                                                            </> : <>
-                                                                <input className='w-56  text-black py-0.5 text-xs t-1'
-                                                                    type="text"
-                                                                    id="woundActive"
-                                                                    name="woundActive"
-                                                                    value={woundActive || ''}
-                                                                />
-                                                            </>}
-                                                        </div>
-                                                    </div>
+
+                                                <div className=' flex  justify-star    flex-col w-full '>
+                                                    <label className='text-xs text-black w-28 text-start' htmlFor="">Order Information: : </label>
+                                                    {!openNetSuit ? <>
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                            name="orderType"
+
+                                                            id="orderType"
+                                                            value={orderType || ''}
+                                                            onChange={(e) => setOrderType(e.target.value)}
+
+                                                        >
+                                                            <option value={orderType}>{orderType}</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </select>
+                                                    </> : <>
+                                                        <input className='w-56  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="orderType"
+                                                            name="orderType"
+                                                            value={orderType || ''}
+                                                        />
+                                                    </>}
                                                 </div>
+                                                <div className=' flex  justify-star    flex-col w-full '>
+                                                    <label className='text-xs text-black w-full text-start' htmlFor="">Does patient still have an active wound?:</label>
+                                                    {!openNetSuit ? <>
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                            name="woundActive"
+                                                            id="woundActive"
+                                                            value={woundActive || ''}
+                                                            onChange={(e) => setActiveWound(e.target.value)} >
+                                                            <option value={woundActive}>{woundActive === "1" ? 'Yes' : 'No'}</option>
+                                                            <option value="1">Yes</option>
+                                                            <option value="0">No</option>
+                                                        </select>
+                                                    </> : <>
+                                                        <input className='w-56  text-black py-0.5 text-xs t-1'
+                                                            type="text"
+                                                            id="woundActive"
+                                                            name="woundActive"
+                                                            value={woundActive || ''}
+                                                        />
+                                                    </>}
+                                                </div>
+
                                             </div>
                                         </div>
 
@@ -1412,205 +1378,205 @@ const CaseDetailsAll = () => {
                         {/* Patient End ---------------------------*/}
 
                         {/* Order and Kit Start ---------------------------*/}
-                        <div className='w-full h-[300px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll no-scrollbar'>
-                            
-                                <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
-                                    <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                                    <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
-                                </div>
-                                <div>
+                        <div className='w-full xl:h-full h-[calc(100vh-60vh)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll no-scrollbar'>
 
-                                    <div className='absolute md:top-1 top-6  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50' onClick={handleAddWound}  >
-                                        {!openNetSuit ? <>
-                                            <div className=' flex justify-around px-1'>
+                            <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
+                                <hr className="h-px border-[#e36c09] border w-32  absolut " />
+                                <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
+                            </div>
+                            <div>
 
-                                                <div className='flex  relative'>
-                                                    <MdAddBox className='text-lg' />
-                                                    <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
-                                                </div>
+                                <div className='absolute md:top-1 top-6  right-3 rounded-xl bg-[#00aee6] md:w-28 w-20  cursor-pointer z-50' onClick={handleAddWound}  >
+                                    {!openNetSuit ? <>
+                                        <div className=' flex justify-around px-1'>
 
-
-                                                <p className='text-white text-xs'
-
-                                                >ADD</p>
+                                            <div className='flex  relative'>
+                                                <MdAddBox className='text-lg' />
+                                                <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
                                             </div>
-                                        </> : <>
-                                        </>}
-                                    </div>
-                                    { }
 
 
-                                    <div className=" relative overflow-x-auto rounded-xl bg-white p-1 h-32  overflow-y-scroll    no-scrollbar md:mt-5 mt-14">
-                                        <table className="  text-center table-auto w-full  ">
-                                            <thead className="">
-                                                <tr className="text-[11px] text-[#ffffff] font-bold bg-[#246180] rounded-2xl  ">
-                                                    <th className="px-2 py3   border ">Wound <span>(WND)#</span></th>
-                                                    <th className="px-2 p-3  border ">Location</th>
-                                                    <th className="px-2 y-3  border ">Length <span>(cm)</span></th>
-                                                    <th className="px-2 py-  border ">Width <span>(cm)</span></th>
-                                                    <th className="px-2 py-  border ">Depth <span>(cm)</span></th>
-                                                    <th className="px-2 py-  border ">Wound <span>Stage</span></th>
-                                                    <th className="px-2 py-  border ">Drainage</th>
-                                                    <th className="px-2 py-  border  ">Debrided</th>
-                                                    <th className="px-2 py-  border  ">ICD-10 <span>Code</span></th>
-                                                    <th className="px-2 py-  border  ">Debridement <span>Date</span></th>
-                                                    <th className="px-2 py-   border  ">Debridement <span>Type</span></th>
+                                            <p className='text-white text-xs'
+
+                                            >ADD</p>
+                                        </div>
+                                    </> : <>
+                                    </>}
+                                </div>
+                                { }
+
+
+                                <div className=" relative overflow-x-auto rounded-xl bg-white p-1 h-32  hide-vertical-scrollbar enable-scrolling scroll_bar      md:mt-5 mt-14">
+                                    <table className="  text-center table-auto w-full  ">
+                                        <thead className="">
+                                            <tr className="text-[11px] text-[#ffffff] font-bold bg-[#246180] rounded-2xl  ">
+                                                <th className="px-2 py3   border ">Wound <span>(WND)#</span></th>
+                                                <th className="px-2 p-3  border ">Location</th>
+                                                <th className="px-2 y-3  border ">Length <span>(cm)</span></th>
+                                                <th className="px-2 py-  border ">Width <span>(cm)</span></th>
+                                                <th className="px-2 py-  border ">Depth <span>(cm)</span></th>
+                                                <th className="px-2 py-  border ">Wound <span>Stage</span></th>
+                                                <th className="px-2 py-  border ">Drainage</th>
+                                                <th className="px-2 py-  border  ">Debrided</th>
+                                                <th className="px-2 py-  border  ">ICD-10 <span>Code</span></th>
+                                                <th className="px-2 py-  border  ">Debridement <span>Date</span></th>
+                                                <th className="px-2 py-   border  ">Debridement <span>Type</span></th>
+                                                {!openNetSuit ? <>
+                                                    <th className="px-2 py-  border  ">Delete</th>
+                                                </> : <>
+                                                </>}
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody  >
+                                            {woundData.map((row, index) => (
+                                                <tr key={index} >
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <input type="text" name="woundNo" id="woundNo" value={row.woundNo}
+                                                                onChange={(e) => handleEditRowChange(index, 'woundNo', e.target.value)}
+                                                                className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
+                                                        </> : <>
+                                                            <input type="text" name="woundNo" id="woundNo" value={row.woundNo}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-14 text-xs'
+                                                                name="woundLocation" id="woundLocation"
+                                                                onChange={(e) => handleEditRowChange(index, 'woundLocation', e.target.value)}>
+                                                                <option value={row.woundLocation}>{row.woundLocation}</option>
+                                                                <option value="LT">LT</option>
+                                                                <option value="RT">RT</option>
+                                                            </select>
+                                                        </> : <>
+                                                            <input type="text" name="woundLocation" id="woundLocation" value={row.woundLocation}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <input type="text" name="woundLength" id="woundLength" value={row.woundLength}
+                                                                onChange={(e) => handleEditRowChange(index, 'woundLength', e.target.value)}
+
+                                                                className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
+                                                        </> : <>
+                                                            <input type="text" name="woundLength" id="woundLength" value={row.woundLength}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <input type="text" name="woundWidth" id="woundWidth" value={row.woundWidth}
+                                                                onChange={(e) => handleEditRowChange(index, 'woundWidth', e.target.value)}
+                                                                className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
+                                                        </> : <>
+                                                            <input type="text" name="woundWidth" id="woundWidth" value={row.woundWidth}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <input type="text" name="woundDepth" id="woundDepth" value={row.woundDepth}
+                                                                onChange={(e) => handleEditRowChange(index, 'woundDepth', e.target.value)}
+                                                                className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
+                                                        </> : <>
+                                                            <input type="text" name="woundDepth" id="woundDepth" value={row.woundDepth}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <p className='bg-gray-200 rounded-3xl py- px-'>
+
+                                                                <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
+                                                                    name="woundThickness" id="woundThickness"
+                                                                    onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
+                                                                    <option value={row.woundThickness}>{row.woundThickness}</option>
+                                                                </select>
+                                                            </p>
+                                                        </> : <>
+                                                            <input type="text" name="woundThickness" id="woundThickness" value={row.woundThickness}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <p className='bg-gray-200 rounded-3xl py- px-'>
+                                                                <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
+                                                                    name="drainage" id="drainage"
+                                                                    onChange={(e) => handleEditRowChange(index, 'drainage', e.target.value)}>
+                                                                    <option value={row.drainage}>{row.drainage}</option>
+                                                                </select>
+                                                            </p>
+                                                        </> : <>
+                                                            <input type="text" name="drainage" id="drainage" value={row.drainage}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <p className='bg-gray-200 rounded-3xl py- px-'>
+                                                                <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
+                                                                    name="debrided" id="debrided"
+                                                                    onChange={(e) => handleEditRowChange(index, 'debrided', e.target.value)}>
+                                                                    <option value={row.debrided}>{row.debrided}</option>
+                                                                </select>
+                                                            </p>
+                                                        </> : <>
+                                                            <input type="text" name="debrided" id="debrided" value={row.debrided}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <input type="text" name="icdCode" id="icdCode" value={row.icdCode}
+                                                                onChange={(e) => handleEditRowChange(index, 'icdCode', e.target.value)}
+                                                                className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
+                                                        </> : <>
+                                                            <input type="text" name="icdCode" id="icdCode" value={row.icdCode}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate}
+                                                                onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
+                                                                className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
+                                                        </> : <>
+                                                            <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
+                                                    <td className="p-1 rounded-2xl border">
+                                                        {!openNetSuit ? <>
+                                                            <p className='bg-gray-200 rounded-3xl py- px-'>
+                                                                <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
+                                                                    name="debridedType" id="debridedType"
+                                                                    onChange={(e) => handleEditRowChange(index, 'debridedType', e.target.value)}>
+                                                                    <option value={row.debridedType}>{row.debridedType}</option>
+                                                                </select>
+                                                            </p>
+                                                        </> : <>
+                                                            <input type="text" name="debridedType" id="debridedType" value={row.debridedType}
+                                                                className=' text-black h-5 w-10 text-xs' />
+                                                        </>}
+                                                    </td>
                                                     {!openNetSuit ? <>
-                                                        <th className="px-2 py-  border  ">Delete</th>
+                                                        <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center border" onClick={() => handleDeleteWound(index)}>
+                                                            <AiFillCloseSquare />
+                                                        </td>
                                                     </> : <>
                                                     </>}
                                                 </tr>
-                                            </thead>
-
-
-                                            <tbody  >
-                                                {woundData.map((row, index) => (
-                                                    <tr key={index} >
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <input type="text" name="woundNo" id="woundNo" value={row.woundNo}
-                                                                    onChange={(e) => handleEditRowChange(index, 'woundNo', e.target.value)}
-                                                                    className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
-                                                            </> : <>
-                                                                <input type="text" name="woundNo" id="woundNo" value={row.woundNo}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-14 text-xs'
-                                                                    name="woundLocation" id="woundLocation"
-                                                                    onChange={(e) => handleEditRowChange(index, 'woundLocation', e.target.value)}>
-                                                                    <option value={row.woundLocation}>{row.woundLocation}</option>
-                                                                    <option value="LT">LT</option>
-                                                                    <option value="RT">RT</option>
-                                                                </select>
-                                                            </> : <>
-                                                                <input type="text" name="woundLocation" id="woundLocation" value={row.woundLocation}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <input type="text" name="woundLength" id="woundLength" value={row.woundLength}
-                                                                    onChange={(e) => handleEditRowChange(index, 'woundLength', e.target.value)}
-
-                                                                    className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
-                                                            </> : <>
-                                                                <input type="text" name="woundLength" id="woundLength" value={row.woundLength}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <input type="text" name="woundWidth" id="woundWidth" value={row.woundWidth}
-                                                                    onChange={(e) => handleEditRowChange(index, 'woundWidth', e.target.value)}
-                                                                    className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
-                                                            </> : <>
-                                                                <input type="text" name="woundWidth" id="woundWidth" value={row.woundWidth}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <input type="text" name="woundDepth" id="woundDepth" value={row.woundDepth}
-                                                                    onChange={(e) => handleEditRowChange(index, 'woundDepth', e.target.value)}
-                                                                    className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
-                                                            </> : <>
-                                                                <input type="text" name="woundDepth" id="woundDepth" value={row.woundDepth}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <p className='bg-gray-200 rounded-3xl py- px-'>
-
-                                                                    <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
-                                                                        name="woundThickness" id="woundThickness"
-                                                                        onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
-                                                                        <option value={row.woundThickness}>{row.woundThickness}</option>
-                                                                    </select>
-                                                                </p>
-                                                            </> : <>
-                                                                <input type="text" name="woundThickness" id="woundThickness" value={row.woundThickness}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <p className='bg-gray-200 rounded-3xl py- px-'>
-                                                                    <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
-                                                                        name="drainage" id="drainage"
-                                                                        onChange={(e) => handleEditRowChange(index, 'drainage', e.target.value)}>
-                                                                        <option value={row.drainage}>{row.drainage}</option>
-                                                                    </select>
-                                                                </p>
-                                                            </> : <>
-                                                                <input type="text" name="drainage" id="drainage" value={row.drainage}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <p className='bg-gray-200 rounded-3xl py- px-'>
-                                                                    <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
-                                                                        name="debrided" id="debrided"
-                                                                        onChange={(e) => handleEditRowChange(index, 'debrided', e.target.value)}>
-                                                                        <option value={row.debrided}>{row.debrided}</option>
-                                                                    </select>
-                                                                </p>
-                                                            </> : <>
-                                                                <input type="text" name="debrided" id="debrided" value={row.debrided}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <input type="text" name="icdCode" id="icdCode" value={row.icdCode}
-                                                                    onChange={(e) => handleEditRowChange(index, 'icdCode', e.target.value)}
-                                                                    className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
-                                                            </> : <>
-                                                                <input type="text" name="icdCode" id="icdCode" value={row.icdCode}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate}
-                                                                    onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
-                                                                    className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs' />
-                                                            </> : <>
-                                                                <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        <td className="p-1 rounded-2xl border">
-                                                            {!openNetSuit ? <>
-                                                                <p className='bg-gray-200 rounded-3xl py- px-'>
-                                                                    <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
-                                                                        name="debridedType" id="debridedType"
-                                                                        onChange={(e) => handleEditRowChange(index, 'debridedType', e.target.value)}>
-                                                                        <option value={row.debridedType}>{row.debridedType}</option>
-                                                                    </select>
-                                                                </p>
-                                                            </> : <>
-                                                                <input type="text" name="debridedType" id="debridedType" value={row.debridedType}
-                                                                    className=' text-black h-5 w-10 text-xs' />
-                                                            </>}
-                                                        </td>
-                                                        {!openNetSuit ? <>
-                                                            <td className="p-1 rounded-2xl  flex justify-center text-xl text-red-600 mt-2 items-center border" onClick={() => handleDeleteWound(index)}>
-                                                                <AiFillCloseSquare />
-                                                            </td>
-                                                        </> : <>
-                                                        </>}
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            ))}
+                                        </tbody>
+                                    </table>
                                 </div>
-                          
+                            </div>
+
                             {/* Order and Kit End ---------------------------*/}
 
                             {/*  Kit Start ---------------------------*/}
@@ -1621,7 +1587,7 @@ const CaseDetailsAll = () => {
                                     <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
                                 </div>
                                 {!openNetSuit ? <>
-                                    <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer' onClick={handleAddKit}>
+                                    <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] md:w-28 w-20  cursor-pointer' onClick={handleAddKit}>
                                         <div className=' flex justify-around px-1'>
                                             <div className='flex  relative'>
                                                 <MdAddBox className='text-lg' />
@@ -1633,7 +1599,7 @@ const CaseDetailsAll = () => {
                                 </> : <>
                                 </>}
                                 <div className=" relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll   no-scrollbar mt-8">
-                                    <table className="w-f text-sm text-center table-auto  w-full ">
+                                    <table className=" text-sm text-center table-auto  w-full ">
                                         <thead className="">
                                             <tr className="text-[11px] text-[#ffffff] font-bold bg-[#246180] rounded-2xl  ">
                                                 <th className="px-2 py-3 border">Kit Number</th>
@@ -1753,275 +1719,277 @@ const CaseDetailsAll = () => {
 
 
                         {/*  Physician Start ---------------------------*/}
-                    
-                        <div className='w-full  xl:h-[calc(100vh-34rem)] h-[calc(100vh-24rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-1 scrollbar no-scrollbar'>
-                        <div className='flex  justify-end absolute right-0 top-2 ' >
-                                    <div className='right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'
-                                        onClick={handleAddHcp}
-                                    >
-                                        {!openNetSuit ? <>
-                                            <div className=' flex justify-around px-1 '>
-                                                <div className='flex  relative'>
-                                                    <MdAddBox className='text-lg' />
-                                                    <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
-                                                </div>
 
-                                                <p className='text-white text-xs'
-
-                                                >ADD</p>
+                        <div className='w-full  xl:h-[calc(100vh-34rem) h-[calc(100vh-24rem) xl:h-full h-[calc(100vh-70vh)] bg-white rounded-2xl pt10     border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-1 scrollbar no-scrollbar'>
+                            <div className='flex  justify-end absolute right-0 top-2  ' >
+                                <div className='right-3 rounded-xl bg-[#00aee6] md:w-28 w-20   cursor-pointer z-50'
+                                    onClick={handleAddHcp}
+                                >
+                                    {!openNetSuit ? <>
+                                        <div className=' flex justify-around  px-1  '>
+                                            <div className='flex  relative'>
+                                                <MdAddBox className='text-lg' />
+                                                <div class="absolute w-[1px] -right-1 h-full bg-gray-100"></div>
                                             </div>
-                                        </> : <>
-                                        </>}
-                                    </div>
+
+                                            <p className='text-white text-xs '
+
+                                            >ADD</p>
+                                        </div>
+                                    </> : <>
+                                    </>}
                                 </div>
+                            </div>
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09] absolute top-0  '>
                                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
                                 <p className='absolute top-0 text-[#e36c09] text-sm'>Physicain</p>
                             </div>
-                            <div className='flex lg:mt-0 mt-14 flex-col justify-center w-full items-center  '>
+                            <div className='flex xl:flex-row flex-col justify-between w-full overflow-y-scroll h-[100%] xl:pt-0 pt-10  items-center no-scrollbar  '>
+                                <div className='flex flex-col justify-center w-full  items-center  '>
 
-                                <div className=' flex  items-center  gap-5 '>
-                                    <p className='text-xs text-black' htmlFor="">Office Name:</p>
-                                    {!openNetSuit ? <>
-                                        <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
-                                            type="text"
-                                            name="accountName"
-                                            id='accountName'
-                                            value={officeData.accountName}
-                                            onChange={handleOfficeInputChange}
-                                        />
-                                    </> : <>
-                                        <input className='w-32 text-black py-0.5 text-xs t-1'
-                                            type="text"
-                                            name="accountName"
-                                            id='accountName'
-                                            value={officeData.accountName}
-                                            readOnly
-                                        />
-                                    </>}
+                                    <div className=' flex  items-center  gap-5 '>
+                                        <p className='text-xs text-black pl-2 ' htmlFor="">Office Name:</p>
+                                        {!openNetSuit ? <>
+                                            <input className='bg-[#f2f2f2] mr-4 rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                                type="text"
+                                                name="accountName"
+                                                id='accountName'
+                                                value={officeData.accountName}
+                                                onChange={handleOfficeInputChange}
+                                            />
+                                        </> : <>
+                                            <input className='w-32 text-black py-0.5 text-xs t-1'
+                                                type="text"
+                                                name="accountName"
+                                                id='accountName'
+                                                value={officeData.accountName}
+                                                readOnly
+                                            />
+                                        </>}
+                                    </div>
+
+                                    <div className=' flex  items-center  gap-5 pt-1'>
+                                        <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
+                                        {!openNetSuit ? <>
+                                            <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs '
+                                                type="text"
+                                                id='phone'
+                                                name="phone"
+                                                value={officeData.phone}
+                                                onChange={handleOfficeInputChange}
+                                            />
+                                        </> : <>
+                                            <input className='w-32 text-black py-0.5 text-xs t-1'
+                                                type="text"
+                                                id='phone'
+                                                name="phone"
+                                                value={officeData.phone}
+                                                readOnly
+                                            />
+                                        </>}
+                                    </div>
+
+                                    <div className=' flex  items-center  gap-5 pt-1'>
+                                        <p className='text-xs text-black pl-[31px]  ' htmlFor="">Email:</p>
+                                        {!openNetSuit ? <>
+                                            <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                                type="text"
+                                                id='email'
+                                                name="email"
+                                                value={officeData.email}
+                                                onChange={handleOfficeInputChange}
+                                            />
+                                        </> : <>
+                                            <input className='w-32 text-black py-0.5 text-xs t-1'
+                                                type="text"
+                                                id='email'
+                                                name="email"
+                                                value={officeData.email}
+                                                readOnly
+                                            />
+                                        </>}
+                                    </div>
+
+                                    <div className=' flex  items-center  gap-5 pt-1'>
+                                        <p className='text-xs text-black pl-10     ' htmlFor="">City:</p>
+                                        {!openNetSuit ? <>
+                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                                type="text"
+                                                value={officeData.city}
+                                                name="city"
+                                                onChange={handleOfficeInputChange}
+                                            />
+                                        </> : <>
+                                            <input className='w-32 text-black py-0.5 text-xs t-1'
+                                                type="text"
+                                                value={officeData.city}
+                                                name="city"
+                                                readOnly
+                                            />
+                                        </>}
+                                    </div>
+
+                                    <div className=' flex  items-center  gap-5 pt-1'>
+                                        <p className='text-xs text-black pl-[33px]   ' htmlFor="">State:</p>
+                                        {!openNetSuit ? <>
+                                            <select className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                                // style={{ width: '7rem', margin: '2px' }}
+                                                fullWidth
+                                                size="small"
+                                                name="state"
+                                                value={officeData.state}
+                                                onChange={handleOfficeInputChange}
+                                            >
+                                                {states.map((state) => (
+                                                    <option key={state.stateName} value={state.shortName}>
+                                                        {state.stateName}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </> : <>
+                                            <input className='w-32 text-black py-0.5 text-xs t-1'
+                                                type="text"
+                                                value={officeData.state}
+                                                name="state"
+                                                readOnly
+                                            />
+                                        </>}
+                                    </div>
+
+                                    <div className=' flex  items-center  gap-5 pt-1'>
+                                        <p className='text-xs text-black pl-[39px]   ' htmlFor="">ZIp:</p>
+                                        {!openNetSuit ? <>
+                                            <input className='bg-[#f2f2f2] ml-1 rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                                type="text"
+                                                value={officeData.zip}
+                                                name="zip"
+                                                onChange={handleOfficeInputChange}
+                                            />
+                                        </> : <>
+                                            <input className='w-32 text-black py-0.5 text-xs '
+                                                type="text"
+                                                value={officeData.zip}
+                                                name="zip"
+                                                readOnly
+                                            />
+                                        </>}
+                                    </div>
+
                                 </div>
 
-                                <div className=' flex  items-center  gap-5 pt-1'>
-                                    <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
-                                    {!openNetSuit ? <>
-                                        <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs '
-                                            type="text"
-                                            id='phone'
-                                            name="phone"
-                                            value={officeData.phone}
-                                            onChange={handleOfficeInputChange}
-                                        />
-                                    </> : <>
-                                        <input className='w-32 text-black py-0.5 text-xs t-1'
-                                            type="text"
-                                            id='phone'
-                                            name="phone"
-                                            value={officeData.phone}
-                                            readOnly
-                                        />
-                                    </>}
-                                </div>
+                                <div className="flex flex-col justify-center  w-full ">
 
-                                <div className=' flex  items-center  gap-5 pt-1'>
-                                    <p className='text-xs text-black pl-7  ' htmlFor="">Email:</p>
-                                    {!openNetSuit ? <>
-                                        <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
-                                            type="text"
-                                            id='email'
-                                            name="email"
-                                            value={officeData.email}
-                                            onChange={handleOfficeInputChange}
-                                        />
-                                    </> : <>
-                                        <input className='w-32 text-black py-0.5 text-xs t-1'
-                                            type="text"
-                                            id='email'
-                                            name="email"
-                                            value={officeData.email}
-                                            readOnly
-                                        />
-                                    </>}
-                                </div>
 
-                                <div className=' flex  items-center  gap-5 pt-1'>
-                                    <p className='text-xs text-black pl-8   ' htmlFor="">City:</p>
-                                    {!openNetSuit ? <>
-                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
-                                            type="text"
-                                            value={officeData.city}
-                                            name="city"
-                                            onChange={handleOfficeInputChange}
-                                        />
-                                    </> : <>
-                                        <input className='w-32 text-black py-0.5 text-xs t-1'
-                                            type="text"
-                                            value={officeData.city}
-                                            name="city"
-                                            readOnly
-                                        />
-                                    </>}
-                                </div>
-
-                                <div className=' flex  items-center  gap-5 pt-1'>
-                                    <p className='text-xs text-black pl-[25px]   ' htmlFor="">State:</p>
-                                    {!openNetSuit ? <>
-                                        <select className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
-                                            // style={{ width: '7rem', margin: '2px' }}
-                                            fullWidth
-                                            size="small"
-                                            name="state"
-                                            value={officeData.state}
-                                            onChange={handleOfficeInputChange}
-                                        >
-                                            {states.map((state) => (
-                                                <option key={state.stateName} value={state.shortName}>
-                                                    {state.stateName}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </> : <>
-                                        <input className='w-32 text-black py-0.5 text-xs t-1'
-                                            type="text"
-                                            value={officeData.state}
-                                            name="state"
-                                            readOnly
-                                        />
-                                    </>}
-                                </div>
-
-                                <div className=' flex  items-center  gap-5 pt-1'>
-                                    <p className='text-xs text-black pl-8   ' htmlFor="">ZIp:</p>
-                                    {!openNetSuit ? <>
-                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
-                                            type="text"
-                                            value={officeData.zip}
-                                            name="zip"
-                                            onChange={handleOfficeInputChange}
-                                        />
-                                    </> : <>
-                                        <input className='w-32 text-black py-0.5 text-xs t-1'
-                                            type="text"
-                                            value={officeData.zip}
-                                            name="zip"
-                                            readOnly
-                                        />
-                                    </>}
-                                </div>
-
-                            </div>
-
-                            <div className="flex flex-col justify-center  w-full ">
-                               
-
-                                <div className=" relative overflow-x-auto rounded-xl bg-white p-  overflow-y-scroll    no-scrollbar h-32 xl:mt-0 mt-10">
-                                    <table className=" text-sm text-center table-auto  w-full ">
-                                        <thead className="">
-                                            <tr className="text-[11px] text-white font-bold bg-[#246180] rounded-2xl ">
-                                                <th className="px-2   border">Signed</th>
-                                                <th className="px-2  border">First Name</th>
-                                                <th className="px-2  border">Middle Name</th>
-                                                <th className="px-2  border">Last Name</th>
-                                                <th className="px-2  border">NPI</th>
-                                                {!openNetSuit ? <>
-                                                    <th className="px-2 py-3  border">Delete</th>
-                                                </> : <>
-                                                </>}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {hcpData.map((data, index) => (
-                                                <tr key={index}
-                                                // className={index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}
-                                                >
-                                                    <td className="p-1">
-                                                        <input
-                                                            type="checkbox"
-                                                            className="relative h-3 w-3 cursor-pointer"
-                                                            id={`checkbox-${index}`}
-                                                            defaultChecked={data.signed}
-                                                            onChange={(e) => handleHcpEditRowChange(index, 'signed', e.target.checked)}
-                                                        />
-                                                    </td>
-                                                    <td className="p- rounded-2xl border">
-                                                        {!openNetSuit ? <>
-                                                            <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
-                                                                type="text"
-                                                                id='firstName'
-                                                                name='firstName'
-                                                                value={data.firstName}
-                                                                onChange={(e) => handleHcpEditRowChange(index, 'firstName', e.target.value)}
-                                                            />
-                                                        </> : <>
-                                                            <input type="text" name="firstName" id="firstName" value={data.firstName}
-                                                                className=' text-black h-5 w-10 text-xs' />
-                                                        </>}
-                                                    </td>
-                                                    <td className="p- rounded-2xl border">
-                                                        {!openNetSuit ? <>
-                                                            <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
-                                                                type="text"
-                                                                id='middleName'
-                                                                name='middleName'
-                                                                value={data.middleName}
-                                                                onChange={(e) => handleHcpEditRowChange(index, 'middleName', e.target.value)}
-                                                            />
-                                                        </> : <>
-                                                            <input type="text" name="middleName" id="middleName" value={data.middleName}
-                                                                className=' text-black h-5 w-10 text-xs' />
-                                                        </>}
-                                                    </td>
-                                                    <td className="p- rounded-2xl border">
-                                                        {!openNetSuit ? <>
-                                                            <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
-                                                                type="text"
-                                                                id='lastName'
-                                                                name='lastName'
-                                                                value={data.lastName}
-                                                                onChange={(e) => handleHcpEditRowChange(index, 'lastName', e.target.value)}
-                                                            />
-                                                        </> : <>
-                                                            <input type="text" name="lastName" id="lastName" value={data.lastName}
-                                                                className=' text-black h-5 w-10 text-xs' />
-                                                        </>}
-                                                    </td>
-                                                    <td className="p- rounded-2xl border">
-                                                        {!openNetSuit ? <>
-                                                            <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
-                                                                type="text"
-                                                                id='npi'
-                                                                name='npi'
-                                                                value={data.npi}
-                                                                onChange={(e) => handleHcpEditRowChange(index, 'npi', e.target.value)}
-                                                            />
-                                                        </> : <>
-                                                            <input type="text" name="npi" id="npi" value={data.npi}
-                                                                className=' text-black h-5 w-10 text-xs' />
-                                                        </>}
-
-                                                    </td>
+                                    <div className=" relative overflow-x-auto rounded-xl bg-white p-1 h-32   overflow-y-scroll   no-scrollbar  ">
+                                        <table className=" text-sm text-center table-auto  w-full ">
+                                            <thead className="">
+                                                <tr className="text-[11px] text-white font-bold bg-[#246180] rounded-2xl  ">
+                                                    <th className="px-2   border">Signed</th>
+                                                    <th className="px-2  border">First Name</th>
+                                                    <th className="px-2  border">Middle Name</th>
+                                                    <th className="px-2  border">Last Name</th>
+                                                    <th className="px-2  border">NPI</th>
                                                     {!openNetSuit ? <>
-                                                        <td className="className='bg-gray-300 text-gray600 p-1 border   flex justify-center text-xl text-red-600  items-center" onClick={() => handleDeleteHcp(index)}>
-                                                            <AiFillCloseSquare />
-                                                        </td>
+                                                        <th className="px-2 py-3  border">Delete</th>
                                                     </> : <>
                                                     </>}
                                                 </tr>
-                                            ))}
+                                            </thead>
+                                            <tbody>
+                                                {hcpData.map((data, index) => (
+                                                    <tr key={index}
+                                                    // className={index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}
+                                                    >
+                                                        <td className="p-1">
+                                                            <input
+                                                                type="checkbox"
+                                                                className="relative h-3 w-3 cursor-pointer"
+                                                                id={`checkbox-${index}`}
+                                                                defaultChecked={data.signed}
+                                                                onChange={(e) => handleHcpEditRowChange(index, 'signed', e.target.checked)}
+                                                            />
+                                                        </td>
+                                                        <td className="p- rounded-2xl border">
+                                                            {!openNetSuit ? <>
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                    type="text"
+                                                                    id='firstName'
+                                                                    name='firstName'
+                                                                    value={data.firstName}
+                                                                    onChange={(e) => handleHcpEditRowChange(index, 'firstName', e.target.value)}
+                                                                />
+                                                            </> : <>
+                                                                <input type="text" name="firstName" id="firstName" value={data.firstName}
+                                                                    className=' text-black h-5 w-10 text-xs' />
+                                                            </>}
+                                                        </td>
+                                                        <td className="p- rounded-2xl border">
+                                                            {!openNetSuit ? <>
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                    type="text"
+                                                                    id='middleName'
+                                                                    name='middleName'
+                                                                    value={data.middleName}
+                                                                    onChange={(e) => handleHcpEditRowChange(index, 'middleName', e.target.value)}
+                                                                />
+                                                            </> : <>
+                                                                <input type="text" name="middleName" id="middleName" value={data.middleName}
+                                                                    className=' text-black h-5 w-10 text-xs' />
+                                                            </>}
+                                                        </td>
+                                                        <td className="p- rounded-2xl border">
+                                                            {!openNetSuit ? <>
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                    type="text"
+                                                                    id='lastName'
+                                                                    name='lastName'
+                                                                    value={data.lastName}
+                                                                    onChange={(e) => handleHcpEditRowChange(index, 'lastName', e.target.value)}
+                                                                />
+                                                            </> : <>
+                                                                <input type="text" name="lastName" id="lastName" value={data.lastName}
+                                                                    className=' text-black h-5 w-10 text-xs' />
+                                                            </>}
+                                                        </td>
+                                                        <td className="p- rounded-2xl border">
+                                                            {!openNetSuit ? <>
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                    type="text"
+                                                                    id='npi'
+                                                                    name='npi'
+                                                                    value={data.npi}
+                                                                    onChange={(e) => handleHcpEditRowChange(index, 'npi', e.target.value)}
+                                                                />
+                                                            </> : <>
+                                                                <input type="text" name="npi" id="npi" value={data.npi}
+                                                                    className=' text-black h-5 w-10 text-xs' />
+                                                            </>}
 
-                                        </tbody>
-                                    </table>
+                                                        </td>
+                                                        {!openNetSuit ? <>
+                                                            <td className="className='bg-gray-300 text-gray600 p-1 border   flex justify-center text-xl text-red-600  items-center" onClick={() => handleDeleteHcp(index)}>
+                                                                <AiFillCloseSquare />
+                                                            </td>
+                                                        </> : <>
+                                                        </>}
+                                                    </tr>
+                                                ))}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                     
+
                         {/*  Physician End ---------------------------*/}
                     </div>
                     {/*  Fax Start ---------------------------*/}
                     {
                         !openNetSuit ?
                             <>
-                                 <div className='md:w-[calc(100vw-50vw)] h-screen  flex flex-col gap-2'>
-                                    <div className='text-white w-full lg:h-[calc(114%-0rem)] h-screen bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center pt-10'>
+                                <div className='lg:w-[calc(100vw-50vw)]  fle flex-col gap-2 '>
+                                    <div className='text-white w-full lg:h-[calc(114%-7rem) 2xl:h-screen   lg:h-full h-screen  bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center '>
                                         <div className='flex justify-center gap-2 mt-1 absolute top-3 w-full'>
                                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <= 1 ? "bg-[#d9e0e3]" : "bg-[#00aee6]"}`} onClick={previousPage}> <FaArrowLeft /></div>
                                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
@@ -2032,9 +2000,9 @@ const CaseDetailsAll = () => {
                                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
                                         </div>
 
-                                        <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
+                                        <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)]  border mt-14 overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
                                             <div className=' w-full h-full  '>
-                                                <div className='text-black overflow-hidden  no-scrollbar overflow-x-scroll overflow-y-scroll'>
+                                                <div className='text-black overflow-hidden  no-scrollbar overflow-x-scroll overflow-y-scroll h-screen'>
 
                                                     {
                                                         !isPdfloading ?
