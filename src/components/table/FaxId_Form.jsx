@@ -13,6 +13,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
 import axiosBaseURL from '../axios';
+import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -23,7 +24,7 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
   const [pdfData, setPdfData] = useState(null);
   const [isloading, setIsLoading] = useState(false)
   const [scalePopUp, setScalePopoup] = useState(1);
-
+  const [rotate, setRotate] = useState(0);
 
 
   const navigate = useNavigate();
@@ -105,7 +106,13 @@ const handleZoomIn = () => {
   setScalePopoup(scalePopUp + 0.2);
 }
 
-
+const handleRotate = () => {
+  console.log("Rotate");
+  setRotate(rotate + 90);
+  if(rotate === 270){
+    setRotate(0);
+  }
+}
 
   return (
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto ">
@@ -124,7 +131,7 @@ const handleZoomIn = () => {
                     <Page pageNumber={pageNumber} scale={scalePopUp}
                       width={500}
                       height={200}
-
+                      rotate={rotate}
                     />
                   </Document>
                 </>
@@ -150,6 +157,7 @@ const handleZoomIn = () => {
         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
         </div>
 
         <div className='text-blue-400 text-2xl absolute top-2 right-2 cursor-pointer' onClick={close_Form}>

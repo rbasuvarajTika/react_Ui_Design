@@ -16,6 +16,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 import { useParams } from 'react-router-dom';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 
 const Duplicate_Fax = () => {
     const navigate = useNavigate()
@@ -36,6 +37,9 @@ const Duplicate_Fax = () => {
     const [duplicatePdfResponse, setDuplicatePdfResponse] = useState(null);
     const [duplicateFaxData, setDuplicateFaxData] = useState(null);
     const [duplicateTrnFaxId, setDuplicateTrnFaxId] = useState(null);
+
+    const [rotate, setRotate] = useState(0);
+    const [rotate2, setRotate2] = useState(0);
 
 
     const { faxId } = useParams();
@@ -219,7 +223,23 @@ const Duplicate_Fax = () => {
             });
         
       };
+
+
+      const handleRotate = () => {
+        console.log("Rotate");
+        setRotate(rotate + 90);
+        if(rotate === 270){
+          setRotate(0);
+        }
+      }
       
+      const handleRotate2 = () => {
+        console.log("Rotate");
+        setRotate2(rotate2 + 90);
+        if(rotate2 === 270){
+          setRotate2(0);
+        }
+      }
     return (
         
         <div className="w-ful  relative  overflow-x-auto rounded-xl lg:px-8 md:px-4 overflow-y-scroll lg:h-[640px] h-full no-scrollbar">
@@ -254,6 +274,7 @@ const Duplicate_Fax = () => {
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
                         </div>
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]  h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar  '>
@@ -270,6 +291,7 @@ const Duplicate_Fax = () => {
                                                     >
                                                         <Page pageNumber={pageNumber} scale={scale}
                                                             width={500} height={500}
+                                                            rotate={rotate}
                                                             className="responsive-pdf-container "
 
                                                         />
@@ -332,6 +354,7 @@ const Duplicate_Fax = () => {
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomInSecond}> <ZoomInIcon className='md:text-base text-xs' /></div>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate2}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
                         </div>
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
@@ -350,7 +373,7 @@ const Duplicate_Fax = () => {
                                                     <Page pageNumber={pageNumber2} scale={scale2}
                                                         width={500}
                                                         height={500}
-
+                                                        rotate={rotate2}
                                                     />
                                                 </Document>
                                             </>
