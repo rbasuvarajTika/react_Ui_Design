@@ -21,6 +21,7 @@ import Loader from '../Loader';
 import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import { ClickAwayListener } from '@mui/material';
+import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -909,7 +910,8 @@ useEffect(() => {
         if (value === '' || /^\d{0,10}$/.test(value)) {
             updateHcpData[index][column] = value; // Update the value as it's either an empty string or matches the format
         } else {
-            errorMessage = 'Invalid NPI format. Please enter up to 10 numeric digits.';
+            // errorMessage = 'Invalid NPI format. Please enter up to 10 numeric digits.';
+            toast.error("Invalid NPI format. Please enter up to 10 numeric digits");
         }
     } else if (column === 'signature_Flag') {
         if (value) {
@@ -1159,6 +1161,7 @@ const handleDeleteHcpConfirm = (index) => {
   const [isPdfloading, setIsPdfLoading] = useState(false)
   const [scalePopUp, setScalePopoup] = useState(1);
   const [scale, setScale] = useState(1);
+  const [rotates, setRotates] = useState(0);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -1225,7 +1228,13 @@ const zoomInSecond = () => {
     setNetSuit(false)
    // setReadyForReview(false);
   }
-
+  const handleRotates = () => {
+    console.log("Rotate");
+    setRotates(rotates + 90);
+    if(rotates === 270){
+      setRotates(0);
+    }
+  }
   return (
     
       <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
@@ -2329,6 +2338,8 @@ const zoomInSecond = () => {
                         </div>
 
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
+                        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotates}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
+
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomInSecond}> <ZoomInIcon className='md:text-base text-xs' /></div>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
                         </div>
@@ -2349,6 +2360,7 @@ const zoomInSecond = () => {
                                                     <Page pageNumber={pageNumber} scale={scale}
                                                         width={400}
                                                         height={500}
+                                                        rotate={rotates}
 
                                                     />
                                                 </Document>
