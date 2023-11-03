@@ -143,7 +143,7 @@ const TableList = ({ }) => {
                                 </div>
                                 <div className="flex gap-5">
                                     <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                    <label className='text-xs text-black  text-start' htmlFor="">Search Fax :</label>   
+                                    <label className='text-xs text-black  text-start' htmlFor="">Search Fax ID:</label>   
                                     <input type="search" 
                                         onChange={(e) => setSearch(e.target.value)}
                                         className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"/>

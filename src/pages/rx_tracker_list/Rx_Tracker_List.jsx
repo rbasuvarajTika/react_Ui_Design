@@ -53,6 +53,7 @@ useEffect(() => {
     })
     .then((response) => {
         setRxTrackerData(response.data.data); 
+        console.log(response.data.data);
         console.log(response.data.data[0].trnRxId);
         settrnRxId(response.data.data[0].trnRxId);
         setLoading(false); // Set loading to false
@@ -139,10 +140,12 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                         <thead className="">
                             <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
                                 <th className="px-6 py-3 ">Rx ID</th>
+                                <th className="px-6 py-3 ">Case ID</th>
                                 <th className="px-6 py-3">Process Status</th>
                                 <th className="px-6 py-3">Fulfillment <p>Status</p></th>
                                 <th className="px-6 py-3">NetSuite <p>ID</p></th>
                                 <th className="px-6 py-3">Fax <p>ID</p></th>
+                                <th className="px-6 py-3">Patient Name </th>
                                 <th className="px-6 py-3">Patient <p>ID</p></th>
                                 <th className="px-6 py-3">HCP</th>
                                 <th className="px-6 py-3 ">Account</th>
@@ -165,7 +168,7 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                     return false;
                                 })
                                 .filter((item) => {
-                                    if (searchAccount === '' || item.accountName.toLowerCase().includes(searchAccount.toLowerCase())) {
+                                    if (searchAccount === '' || (item.accountName && item.accountName.toLowerCase().includes(searchAccount.toLowerCase()))) {
                                         return true;
                                     }
                                     return false;
@@ -181,10 +184,12 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                    {item.trnRxId}
                                     </div>
                                     </td>
+                                    <td className="px-6 py-4">{item.caseId}</td>
                                     <td className="px-6 py-4">{item.processStatus}</td>
                                     <td className="px-6 py-4">{item.rxFulfilmentStatus}</td>
                                     <td className="px-6 py-4">{item.netsuiteRxId}</td>
                                     <td className="px-6 py-4">{item.faxId}</td>
+                                    <td className="px-6 py-4">{item.patientName}</td>
                                     <td className="px-6 py-4">{item.patientId}</td>
                                     <td className="px-6 py-4">{item.hcpName}</td>
                                     <td className="px-6 py-4">{item.accountName}</td>
