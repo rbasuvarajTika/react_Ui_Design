@@ -2429,7 +2429,7 @@ const zoomInSecond = () => {
                                         </div>
                                         <div className='md:px-10 px-2 pb-3 flex justify-between'>
                                             <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#00aee6] rounded-3xl flex justify-center text-xs'>Send for Re-Faxing</div>
-                                            <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#4da12c] rounded-3xl flex justify-center text-xs'>Send for Re-Faxing</div>
+                                            <div className='sm:w-44 csm:w-42 vsm:w-20 w-28 py-1 bg-[#4da12c] rounded-3xl flex justify-center text-xs'>Prepare for NetSuite <span>Submission</span></div>
                                         </div>
                                     </div>
                                 </div>
