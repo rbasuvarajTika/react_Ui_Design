@@ -1398,7 +1398,25 @@ const zoomInSecond = () => {
 
                                                 </div>
 
-
+                                                <div className=' flex flex-col'>
+                                                    <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black h-5 text-xs mr-5 t-1'
+                                                            type="text"
+                                                            id="shipToAddress"
+                                                            name="shipToAddress"
+                                                            value={patientNewData.shipToAddress || ''}
+                                                            onChange={handlepatientInputChange}
+                                                        />
+                                                    </> : <>
+                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
+                                                             type="text"
+                                                             id="shipToAddress"
+                                                             name="shipToAddress"
+                                                             value={patientNewData.shipToAddress || ''}
+                                                        />
+                                                    </>}
+                                                </div>
 
 
                                                 <div className=' flex  justify-star  flex-col w-full '>
@@ -1472,25 +1490,7 @@ const zoomInSecond = () => {
 
 
 
-                                                <div className=' flex flex-col'>
-                                                    <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
-                                                    {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black h-5 text-xs mr-5 t-1'
-                                                            type="text"
-                                                            id="shipToAddress"
-                                                            name="shipToAddress"
-                                                            value={patientNewData.shipToAddress || ''}
-                                                            onChange={handlepatientInputChange}
-                                                        />
-                                                    </> : <>
-                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                             type="text"
-                                                             id="shipToAddress"
-                                                             name="shipToAddress"
-                                                             value={patientNewData.shipToAddress || ''}
-                                                        />
-                                                    </>}
-                                                </div>
+                                           
 
                                             </div>
                                         </div>
@@ -1516,7 +1516,7 @@ const zoomInSecond = () => {
                                                         <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
                                                              type="text"
                                                              id="salesRepName"
-                                                             name="salesRepName"
+                                                             name="repName"
                                                              value={patientNewData.repName || ''}
                                                              onChange={handlepatientInputChange}
                                                         />
@@ -1537,7 +1537,7 @@ const zoomInSecond = () => {
                                                         <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
                                                             type="text"
                                                             id="salesRepCell"
-                                                             name="salesRepCell"
+                                                             name="repCell"
                                                              value={patientNewData.repCell || ''}
                                                              onChange={handlepatientInputChange}
                                                         />
@@ -1665,7 +1665,7 @@ const zoomInSecond = () => {
 
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                                <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
+                                <p className='absolute top-0 text-[#e36c09] text-sm'>Wound Etiology</p>
                             </div>
                             <div>
 
@@ -1693,7 +1693,7 @@ const zoomInSecond = () => {
                                     <table className="  text-center table-auto w-full  ">
                                         <thead className="">
                                             <tr className="text-[11px] text-[#ffffff] font-bold bg-[#246180] rounded-2xl  ">
-                                                <th className="px-2 py3   border ">Wound <span>(WND)#</span></th>
+                                                <th className="px-2 py3   border ">Wound </th>
                                                 <th className="px-2 p-3  border ">Location</th>
                                                 <th className="px-2 y-3  border ">Length <span>(cm)</span></th>
                                                 <th className="px-2 py-  border ">Width <span>(cm)</span></th>
@@ -1881,7 +1881,7 @@ const zoomInSecond = () => {
                             <div className='w-full h-[calc(50vh-15rem) max-h-[200px] h-[50%]  bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll no-scrollbar'>
                                 <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                                     <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                                    <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
+                                    <p className='absolute top-50  text-[#e36c09] text-sm'>Product  Information</p>
                                 </div>
                                 {!openNetSuit ? <>
                                     <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] md:w-28 w-20  cursor-pointer' onClick={handleAddKit}>
@@ -2039,7 +2039,7 @@ const zoomInSecond = () => {
                             </div>
                             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09] absolute top-0  '>
                                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                                <p className='absolute top-0 text-[#e36c09] text-sm'>Physicain</p>
+                                <p className='absolute top-0 text-[#e36c09] text-sm'>Health Care Provider</p>
                             </div>
                             <div className='flex xl:flex-row flex-col justify-between w-full overflow-y-scroll h-[100%] xl:pt-0 pt-10  items-center no-scrollbar  '>
                                 <div className='flex flex-col justify-center w-full  items-center  '>
