@@ -117,9 +117,9 @@ const handleRotate = () => {
   return (
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto ">
       <div className="relative  bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300  h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">
-        <div className=' border-2 border-black h-[calc(100%-10px)]   overflow-hidden overflow-y-scroll overflow-x-scroll no-scrollbar'>
-          <div className='text-blac sm:flex justify-center items-center  '>
-
+        <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)]  border mt-14 overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
+          <div className=' w-full h-full  '>
+            <div className='text-black overflow-hidden  overflow-x-scroll overflow-y-scroll h-screen'>
             {
               !isloading ?
                 <>
@@ -144,6 +144,7 @@ const handleRotate = () => {
                 </>
             }
           </div>
+        </div>
         </div>
         <div className='relative'>
           <p className='text-[#717171] text-sm absolute top-2'>{pageNumber} of {numPages}</p>
