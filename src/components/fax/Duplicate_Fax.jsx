@@ -279,7 +279,7 @@ const Duplicate_Fax = () => {
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]  h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar  '>
                             <div className=' w-full h-full '>
-                                <div className='text-black overflow-hidden overflow-x-scroll overflow-y-scroll no-scrollbar  '>
+                                <div className='text-black overflow-hidden overflow-x-scroll overflow-y-scroll h-screen'>
 
                                     {
                                         !isloading ?
@@ -359,7 +359,7 @@ const Duplicate_Fax = () => {
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
                             <div className=' w-full h-full  '>
-                                <div className='text-black overflow-hidden  no-scrollbar overflow-x-scroll overflow-y-scroll'>
+                                <div className='text-black overflow-hidden overflow-x-scroll overflow-y-scroll h-screen'>
 
                                     {
                                         !isloading ?

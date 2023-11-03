@@ -2309,7 +2309,7 @@ const zoomInSecond = () => {
 
                                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]   w-[calc(100%-70px)]   h-[calc(100%-100px)]  border mt-14 overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
                                             <div className=' w-full h-full  relative '>
-                                                <div className='text-black overflow-hidden  no-scrollbar overflow-x-scroll overflow-y-scroll h-screen'>
+                                                <div className='text-black overflow-hidden  overflow-x-scroll overflow-y-scroll h-screen'>
 
                                                     {
                                                         !isPdfloading ?
