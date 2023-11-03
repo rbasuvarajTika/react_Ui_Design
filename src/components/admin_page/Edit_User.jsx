@@ -339,7 +339,7 @@ const Edit_User = () =>{
                                             <label className='text-xs text-black w- text-start' htmlFor="">Confirm Password:</label>
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
                                             type="password"
-                                            name="password"
+                                            name="confirm password"
                                             value={userData.password}
                                             onChange={handleInputChange}
                                             />
