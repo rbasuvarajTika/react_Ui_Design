@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import axiosBaseURL from '../axios';
-import SearchableDropdown from "./SearchableDropdown";
+import SearchableDropdown from "../drop_down_search/SearchableDropdown";
 import { animals } from '../../Data/animals';
 import { roles } from '../../Data/roles';
-import "./style.css";
+import "../drop_down_search/style.css";
 
 const Create_New_User = () => {
 const navigate = useNavigate();
@@ -44,6 +44,7 @@ userStatusFlag:'Active',
 //   };
 
 const createUser = async () => {
+userData.role=role;
 if (userData.userName.trim() === '') {
 setRequiredFieldError('User Id is required');
 return; // Do not proceed with user creation
@@ -113,7 +114,7 @@ Authorization: `Bearer ${token}`,
 },
 };
 userData.email=userData.userName;
-
+userData.role=role;
 try {
 await axiosBaseURL.post("/api/v1/users/create/user",userData, config, {
     headers: { "Content-Type": "application/json" }
@@ -259,7 +260,8 @@ if (!updatedUserData.hasOwnProperty(field)) {
 setUserData(updatedUserData);
 };
 
-const [value, setValue] = useState("Select option...");
+const [value, setValue] = useState("Select Role...");
+const [role, setRole] = useState("Select Role...");
 
 return (
 <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
@@ -282,7 +284,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-full text-start' htmlFor="">*User Id (primary email) </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56  text-black py-0.5 text-xs t-1' 
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56  text-black py-1 text-xs t-1' 
                                 name="userName"
                                 type="text" 
                                 value={userData.userName}
@@ -298,7 +300,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-28 text-start' htmlFor="">*First Name: </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 type="text"
                                 name="firstName"
                                 value={userData.firstName}
@@ -315,7 +317,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-28 text-start' htmlFor="">*Last Name </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 name="lastName"
                                 value={userData.lastName}
                                 onChange={handleInputChange}
@@ -336,7 +338,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-full text-start' htmlFor="">Address: </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs t-1' 
                                 name="address"
                                 type="text" 
                                 value={userData.address}
@@ -350,7 +352,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-28 text-start' htmlFor="">City: </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 type="text"
                                 name="city"
                                 value={userData.city}
@@ -364,7 +366,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-28 text-start' htmlFor="">State: </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs'
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs'
                                 type="text"
                                 name="state"
                                 value={userData.state}
@@ -383,7 +385,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-full text-start' htmlFor="">Zip: </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs t-1' 
                                 name="zip"
                                 type="text"
                                 value={userData.zip}
@@ -399,7 +401,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w-28 text-start' htmlFor="">Phone: </label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs'
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs'
                                 type="text"
                                 name="phone"
                                 value={userData.phone}
@@ -416,7 +418,7 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full '>
                                 <label className='text-xs text-black w- text-start' htmlFor="">* Standard Login Password:</label>
-                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
+                                <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 type="password"
                                 name="password"
                                 value={userData.password}
@@ -436,19 +438,13 @@ return (
                         <div className=' flex items-center flex-row w-full g '>
                             <div className=' flex  justify-start  flex-col w-full  relative'>
                                 <label className='text-xs text-black w-full text-start' htmlFor="">* Role: </label>
-                                <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                                type="text"
-                                                name="role"
-                                                value={userData.role}
-                                                onChange={handleInputChange}
-                                            >
-                                                <MdOutlineArrowDropDown size={20} />
-                                                <option value={userData.role}>{userData.role}</option>
-                                                <option value="Admin">Admin</option>
-                                                <option value="Power User">Power User</option>
-                                                <option value="Reviewer ">Reviewer</option>
-
-                                    </select>
+                                    <SearchableDropdown
+                                            options={roles}
+                                            label="role"
+                                            id="id"
+                                            selectedVal={role}
+                                            handleChange={(val) => setRole(val)}
+                                        />
                                 <p className="text-red-500 text-xs">{roleError}</p>
                             </div>
                         </div>
