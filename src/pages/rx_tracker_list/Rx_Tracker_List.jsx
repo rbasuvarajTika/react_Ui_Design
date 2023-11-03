@@ -19,6 +19,8 @@ const [trnRxId, settrnRxId] = useState([]);
 const [selectedRxStatus, setSelectedRxStatus] = useState('');
 const [searchHCP, setSearchHCP] = useState('');
 const [searchAccount, setSearchAccount] = useState('');
+const [searchPatient, setSearchPatient] = useState('');
+
 
 
  const [patientData, setPatientData] = useState({});
@@ -121,6 +123,14 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                        className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                                     />
                                 </span>
+                                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                                <label className='text-xs text-black  text-start' htmlFor="">Search Patient:</label>
+                                    <input
+                                       value={searchPatient}
+                                       onChange={(e) => setSearchPatient(e.target.value)}
+                                       className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                                    />
+                                </span>
                                 <Pagination
                                         totalPosts={data.length}
                                         postsPerPage={postsPerPage}
@@ -169,6 +179,12 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                 })
                                 .filter((item) => {
                                     if (searchAccount === '' || (item.accountName && item.accountName.toLowerCase().includes(searchAccount.toLowerCase()))) {
+                                        return true;
+                                    }
+                                    return false;
+                                })
+                                .filter((item) => {
+                                    if (searchPatient === '' || (item.patientName && item.patientName.toLowerCase().includes(searchPatient.toLowerCase()))) {
                                         return true;
                                     }
                                     return false;
