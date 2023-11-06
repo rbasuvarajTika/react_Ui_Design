@@ -35,11 +35,14 @@ const SearchableDropdown = ({
   };
 
   const filter = (options) => {
-    return options.filter(
-      (option) => option[label].toLowerCase().indexOf(query.toLowerCase()) > -1
-    );
+    if (options && Array.isArray(options)) {
+      return options.filter(
+        (option) =>
+          option[label].toLowerCase().indexOf(query.toLowerCase()) > -1
+      );
+    }
+    return [];
   };
-
   return (
     <div className="dropdown">
       <div className="control">

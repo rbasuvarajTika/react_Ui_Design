@@ -22,7 +22,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import { ClickAwayListener } from '@mui/material';
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
-
+import SearchableDropdown from '../drop_down_search/SearchableDropdown';
+import DatePicker from '../../datepicker/Datepicker'
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 
@@ -1327,13 +1328,13 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                  <DatePicker 
                                                           type="text"
                                                           id="dateOfBirth"
                                                           name="dateOfBirth"
                                                           value={patientNewData.dateOfBirth || ''}
                                                           onChange={handlepatientInputChange}     />
-                                                          <p className="text-red-500 text-xs">{dateOfBirthError}</p>
+                                                          <p className="text-red-500 text-xs">{dateOfBirthError}</p> 
 
                                                     </> : <>
                                                         <input className='2xl:w-32 xl:w-24  text-black py-0.5 text-xs t-1'
@@ -1509,17 +1510,27 @@ const zoomInSecond = () => {
                       </div> */}
                                         <hr className='px-2 w-full my-1 border-center border-gray-300' />
                                         <div className='px-5 pt-3 xl:w-full h-full'>
+                                          
                                             <div className='flex w-full xl:flex-row flex-col gap-2  items-center justify-betwen '>
                                                 <div className=' flex  justify-star   flex-col w-full '>
                                                     <p className='text-xs text-black    ' htmlFor="">Sales Rep Name:</p>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                      <SearchableDropdown 
+                                                      options={patientNewData.repName}
+                                                      name="repName"
+                                                      label="repName"
+                                                      id="repName"
+                                                      selectedVal={patientNewData.repName || ''}
+                                                      
+                                                      onChange={handlepatientInputChange}
+                                                      />
+                                                        {/* <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
                                                              type="text"
                                                              id="salesRepName"
                                                              name="repName"
                                                              value={patientNewData.repName || ''}
                                                              onChange={handlepatientInputChange}
-                                                        />
+                                                        /> */}
                                                     </> : <>
                                                         <input className='w-56  text-black py-0.5 text-xs t-1'
                                                              type="text"
@@ -1836,9 +1847,11 @@ const zoomInSecond = () => {
                                                     </td>
                                                     <td className="p-1 rounded-2xl border">
                                                     {!openNetSuit ?<>
-                                                        <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
+                                                      <DatePicker type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
+                                                        onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}/>
+                                                         {/* <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                                         onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
-                                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>
+                                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>  */}
                                                             </>:<>
                                                     <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                                         className=' text-black h-5 w-10 text-xs'/>
