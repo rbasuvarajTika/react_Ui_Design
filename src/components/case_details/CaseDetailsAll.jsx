@@ -94,7 +94,8 @@ const CaseDetailsAll = () => {
 
    const[dateOfBirthError,setDateOfBirthError]=useState('');
    const [patientNewData, setPatientNewData] = useState([]);
-
+   const [placeOfServices, setPlaceOfServices] = useState([]);
+    const [orderTypeData, setOrderTypeData] = useState([]);
   // Total Save Call
   const handleSavePatientData = () => {
     
@@ -395,6 +396,34 @@ else if (name === 'ssn') {
           });
       }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/placeofservice');
+        // Assuming the response data is an array of options
+        setPlaceOfServices(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/orderinformation');
+        // Assuming the response data is an array of options
+        setOrderTypeData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 // WOUND START -------------------------------------------------
   const [woundData, setWoundData] = useState([]);
   const[lastWoundData,setLastWoundData]=useState([]);
@@ -1603,9 +1632,13 @@ const zoomInSecond = () => {
                                                              onChange={handlepatientInputChange}
                                                              >
                                        
-                                                             <option value="Yes">Yes</option>
-                                                             <option value="No">No</option>
-                                                             </select>
+                                                    {placeOfServices.map((lookup) => (
+                                                  <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                                   {lookup.rxLookupDisplay}
+                                                   </option>
+                                                  ))}
+                                                   </select>
+                                              
                                                     </> : <>
                                                         <input className='  text-black py-0.5 text-xs t-1'
                                                              type="text"
@@ -1627,8 +1660,11 @@ const zoomInSecond = () => {
                                                     onChange={handlepatientInputChange}
 
                                                 >
-                                                    <option value="Yes">Yes</option>
-                                                    <option value="No">No</option>
+                                                    {orderTypeData.map((lookup) => (
+                                                  <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                                   {lookup.rxLookupDisplay}
+                                                   </option>
+                                                    ))}
                                                 </select>
                                                     </> : <>
                                                         <input className='w-56  text-black py-0.5 text-xs t-1'
@@ -1790,7 +1826,7 @@ const zoomInSecond = () => {
                                                                     onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
                                                                     {woundStage.map((lookup) => (
                                                             <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
-                                                                    {lookup.rxLookupInput}
+                                                                    {lookup.rxLookupDisplay}
                                                                         </option>
                                                                 ))}
                                                                     </select>
@@ -1808,7 +1844,7 @@ const zoomInSecond = () => {
                                                             onChange={(e) => handleEditRowChange(index, 'drainage', e.target.value)}>
                                                                 {drainage.map((lookup) => (
                                                     <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
-                                                            {lookup.rxLookupInput}
+                                                            {lookup.rxLookupDisplay}
                                                                 </option>
                                                         ))}
                                                             </select>
@@ -1865,7 +1901,7 @@ const zoomInSecond = () => {
                                                                 onChange={(e) => handleEditRowChange(index, 'debridedType', e.target.value)}>
                                                                 {debridementtype.map((lookup) => (
                                                         <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
-                                                                {lookup.rxLookupInput}
+                                                                {lookup.rxLookupDisplay}
                                                                     </option>
                                                             ))}                                            </select>
                                                             </p>
@@ -1952,7 +1988,7 @@ const zoomInSecond = () => {
                                                         onChange={(e) => handleKitEditRowChange(index, 'quantity', e.target.value)}>
                                                         {frequency.map((lookup) => (
                                                     <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
-                                                            {lookup.rxLookupInput}
+                                                            {lookup.rxLookupDisplay}
                                                                 </option>
                                                         ))}
                                                 </select>
