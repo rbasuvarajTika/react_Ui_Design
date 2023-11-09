@@ -244,22 +244,22 @@ const CaseDetailsAll = () => {
     patientId: patientId,
     trnFaxId:trnFaxId,
     faxId:faxId,
-    patientFirstName: patientFirstName,
-    patientMiddleName:patientMiddleName,
-    patientLastName:patientLastName,
-    cellPhone: cellPhone,
-    shipToAddress: shipToAddress,
-    ssn: ssn,
-    city:  city,
-    state:patientData.state,
-    zip: zip,
-    dateOfBirth: dateOfBirth,
-    repName: repName,
-    repPhoneNo:repCell,
-    placeOfService: placeOfService,
-    distributorName: distributor,
-    orderType: orderType,
-    woundActive:woundActive,
+    patientFirstName: patientNewData.patientFirstName,
+    patientMiddleName:patientNewData.patientMiddleName,
+    patientLastName:patientNewData.patientLastName,
+    cellPhone: patientNewData.cellPhone,
+    shipToAddress: patientNewData.shipToAddress,
+    ssn: patientNewData.ssn,
+    city:  patientNewData.city,
+    state:patientNewData.state,
+    zip: patientNewData.zip,
+    dateOfBirth: patientNewData.dateOfBirth,
+    repName: patientNewData.repName,
+    repPhoneNo:patientNewData.repCell,
+    placeOfService: patientNewData.placeOfService,
+    distributorName: patientNewData.distributor,
+    orderType: patientNewData.orderType,
+    woundActive:patientNewData.woundActive,
     };
   
     try {
@@ -350,7 +350,7 @@ const CaseDetailsAll = () => {
   } 
   else if (name === 'dateOfBirth') {
     // Phone number validation
-    const truncatedValue = e.target.value; // Remove non-digit characters
+    const truncatedValue = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
     const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
     if (truncatedValue === '' || datePattern.test(truncatedValue)) {
       setPatientNewData({
@@ -497,10 +497,27 @@ else if (name === 'ssn') {
 }, []);
 
 const handleEditRowChange = (index, column, value) => {
-    setOnDirtyOrderSave(true);
-    const updatedWoundData = [...woundData];
-    updatedWoundData[index][column] = value;
-    setWoundData(updatedWoundData);
+  setOnDirtyOrderSave(true);
+  const updatedWoundData = [...woundData];
+
+  if (column === 'debridedDate') {
+    //value= e.target.value.replace(/\D/g, '');
+    const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
+
+    if (value === '' || datePattern.test(value)) {
+      // Allow updating empty string or valid date
+      updatedWoundData[index][column] = value;
+     
+      
+    } else {
+      toast.error('Please enter a valid date in MM/DD/YYYY format or leave it empty to delete.');
+     
+    }
+  } else {
+    updatedWoundData[index][column] = value; // Update other columns directly
+
+  }
+  setWoundData(updatedWoundData);
 };
 
  const handleAddWound = () => {
@@ -1244,7 +1261,7 @@ const zoomInSecond = () => {
   //PDF RENDER END 
 
 
-  const { openNetSuit, setNetSuit} = useContext(DuplicateContext);
+  const [ openNetSuit, setNetSuit] = useState(false);
   const { readyForReview, setReadyForReview} = useState(false);
   //setNetSuit(true);
   const handle_netSuitSubmission = () => {
@@ -1357,7 +1374,13 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
                                                     {!openNetSuit ? <>
-                                                  <DatePicker 
+                                                  {/* <DatePicker 
+                                                          type="text"
+                                                          id="dateOfBirth"
+                                                          name="dateOfBirth"
+                                                          value={patientNewData.dateOfBirth || ''}
+                                                          onChange={handlepatientInputChange}     /> */}
+                                                          <input  className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
                                                           type="text"
                                                           id="dateOfBirth"
                                                           name="dateOfBirth"
@@ -1883,11 +1906,11 @@ const zoomInSecond = () => {
                                                     </td>
                                                     <td className="p-1 rounded-2xl border">
                                                     {!openNetSuit ?<>
-                                                      <DatePicker type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
-                                                        onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}/>
-                                                         {/* <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
+                                                      {/* <DatePicker type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
+                                                        onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}/> */}
+                                                         <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                                         onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
-                                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>  */}
+                                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/> 
                                                             </>:<>
                                                     <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                                         className=' text-black h-5 w-10 text-xs'/>
