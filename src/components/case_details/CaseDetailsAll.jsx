@@ -255,7 +255,7 @@ const CaseDetailsAll = () => {
     zip: patientNewData.zip,
     dateOfBirth: patientNewData.dateOfBirth,
     repName: patientNewData.repName,
-    repPhoneNo:patientNewData.repCell,
+    repPhoneNo:patientNewData.repPhoneNo,
     placeOfService: patientNewData.placeOfService,
     distributorName: patientNewData.distributor,
     orderType: patientNewData.orderType,
@@ -350,7 +350,7 @@ const CaseDetailsAll = () => {
   } 
   else if (name === 'dateOfBirth') {
     // Phone number validation
-    const truncatedValue = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+    const truncatedValue = e.target.value // Remove non-digit characters
     const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
     if (truncatedValue === '' || datePattern.test(truncatedValue)) {
       setPatientNewData({
@@ -1567,7 +1567,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star   flex-col w-full '>
                                                     <p className='text-xs text-black    ' htmlFor="">Sales Rep Name:</p>
                                                     {!openNetSuit ? <>
-                                                      <SearchableDropdown 
+                                                      {/* <SearchableDropdown 
                                                       options={patientNewData.repName}
                                                       name="repName"
                                                       label="repName"
@@ -1575,14 +1575,14 @@ const zoomInSecond = () => {
                                                       selectedVal={patientNewData.repName || ''}
                                                       
                                                       onChange={handlepatientInputChange}
-                                                      />
-                                                        {/* <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                      /> */}
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
                                                              type="text"
                                                              id="salesRepName"
                                                              name="repName"
                                                              value={patientNewData.repName || ''}
                                                              onChange={handlepatientInputChange}
-                                                        /> */}
+                                                        />
                                                     </> : <>
                                                         <input className='w-56  text-black py-0.5 text-xs t-1'
                                                              type="text"
@@ -1600,8 +1600,8 @@ const zoomInSecond = () => {
                                                         <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
                                                             type="text"
                                                             id="salesRepCell"
-                                                             name="repCell"
-                                                             value={patientNewData.repCell || ''}
+                                                             name="repPhoneNo"
+                                                             value={patientNewData.repPhoneNo || ''}
                                                              onChange={handlepatientInputChange}
                                                         />
                                                     </> : <>
@@ -1609,7 +1609,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="salesRepCell"
                                                               name="salesRepCell"
-                                                              value={patientNewData.repCell || ''}
+                                                              value={patientNewData.repPhoneNo || ''}
                                                         />
                                                     </>}
                                                 </div>
@@ -1620,7 +1620,7 @@ const zoomInSecond = () => {
                                                     {!openNetSuit ? <>
                                                         <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 ma-56 text-black py-0.5 text-xs t-1'
                                                            name="distributor"
-                                                           value={patientNewData.distributor}
+                                                           value={patientNewData.distributorName}
                                                            onChange={handlepatientInputChange}
                                                        >
                                                            {distributorData.map((item) => (
@@ -1656,7 +1656,7 @@ const zoomInSecond = () => {
                                                              >
                                        
                                                     {placeOfServices.map((lookup) => (
-                                                  <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                                  <option key={lookup.rxLookupInput} value={lookup.rxLookupDisplay}>
                                                    {lookup.rxLookupDisplay}
                                                    </option>
                                                   ))}
@@ -1684,7 +1684,7 @@ const zoomInSecond = () => {
 
                                                 >
                                                     {orderTypeData.map((lookup) => (
-                                                  <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                                  <option key={lookup.rxLookupInput} value={lookup.rxLookupDisplay}>
                                                    {lookup.rxLookupDisplay}
                                                    </option>
                                                     ))}
