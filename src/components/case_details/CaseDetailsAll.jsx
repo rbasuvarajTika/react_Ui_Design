@@ -257,7 +257,7 @@ const CaseDetailsAll = () => {
     repName: patientNewData.repName,
     repPhoneNo:patientNewData.repPhoneNo,
     placeOfService: patientNewData.placeOfService,
-    distributorName: patientNewData.distributor,
+    distributorName: patientNewData.distributorName,
     orderType: patientNewData.orderType,
     woundActive:patientNewData.woundActive,
     };
@@ -1619,7 +1619,7 @@ const zoomInSecond = () => {
                                                     <label className='text-xs text-black w- text-start' htmlFor="">Distributer: : </label>
                                                     {!openNetSuit ? <>
                                                         <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 ma-56 text-black py-0.5 text-xs t-1'
-                                                           name="distributor"
+                                                           name="distributorName"
                                                            value={patientNewData.distributorName}
                                                            onChange={handlepatientInputChange}
                                                        >

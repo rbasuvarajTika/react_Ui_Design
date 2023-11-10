@@ -16,10 +16,15 @@ import axiosBaseURL from '../axios';
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
+import DownloadIcon from '@mui/icons-material/Download';
+import AttachEmailIcon from '@mui/icons-material/AttachEmail';
+import { useParams } from 'react-router-dom';
+import Header_Navigation from '../header/Header_Navigation';
+import Background from '../Background';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const FaxId_Form = ({ close_Form, sendFaxId }) => {
+const FaxId_Form_New = ({ }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [faxdata, setFaxData] = useState("")
@@ -31,7 +36,8 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
   const [fromPage, setFromPage] = useState('');
   const [toPage, setToPage] = useState('');
   const [thumbnails, setThumbnails] = useState([]);
-
+  const { faxId } = useParams();
+console.log("start",faxId);
   const navigate = useNavigate();
   const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
 
@@ -39,7 +45,6 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
     setOpenDuplicate(true)
     setShoeForms(false)
   }
-
 
 
   const previousPage = () => {
@@ -73,11 +78,11 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
   // }, [])
 
   useEffect(() => {
-    const fetchPdf = async () => {
+    const fetchPdf =  () => {
       setIsLoading(true)
       axiosBaseURL({
         method: 'GET',
-        url: `/api/v1/fax/getFaxPdf/${sendFaxId}`,
+        url: `/api/v1/fax/getFaxPdf/${faxId}`,
         responseType: 'arraybuffer',
         headers: {
           //Authorization: `Bearer ${token}`,
@@ -136,7 +141,7 @@ const handleInputChange = (e) => {
 const handleSplitPDfRangeClick = () => {
   // const token = localStorage.getItem('tokenTika');
      axiosBaseURL
-       .get(`/api/v1/fax/splitPdfByRange/${sendFaxId}/${fromPage}/${toPage}`, {
+       .get(`/api/v1/fax/splitPdfByRange/${faxId}/${fromPage}/${toPage}`, {
          // headers: {
          //   Authorization: `Bearer ${token}`,
          // },
@@ -160,6 +165,7 @@ const handleSplitPDfRangeClick = () => {
        });
   
  };
+ //console.log(sendFaxId);
  const generateThumbnails = async (numPages) => {
   if (pdfData) {
     const thumbArray = [];
@@ -202,12 +208,81 @@ const handleThumbnailClick = (pageIndex) => {
   setPageNumber(pageIndex + 1);
 };
 
+const splitButtonStyle = {
+    position: 'absolute',
+    top: '20px', /* Adjust the top value based on your layout */
+    right: '-110px', /* Adjust the right value based on your layout */
+    zIndex: 50, /* Ensure it's above other content */
+    padding: '8px 16px',
+    backgroundColor: '#00ab06',
+    borderRadius: '8px',
+    color: '#fff',
+    cursor: 'pointer',
+  };
 
+  const inputBoxesStyle = {
+    position: 'relative',
+    marginTop: '10px', // Adjust the margin-top as per your requirement
+  };
+
+  const saveButtonStyle = {
+    position: 'absolute',
+    right: '0',
+    backgroundColor: '#00ab06',
+    padding: '8px 16px',
+    borderRadius: '8px',
+    color: '#fff',
+    cursor: 'pointer',
+  };
+  const downloadPdf = () => {
+    
+      axiosBaseURL({
+        method: 'GET',
+        url: `/api/v1/fax/download-fax-pdf/${faxId}`, // Replace with your API endpoint for downloading the PDF
+        responseType: 'blob',
+        headers: {
+          // Add headers if required
+        },
+      })
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'fax.pdf');
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch((error) => {
+          console.error('Error downloading PDF:', error);
+        });
+    } 
+
+
+    const handleSendFaxEmail = () => {
+        // Replace 'your-email@example.com' with the actual email address
+      
+    
+        // Make a POST request to send the fax PDF to the specified email address
+        axiosBaseURL
+          .post(`/api/v1/fax/faxRx/alertMail/${faxId}`, {
+            
+          })
+          .then((response) => {
+            // Handle success
+            console.log('Fax PDF sent successfully:', response.data);
+            toast.success('Fax PDF sent successfully');
+          })
+          .catch((error) => {
+            // Handle error
+            console.error('Error sending fax PDF:', error);
+            toast.error('Error sending fax PDF. Please try again later.');
+          });
+      };
+    
   return (
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto">
-    <ToastContainer />
-    <div className="relative bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">
-      <div className="flex h-full">
+   
+    <div className="relative bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">      <div className="flex h-full">
         {/* Left section for thumbnails */}
         <div className="w-1/5 border mr-4 overflow-y-auto">
           <div className="thumbnails-container">
@@ -231,7 +306,7 @@ const handleThumbnailClick = (pageIndex) => {
         <Page
           pageNumber={pageNumber}
           scale={scalePopUp}
-          width={500}
+          width={400}
           height={200}
           rotate={rotate}
         />
@@ -253,20 +328,23 @@ const handleThumbnailClick = (pageIndex) => {
           <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <= 1 ? "bg-[#d9e0e3]" : "bg-[#00aee6]"}`} onClick={previousPage}> <FaArrowLeft /></div>
           <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
         </div>
-        <span className="flex flex-col gap-2 absolute top-10 md:right-1 right-2">
-                                            <div className='sm:w-20 csm:w-32 vsm:w-20 w-18 py-1 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={handleSplitClick}>Split</div>
+        <span className="flex flex-col gap-2">
+        <div style={splitButtonStyle} onClick={handleSplitClick}>Split</div>
                                         </span>
                                         {showInputBoxes && (
-        <div style={{ position: 'relative', marginTop: '0px' }}>
+        <div style={inputBoxesStyle}>
           <input
-            className='bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1'
-            type="text"
+             style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'650px' }}
+           className='bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1'
+           type="text"
             name="fromPage"
             value={fromPage}
             onChange={handleInputChange}
+          
             placeholder="From Page"
           />
           <input
+           style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'760px' }}
             className='bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1'
             type="text"
             name="toPage"
@@ -274,7 +352,7 @@ const handleThumbnailClick = (pageIndex) => {
             onChange={handleInputChange}
             placeholder="To Page"
           />
-          <div style={{ position: 'absolute', marginTop: '-20px', right: '280px' }}>
+          <div style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'880px' }}>
             <div className='sm:w-20 csm:w-32 vsm:w-20 w-18 bg-[#00ab06] flex justify-center md:text-sm text-xs cursor-pointer' onClick={handleSplitPDfRangeClick}>
               Save
             </div>
@@ -282,18 +360,20 @@ const handleThumbnailClick = (pageIndex) => {
         </div>
       )}
         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSendFaxEmail}> <AttachEmailIcon className='md:text-base text-xs' /></div>
+
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer 'onClick={downloadPdf}> <DownloadIcon className='md:text-base text-xs' /></div>
+
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
         </div>
 
-        <div className='text-blue-400 text-2xl absolute top-2 right-2 cursor-pointer' onClick={close_Form}>
-          <AiFillCloseCircle />
-        </div>
+      
 
       </div>
     </div >
   )
 }
 
-export default FaxId_Form
+export default FaxId_Form_New
