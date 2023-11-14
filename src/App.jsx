@@ -19,6 +19,7 @@ import Admin_Edit_Profile from "./pages/admin_Pages/Admin_Edit_Profile"
 import Admin_Create_New_User from "./pages/admin_Pages/Admin_Create_New_User"
 import CaseDetailsNewPage from "./pages/case_details/CaseDetailsNewPage"
 import FaxId_Form_New from "./components/table/FaxId_Form_New"
+import Fax_show_project from "./components/table/Fax_show_project"
 
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false)
@@ -61,6 +62,7 @@ function App() {
           <Route path="/nsrxmgt/duplicate-fax/:faxId" element={<Duplicate_Fax_Page />} />
           <Route path="/nsrxmgt/rx-tracker-list" element={<Rx_Tracker_List />} />
           <Route path="/nsrxmgt/case-details-new/:trnRxId/:paramFaxId/:netSuitId/:paramPatientId" element={<CaseDetailsNewPage />} />
+          <Route path="/nsrxmgt/fax_project" element={<Fax_show_project />} />
         </Routes>
       </EditUserContext.Provider>  
       </AdminContext.Provider>
