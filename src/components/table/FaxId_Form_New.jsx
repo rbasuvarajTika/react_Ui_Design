@@ -6,6 +6,7 @@ import { DuplicateContext } from '../../context/DuplicateContext';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import fax from "../../assets/pdf/fax.pdf"
+import jsPDF from 'jspdf';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import axios from 'axios';
@@ -21,7 +22,7 @@ import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import { useParams } from 'react-router-dom';
 import Header_Navigation from '../header/Header_Navigation';
 import Background from '../Background';
-
+import SaveIcon from '@mui/icons-material/Save';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const FaxId_Form_New = ({ }) => {
@@ -33,9 +34,11 @@ const FaxId_Form_New = ({ }) => {
   const [scalePopUp, setScalePopoup] = useState(1);
   const [rotate, setRotate] = useState(0);
   const [showInputBoxes, setShowInputBoxes] = useState(false);
-  const [fromPage, setFromPage] = useState('');
+  const [splitPage, setSplitPage] = useState('');
   const [toPage, setToPage] = useState('');
   const [thumbnails, setThumbnails] = useState([]);
+  const [selectedPages, setSelectedPages] = useState([]);
+
   const { faxId } = useParams();
 console.log("start",faxId);
   const navigate = useNavigate();
@@ -124,24 +127,22 @@ const handleRotate = () => {
 
 const handleSplitClick = () => {
   setShowInputBoxes(true);
-  setFromPage("");
+  setSplitPage("");
   setToPage("");
 };
 
 const handleInputChange = (e) => {
   const { name, value } = e.target;
-  if (name === 'fromPage') {
-    setFromPage(value);
-  } else if (name === 'toPage') {
-    setToPage(value);
-  }
+  if (name === 'splitPage') {
+    setSplitPage(value);
+  } 
 };
 
 
-const handleSplitPDfRangeClick = () => {
+const handleSplitPDfPageClick = () => {
   // const token = localStorage.getItem('tokenTika');
      axiosBaseURL
-       .get(`/api/v1/fax/splitPdfByRange/${faxId}/${fromPage}/${toPage}`, {
+       .get(`/api/v1/fax/splitPdfByPages/${faxId}/${splitPage}`, {
          // headers: {
          //   Authorization: `Bearer ${token}`,
          // },
@@ -206,8 +207,15 @@ const onDocumentLoadSuccess = ({ numPages }) => {
 
 const handleThumbnailClick = (pageIndex) => {
   setPageNumber(pageIndex + 1);
-};
+  setSplitPage(pageIndex + 1);
+  // Add the selected page to the array if it's not already selected
+  // if (!selectedPages.includes(pageIndex + 1)) {
+  //   setSelectedPages([...selectedPages, pageIndex + 1]);
+  // }
 
+  // // Update the splitPage with the selected pages joined by commas
+  // setSplitPage(splitPage.join(', '));
+};
 const splitButtonStyle = {
     position: 'absolute',
     top: '20px', /* Adjust the top value based on your layout */
@@ -279,6 +287,76 @@ const splitButtonStyle = {
           });
       };
     
+      const handleSave = () => {
+        const doc = new jsPDF();
+        const loadingTask = pdfjs.getDocument(pdfData);
+        const pdfDataArray = []; // Array to store individual page data URLs
+      
+        loadingTask.promise.then((pdf) => {
+          const numPages = pdf.numPages;
+      
+          for (let i = 1; i <= numPages; i++) {
+            pdf.getPage(i).then((page) => {
+              const canvas = document.createElement('canvas');
+              const context = canvas.getContext('2d');
+              const viewport = page.getViewport({ scale: 1, rotation: i === pageNumber ? rotate : 0 });
+      
+              canvas.width = viewport.width;
+              canvas.height = viewport.height;
+      
+              const renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              };
+      
+              page.render(renderContext).promise.then(() => {
+                const dataURL = canvas.toDataURL();
+                pdfDataArray.push(dataURL);
+      
+                if (pdfDataArray.length === numPages) {
+                  // All pages have been processed, send the data to the server
+                  sendPdfToServer(pdfDataArray);
+                }
+              });
+            });
+          }
+        });
+      };
+      
+      const sendPdfToServer = (pdfDataArray) => {
+        // Convert the data URLs to binary data
+        const binaryDataArray = pdfDataArray.map((dataURL) => {
+          const byteCharacters = atob(dataURL.split(',')[1]);
+          const byteNumbers = new Array(byteCharacters.length);
+      
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+      
+          return new Uint8Array(byteNumbers);
+        });
+      
+        // Create FormData to send the Blobs to the server
+        const formData = new FormData();
+        binaryDataArray.forEach((binaryData, index) => {
+          const blob = new Blob([binaryData], { type: 'application/pdf' });
+          formData.append(`file_${index + 1}`, blob, `rotatedFax_page_${index + 1}.pdf`);
+        });
+      
+        // Make a POST request to the server endpoint to store the PDF
+        axios.post(`/api/v1/fax/uploadPdfToSftp/${faxId}`, formData)
+          .then((response) => {
+            console.log('PDF sent to server successfully:', response.data);
+            // Optionally, you can handle success here
+          })
+          .catch((error) => {
+            console.error('Error sending PDF to server:', error);
+            // Optionally, you can handle errors here
+          });
+      };
+      
+
+
   return (
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto">
    
@@ -337,13 +415,13 @@ const splitButtonStyle = {
              style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'650px' }}
            className='bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1'
            type="text"
-            name="fromPage"
-            value={fromPage}
+            name="splitPage"
+            value={splitPage}
             onChange={handleInputChange}
           
-            placeholder="From Page"
+            placeholder="Split Page"
           />
-          <input
+          {/* <input
            style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'760px' }}
             className='bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1'
             type="text"
@@ -351,22 +429,24 @@ const splitButtonStyle = {
             value={toPage}
             onChange={handleInputChange}
             placeholder="To Page"
-          />
-          <div style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'880px' }}>
-            <div className='sm:w-20 csm:w-32 vsm:w-20 w-18 bg-[#00ab06] flex justify-center md:text-sm text-xs cursor-pointer' onClick={handleSplitPDfRangeClick}>
+          /> */}
+          <div style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'780px' }}>
+            <div className='sm:w-20 csm:w-32 vsm:w-20 w-18 bg-[#00ab06] flex justify-center md:text-sm text-xs cursor-pointer' onClick={handleSplitPDfPageClick}>
               Save
             </div>
           </div>
         </div>
       )}
         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSave} > <SaveIcon  className='md:text-base text-xs' /></div>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
+
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSendFaxEmail}> <AttachEmailIcon className='md:text-base text-xs' /></div>
 
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer 'onClick={downloadPdf}> <DownloadIcon className='md:text-base text-xs' /></div>
 
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
         </div>
 
       
