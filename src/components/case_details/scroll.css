@@ -1,0 +1,25 @@
+/* Hide the vertical scrollbar but style the horizontal scrollbar */
+.hide-vertical-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 10px; /* Adjust the height as needed */
+}
+
+/* Enable scrolling */
+.enable-scrolling {
+  overflow: scroll;
+}
+
+/* Style the horizontal scrollbar */
+.enable-scrolling::-webkit-scrollbar-thumb {
+  background: rgb(181, 177, 177); /* Change the background color */
+  border-radius: 4px; /* Adjust the border radius */
+}
+
+.enable-scrolling::-webkit-scrollbar-track {
+  background: #F3F3F3; /* Change the track color */
+}
+
+/* Style the horizontal scrollbar on hover */
+.enable-scrolling::-webkit-scrollbar-thumb:hover {
+  background: rgb(181, 177, 177); /* Change the hover background color */
+}

@@ -11,6 +11,7 @@ import fax from "../../assets/pdf/fax.pdf"
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
+import FaxId_Form_New from "./FaxId_Form_New";
 
 
 
@@ -63,8 +64,10 @@ const TableList = ({ }) => {
                     setFaxData(res?.data.data.data)
                     setSendDate(res?.data.data.data[0].faxDate)
                     setSendFaxNumber(res?.data.data.data[0].faxNumber)
+                    
                     console.log(sendDate);
                     console.log(sendFaxNumber);
+                    console.log(sendFaxId);
                 })
         } catch (error) {
             console.log(error);
@@ -82,8 +85,9 @@ const TableList = ({ }) => {
             navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
         console.log(!showForm);
         } else if(status === "Main"||"New"){
-            setShoeForms(true)
-            // setShoeForms(false)
+            navigate(`/nsrxmgt/fax-list-page/${faxId}`);
+           // setShoeForms(true)
+             setShoeForms(false)
         }
         
     }
@@ -143,7 +147,7 @@ const TableList = ({ }) => {
                                 </div>
                                 <div className="flex gap-5">
                                     <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
-                                    <label className='text-xs text-black  text-start' htmlFor="">Search Fax :</label>   
+                                    <label className='text-xs text-black  text-start' htmlFor="">Search Fax ID:</label>   
                                     <input type="search" 
                                         onChange={(e) => setSearch(e.target.value)}
                                         className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"/>
@@ -220,7 +224,7 @@ const TableList = ({ }) => {
 
 
                 {
-                    showForms && <FaxId_Form close_Form={close_Form} setShoeForm={setShoeForm} sendFaxId={sendFaxId}/>
+                  showForms && <FaxId_Form_New close_Form={close_Form} setShoeForm={setShoeForm} sendFaxId={sendFaxId}/>
                 }
             </div>
         </>

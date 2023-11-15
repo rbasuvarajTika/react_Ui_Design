@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { MdAddBox } from 'react-icons/md'
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 import { useNavigate } from 'react-router-dom';
 import { DuplicateContext } from '../../context/DuplicateContext';
@@ -14,8 +17,11 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 import Loader from '../Loader';
-import { ToastContainer, toast } from 'react-toast'
-
+//import { ToastContainer, toast } from 'react-toast'
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
+import { ClickAwayListener } from '@mui/material';
+import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -85,12 +91,15 @@ const CaseDetailsNew = () => {
    const [zipError, setZipError] = useState('');
    const [ssnError, setSsnError] = useState('');
 
+   const[dateOfBirthError,setDateOfBirthError]=useState('');
+   const [patientNewData, setPatientNewData] = useState([]);
 
   // Total Save Call
   const handleSavePatientData = () => {
-
+    
+    if(onDirtyPatientSave){
     handlePatientSave();
-
+    }
     if(onDirtyOrdertSave){
     handleWoundUpdate();
     }
@@ -103,11 +112,20 @@ const CaseDetailsNew = () => {
     if(onDirtyKitDelete){
       handleDeleteKitClick();
     }
+    if(onDirtyHcpDelete){
+      handleDeleteHcpClick();
+    }
+
+
+    
     if(onDirtyOfficeSave){
       handleSaveOfficeClick();
     }
     if(onDirtyHcpSave){
       handleSaveHcpClick();
+    }
+    if(onDirtyOfficeSave){
+      setOnDirtyOfficeSave();
     }
     navigate(`/nsrxmgt/case-details-new/${trnRxId}/${paramFaxId}/${netSuitId}/${paramPatientId}`);
   };
@@ -147,9 +165,13 @@ const CaseDetailsNew = () => {
           setPatientId(patientData.patientId);
           setTrnFaxId(patientData.trnFaxId);
           setFaxId(patientData.faxId);
+          setPatientNewData(patientData);
 
           
+          console.log("Newpatientdata", patientData);
+          console.log("Newpatientdata", patientData.patientFirstName);
           setIsLoading(false);
+          setOnDirtyPatientSave(false)
         } else {
           // Handle the case where no data is returned or the structure is different
           console.error('No patient data found.');
@@ -157,6 +179,7 @@ const CaseDetailsNew = () => {
       } catch (error) {
         console.error('Error fetching patient data:', error);
         setIsLoading(false);
+        setOnDirtyPatientSave(false)
       }
     };
 
@@ -251,11 +274,24 @@ const CaseDetailsNew = () => {
         // Data saved successfully
         setLoading(false);
         toast.success("Patient Details Saved Sucessfully")
+        // toast('Patient Details Saved Sucessfully', {
+        //   position: toast.POSITION.TOP_RIGHT,
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "light",
+        //   });
+        setOnDirtyPatientSave(false);
       } else {
+        setOnDirtyPatientSave(false);
         setLoading(false);
       }
     } catch (error) {
       setLoading(false);
+      setOnDirtyPatientSave(false);
       toast.error("Error to save Patient Details")
       console.error('Error saving data:', error);
     }
@@ -264,56 +300,114 @@ const CaseDetailsNew = () => {
   const handleStateChange = (event) => {
     setPatientData({ ...patientData, state: event.target.value });
   };
-  const handleCellPhoneChange = (e) => {
-    const numericValue = e.target.value.replace(/\D/g, '');
-    const truncatedValue = numericValue.slice(0, 10);
+  const handlepatientInputChange = (e) => {
+    setOnDirtyPatientSave(true)
+    const { name, value } = e.target;
 
-    // Update the state and error message
-    setCellPhone(truncatedValue);
-
-    if (truncatedValue.length !== 10) {
-      setCellPhoneError('Please enter only 10 digits .');
-    } else {
-      setCellPhoneError('');
+    if (name === 'zip') {
+      // ZIP code validation
+      const numericValues = value.replace(/\D/g, ''); // Remove non-digit characters
+      const truncatedValues = numericValues.slice(0,5);
+      if (numericValues.length === 5) {
+         // setEditValidation(true);
+          setZipError(''); // No error
+          setPatientNewData({
+            ...patientNewData,
+              [name]: truncatedValues,
+            }); // Update with cleaned numeric value
+      } else {
+         // setEditValidation(false);
+         setZipError('');
+          setZipError('Zip Code Should be 5 digits');
+          setPatientNewData({
+            ...patientNewData,
+              [name]: truncatedValues,
+            }); // Update with cleaned numeric value
+      }
+  } else if (name === 'cellPhone') {
+      // Phone number validation
+      const numericValue = value.replace(/\D/g, ''); // Remove non-digit characters
+      const truncatedValue = numericValue.slice(0, 10);
+      if (numericValue.length === 10) {
+         // setEditValidation(true);
+          setCellPhoneError(''); // No error
+          setPatientNewData({
+            ...patientNewData,
+              [name]: truncatedValue,
+            });// Update with cleaned numeric value
+      } else {
+          
+         // setEditValidation(false);
+         setCellPhoneError('');
+          setCellPhoneError('Phone number Should be 10 digits');
+          setPatientNewData({
+            ...patientNewData,
+              [name]: truncatedValue,
+            });// Update with cleaned numeric value
+      }
+  } 
+  else if (name === 'dateOfBirth') {
+    // Phone number validation
+    const truncatedValue = e.target.value; // Remove non-digit characters
+    const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
+    if (truncatedValue === '' || datePattern.test(truncatedValue)) {
+      setPatientNewData({
+        ...patientNewData,
+          [name]: truncatedValue,
+        });
+      setDateOfBirthError('');
+  } else {
+              
+       setPatientNewData({
+        ...patientNewData,
+          [name]: truncatedValue,
+        });// Update with cleaned numeric value
+        setDateOfBirthError('Please enter a valid date in MM/DD/YYYY format.');
     }
+}
+  
+else if (name === 'ssn') {
+  // Phone number validation
+  const numericValue = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+  const truncatedValue = numericValue.slice(0, 4);
+  setSsn(truncatedValue);
+  if (truncatedValue.length !== 4) {
+    setSsnError('Please enter a valid 4-digit SSN.');
+    setPatientNewData({
+      ...patientNewData,
+        [name]: truncatedValue,
+      });
+    setDateOfBirthError('');
+} else {
+  setSsnError('');     
+     setPatientNewData({
+      ...patientNewData,
+        [name]: truncatedValue,
+      });// Update with cleaned numeric value
+  }
+}
+  else {
+
+          setPatientNewData({
+            ...patientNewData,
+            [name]: value,
+          });
+      }
   };
-  const handleZipChange = (e) => {
-    const numericValue = e.target.value.replace(/\D/g, '');
-    const truncatedValue = numericValue.slice(0, 5);
-
-    // Update the state and error message
-    setZip(truncatedValue);
-
-    if (truncatedValue.length !== 5) {
-      setZipError('Please enter only 5 digits .');
-    } else {
-      setZipError('');
-    }
-  };
-
-  const handleSsnChange = (e) => {
-    const numericValue = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    const truncatedValue = numericValue.slice(0, 4);
-
-    // Update the state and error message
-    setSsn(truncatedValue);
-
-    if (truncatedValue.length !== 4) {
-      setSsnError('Please enter a valid 4-digit SSN.');
-    } else {
-      setSsnError('');
-    }
-  };
-
 // WOUND START -------------------------------------------------
   const [woundData, setWoundData] = useState([]);
+  const[lastWoundData,setLastWoundData]=useState([]);
   const [deleteWoundData, setDeleteWoundData] = useState([]);
   const [woundDataRxId, setWoundDataRxId] = useState(null);
   const [woundDataTranFaxId, setWoundDataRxIdTranFaxID] = useState(null);
   const [woundDataFaxId, setWoundDataRxIdFaxID] = useState(null);
   const [newWound, setNewWound] = useState([]);
   const [isAddClicked, setIsAddClicked] = useState(false);
-
+  
+  const [woundStage, setWoundStage] = useState([]);
+  const [drainage, setdrainage] = useState([]);
+  const [debridementtype ,setdebridementtype] = useState([]);
+  const[dateerrorMessage, setDateErrorMessage] = useState('');
 
   useEffect(() => {
     console.log(newWound);
@@ -327,7 +421,7 @@ const CaseDetailsNew = () => {
     console.log(deleteWoundData);
   }, [deleteWoundData]);
 
-
+  
   useEffect(() => {
     const fetchData = async () => {
         try {
@@ -354,6 +448,8 @@ const CaseDetailsNew = () => {
                 console.log("Woun responseData");
                 console.log(responseData);
                 setWoundData(responseData.data);
+                const length = responseData.data.length;
+                setLastWoundData(responseData.data[length-1].woundNo)
                 setWoundDataRxId(responseData.data[0].trnRxId);
                 setWoundDataRxIdTranFaxID(responseData.data[0].trnFaxId);
                 setWoundDataRxIdFaxID(responseData.data[0].faxId);
@@ -383,7 +479,7 @@ const handleEditRowChange = (index, column, value) => {
       trnRxId:woundDataRxId,
       trnFaxId:woundDataTranFaxId,
       faxId:woundDataFaxId,
-      woundNo: '',
+      woundNo: lastWoundData+1,
       woundLocation: '',
       woundLength: '',
       woundWidth: '',
@@ -398,16 +494,36 @@ const handleEditRowChange = (index, column, value) => {
     console.log(updatedWoundData);
     setWoundData([...woundData, updatedWoundData]);
     setIsAddClicked(true);
+    setLastWoundData(lastWoundData+1);
   };
 
   const handleDeleteWound = (index) => {
+    confirmAlert({
+      title: 'Confirm to Delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDeleteWoundConfirm(index)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+
+  };
+
+  const handleDeleteWoundConfirm = (index) => {
+    setLastWoundData(lastWoundData-1)
     setOnDirtyOrderDelete(true);
     woundData[index]["status"] = "delete";
     const deletedData =woundData[index]
     setDeleteWoundData([...deleteWoundData,deletedData]);
     const updatedWoundData = woundData.filter((_, i) => i !== index);
     setWoundData(updatedWoundData);
-  };
+  }
 
   const handleWoundUpdate = async () => {
     try {
@@ -427,19 +543,19 @@ const handleEditRowChange = (index, column, value) => {
         console.log('Data updated successfully.');
         setLoading(false);
         setOnDirtyOrderSave(false);
-        toast.success("Order Information Saved Successfully");
+        toast.success("Wound Etiology Information Saved Successfully");
 
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
         setLoading(false);
         setOnDirtyOrderSave(false);
-        toast.error("Error in Order Information");
+        toast.error("Error in Wound Etiology Information");
       }
     } catch (error) {
       setLoading(false);
       setOnDirtyOrderSave(false);
-      toast.error("Error in Order Information");
+      toast.error("Error in Wound Etiology Information");
       console.error('Error updating data:', error);
     }
   };
@@ -464,25 +580,67 @@ const handleEditRowChange = (index, column, value) => {
     
       if (response.status === 200) {
         // The data was successfully updated. You can handle the success here.
+        
         console.log('Deleted updated successfully.');
         setLoading(false);
         setOnDirtyOrderDelete(false);
-        toast.success("Order Information Deleted Sucessfully");
+        toast.success("Wound Etiology Information Deleted Sucessfully");
       } else {
         // Handle any errors or validation issues here.
         console.error('Error updating data:', response.data);
         setLoading(false);
         setOnDirtyOrderDelete(false);
-        toast.success("Error to Delete Order Information");
+        toast.error("Error to Delete Wound Etiology Information");
       }
     } catch (error) {
       setLoading(false);
       setOnDirtyOrderDelete(false);
-      toast.success("Error to Delete Order Information");
+      toast.success("Error to Delete Wound Etiology Information");
       console.error('Error updating data:', error);
     }
   };
  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/woundstage');
+        // Assuming the response data is an array of options
+        setWoundStage(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/drainage');
+        // Assuming the response data is an array of options
+        setdrainage(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/debridementtype');
+        // Assuming the response data is an array of options
+        setdebridementtype(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // WOUND END -------------------------------------------------
 
@@ -495,6 +653,8 @@ const handleEditRowChange = (index, column, value) => {
   const [kitDataTranFaxId, setKitDataRxIdTranFaxID] = useState(null);
   const [kitDataFaxId, setKitDataRxIdFaxID] = useState(null);
   const [onDirtyKitSave, setOnDirtyKitSave] = useState(false)
+  const [onDirtyKitDelete, setOnDirtyKitDelete] = useState(false)
+  const [frequency, setfrequency] = useState([]);
   useEffect(() => {
     console.log(kitData);
   }, [kitData]);
@@ -543,6 +703,24 @@ const handleEditRowChange = (index, column, value) => {
   };
 
   const handleDeleteKit = (index) => {
+    confirmAlert({
+      title: 'Confirm to Delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDeleteKitConfirm(index)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+  };
+
+
+  const handleDeleteKitConfirm = (index) => {  
     setOnDirtyKitDelete(true)
     kitData[index]["status"] = "delete";
     const deletedData =kitData[index]
@@ -562,7 +740,7 @@ const handleEditRowChange = (index, column, value) => {
           },
         };
 
-        const response = await axiosBaseURL.get('/api/v1/fax/productInfo', config);
+        const response = await axiosBaseURL.get('/api/v1/fax/productDetailsInfo', config);
         const productData = response.data.data; // Assuming the API returns an array of states
         setProductData(productData);
       } catch (error) {
@@ -630,7 +808,7 @@ const handleSaveKitClick = () => {
       setLoading(false);
       setOnDirtyKitSave(false);
 
-      toast.success("Kit Information Saved Successfully");
+      toast.success("Product Information Saved Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
@@ -638,7 +816,7 @@ const handleSaveKitClick = () => {
       setOnDirtyKitSave(false);
 
       console.error('Error saving data:', error);
-      toast.error("Error to Save Kit Information");
+      toast.error("Duplicate Kit Number");
     });
 };
 
@@ -662,9 +840,8 @@ const handleDeleteKitClick = () => {
       // Handle the response from the API if needed
       console.log('Data saved successfully:', response.data);
       setLoading(false);
-      setOnDirtyKitSave(false);
-
-      toast.success("Kit Information Deleted Successfully");
+        setOnDirtyKitDelete(false)
+      toast.success("Product Information Deleted Successfully");
     })
     .catch((error) => {
       // Handle any errors that occurred during the request
@@ -672,9 +849,28 @@ const handleDeleteKitClick = () => {
       setLoading(false);
       setOnDirtyKitSave(false);
 
-      toast.error("Error to Delete to Kit Information");
+      toast.error("Error to Delete to Product Information");
     });
 };
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+     // const token = localStorage.getItem('token');
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
+      const response = await axiosBaseURL.get('/api/v1/fax/lookupinfo/frequency',);
+      // Assuming the response data is an array of options
+      setfrequency(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchData();
+}, []); 
 
 
   //KIT END
@@ -691,7 +887,11 @@ const handleDeleteKitClick = () => {
   const [hcpDataTranFaxId, setHcpDataRxIdTranFaxID] = useState(null);
   const [hcpDataFaxId, setHcpDataRxIdFaxID] = useState(null);
   const [onDirtyOfficeSave, setOnDirtyOfficeSave] = useState(false)
+  const [onDirtyHcpDelete, setOnDirtyHcpDelete] = useState(false)
   const [onDirtyHcpSave, setOnDirtyHcpSave] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('');
+
+
 
   useEffect(() => {
     console.log(hcpData);
@@ -701,18 +901,32 @@ const handleDeleteKitClick = () => {
   }, [deleteHcp]);
 
   const handleHcpEditRowChange = (index, column, value) => {
-    setOnDirtyHcpSave(true)
+    setOnDirtyHcpSave(true);
     const updateHcpData = [...hcpData];
-    if(column == "signature_Flag"){
-       if(value){
-        value=1;
-       }else{
-        value=0;
-       }
+    let errorMessage = '';
+
+    if (column === 'npi') {
+        // Check if the entered value matches the format of 10 numeric digits or is an empty string
+        if (value === '' || /^\d{0,10}$/.test(value)) {
+            updateHcpData[index][column] = value; // Update the value as it's either an empty string or matches the format
+        } else {
+            // errorMessage = 'Invalid NPI format. Please enter up to 10 numeric digits.';
+            toast.error("Invalid NPI format. Please enter up to 10 numeric digits");
+        }
+    } else if (column === 'signature_Flag') {
+        if (value) {
+            value = 1;
+        } else {
+            value = 0;
+        }
+        updateHcpData[index][column] = value;
+    } else {
+        updateHcpData[index][column] = value;
     }
-    updateHcpData[index][column] = value;
+
     setHcpData(updateHcpData);
-  };
+    setErrorMessage(errorMessage);
+};
 
   const handleAddHcp = () => {
     setOnDirtyHcpSave(true)
@@ -735,10 +949,32 @@ const handleDeleteKitClick = () => {
     setHcpData([...hcpData, addHcpData]);
   };
 
-const handleDeleteHcp = (index) => {
+
+ 
+
+  const handleDeleteHcp = (index) => {
+    confirmAlert({
+      title: 'Confirm to Delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDeleteHcpConfirm(index)
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    });
+    };
+
+
+const handleDeleteHcpConfirm = (index) => {
+  setOnDirtyHcpDelete(true)
     hcpData[index]["status"] = "delete";
     const deletedData =hcpData[index]
-    setDeletKit([...deleteHcp,deletedData]);
+    setDeletHcp([...deleteHcp,deletedData]);
     const updatedHcpData = hcpData.filter((_, i) => i !== index);
     setHcpData(updatedHcpData);
   };
@@ -770,6 +1006,7 @@ const handleDeleteHcp = (index) => {
         setHcpData(response.data.data);
         //  setLoading(false);
         setOnDirtyHcpSave(false)
+        setOnDirtyHcpDelete(false)
       } catch (error) {
         console.error('Error fetching data:', error);
         // setLoading(false);
@@ -795,10 +1032,14 @@ const handleDeleteHcp = (index) => {
         console.log("Office Data---->");
         console.log(officeInfo);
         setOfficeData(officeInfo);
+        setOnDirtyHcpSave(false)
+        setOnDirtyHcpDelete(false)
         ///console.log(officeName);
       } catch (error) {
         console.error('Error fetching office data:', error);
         setOnDirtyOfficeSave(false)
+        setOnDirtyHcpSave(false)
+        setOnDirtyHcpDelete(false)
 
       }
     };
@@ -829,7 +1070,7 @@ const handleDeleteHcp = (index) => {
         setLoading(false);
         setOnDirtyOfficeSave(false)
 
-        toast.success("Office Info Saved Sucessfully");
+        toast.success("Health Care Provider Information Saved Sucessfully");
       })
       .catch((error) => {
         // Handle any errors that occurred during the request
@@ -837,10 +1078,42 @@ const handleDeleteHcp = (index) => {
         setOnDirtyOfficeSave(false)
 
         console.error('Error saving data:', error);
-        toast.error("Error to save Office Info");
+        toast.error("Error to save Health Care Provider Information");
       });
   };
-  
+  const handleDeleteHcpClick = () => {
+
+    // Get the token from your authentication mechanism, e.g., localStorage
+    const token = localStorage.getItem('token');
+    setLoading(true);
+    // Define the request headers with the Authorization header
+    const config = {
+      headers: {
+        //Authorization: `Bearer ${token}`,
+      },
+    };
+     console.log('Delete Data Saving:', deleteHcp);
+     const dataToSave =deleteHcp;
+    // Send a POST request to the API with the headers
+    axiosBaseURL
+      .post('/api/v1/fax/deleteHcpInfoList', dataToSave, config)
+      .then((response) => {
+        // Handle the response from the API if needed
+        console.log('Data saved successfully:', response.data);
+        setLoading(false);
+        
+        toast.success("Health Care Provider Information Deleted Successfully");
+     
+        setOnDirtyHcpDelete(false)
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        console.error('Error saving data:', error);
+        setLoading(false);
+        setOnDirtyHcpDelete(false)
+        toast.error("Error to Delete to Health Care Provider Information");
+      });
+  };
 
   const handleSaveHcpClick = () => {
     setLoading(true);
@@ -862,15 +1135,15 @@ const handleDeleteHcp = (index) => {
         // Handle the response from the API if needed
         setLoading(false);
         console.log('Data saved successfully:', response.data);
-        toast.success("HCP info Saved SUccessfully");
-        setOnDirtyOfficeSave(false)
+        toast.success("Health Care Provider Information Saved SUccessfully");
+        setOnDirtyHcpSave(false)
 
       })
       .catch((error) => {
         setLoading(false);
         // Handle any errors that occurred during the request
         console.error('Error saving data:', error);
-        toast.error("Error to save HCP info");
+        toast.error("Error to save Health Care Provider Information");
         setOnDirtyOfficeSave(false)
 
       });
@@ -888,6 +1161,7 @@ const handleDeleteHcp = (index) => {
   const [isPdfloading, setIsPdfLoading] = useState(false)
   const [scalePopUp, setScalePopoup] = useState(1);
   const [scale, setScale] = useState(1);
+  const [rotates, setRotates] = useState(0);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -942,16 +1216,25 @@ const zoomInSecond = () => {
 
   const { openNetSuit, setNetSuit} = useContext(DuplicateContext);
   const { readyForReview, setReadyForReview} = useState(false);
-  setNetSuit(false);
+  //setNetSuit(true);
   const handle_netSuitSubmission = () => {
+    
     setNetSuit(true);
-    setReadyForReview(true);
+    console.log("clicked");
+    //setReadyForReview(true);
   }
+ 
   const handle_netDeSubmission = () => {
     setNetSuit(false)
-    setReadyForReview(false);
+   // setReadyForReview(false);
   }
-
+  const handleRotates = () => {
+    console.log("Rotate");
+    setRotates(rotates + 90);
+    if(rotates === 270){
+      setRotates(0);
+    }
+  }
   return (
     
       <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
@@ -965,7 +1248,8 @@ const zoomInSecond = () => {
                                 <hr className=" border-[#e36c09] border w-32  absolute top-0 " />
                                 <p className='absolute top-0 text-[#e36c09] text-sm'>Patient</p>
                                 <p className='text-[#596edb] text-xs absolute top-1 left-4'>Netsuit Patient ID:{netSuitId}</p>
-                                <p className='text-[#596edb] text-xs absolute top-1 right-10'>Tika ID:{paramPatientId}</p>
+                                
+                                <label className='text-[#596edb] text-xs absolute top-1 right-11' htmlFor="">Tika Rx ID :{trnRxId} </label>
                             </div>
 
 
@@ -981,16 +1265,16 @@ const zoomInSecond = () => {
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="firstName"
-                                                    name="firstName"
-                                                    value={patientFirstName || ''}
-                                                    onChange={(e) => setPatientFirstName(e.target.value)}
+                                                    name="patientFirstName"
+                                                    value={patientNewData.patientFirstName || ''}
+                                                    onChange={handlepatientInputChange}
                                                 />
                                                 </>:<>
                                                 <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="firstName"
                                                     name="firstName"
-                                                    value={patientFirstName || ''}
+                                                    value={patientNewData.patientFirstName || ''}
                                                 />
                                                 </>}
                                               
@@ -1005,16 +1289,16 @@ const zoomInSecond = () => {
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs' 
                                                  type="text"
                                                  id="middleName"
-                                                 name="middleName"
-                                                 value={patientMiddleName || ''}
-                                                 onChange={(e) => setPatientMiddleName(e.target.value)}
+                                                 name="patientMiddleName"
+                                                 value={patientNewData.patientMiddleName || ''}
+                                                 onChange={handlepatientInputChange}
                                                />
                                                </>:<>
                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                   type="text"
                                                   id="middleName"
                                                   name="middleName"
-                                                  value={patientMiddleName || ''}
+                                                  value={patientNewData.patientMiddleName || ''}
                                                />
                                                </>}
                                            </div>
@@ -1029,16 +1313,16 @@ const zoomInSecond = () => {
                                                <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs' 
                                                 type="text"
                                                 id="lastName"
-                                                name="lastName"
-                                                value={patientLastName || ''}
-                                                onChange={(e) => setPatientLastName(e.target.value)}                             
+                                                name="patientLastName"
+                                                value={patientNewData.patientLastName || ''}
+                                                onChange={handlepatientInputChange}                             
                                                />
                                                 </>:<>
                                                 <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                    type="text"
                                                    id="lastName"
                                                    name="lastName"
-                                                   value={patientLastName || ''}
+                                                   value={patientNewData.patientLastName || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1054,15 +1338,15 @@ const zoomInSecond = () => {
                                                 type="text"
                                                 id="dateOfBirth"
                                                 name="dateOfBirth"
-                                                value={dateOfBirth || ''}
-                                                onChange={(e) => setDateOfBirth(e.target.value)}                                        />
-
-</>:<>
+                                                value={patientNewData.dateOfBirth || ''}
+                                                onChange={handlepatientInputChange}     />
+                                                <p className="text-red-500 text-xs">{dateOfBirthError}</p>
+                                              </>:<>
                                                 <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="dateOfBirth"
                                                     name="dateOfBirth"
-                                                    value={dateOfBirth || ''}
+                                                    value={patientNewData.dateOfBirth || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1077,8 +1361,8 @@ const zoomInSecond = () => {
                                                 type="text"
                                                 id="ssn"
                                                 name="ssn"
-                                                value={ssn || ''}
-                                                onChange={handleSsnChange}
+                                                value={patientNewData.ssn || ''}
+                                                onChange={handlepatientInputChange}
                                                />
                                                 <p className="text-red-500 text-xs">{ssnError}</p>
                                                 </>:<>
@@ -1086,7 +1370,7 @@ const zoomInSecond = () => {
                                                   type="text"
                                                   id="ssn"
                                                   name="ssn"
-                                                  value={ssn || ''}
+                                                  value={patientNewData.ssn || ''}
                                                 />
                                                 </>}
 
@@ -1107,8 +1391,8 @@ const zoomInSecond = () => {
                                                type="text"
                                                id="cellPhone"
                                                name="cellPhone"
-                                               value={cellPhone || ''}
-                                               onChange={handleCellPhoneChange}
+                                               value={patientNewData.cellPhone || ''}
+                                               onChange={handlepatientInputChange}
                                                />
                                                 <p className="text-red-500 text-xs">{cellPhoneError}</p>
                                                 </>:<>
@@ -1116,7 +1400,7 @@ const zoomInSecond = () => {
                                                    type="text"
                                                    id="cellPhone"
                                                    name="cellPhone"
-                                                   value={cellPhone || ''}
+                                                   value={patientNewData.cellPhone || ''}
                                                 />
                                                 </>}
                                            
@@ -1134,15 +1418,15 @@ const zoomInSecond = () => {
                                                type="text"
                                                id="city"
                                                name="city"
-                                               value={city || ''}
-                                               onChange={(e) => setCity(e.target.value)}
+                                               value={patientNewData.city || ''}
+                                               onChange={handlepatientInputChange}
                                                />
                                                </>:<>
                                                <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                   type="text"
                                                   id="city"
                                                   name="city"
-                                                  value={city || ''}
+                                                  value={patientNewData.city || ''}
                                                />
                                                </>}
                                            </div>
@@ -1154,8 +1438,9 @@ const zoomInSecond = () => {
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">State : </label>
                                     {!openNetSuit ?<>
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-30 text-black py-0.5 text-xs t-1'
-                                        value={patientData.state}
-                                        onChange={(e) => setPatientData({ ...patientData, state: e.target.value })}
+                                        name="state"
+                                       value={patientNewData.state}
+                                        onChange={handlepatientInputChange}
 
                                     >
                                         {states.map((state) => (
@@ -1169,7 +1454,7 @@ const zoomInSecond = () => {
                                                     type="text"
                                                     id="state"
                                                     name="state"
-                                                    value={patientData.state}
+                                                    value={patientNewData.state}
                                                 />
                                                 </>}
                                            </div>
@@ -1185,16 +1470,16 @@ const zoomInSecond = () => {
                                                type="text"
                                                id="zip"
                                                name="zip"
-                                               value={zip || ''}
-                                               onChange={handleZipChange}
+                                               value={patientNewData.zip || ''}
+                                               onChange={handlepatientInputChange}
                                            />
                                            <p className="text-red-500 text-xs">{zipError}</p>
                                            </>:<>
                                            <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                type="text"
-                                               id="firstName"
-                                               name="firstName"
-                                               value={patientFirstName || ''}
+                                               id="zip"
+                                               name="zip"
+                                               value={patientNewData.zip || ''}
                                            />
                                            </>}
                                            </div>
@@ -1209,15 +1494,15 @@ const zoomInSecond = () => {
                                         type="text"
                                         id="shipToAddress"
                                         name="shipToAddress"
-                                        value={shipToAddress || ''}
-                                        onChange={(e) => setShipToAddress(e.target.value)}
+                                        value={patientNewData.shipToAddress || ''}
+                                        onChange={handlepatientInputChange}
                                     />
                                       </>:<>
                                                 <input className='w-30  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="shipToAddress"
                                                     name="shipToAddress"
-                                                    value={shipToAddress || ''}
+                                                    value={patientNewData.shipToAddress || ''}
                                                 />
                                                 </>}
                                     </div>
@@ -1249,15 +1534,15 @@ const zoomInSecond = () => {
                                                type="text"
                                                id="salesRepName"
                                                name="salesRepName"
-                                               value={repName || ''}
-                                               onChange={(e) => setSalesRepName(e.target.value)}
+                                               value={patientNewData.repName || ''}
+                                               onChange={handlepatientInputChange}
                                                />
                                  </>:<>
                                                 <input className='w-56  text-black py-0.5 text-xs t-1' 
                                                    type="text"
                                                    id="salesRepName"
                                                    name="salesRepName"
-                                                   value={repName || ''}
+                                                   value={patientNewData.repName || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1272,15 +1557,15 @@ const zoomInSecond = () => {
                                                type="text"
                                                id="salesRepCell"
                                                 name="salesRepCell"
-                                                value={repCell || ''}
-                                                onChange={(e) => setSalesRepCell(e.target.value)}
+                                                value={patientNewData.repCell || ''}
+                                                onChange={handlepatientInputChange}
                                            />
                                              </>:<>
                                                 <input className='w-56  text-black py-0.5 text-xs t-1' 
                                                    type="text"
                                                    id="salesRepCell"
                                                     name="salesRepCell"
-                                                    value={repCell || ''}
+                                                    value={patientNewData.repCell || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1293,8 +1578,9 @@ const zoomInSecond = () => {
                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Distributer: : </label>
                                                {!openNetSuit ?<>
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
-                                        value={distributor}
-                                        onChange={(e) => setDistributor(e.target.value)}
+                                    name="distributor"
+                                        value={patientNewData.distributor}
+                                        onChange={handlepatientInputChange}
                                     >
                                         {distributorData.map((item) => (
                                         <option key={item.distributorId} value={item.distributorName}>
@@ -1307,7 +1593,7 @@ const zoomInSecond = () => {
                                                     type="text"
                                                     id="distributor"
                                                     name="distributor"
-                                                    value={distributor || ''}
+                                                    value={patientNewData.distributor || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1328,10 +1614,10 @@ const zoomInSecond = () => {
                                                     name="placeOfService"
 
                                         id="placeOfService"
-                                        value={placeOfService || ''}
-                                        onChange={(e) => setPlaceOfService(e.target.value)}
+                                        value={patientNewData.placeOfService || ''}
+                                        onChange={handlepatientInputChange}
                                         >
-                                        <option value={placeOfService}>{placeOfService}</option>
+                                       
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                         </select>
@@ -1340,7 +1626,7 @@ const zoomInSecond = () => {
                                                     type="text"
                                                     id="placeOfService"
                                                     name="placeOfService"
-                                                    value={placeOfService || ''}
+                                                    value={patientNewData.placeOfService || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1355,11 +1641,10 @@ const zoomInSecond = () => {
                                                     name="orderType"
 
                                         id="orderType"
-                                        value={orderType || ''}
-                                        onChange={(e) => setOrderType(e.target.value)}
+                                        value={patientNewData.orderType || ''}
+                                        onChange={handlepatientInputChange}
 
                                     >
-                                        <option value={orderType}>{orderType}</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                     </select>
@@ -1368,7 +1653,7 @@ const zoomInSecond = () => {
                                                     type="text"
                                                     id="orderType"
                                                     name="orderType"
-                                                    value={orderType || ''}
+                                                    value={patientNewData.orderType || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1383,18 +1668,18 @@ const zoomInSecond = () => {
                                     <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                         name="woundActive"
                                         id="woundActive"
-                                        value={woundActive || ''}
-                                        onChange={(e) => setActiveWound(e.target.value)} >
-                                        <option value={woundActive}>{woundActive === "1" ? 'Yes' : 'No'}</option>
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
+                                        value={patientNewData.woundActive || ''}
+                                        onChange={handlepatientInputChange} >
+                                        {/* <option value={woundActive}>{woundActive === 1 ? "Yes" : "No"}</option> */}
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                     </>:<>
                                                 <input className='w-56  text-black py-0.5 text-xs t-1' 
                                                     type="text"
                                                     id="woundActive"
                                                     name="woundActive"
-                                                    value={woundActive || ''}
+                                                    value={patientNewData.woundActive || ''}
                                                 />
                                                 </>}
                                            </div>
@@ -1414,7 +1699,7 @@ const zoomInSecond = () => {
       <div className='w-full h-[calc(50vh-10rem)] bg-white rounded-2xl   border-2 shadow-xl relative overflow-y-scroll scrollbar '>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                <p className='absolute top-0 text-[#e36c09] text-sm'>Order Information</p>
+                <p className='absolute top-0 text-[#e36c09] text-sm'>Wound Etiology</p>
             </div>
             <div>
                 {}
@@ -1477,9 +1762,9 @@ const zoomInSecond = () => {
                                     <td className="p-1 rounded-2xl border">
                                     {!openNetSuit ?<>
                                         <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-14 text-xs'
-                                         name="woundLocation" id="woundLocation"
+                                         name="woundLocation" id="woundLocation" value={row.woundLocation}
                                          onChange={(e) => handleEditRowChange(index, 'woundLocation', e.target.value)}>
-                                            <option value={row.woundLocation}>{row.woundLocation}</option>
+                                            
                                             <option value="LT">LT</option>
                                             <option value="RT">RT</option>
                                         </select>
@@ -1524,9 +1809,13 @@ const zoomInSecond = () => {
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                            
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'   
-                                             name="woundThickness" id="woundThickness"
+                                             name="woundThickness" id="woundThickness" value={row.woundThickness}
                                             onChange={(e) => handleEditRowChange(index, 'woundThickness', e.target.value)}>
-                                                <option value={row.woundThickness}>{row.woundThickness}</option>
+                                               {woundStage.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}
                                             </select>
                                         </p>
                                         </>:<>
@@ -1538,9 +1827,13 @@ const zoomInSecond = () => {
                                     {!openNetSuit ?<>
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs'
-                                             name="drainage" id="drainage"
+                                             name="drainage" id="drainage" value={row.drainage}
                                             onChange={(e) => handleEditRowChange(index, 'drainage', e.target.value)}>
-                                                <option value={row.drainage}>{row.drainage}</option>
+                                                {drainage.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}
                                             </select>
                                         </p>
                                         </>:<>
@@ -1553,8 +1846,11 @@ const zoomInSecond = () => {
                                         <p className='bg-gray-200 rounded-3xl py- px-'>
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
                                             name="debrided" id="debrided"
+                                            value={row.debrided}
                                             onChange={(e) => handleEditRowChange(index, 'debrided', e.target.value)}>
-                                                <option value={row.debrided}>{row.debrided}</option>
+                                               
+                                                <option value={1}>Yes</option>
+                                                <option value={0}>No</option>
                                             </select>
                                         </p>
                                         </>:<>
@@ -1566,7 +1862,7 @@ const zoomInSecond = () => {
                                     {!openNetSuit ?<>
                                         <input type="text" name="icdCode" id="icdCode" value={row.icdCode} 
                                         onChange={(e) => handleEditRowChange(index, 'icdCode', e.target.value)}
-                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>
                                          </>:<>
                                       <input type="text" name="icdCode" id="icdCode" value={row.icdCode} 
                                         className=' text-black h-5 w-10 text-xs'/>
@@ -1576,7 +1872,7 @@ const zoomInSecond = () => {
                                     {!openNetSuit ?<>
                                         <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                         onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
-                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'/>
+                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>
                                             </>:<>
                                       <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                         className=' text-black h-5 w-10 text-xs'/>
@@ -1588,8 +1884,11 @@ const zoomInSecond = () => {
                                             <select className='bg-gray-200 text-gray-600 rounded-3xl h-5 px-1 text-xs' 
                                              name="debridedType" id="debridedType"
                                             onChange={(e) => handleEditRowChange(index, 'debridedType', e.target.value)}>
-                                                <option value={row.debridedType}>{row.debridedType}</option>
-                                            </select>
+                                             {debridementtype.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}                                            </select>
                                         </p>
                                         </>:<>
                                       <input type="text" name="debridedType" id="debridedType" value={row.debridedType} 
@@ -1615,7 +1914,7 @@ const zoomInSecond = () => {
        <div className='w-full h-[130px] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]   '>
                 <hr className="h-px border-[#e36c09] border w-32  absolut " />
-                <p className='absolute top-50  text-[#e36c09] text-sm'>Kit Information</p>
+                <p className='absolute top-50  text-[#e36c09] text-sm'>Product  Information</p>
             </div>
             {!openNetSuit ?<>
             <div className='absolute -bottom  right-3 rounded-xl bg-[#00aee6] w-28  cursor-pointer' onClick={handleAddKit}>
@@ -1667,16 +1966,17 @@ const zoomInSecond = () => {
                                       </>}
                                     </td>
                                     <td className="p-1 border">
+                                      
                                     {!openNetSuit ?<>
                                         <select className='bg-[#f2f2f2] text-gray-600 rounded-3xl h-5 w-24 border text-xs'
                                          value={kit.quantity}
                                          onChange={(e) => handleKitEditRowChange(index, 'quantity', e.target.value)}>
-                                          <option value={kit.quantity}>{kit.quantity}</option>
-                                          <option value="15">15</option>
-                                          <option value="30">30</option>
-                                          <option value="45">45</option>
-                                          <option value="60">60</option>
-                                        </select>
+                                          {frequency.map((lookup) => (
+                                       <option key={lookup.rxLookupDisplay} value={lookup.rxLookupInput}>
+                                               {lookup.rxLookupInput}
+                                                 </option>
+                                        ))}
+                                   </select>
                                         </>:<>
                                       <input type="text" name="quantity" id="quantity" value={kit.quantity} 
                                         className=' text-black h-5 w-10 text-xs'/>
@@ -1752,7 +2052,7 @@ const zoomInSecond = () => {
           <div className='w-full h-[calc(110vh-30rem)] bg-white rounded-2xl  border-2 shadow-xl relative overflow-y-scroll flex md:flex-row flex-col items-center gap-1 scrollbar'>
             <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09] absolute top-0  '>
               <hr className="h-px border-[#e36c09] border w-32  absolut " />
-              <p className='absolute top-0 text-[#e36c09] text-sm'>Physicain</p>
+              <p className='absolute top-0 text-[#e36c09] text-sm'>Health Care Provider</p>
             </div>
             <div className='flex flex-col justify-center w-full items-center  md:pt-10 pt-5 pl-5'>
 
@@ -1772,7 +2072,7 @@ const zoomInSecond = () => {
                        name="accountName"
                        id='accountName'
                        value={officeData.accountName}
-                       readOnly
+                       
                       />
                       </>}
                     </div>
@@ -1793,7 +2093,7 @@ const zoomInSecond = () => {
                        id='phone'
                        name="phone"
                        value={officeData.phone}
-                       readOnly
+                      
                       />
                       </>}
                     </div>
@@ -1814,7 +2114,7 @@ const zoomInSecond = () => {
                        id='email'
                        name="email"
                        value={officeData.email}
-                       readOnly
+                      
                       />
                       </>}
                     </div>
@@ -1833,7 +2133,7 @@ const zoomInSecond = () => {
                        type="text"
                        value={officeData.city}
                        name="city"
-                       readOnly
+                      
                       />
                       </>}
                     </div>
@@ -1860,7 +2160,7 @@ const zoomInSecond = () => {
                        type="text"
                        value={officeData.state}
                        name="state"
-                       readOnly
+                      
                       />
                       </>}
                     </div>
@@ -1879,7 +2179,7 @@ const zoomInSecond = () => {
                       type="text"
                       value={officeData.zip}
                       name="zip"
-                       readOnly
+                      
                       />
                       </>}
                     </div>
@@ -1915,6 +2215,7 @@ const zoomInSecond = () => {
                             <th className="px-2 py-3 border">First Name</th>
                             <th className="px-2 py-3 border">Middle Name</th>
                             <th className="px-2 py-3 border">Last Name</th>
+                            <th className="px-2 py-3 border">Designation</th>
                             <th className="px-2 py-3 border">NPI</th>
                             {!openNetSuit ?<>
                            <th className="px-2 py-3  border">Delete</th>
@@ -1982,11 +2283,27 @@ const zoomInSecond = () => {
                               {!openNetSuit ?<>
                                 <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
                                             type="text"
+                                            id='designation'
+                                            name='designation'
+                                           value= ''
+                                          // onChange={(e) => handleHcpEditRowChange(index, 'designation', e.target.value)}
+                                        />
+                                        </>:<>
+                                      <input type="text" name="designation" id="designation"  
+                                        className=' text-black h-5 w-10 text-xs'/>
+                                      </>}
+                              </td>
+                              <td className="p- rounded-2xl border">
+                              {!openNetSuit ?<>
+                                <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-30 text-xs'
+                                            type="text"
                                             id='npi'
                                             name='npi'
                                             value= {data.npi}
                                             onChange={(e) => handleHcpEditRowChange(index, 'npi', e.target.value)}
-                                        />
+                                        />    
+                                            {/* <p className="text-red-500 text-xs">{errorMessage}</p> */}
+
                                           </>:<>
                                       <input type="text" name="npi" id="npi" value={data.npi} 
                                         className=' text-black h-5 w-10 text-xs'/>
@@ -2021,6 +2338,8 @@ const zoomInSecond = () => {
                         </div>
 
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
+                        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotates}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
+
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomInSecond}> <ZoomInIcon className='md:text-base text-xs' /></div>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
                         </div>
@@ -2041,6 +2360,7 @@ const zoomInSecond = () => {
                                                     <Page pageNumber={pageNumber} scale={scale}
                                                         width={400}
                                                         height={500}
+                                                        rotate={rotates}
 
                                                     />
                                                 </Document>
@@ -2188,7 +2508,7 @@ const zoomInSecond = () => {
                 </>
               }
           </div>
-          <ToastContainer />
+          <ToastContainer/>
         </div>
        
     

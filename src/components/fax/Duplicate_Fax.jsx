@@ -16,7 +16,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 import { useParams } from 'react-router-dom';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-
+import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 const Duplicate_Fax = () => {
     const navigate = useNavigate()
 
@@ -36,6 +38,9 @@ const Duplicate_Fax = () => {
     const [duplicatePdfResponse, setDuplicatePdfResponse] = useState(null);
     const [duplicateFaxData, setDuplicateFaxData] = useState(null);
     const [duplicateTrnFaxId, setDuplicateTrnFaxId] = useState(null);
+
+    const [rotate, setRotate] = useState(0);
+    const [rotate2, setRotate2] = useState(0);
 
 
     const { faxId } = useParams();
@@ -80,7 +85,7 @@ const Duplicate_Fax = () => {
     const nextPage2 = () => {
         setPageNumber2(pageNumber2 >= numPages2 ? pageNumber2 : pageNumber2 + 1);
     }
-
+    let mainFaxId, duplicateFaxId ,mainTrnsFaxId, duplicateTrnsFaxId ,mainFaxDatas,duplicateFaxDatas;
     const fetchPdfData = (faxId) => {
         //const token = localStorage.getItem('tokenTika');
     
@@ -93,13 +98,29 @@ const Duplicate_Fax = () => {
             // },
           })
             .then((response) => {
-              let mainFaxId = response.data.data[0].faxId;
-              let duplicateFaxId = response.data.data[1].faxId;
-              console.log(response.data.data[0].trnFaxId);
-              console.log(response.data.data[1].trnFaxId);
-             let mainTrnFaxId = response.data.data[0].trnFaxId; // Declare mainTrnFaxId
-              let duplicateTrnFaxId = response.data.data[1].trnFaxId; // Declare duplicateTrnFaxId
               
+              if (response.data && response.data.data) {
+                const faxStatusArr = response.data.data.map(item => item.faxStatus);
+               
+               console.log(faxStatusArr);
+                const mainIndex = faxStatusArr.indexOf('Main');
+                if (mainIndex !== -1) {
+                  mainFaxId = response.data.data[mainIndex].faxId;
+                  mainTrnsFaxId = response.data.data[mainIndex].trnFaxId;
+                  console.log("response.data.data[mainIndex]",response.data.data[mainIndex]);
+                  mainFaxDatas =response.data.data[mainIndex];
+                }
+          
+                const duplicateIndex = faxStatusArr.indexOf('Duplicate');
+                if (duplicateIndex !== -1) {
+                  duplicateFaxId = response.data.data[duplicateIndex].faxId;
+                  duplicateTrnsFaxId = response.data.data[duplicateIndex].trnFaxId;
+                  duplicateFaxDatas = response.data.data[duplicateIndex];
+                }
+          
+                // Use these IDs further in your code logic...
+              }
+              console.log("mainFaxId", mainFaxId, "duplicateFaxData",duplicateFaxId);
               //const trnFaxId = response.data.data[1].trnFaxId;
                // Set the selected fax ID
     
@@ -115,9 +136,9 @@ const Duplicate_Fax = () => {
                 .then((mainResponse) => {
                   setPdfResponse(mainResponse.data);
                   // Clear any previous errors on successful response
-                  setMainFaxData(response.data.data[0]);
+                  setMainFaxData(mainFaxDatas);
                  // console.log("mainFaxData",mainFaxData)
-                  setMainTrnFaxId(mainTrnFaxId);
+                  setMainTrnFaxId(mainTrnsFaxId);
                 })
                 .catch((error) => {
                   //setError('Error fetching main PDF. Please try again later.');
@@ -136,9 +157,9 @@ const Duplicate_Fax = () => {
                 .then((duplicateResponse) => {
                   setDuplicatePdfResponse(duplicateResponse.data);
                  
-                  setDuplicateFaxData(response.data.data[1]);
-                 console.log("DuplicateFaxData",duplicateFaxData);
-                 setDuplicateTrnFaxId(duplicateTrnFaxId);
+                  setDuplicateFaxData(duplicateFaxDatas);
+                 console.log("DuplicateFaxData",duplicateTrnFaxId);
+                 setDuplicateTrnFaxId(duplicateTrnsFaxId);
                 })
                 .catch((error) => {
                   
@@ -156,11 +177,18 @@ const Duplicate_Fax = () => {
         // Fetch PDF data for both main and duplicate fax when the component mounts
         fetchPdfData(faxId);
       }, []);
+  console.log("duplicateResponse" ,duplicateTrnFaxId ,"mainTrnFaxId" , mainTrnFaxId);
 
+  const data =
+    {
+      dupeTrnFaxId : duplicateTrnFaxId,
+      mainTrnFaxId :mainTrnFaxId
+  }
+  
       const handleMakeMaster = () => {
        // const token = localStorage.getItem('tokenTika');
           axiosBaseURL
-            .put(`/api/v1/fax/updateFax/${duplicateTrnFaxId}/${mainTrnFaxId}`, null, {
+            .post(`/api/v1/fax/faxRxDupe`, data, {
               // headers: {
               //   Authorization: `Bearer ${token}`,
               // },
@@ -190,10 +218,8 @@ const Duplicate_Fax = () => {
     
     console.log("sendFaxId...", faxId);
     const handleKeepDuplicate = () => {
-        console.log("duplicateTrnFaxId",duplicateTrnFaxId);
-        // Add your logic here to handle keeping the current fax as a duplicate
-        // You may want to make an API call to update the duplicate status in your backend.
-        // Example:
+        console.log("duplicateTrnFaxIdhandleKeepDuplicate",duplicateTrnFaxId);
+      
         //const token = localStorage.getItem('tokenTika');
        
             axiosBaseURL
@@ -204,11 +230,9 @@ const Duplicate_Fax = () => {
             })
             .then((response) => {
               // Handle success
-              console.log('Keep Duplicate Success:', response.data);
-              // You may want to update the state or perform other actions on success.
-                // Show an alert indicating the success
+              console.log('Keep Duplicate Success:', response.data);          
                 alert('Fax has been kept as a duplicate.');
-    
+               
                 // Redirect to the fax page
                 navigate("/nsrxmgt/fax-list");
             })
@@ -219,7 +243,23 @@ const Duplicate_Fax = () => {
             });
         
       };
+
+
+      const handleRotate = () => {
+        console.log("Rotate");
+        setRotate(rotate + 90);
+        if(rotate === 270){
+          setRotate(0);
+        }
+      }
       
+      const handleRotate2 = () => {
+        console.log("Rotate");
+        setRotate2(rotate2 + 90);
+        if(rotate2 === 270){
+          setRotate2(0);
+        }
+      }
     return (
         
         <div className="w-ful  relative  overflow-x-auto rounded-xl lg:px-8 md:px-4 overflow-y-scroll lg:h-[640px] h-full no-scrollbar">
@@ -254,11 +294,12 @@ const Duplicate_Fax = () => {
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
                         </div>
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]  h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar  '>
                             <div className=' w-full h-full '>
-                                <div className='text-black overflow-hidden overflow-x-scroll overflow-y-scroll no-scrollbar  '>
+                                <div className='text-black overflow-hidden overflow-x-scroll overflow-y-scroll h-screen'>
 
                                     {
                                         !isloading ?
@@ -270,6 +311,7 @@ const Duplicate_Fax = () => {
                                                     >
                                                         <Page pageNumber={pageNumber} scale={scale}
                                                             width={500} height={500}
+                                                            rotate={rotate}
                                                             className="responsive-pdf-container "
 
                                                         />
@@ -332,11 +374,12 @@ const Duplicate_Fax = () => {
                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomInSecond}> <ZoomInIcon className='md:text-base text-xs' /></div>
                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+                            <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate2}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
                         </div>
 
                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]  w-[calc(100%-70px)]   h-[calc(100%-100px)] border overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>
                             <div className=' w-full h-full  '>
-                                <div className='text-black overflow-hidden  no-scrollbar overflow-x-scroll overflow-y-scroll'>
+                                <div className='text-black overflow-hidden overflow-x-scroll overflow-y-scroll h-screen'>
 
                                     {
                                         !isloading ?
@@ -350,7 +393,7 @@ const Duplicate_Fax = () => {
                                                     <Page pageNumber={pageNumber2} scale={scale2}
                                                         width={500}
                                                         height={500}
-
+                                                        rotate={rotate2}
                                                     />
                                                 </Document>
                                             </>
@@ -385,11 +428,15 @@ const Duplicate_Fax = () => {
                              onClick={handleKeepDuplicate} 
                             >Keep Duplicate</div>
                         </div>
+                        <ToastContainer />
                     </div>
                 </div>
             </div>
             
+           
+        
         </div>
+        
     )
 }
 

@@ -5,7 +5,8 @@ import { useParams ,useLocation} from 'react-router-dom';
 import axiosBaseURL from '../axios';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
-
+import { ToastContainer, toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 const Edit_User = () =>{
 
 
@@ -50,6 +51,7 @@ const Edit_User = () =>{
           }, []);
     
       const updateUser = async () => {
+        if(editValidation){
         try {
           const token = localStorage.getItem('token');
     
@@ -68,8 +70,7 @@ const Edit_User = () =>{
           if (response.status === 201 || response.status === 200) {
             // User was successfully updated
             // You can handle success here, e.g., show a success message
-            alert('User Updated Successfully');
-            navigate("/nsrxmgt/admin-user-list");
+            toast.success("User Updated Successfully");
           } else {
             // Handle errors, e.g., show an error message
           }
@@ -77,19 +78,91 @@ const Edit_User = () =>{
           console.error('Error updating user:', error);
           // Handle network or other errors
         }
-      };
-    
-      const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({
-          ...userData,
-          [name]: value,
-        });
+        }else{
+
+            toast.error("Please Validate all Fields");
+        }
       };
 
+      const [phoneError, setPhoneError] = useState('');
+      const [zipError, setZipError] = useState('');
+      const [stateError, setStateError] = useState('');
+      const [editValidation, setEditValidation] = useState(true);
+      useEffect(() => {
+        // Fetch PDF data for both main and duplicate fax when the component mounts
+        setEditValidation(true);
+      }, []);
+      const handleInputChange = (e) => {
+        setEditValidation(true);
+        const { name, value } = e.target;
+        if (name === 'zip') {
+            // ZIP code validation
+            const numericValues = value.replace(/\D/g, ''); // Remove non-digit characters
+            const truncatedValues = numericValues.slice(0,5);
+            if (numericValues.length === 5) {
+                setEditValidation(true);
+                setZipError(''); // No error
+                setUserData({
+                    ...userData,
+                    [name]: truncatedValues,
+                  }); // Update with cleaned numeric value
+            } else {
+                setEditValidation(false);
+                setZipError('Zip Code Should be 5 digits');
+                setUserData({
+                    ...userData,
+                    [name]: truncatedValues,
+                  }); // Update with cleaned numeric value
+            }
+        } else if (name === 'phone') {
+            // Phone number validation
+            const numericValue = value.replace(/\D/g, ''); // Remove non-digit characters
+            const truncatedValue = numericValue.slice(0, 10);
+            if (numericValue.length === 10) {
+                setEditValidation(true);
+                setPhoneError(''); // No error
+                setUserData({
+                    ...userData,
+                    [name]: truncatedValue,
+                  });// Update with cleaned numeric value
+            } else {
+                
+                setEditValidation(false);
+                setPhoneError('Phone number Should be 10 digits');
+                setUserData({
+                    ...userData,
+                    [name]: truncatedValue,
+                  });// Update with cleaned numeric value
+            }
+        } else if (name === 'state') {
+        
+                if (value.length === 2) {
+                    setEditValidation(true);
+                    setStateError(''); // No error
+                    setUserData({
+                        ...userData,
+                        [name]: value,
+                      }); // Update with cleaned numeric value
+                } else {
+                    setEditValidation(false);
+                    setStateError('State Code Length Should be 2');
+                    setUserData({
+                        ...userData,
+                        [name]: value,
+                      });// Update with cleaned numeric value
+                }
+            } else {
+            setUserData({
+                ...userData,
+                [name]: value,
+              });
+        }
+       
+      };
     return (
        
         <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
+            <ToastContainer />
             {userData ? (
             <div className="bg-[#ffffff] shadow-xl border rounded-3xl max-w-[800px] max-h-[450px] w-full h-full  mt-5 overflow-hidden overflow-y-scroll pb-5 no-scrollbar">
                 <div className='pt-5 flex justify-center'>
@@ -188,6 +261,7 @@ const Edit_User = () =>{
                                             value={userData.state}
                                             onChange={handleInputChange}
                                             />
+                                              <p className="text-red-500 text-xs">{stateError}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -206,6 +280,7 @@ const Edit_User = () =>{
                                             value={userData.zip}
                                             onChange={handleInputChange}
                                             />
+                                             <p className="text-red-500 text-xs">{zipError}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -219,6 +294,7 @@ const Edit_User = () =>{
                                             value={userData.phone}
                                             onChange={handleInputChange}
                                             />
+                                            <p className="text-red-500 text-xs">{phoneError}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -229,9 +305,8 @@ const Edit_User = () =>{
                                             <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                         type="text" 
                                             name="role"
-                                                            >
+                                            value={userData.role}  >
                                     <MdOutlineArrowDropDown size={20} />
-                                    <option value={userData.role}>{space+userData.role}</option>
                                     <option value="Admin">Admin</option>
                                     <option value="Power User">Power User</option>
                                     <option value="Reviewer ">Reviewer</option>
@@ -251,7 +326,7 @@ const Edit_User = () =>{
                                             <label className='text-xs text-black w- text-start' htmlFor="">Enter New Password:</label>
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
                                             type="password"
-                                            name="enterNewPassword"
+                                            name="password"
                                             value={userData.password}
                                             onChange={handleInputChange}
                                             />
@@ -264,7 +339,7 @@ const Edit_User = () =>{
                                             <label className='text-xs text-black w- text-start' htmlFor="">Confirm Password:</label>
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
                                             type="password"
-                                            name="confirmPassword"
+                                            name="confirm password"
                                             value={userData.password}
                                             onChange={handleInputChange}
                                             />
@@ -279,9 +354,9 @@ const Edit_User = () =>{
                                             <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                         type="text" 
                                             name="status"
+                                            value={userData.userStatusFlag}
                                                             >
                                     <MdOutlineArrowDropDown size={20} />
-                                    <option value={userData.userStatusFlag}>{space+userData.userStatusFlag}</option>
                                     <option value="Active">Active</option>
                                     <option value="Deactivated">Deactivated</option>
                                     </select>
