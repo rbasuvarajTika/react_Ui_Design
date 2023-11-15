@@ -23,6 +23,7 @@ import { useParams } from 'react-router-dom';
 import Header_Navigation from '../header/Header_Navigation';
 import Background from '../Background';
 import SaveIcon from '@mui/icons-material/Save';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const FaxId_Form_New = ({ }) => {
@@ -35,6 +36,9 @@ const FaxId_Form_New = ({ }) => {
   const [rotate, setRotate] = useState(0);
   const [showInputBoxes, setShowInputBoxes] = useState(false);
   const [splitPage, setSplitPage] = useState('');
+  const [fromPage, setFromPage] = useState('');
+  const [selectedSplitOption, setSelectedSplitOption] = useState('');
+
   const [toPage, setToPage] = useState('');
   const [thumbnails, setThumbnails] = useState([]);
   const [selectedPages, setSelectedPages] = useState([]);
@@ -127,8 +131,10 @@ const handleRotate = () => {
 
 const handleSplitClick = () => {
   setShowInputBoxes(true);
-  setSplitPage("");
-  setToPage("");
+  setSelectedSplitOption(''); // Reset selected option
+  setSplitPage('');
+  setFromPage('');
+  setToPage('');
 };
 
 const handleInputChange = (e) => {
@@ -137,7 +143,6 @@ const handleInputChange = (e) => {
     setSplitPage(value);
   } 
 };
-
 
 const handleSplitPDfPageClick = () => {
   // const token = localStorage.getItem('tokenTika');
@@ -166,6 +171,44 @@ const handleSplitPDfPageClick = () => {
        });
   
  };
+
+ const handleSplitPDfRangeClick = () => {
+  // const token = localStorage.getItem('tokenTika');
+     axiosBaseURL
+       .get(`/api/v1/fax/splitPdfByRange/${faxId}/${fromPage}/${toPage}`, {
+         // headers: {
+         //   Authorization: `Bearer ${token}`,
+         // },
+       })
+       .then((response) => {
+         // Handle success
+         console.log('Split PDF Successfully:', response.data);
+         if(response.data.message == 'Successfully '){
+          toast.success("PDF Splitted Sucessfully")
+          setShowInputBoxes(false);
+         }else{
+          toast.error(response.data.message)
+         }
+         // You may want to update the state or perform other actions on success.
+       })
+       .catch((error) => {
+         // Handle error
+         setShowInputBoxes(false);
+         console.error('Keep Duplicate Error:', error);
+         // You can set an error state or show an error message to the user.
+       });
+  
+ };
+
+ const handleSaveSplit = () => {
+  if (selectedSplitOption === 'pages') {
+    handleSplitPDfPageClick();
+  } else if (selectedSplitOption === 'range') {
+    handleSplitPDfRangeClick();
+  }
+  setShowInputBoxes(false);
+};
+
  //console.log(sendFaxId);
  const generateThumbnails = async (numPages) => {
   if (pdfData) {
@@ -229,10 +272,14 @@ const splitButtonStyle = {
   };
 
   const inputBoxesStyle = {
-    position: 'relative',
-    marginTop: '10px', // Adjust the margin-top as per your requirement
+    position: 'absolute',
+    top: '0', // Adjust the top value as needed
+    left: '0', // Adjust the left value as needed
+    right: '0', // Adjust the right value as needed
+    margin: 'auto', // Center the input boxes
+    zIndex: '50',
   };
-
+  
   const saveButtonStyle = {
     position: 'absolute',
     right: '0',
@@ -406,38 +453,70 @@ const splitButtonStyle = {
           <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <= 1 ? "bg-[#d9e0e3]" : "bg-[#00aee6]"}`} onClick={previousPage}> <FaArrowLeft /></div>
           <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
         </div>
-        <span className="flex flex-col gap-2">
+        {/* <span className="flex flex-col gap-2">
         <div style={splitButtonStyle} onClick={handleSplitClick}>Split</div>
-                                        </span>
-                                        {showInputBoxes && (
-        <div style={inputBoxesStyle}>
+                                        </span> */}
+
+  {showInputBoxes && (
+    <div style={{ position: 'absolute', bottom:'350px', left: '700px', right: '0', margin: 'auto' }}>
+      <select
+        className="bg-[#f2f2f2] border border-gray-300 xl:w-[120px] text-black py-0.5 text-xs t-1"
+        value={selectedSplitOption}
+        onChange={(e) => {
+          console.log('Selected value:', e.target.value);
+          setSelectedSplitOption(e.target.value);
+        }}
+      >
+        <option value="">Select Option</option>
+        <option value="pages">Split by Pages</option>
+        <option value="range">Split by Range</option>
+      </select>
+
+      {selectedSplitOption === 'pages' && (
+        <input
+          className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
+          type="text"
+          name="splitPage"
+          value={splitPage}
+          onChange={handleInputChange}
+          placeholder="Split Page"
+        />
+      )}
+
+      {selectedSplitOption === 'range' && (
+        <>
           <input
-             style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'650px' }}
-           className='bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1'
-           type="text"
-            name="splitPage"
-            value={splitPage}
-            onChange={handleInputChange}
-          
-            placeholder="Split Page"
+            className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
+            type="text"
+            name="fromPage"
+            value={fromPage}
+            onChange={(e) => setFromPage(e.target.value)}
+            placeholder="From Page"
           />
-          {/* <input
-           style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'760px' }}
-            className='bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1'
+          <input
+            className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
             type="text"
             name="toPage"
             value={toPage}
-            onChange={handleInputChange}
+            onChange={(e) => setToPage(e.target.value)}
             placeholder="To Page"
-          /> */}
-          <div style={{ position: 'absolute', marginTop: '-20px', bottom: '380px' ,left:'780px' }}>
-            <div className='sm:w-20 csm:w-32 vsm:w-20 w-18 bg-[#00ab06] flex justify-center md:text-sm text-xs cursor-pointer' onClick={handleSplitPDfPageClick}>
-              Save
-            </div>
-          </div>
-        </div>
+          />
+        </>
       )}
-        <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
+
+      <div style={{ marginTop: '10px', textAlign: 'center' }}>
+        <div
+          className="sm:w-20 csm:w-32 vsm:w-20 w-18 bg-[#00ab06] flex justify-center md:text-sm text-xs cursor-pointer"
+          onClick={handleSaveSplit}
+        >
+          Save
+        </div>
+      </div>
+    </div>
+  )}
+
+        <div className='flex flex-col gap-2 absolute top-1/4 md:right-4 right-2'>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSplitClick} > <CallSplitIcon  className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSave} > <SaveIcon  className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
 
