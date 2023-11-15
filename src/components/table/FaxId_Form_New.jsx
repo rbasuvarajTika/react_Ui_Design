@@ -145,32 +145,27 @@ const handleInputChange = (e) => {
 };
 
 const handleSplitPDfPageClick = () => {
-  // const token = localStorage.getItem('tokenTika');
-     axiosBaseURL
-       .get(`/api/v1/fax/splitPdfByPages/${faxId}/${splitPage}`, {
-         // headers: {
-         //   Authorization: `Bearer ${token}`,
-         // },
-       })
-       .then((response) => {
-         // Handle success
-         console.log('Split PDF Successfully:', response.data);
-         if(response.data.message == 'Successfully '){
-          toast.success("PDF Splitted Sucessfully")
+  if (selectedPages.length > 0) {
+    const selectedPagesString = selectedPages.join(',');
+    axiosBaseURL
+      .post(`/api/v1/fax/splitByPdfPages/${faxId}`,{ pages: selectedPagesString } )
+      .then((response) => {
+        console.log('Split PDF Successfully:', response.data);
+        if (response.data.message === 'Successfully ') {
+          toast.success('PDF Splitted Successfully');
           setShowInputBoxes(false);
-         }else{
-          toast.error(response.data.message)
-         }
-         // You may want to update the state or perform other actions on success.
-       })
-       .catch((error) => {
-         // Handle error
-         setShowInputBoxes(false);
-         console.error('Keep Duplicate Error:', error);
-         // You can set an error state or show an error message to the user.
-       });
-  
- };
+        } else {
+          toast.error(response.data.message);
+        }
+      })
+      .catch((error) => {
+        setShowInputBoxes(false);
+        console.error('Split PDF Error:', error);
+      });
+  } else {
+    toast.error('Please select at least one page before splitting.');
+  }
+}
 
  const handleSplitPDfRangeClick = () => {
   // const token = localStorage.getItem('tokenTika');
@@ -250,15 +245,31 @@ const onDocumentLoadSuccess = ({ numPages }) => {
 
 const handleThumbnailClick = (pageIndex) => {
   setPageNumber(pageIndex + 1);
-  setSplitPage(pageIndex + 1);
-  // Add the selected page to the array if it's not already selected
-  // if (!selectedPages.includes(pageIndex + 1)) {
-  //   setSelectedPages([...selectedPages, pageIndex + 1]);
-  // }
 
-  // // Update the splitPage with the selected pages joined by commas
-  // setSplitPage(splitPage.join(', '));
+  // Create a copy of the current selected pages array
+  const updatedSelectedPages = [...selectedPages];
+
+  // Check if the clicked page is already selected
+  const isPageSelected = updatedSelectedPages.includes(pageIndex + 1);
+
+  // Toggle the selected state of the clicked page
+  if (isPageSelected) {
+    // Page is already selected, so remove it
+    const index = updatedSelectedPages.indexOf(pageIndex + 1);
+    updatedSelectedPages.splice(index, 1);
+  } else {
+    // Page is not selected, so add it
+    updatedSelectedPages.push(pageIndex + 1);
+  }
+
+  // Update the state with the new array of selected pages
+  setSelectedPages(updatedSelectedPages);
+
+  // If you want to update the input fields, you can use the following code:
+  const selectedPagesString = updatedSelectedPages.join(',');
+  setSplitPage(selectedPagesString);
 };
+
 const splitButtonStyle = {
     position: 'absolute',
     top: '20px', /* Adjust the top value based on your layout */
@@ -405,6 +416,7 @@ const splitButtonStyle = {
 
 
   return (
+   
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto">
    
     <div className="relative bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">      <div className="flex h-full">
@@ -529,7 +541,7 @@ const splitButtonStyle = {
         </div>
 
       
-
+        <ToastContainer />
       </div>
     </div >
   )
