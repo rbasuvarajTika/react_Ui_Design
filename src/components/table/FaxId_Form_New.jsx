@@ -22,6 +22,7 @@ import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import { useParams } from 'react-router-dom';
 import Header_Navigation from '../header/Header_Navigation';
 import Background from '../Background';
+import "../Background"
 import SaveIcon from '@mui/icons-material/Save';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -42,6 +43,7 @@ const FaxId_Form_New = ({ }) => {
   const [toPage, setToPage] = useState('');
   const [thumbnails, setThumbnails] = useState([]);
   const [selectedPages, setSelectedPages] = useState([]);
+  const [rotatedPages, setRotatedPages] = useState([]);
 
   const { faxId } = useParams();
 console.log("start",faxId);
@@ -61,29 +63,8 @@ console.log("start",faxId);
   const nextPage = () => {
     setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
   }
- 
-  // useEffect(() => {
-  //   try {
-  //     axios.get("https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370", {
-  //       headers: { "Content-Type": "application/pdf" }
-  //     })
 
-  //       .then((res) => {
-  //         const file = new Blob(
-  //           [res.data],
-  //           { type: 'application/pdf' });
-  //         const fileURL = URL.createObjectURL(file);
-
-  //         setFaxData(fileURL)
-
-  //         console.log(res.data);
-
-  //       })
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [])
-
+  
   useEffect(() => {
     const fetchPdf =  () => {
       setIsLoading(true)
@@ -121,13 +102,6 @@ const handleZoomIn = () => {
   setScalePopoup(scalePopUp + 0.2);
 }
 
-const handleRotate = () => {
-  console.log("Rotate");
-  setRotate(rotate + 90);
-  if(rotate === 270){
-    setRotate(0);
-  }
-}
 
 const handleSplitClick = () => {
   setShowInputBoxes(true);
@@ -241,8 +215,21 @@ const generateThumbnail = async (pdfPage) => {
 const onDocumentLoadSuccess = ({ numPages }) => {
   setNumPages(numPages);
   generateThumbnails(numPages);
-};
 
+  // Check if any pages are rotated and apply rotation
+  rotatedPages.forEach(({ page, rotation }) => {
+    const canvas = document.getElementById(`page-${page}`);
+    if (canvas) {
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.save();
+      context.translate(canvas.width / 2, canvas.height / 2);
+      context.rotate((rotation * Math.PI) / 180);
+      context.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
+      context.restore();
+    }
+  });
+};
 const handleThumbnailClick = (pageIndex) => {
   setPageNumber(pageIndex + 1);
 
@@ -325,10 +312,7 @@ const splitButtonStyle = {
 
 
     const handleSendFaxEmail = () => {
-        // Replace 'your-email@example.com' with the actual email address
-      
-    
-        // Make a POST request to send the fax PDF to the specified email address
+
         axiosBaseURL
           .post(`/api/v1/fax/faxRx/alertMail/${faxId}`, {
             
@@ -345,78 +329,54 @@ const splitButtonStyle = {
           });
       };
     
-      const handleSave = () => {
-        const doc = new jsPDF();
-        const loadingTask = pdfjs.getDocument(pdfData);
-        const pdfDataArray = []; // Array to store individual page data URLs
       
-        loadingTask.promise.then((pdf) => {
-          const numPages = pdf.numPages;
+      const handleRotate = (page) => {
+        const newRotation = rotate + 90;
+        const validRotation = newRotation % 360;
       
-          for (let i = 1; i <= numPages; i++) {
-            pdf.getPage(i).then((page) => {
-              const canvas = document.createElement('canvas');
-              const context = canvas.getContext('2d');
-              const viewport = page.getViewport({ scale: 1, rotation: i === pageNumber ? rotate : 0 });
+        // Update the local state with the new rotation information
+        setRotatedPages((prevRotatedPages) => [
+          ...prevRotatedPages,
+          { page, rotation: validRotation },
+        ]);
       
-              canvas.width = viewport.width;
-              canvas.height = viewport.height;
-      
-              const renderContext = {
-                canvasContext: context,
-                viewport: viewport,
-              };
-      
-              page.render(renderContext).promise.then(() => {
-                const dataURL = canvas.toDataURL();
-                pdfDataArray.push(dataURL);
-      
-                if (pdfDataArray.length === numPages) {
-                  // All pages have been processed, send the data to the server
-                  sendPdfToServer(pdfDataArray);
-                }
-              });
-            });
-          }
-        });
+        // Update the rotate state with the valid rotation value
+        setRotate(validRotation);
       };
       
-      const sendPdfToServer = (pdfDataArray) => {
-        // Convert the data URLs to binary data
-        const binaryDataArray = pdfDataArray.map((dataURL) => {
-          const byteCharacters = atob(dataURL.split(',')[1]);
-          const byteNumbers = new Array(byteCharacters.length);
+      const sendRotateToServer = () => {
+        const rotationData = {};
       
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-      
-          return new Uint8Array(byteNumbers);
+        // Iterate over rotatedPages to build the rotationData object
+        rotatedPages.forEach(({ page, rotation }) => {
+          rotationData[page] = rotation;
         });
       
-        // Create FormData to send the Blobs to the server
-        const formData = new FormData();
-        binaryDataArray.forEach((binaryData, index) => {
-          const blob = new Blob([binaryData], { type: 'application/pdf' });
-          formData.append(`file_${index + 1}`, blob, `rotatedFax_page_${index + 1}.pdf`);
-        });
-      
-        // Make a POST request to the server endpoint to store the PDF
-        axios.post(`/api/v1/fax/uploadPdfToSftp/${faxId}`, formData)
+        // Make a POST request to the server endpoint to save rotation information
+        axios.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, rotationData)
           .then((response) => {
-            console.log('PDF sent to server successfully:', response.data);
-            // Optionally, you can handle success here
+            console.log('Rotation saved successfully:', response.data);
           })
           .catch((error) => {
-            console.error('Error sending PDF to server:', error);
-            // Optionally, you can handle errors here
+            console.error('Error saving rotation:', error);
           });
       };
       
-
-
+      // ... rest of the component
+      
+      // Call sendRotateToServer when the save button is clicked
+      const handleSaveRotate = () => {
+        sendRotateToServer();
+      };
+      
   return (
-   
+    <>
+     
+    <Header_Navigation/>
+    <section className="w-full h-full absolute top-0 left-0 overflow-hidden -z-10">
+     <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative  h-screen"></div>
+            <div className="bg-left-design  bg-[#276A8C]  w-[500px] h-[500px]  absolute -left-[300px] -top-[150px] rotate-45 rounded-[80px] lg:w-[800px] lg:h-[800px] lg:-top-[10px] lg:-left-[410px] lg:rounded-[150px]"></div>
+            <div className="bg-right-design  bg-[#276A8C] w-[500px] h-[500px] absolute -right-[300px] -bottom-[150px] -rotate-45 rounded-[80px] lg:w-[800px] lg:h-[800px] lg:bottom-[10px] lg:-right-[410px] lg:rounded-[150px]"></div>
     <div className="fixed top-10 lg:left-48 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto">
    
     <div className="relative bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">      <div className="flex h-full">
@@ -529,7 +489,7 @@ const splitButtonStyle = {
 
         <div className='flex flex-col gap-2 absolute top-1/4 md:right-4 right-2'>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSplitClick} > <CallSplitIcon  className='md:text-base text-xs' /></div>
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSave} > <SaveIcon  className='md:text-base text-xs' /></div>
+        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSaveRotate} > <SaveIcon  className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
 
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSendFaxEmail}> <AttachEmailIcon className='md:text-base text-xs' /></div>
@@ -540,10 +500,12 @@ const splitButtonStyle = {
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
         </div>
 
-      
+       
         <ToastContainer />
       </div>
     </div >
+    </section>
+    </>
   )
 }
 
