@@ -44,6 +44,8 @@ const FaxId_Form_New = ({ }) => {
   const [thumbnails, setThumbnails] = useState([]);
   const [selectedPages, setSelectedPages] = useState([]);
   const [rotatedPages, setRotatedPages] = useState([]);
+  const [pageRotationData, setPageRotationData] = useState({});
+
 
   const { faxId } = useParams();
 console.log("start",faxId);
@@ -229,7 +231,13 @@ const onDocumentLoadSuccess = ({ numPages }) => {
       context.restore();
     }
   });
+
+  // Pass the rotation to the Page component
+  const rotationForPage = pageRotationData[pageNumber] || 0;
+  setRotate(rotationForPage);
 };
+
+
 const handleThumbnailClick = (pageIndex) => {
   setPageNumber(pageIndex + 1);
 
@@ -330,21 +338,36 @@ const splitButtonStyle = {
       };
     
       
-      const handleRotate = (page) => {
+      const handleRotate = () => {
+        const currentPage = pageNumber; // Get the current page number
+      
         const newRotation = rotate + 90;
         const validRotation = newRotation % 360;
       
         // Update the local state with the new rotation information
         setRotatedPages((prevRotatedPages) => [
           ...prevRotatedPages,
-          { page, rotation: validRotation },
+          { page: currentPage, rotation: validRotation },
         ]);
+      
+        // Update the page rotation data state
+        setPageRotationData((prevData) => ({
+          ...prevData,
+          [currentPage]: validRotation,
+        }));
       
         // Update the rotate state with the valid rotation value
         setRotate(validRotation);
+        // console.log('Rotated Pages:', rotatedPages);
+        // console.log('Page Rotation Data:', pageRotationData);
       };
+      useEffect(() => {
+        // This will log the updated state after it's been processed
+        console.log('Rotated Pages:', rotatedPages);
+        console.log('Page Rotation Data:', pageRotationData);
+      }, [rotatedPages, pageRotationData]); // Dependency array ensures the effect runs when these values change
       
-      const sendRotateToServer = () => {
+      const sendRotateToServer = (rotatedPages) => {
         const rotationData = {};
       
         // Iterate over rotatedPages to build the rotationData object
@@ -353,9 +376,10 @@ const splitButtonStyle = {
         });
       
         // Make a POST request to the server endpoint to save rotation information
-        axios.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, rotationData)
+        axiosBaseURL.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, pageRotationData)
           .then((response) => {
             console.log('Rotation saved successfully:', response.data);
+            toast.success('Rotation saved Successfully');
           })
           .catch((error) => {
             console.error('Error saving rotation:', error);
@@ -366,7 +390,7 @@ const splitButtonStyle = {
       
       // Call sendRotateToServer when the save button is clicked
       const handleSaveRotate = () => {
-        sendRotateToServer();
+        sendRotateToServer(rotatedPages);
       };
       
   return (
