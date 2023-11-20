@@ -45,6 +45,7 @@ const FaxId_Form_New = ({ }) => {
   const [selectedPages, setSelectedPages] = useState([]);
   const [rotatedPages, setRotatedPages] = useState([]);
   const [pageRotationData, setPageRotationData] = useState({});
+  const [selectedOption, setSelectedOption] = useState(null);
 
 
   const { faxId } = useParams();
@@ -117,9 +118,12 @@ const handleInputChange = (e) => {
   const { name, value } = e.target;
   if (name === 'splitPage') {
     setSplitPage(value);
-  } 
+  } else if (name === 'fromPage') {
+    setFromPage(value);
+  } else if (name === 'toPage') {
+    setToPage(value);
+  }
 };
-
 const handleSplitPDfPageClick = () => {
   if (selectedPages.length > 0) {
     const selectedPagesString = selectedPages.join(',');
@@ -172,9 +176,9 @@ const handleSplitPDfPageClick = () => {
  };
 
  const handleSaveSplit = () => {
-  if (selectedSplitOption === 'pages') {
+  if (selectedOption === 'By Page') {
     handleSplitPDfPageClick();
-  } else if (selectedSplitOption === 'range') {
+  } else if (selectedOption === 'By Range') {
     handleSplitPDfRangeClick();
   }
   setShowInputBoxes(false);
@@ -247,54 +251,29 @@ const handleThumbnailClick = (pageIndex) => {
   // Check if the clicked page is already selected
   const isPageSelected = updatedSelectedPages.includes(pageIndex + 1);
 
-  // Toggle the selected state of the clicked page
   if (isPageSelected) {
-    // Page is already selected, so remove it
+    
     const index = updatedSelectedPages.indexOf(pageIndex + 1);
     updatedSelectedPages.splice(index, 1);
   } else {
-    // Page is not selected, so add it
+    
     updatedSelectedPages.push(pageIndex + 1);
   }
 
-  // Update the state with the new array of selected pages
+  
   setSelectedPages(updatedSelectedPages);
 
-  // If you want to update the input fields, you can use the following code:
+  
   const selectedPagesString = updatedSelectedPages.join(',');
   setSplitPage(selectedPagesString);
 };
 
-const splitButtonStyle = {
-    position: 'absolute',
-    top: '20px', /* Adjust the top value based on your layout */
-    right: '-110px', /* Adjust the right value based on your layout */
-    zIndex: 50, /* Ensure it's above other content */
-    padding: '8px 16px',
-    backgroundColor: '#00ab06',
-    borderRadius: '8px',
-    color: '#fff',
-    cursor: 'pointer',
-  };
+const handleOptionClick = (option) => {
+  setSelectedOption(option);
+  setShowInputBoxes(true);
+};
+ 
 
-  const inputBoxesStyle = {
-    position: 'absolute',
-    top: '0', // Adjust the top value as needed
-    left: '0', // Adjust the left value as needed
-    right: '0', // Adjust the right value as needed
-    margin: 'auto', // Center the input boxes
-    zIndex: '50',
-  };
-  
-  const saveButtonStyle = {
-    position: 'absolute',
-    right: '0',
-    backgroundColor: '#00ab06',
-    padding: '8px 16px',
-    borderRadius: '8px',
-    color: '#fff',
-    cursor: 'pointer',
-  };
   const downloadPdf = () => {
     
       axiosBaseURL({
@@ -386,24 +365,48 @@ const splitButtonStyle = {
           });
       };
       
-      // ... rest of the component
-      
-      // Call sendRotateToServer when the save button is clicked
       const handleSaveRotate = () => {
         sendRotateToServer(rotatedPages);
       };
-      
+
+      const inputBoxesStyle = {
+        position: 'absolute',
+          top: '70px',
+        left: '250px',
+      };
+
+      const buttonStyle = {
+        position: 'absolute',
+          bottom: '110px',
+        right: '250px',
+      };
+
+
+
+      console.log('selectedOption:', selectedOption);
+console.log('splitPage:', splitPage);
+console.log('fromPage:', fromPage);
+console.log('toPage:', toPage);
+
+console.log('selectedOption:', selectedOption);
+console.log('showInputBoxes:', showInputBoxes);
+
+
   return (
     <>
-     
-    <Header_Navigation/>
-    <section className="w-full h-full absolute top-0 left-0 overflow-hidden -z-10">
+     <Header_Navigation/> 
+    <section className="w-full h-full absolute top-0 left-0 overflow-hidden -z-10">  
      <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative  h-screen"></div>
             <div className="bg-left-design  bg-[#276A8C]  w-[500px] h-[500px]  absolute -left-[300px] -top-[150px] rotate-45 rounded-[80px] lg:w-[800px] lg:h-[800px] lg:-top-[10px] lg:-left-[410px] lg:rounded-[150px]"></div>
             <div className="bg-right-design  bg-[#276A8C] w-[500px] h-[500px] absolute -right-[300px] -bottom-[150px] -rotate-45 rounded-[80px] lg:w-[800px] lg:h-[800px] lg:bottom-[10px] lg:-right-[410px] lg:rounded-[150px]"></div>
-    <div className="fixed top-10 lg:left-48 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto">
-   
-    <div className="relative bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">      <div className="flex h-full">
+            <div className="fixed top-10 lg:left-55 left-0 right-0 z-50 overflow-x-hidden overflow-y-auto">
+            <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
+          <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[620px] no-scrollbar ">
+              <div className='flex md:flex-row flex-col gap-1'>
+                
+                  <div className='w-full flex flex-col gap-1'>
+    <div className="relative bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5rem)] w-full max-w-2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">      
+    <div className="flex h-full">
         {/* Left section for thumbnails */}
         <div className="w-1/5 border mr-4 overflow-y-auto">
           <div className="thumbnails-container">
@@ -420,6 +423,7 @@ const splitButtonStyle = {
         </div>
 
         {/* Right section for the document */}
+        
         <div className="w-4/5 overflow-hidden">
   <div className="text-black overflow-hidden overflow-x-scroll overflow-y-scroll h-screen max-h-[75vh]">
     {!isloading ? (
@@ -429,7 +433,7 @@ const splitButtonStyle = {
           scale={scalePopUp}
           width={400}
           height={200}
-          rotate={rotate}
+          // rotate={rotate}
         />
       </Document>
     ) : (
@@ -441,6 +445,7 @@ const splitButtonStyle = {
 </div>
 
       </div>
+      
         <div className='relative'>
           <p className='text-[#717171] text-sm absolute top-2'>{pageNumber} of {numPages}</p>
         </div>
@@ -452,64 +457,8 @@ const splitButtonStyle = {
         {/* <span className="flex flex-col gap-2">
         <div style={splitButtonStyle} onClick={handleSplitClick}>Split</div>
                                         </span> */}
+                                        
 
-  {showInputBoxes && (
-    <div style={{ position: 'absolute', bottom:'350px', left: '700px', right: '0', margin: 'auto' }}>
-      <select
-        className="bg-[#f2f2f2] border border-gray-300 xl:w-[120px] text-black py-0.5 text-xs t-1"
-        value={selectedSplitOption}
-        onChange={(e) => {
-          console.log('Selected value:', e.target.value);
-          setSelectedSplitOption(e.target.value);
-        }}
-      >
-        <option value="">Select Option</option>
-        <option value="pages">Split by Pages</option>
-        <option value="range">Split by Range</option>
-      </select>
-
-      {selectedSplitOption === 'pages' && (
-        <input
-          className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
-          type="text"
-          name="splitPage"
-          value={splitPage}
-          onChange={handleInputChange}
-          placeholder="Split Page"
-        />
-      )}
-
-      {selectedSplitOption === 'range' && (
-        <>
-          <input
-            className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
-            type="text"
-            name="fromPage"
-            value={fromPage}
-            onChange={(e) => setFromPage(e.target.value)}
-            placeholder="From Page"
-          />
-          <input
-            className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
-            type="text"
-            name="toPage"
-            value={toPage}
-            onChange={(e) => setToPage(e.target.value)}
-            placeholder="To Page"
-          />
-        </>
-      )}
-
-      <div style={{ marginTop: '10px', textAlign: 'center' }}>
-        <div
-          className="sm:w-20 csm:w-32 vsm:w-20 w-18 bg-[#00ab06] flex justify-center md:text-sm text-xs cursor-pointer"
-          onClick={handleSaveSplit}
-        >
-          Save
-        </div>
-      </div>
-    </div>
-  )}
 
         <div className='flex flex-col gap-2 absolute top-1/4 md:right-4 right-2'>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSplitClick} > <CallSplitIcon  className='md:text-base text-xs' /></div>
@@ -523,8 +472,87 @@ const splitButtonStyle = {
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
         </div>
-
        
+            </div>
+            </div>
+            <div className='w-full h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>
+            <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]'>
+              <hr className="h-px border-[#e36c09] border w-32 absolut " />
+              <p className='absolute top-0 text-[#e36c09] text-sm'>Split</p>
+              <div className='absolute md:top-7 top-6  right-20 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'>
+                {/* By Page */}
+                <div className='flex justify-around px-6' onClick={() => handleOptionClick('By Page')} >
+                  <div className='flex relative'>
+                    <div className='text-lg absolute  -right-1 h-full bg-gray-100'></div>
+                  </div>
+                  <p className='text-white text-xs'>By Page</p>
+                </div>
+              </div>
+              <div className='absolute md:top-7 top-6  left-20 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'>
+                {/* By Range */}
+                <div className='flex justify-around px-6' onClick={() => handleOptionClick('By Range')} >
+                  <div className='flex relative'>
+                    <div className='text-lg absolute  -right-1 h-full bg-gray-100'></div>
+                  </div>
+                  <p className='text-white text-xs'>By Range</p>
+                </div>
+              </div>
+
+              {showInputBoxes && (
+          <div style={inputBoxesStyle}>
+            {selectedOption === 'By Page' && (
+              <input
+                className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
+                type="text"
+                name="splitPage"
+                value={splitPage}
+                onChange={handleInputChange}
+                placeholder="Split Page"
+              />
+            )}
+
+            {selectedOption === 'By Range' && (
+              <>
+                <input
+                  className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
+                  type="text"
+                  name="fromPage"
+                  value={fromPage}
+                  onChange={(e) => setFromPage(e.target.value)}
+                  placeholder="From Page"
+                />
+                   <div style={{ height: '10px' }}></div> 
+                <input
+                  className="bg-[#f2f2f2] border border-gray-300 xl:w-[100px] text-black py-0.5 text-xs t-1"
+                  type="text"
+                  name="toPage"
+                  value={toPage}
+                  onChange={(e) => setToPage(e.target.value)}
+                  placeholder="To Page"
+                />
+              </>
+            )}
+
+            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+              <div
+                className="sm:w-20 csm:w-32 vsm:w-20 w-18 bg-[#00ab06] flex justify-center md:text-sm text-xs cursor-pointer"
+                onClick={handleSaveSplit}
+              >
+                Save
+              </div>
+            </div>
+          </div>
+          
+        )}
+            </div>
+            
+          </div>
+          <div style={buttonStyle} className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
+
+          </div>   
+            </div>
+          
+
         <ToastContainer />
       </div>
     </div >
