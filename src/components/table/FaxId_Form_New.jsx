@@ -21,10 +21,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import { useParams } from 'react-router-dom';
 import Header_Navigation from '../header/Header_Navigation';
-import Background from '../Background';
 import "../Background"
 import SaveIcon from '@mui/icons-material/Save';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const FaxId_Form_New = ({ }) => {
@@ -46,6 +44,8 @@ const FaxId_Form_New = ({ }) => {
   const [rotatedPages, setRotatedPages] = useState([]);
   const [pageRotationData, setPageRotationData] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedThumbnail, setSelectedThumbnail] = useState(null);
+  const [splitHistory, setSplitHistory] = useState([]);
 
 
   const { faxId } = useParams();
@@ -116,19 +116,38 @@ const handleSplitClick = () => {
 
 const handleInputChange = (e) => {
   const { name, value } = e.target;
+
   if (name === 'splitPage') {
+    // Update the splitPage state
     setSplitPage(value);
+
+    // Update the selectedPages state based on the entered page numbers
+    const selectedPagesArray = value.split(',').map((page) => parseInt(page.trim(), 10));
+    setSelectedPages(selectedPagesArray);
   } else if (name === 'fromPage') {
     setFromPage(value);
+    // Update the splitPage state for range splitting
+    setSplitPage(`${value}-${toPage}`);
   } else if (name === 'toPage') {
     setToPage(value);
+    // Update the splitPage state for range splitting
+    setSplitPage(`${fromPage}-${value}`);
   }
 };
+
 const handleSplitPDfPageClick = () => {
-  if (selectedPages.length > 0) {
-    const selectedPagesString = selectedPages.join(',');
+  console.log('Selected Option:', selectedOption);
+  console.log('Selected Pages:', selectedPages);
+  console.log('Split Page:', splitPage);
+
+  const pagesToSplit = selectedOption === 'By Page' ? selectedPages : parsePageRange();
+
+  console.log('Pages to Split:', pagesToSplit);
+
+  if (pagesToSplit.length > 0) {
+    const selectedPagesString = pagesToSplit.join(',');
     axiosBaseURL
-      .post(`/api/v1/fax/splitByPdfPages/${faxId}`,{ pages: selectedPagesString } )
+      .post(`/api/v1/fax/sendPdfByPages`, { faxId ,pages: selectedPagesString })
       .then((response) => {
         console.log('Split PDF Successfully:', response.data);
         if (response.data.message === 'Successfully ') {
@@ -145,7 +164,15 @@ const handleSplitPDfPageClick = () => {
   } else {
     toast.error('Please select at least one page before splitting.');
   }
-}
+};
+
+const parsePageRange = () => {
+  const pages = [];
+  for (let i = parseInt(fromPage); i <= parseInt(toPage); i++) {
+    pages.push(i);
+  }
+  return pages;
+};
 
  const handleSplitPDfRangeClick = () => {
   // const token = localStorage.getItem('tokenTika');
@@ -252,21 +279,23 @@ const handleThumbnailClick = (pageIndex) => {
   const isPageSelected = updatedSelectedPages.includes(pageIndex + 1);
 
   if (isPageSelected) {
-    
     const index = updatedSelectedPages.indexOf(pageIndex + 1);
     updatedSelectedPages.splice(index, 1);
   } else {
-    
     updatedSelectedPages.push(pageIndex + 1);
   }
 
-  
-  setSelectedPages(updatedSelectedPages);
+  // Filter out NaN values and keep only valid page numbers
+  const filteredPages = updatedSelectedPages.filter(page => !isNaN(page));
 
-  
-  const selectedPagesString = updatedSelectedPages.join(',');
-  setSplitPage(selectedPagesString);
+  setSelectedPages(filteredPages);
+  setSelectedThumbnail(pageIndex); // Update selected thumbnail index
+
+  console.log('Updated Selected Pages:', filteredPages);
+
+  setSplitPage(filteredPages.join(','));
 };
+
 
 const handleOptionClick = (option) => {
   setSelectedOption(option);
@@ -347,15 +376,26 @@ const handleOptionClick = (option) => {
       }, [rotatedPages, pageRotationData]); // Dependency array ensures the effect runs when these values change
       
       const sendRotateToServer = (rotatedPages) => {
-        const rotationData = {};
+        const currentPage = pageNumber; // Get the current page number
+      
+        const rotationData = {
+          [currentPage]: 0, // Set the rotation to 0 for the current page
+        };
       
         // Iterate over rotatedPages to build the rotationData object
-        rotatedPages.forEach(({ page, rotation }) => {
-          rotationData[page] = rotation;
-        });
+        // rotatedPages.forEach(({ page, rotation }) => {
+        //   rotationData[page] = rotation;
+        // });
+      
+        // const allPageNumbers = Array.from({ length: numPages }, (_, index) => index + 1);
+        // allPageNumbers.forEach((pageNumber) => {
+        //   if (rotationData[pageNumber] === undefined) {
+        //     rotationData[pageNumber] = 0;
+        //   }
+        // });
       
         // Make a POST request to the server endpoint to save rotation information
-        axiosBaseURL.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, pageRotationData)
+        axiosBaseURL.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, rotationData)
           .then((response) => {
             console.log('Rotation saved successfully:', response.data);
             toast.success('Rotation saved Successfully');
@@ -364,7 +404,6 @@ const handleOptionClick = (option) => {
             console.error('Error saving rotation:', error);
           });
       };
-      
       const handleSaveRotate = () => {
         sendRotateToServer(rotatedPages);
       };
@@ -372,7 +411,7 @@ const handleOptionClick = (option) => {
       const inputBoxesStyle = {
         position: 'absolute',
           top: '70px',
-        left: '250px',
+        left: '160px',
       };
 
       const buttonStyle = {
@@ -380,18 +419,20 @@ const handleOptionClick = (option) => {
           bottom: '110px',
         right: '250px',
       };
+      useEffect(() => {
+        const fetchSplitHistory = async () => {
+          try {
+            const response = await axiosBaseURL.get(`/api/v1/fax/faxRxSplitHist/${faxId}`);
+            setSplitHistory(response.data.data); // Assuming the API response is an array of split history objects
+          } catch (error) {
+            console.error('Error fetching split history:', error);
+          }
+        };
+    
+        fetchSplitHistory();
+      }, [faxId]);
 
-
-
-      console.log('selectedOption:', selectedOption);
-console.log('splitPage:', splitPage);
-console.log('fromPage:', fromPage);
-console.log('toPage:', toPage);
-
-console.log('selectedOption:', selectedOption);
-console.log('showInputBoxes:', showInputBoxes);
-
-
+      
   return (
     <>
      <Header_Navigation/> 
@@ -399,7 +440,7 @@ console.log('showInputBoxes:', showInputBoxes);
      <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative  h-screen"></div>
             <div className="bg-left-design  bg-[#276A8C]  w-[500px] h-[500px]  absolute -left-[300px] -top-[150px] rotate-45 rounded-[80px] lg:w-[800px] lg:h-[800px] lg:-top-[10px] lg:-left-[410px] lg:rounded-[150px]"></div>
             <div className="bg-right-design  bg-[#276A8C] w-[500px] h-[500px] absolute -right-[300px] -bottom-[150px] -rotate-45 rounded-[80px] lg:w-[800px] lg:h-[800px] lg:bottom-[10px] lg:-right-[410px] lg:rounded-[150px]"></div>
-            <div className="fixed top-10 lg:left-55 left-0 right-0 z-50 overflow-x-hidden overflow-y-auto">
+            <div className="fixed top-12 lg:left-50 left-0 right-0 z-50 overflow-x-hidden overflow-y-auto">
             <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[636px h-[calc(120%-4rem)] no-scrollbar">
           <div className="relative  overflow-x-auto rounded-xl    overflow-y-scroll  h-[620px] no-scrollbar ">
               <div className='flex md:flex-row flex-col gap-1'>
@@ -417,6 +458,8 @@ console.log('showInputBoxes:', showInputBoxes);
                 alt={`Page ${index + 1}`}
                 onClick={() => handleThumbnailClick(index)}
                 className="thumbnail"
+                style={{ border: selectedThumbnail === index ? '2px solid #276A8C' : 'none' }}
+
               />
             ))}
           </div>
@@ -433,7 +476,7 @@ console.log('showInputBoxes:', showInputBoxes);
           scale={scalePopUp}
           width={400}
           height={200}
-          // rotate={rotate}
+          rotate={rotate}
         />
       </Document>
     ) : (
@@ -461,7 +504,6 @@ console.log('showInputBoxes:', showInputBoxes);
 
 
         <div className='flex flex-col gap-2 absolute top-1/4 md:right-4 right-2'>
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSplitClick} > <CallSplitIcon  className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSaveRotate} > <SaveIcon  className='md:text-base text-xs' /></div>
         <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
 
@@ -475,8 +517,8 @@ console.log('showInputBoxes:', showInputBoxes);
        
             </div>
             </div>
-            <div className='w-full h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>
-            <div className='w-full flex justify-center shadow-2xlw- shadow-[#e36c09]'>
+            <div className='w-[calc(120vh-1rem)]  h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>
+            <div className='w-100 flex justify-center shadow-2xlw- shadow-[#e36c09]'>
               <hr className="h-px border-[#e36c09] border w-32 absolut " />
               <p className='absolute top-0 text-[#e36c09] text-sm'>Split</p>
               <div className='absolute md:top-7 top-6  right-20 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'>
@@ -497,7 +539,7 @@ console.log('showInputBoxes:', showInputBoxes);
                   <p className='text-white text-xs'>By Range</p>
                 </div>
               </div>
-
+          
               {showInputBoxes && (
           <div style={inputBoxesStyle}>
             {selectedOption === 'By Page' && (
@@ -545,14 +587,35 @@ console.log('showInputBoxes:', showInputBoxes);
           
         )}
             </div>
-            
+            <div className='absolute md:bottom-50 top-60  right-1 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50 w-[calc(90vh-1rem)]   h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>        <table className="w-full">
+          <thead >
+            <tr>
+              <th  >Sl. No</th>
+              <th >Split File Name</th>
+              <th >Split Pages</th>
+            </tr>
+          </thead>
+          <tbody >
+            {splitHistory.map((split, index) => (
+              <tr key={index}>
+                <td className=' px-5' >{index + 1}</td>
+                <td className='px-20' >{split.splitFileName}</td>
+                <td className='px-10 ' >{split.splitPages}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
           </div>
-          <div style={buttonStyle} className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
-
-          </div>   
-            </div>
           
-
+          <div style={buttonStyle} className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
+    
+          </div>  
+           
+            </div>
+           {/* Display split information */}
+     
+        
         <ToastContainer />
       </div>
     </div >
