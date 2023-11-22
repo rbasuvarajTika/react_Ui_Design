@@ -114,10 +114,10 @@ function Header_Navigation() {
                         <span className="bg-white rounded-full z-50">
                             <ArrowBack className="text-teal-400" onClick={() => navigate(-1)} />
                         </span>
-                        <span className="hidden md:block z-50" onClick={() => navigate(-1)}>Next science</span>
+                        <span className="text-white hidden md:block z-50" onClick={() => navigate(-1)}>Next science</span>
                     </span>
                     {userData && (
-                    <span className="flex items-center gap-1 z-50" onClick={openEditUserProfile}>
+                    <span className="text-white flex items-center gap-1 z-50" onClick={openEditUserProfile}>
                         <AccountCircle />
                         <span className="underline hidden md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
                     </span>
@@ -132,27 +132,27 @@ function Header_Navigation() {
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
-                <span className="flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
+                <span className=" text-white flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
                     <RiAdminFill size={21} />
-                    <span className="hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
+                    <span className="text-white hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
                 </span>
-                    <span className="flex items-center z-50 cursor-pointer" onClick={fax_handleClick}>
+                    <span className="text-white flex items-center z-50 cursor-pointer" onClick={fax_handleClick}>
                         <FaxIcon />
-                        <span className="hidden md:block z-50" onClick={fax_handleClick}>Fax List</span>
+                        <span className="text-white hidden md:block z-50" onClick={fax_handleClick}>Fax List</span>
                     </span>
-                    <span className="flex items-center z-50 cursor-pointer" onClick={openRxTrackerList}>
+                    <span className="text-white flex items-center z-50 cursor-pointer" onClick={openRxTrackerList}>
                         <InsertDriveFile />
-                        <span className="hidden md:block z-50" onClick={openRxTrackerList}> Rx Tracker List</span>
+                        <span className="text-white hidden md:block z-50" onClick={openRxTrackerList}> Rx Tracker List</span>
                     </span>
-                    <span className="flex items-center gap-1 z-50 cursor-pointer" onClick={logout}>
+                    <span className=" text-white flex items-center gap-1 z-50 cursor-pointer" onClick={logout}>
                         <Logout />
-                        <span className="hidden md:block z-50" onClick={logout}> Logout</span>
+                        <span className="text-white hidden md:block z-50" onClick={logout}> Logout</span>
                     </span>
                     <span className="hidden text-[#FE7D00] text-lg md:hidden lg:flex flex-col items-center leading-[4px] z-50 ">
                         <h3 className="text-3xl z-50">
                             Tika<span className="text-blue-500 z-50">Rx</span>
                         </h3>
-                        <p className="text-[8px] text-white z-50">Rx Management System</p>
+                        <p className="text-[10px] text-white z-50">Rx Management System</p>
                     </span>
                 </div>
             </div>
