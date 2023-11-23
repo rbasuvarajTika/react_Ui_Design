@@ -46,6 +46,7 @@ const FaxId_Form_New = ({ }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedThumbnail, setSelectedThumbnail] = useState(null);
   const [splitHistory, setSplitHistory] = useState([]);
+  const [thumbnailPageNumbers, setThumbnailPageNumbers] = useState([]);
 
 
   const { faxId } = useParams();
@@ -215,6 +216,8 @@ const parsePageRange = () => {
  const generateThumbnails = async (numPages) => {
   if (pdfData) {
     const thumbArray = [];
+    const pageNumbersArray = [];
+
     const loadingTask = pdfjs.getDocument(pdfData);
     const pdf = await loadingTask.promise;
 
@@ -222,9 +225,13 @@ const parsePageRange = () => {
       const pdfPage = await pdf.getPage(i);
       const thumb = await generateThumbnail(pdfPage);
       thumbArray.push(thumb);
+      pageNumbersArray.push(i);
+
     }
 
     setThumbnails(thumbArray);
+    setThumbnailPageNumbers(pageNumbersArray);
+
   }
 };
 
@@ -451,17 +458,20 @@ const handleOptionClick = (option) => {
         {/* Left section for thumbnails */}
         <div className="w-1/5 border mr-4 overflow-y-auto">
           <div className="thumbnails-container">
-            {thumbnails.map((thumbnail, index) => (
-              <img
-                key={index}
-                src={thumbnail}
-                alt={`Page ${index + 1}`}
-                onClick={() => handleThumbnailClick(index)}
-                className="thumbnail"
-                style={{ border: selectedThumbnail === index ? '2px solid #276A8C' : 'none' }}
-
-              />
-            ))}
+               {thumbnails.map((thumbnail, index) => (
+                   <div key={index} className="thumbnail-container">
+                   <img
+                    src={thumbnail}
+                    alt={`Page ${index + 1}`}
+                     onClick={() => handleThumbnailClick(index)}
+                     className="thumbnail"
+                         style={{ border: selectedThumbnail === index ? '2px solid #276A8C' : 'none'}}
+                            />
+                            
+                    <div className="thumbnail-number " style={{  padding:'1px', marginLeft:'40px'  }}
+                             >{thumbnailPageNumbers[index]}</div>
+                          </div>
+                        ))}           
           </div>
         </div>
 
@@ -520,7 +530,7 @@ const handleOptionClick = (option) => {
             <div className='w-[calc(120vh-1rem)]  h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>
             <div className='w-100 flex justify-center shadow-2xlw- shadow-[#e36c09]'>
               <hr className="h-px border-[#e36c09] border w-32 absolut " />
-              <p className='absolute top-0 text-[#e36c09] text-sm'>Split</p>
+              <p className='absolute top-0 text-[#e36c09] text-sm'>Split Pdf</p>
               <div className='absolute md:top-7 top-6  right-20 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'>
                 {/* By Page */}
                 <div className='flex justify-around px-6' onClick={() => handleOptionClick('By Page')} >
@@ -587,20 +597,21 @@ const handleOptionClick = (option) => {
           
         )}
             </div>
-            <div className='absolute md:bottom-50 top-60  right-1 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50 w-[calc(90vh-1rem)]   h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>        <table className="w-full">
+                 
+         <div className='absolute md:bottom-50 top-60 right-1 rounded-xl bg-[#00aee6] w-28 cursor-pointer z-50 w-[calc(90vh-1rem)] h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative overflow-y-auto'>        <table className="w-full">
           <thead >
             <tr>
-              <th  >Sl. No</th>
-              <th >Split File Name</th>
-              <th >Split Pages</th>
+              <th  className="border px-5" >Sl. No</th>
+              <th  className="border px-5">Split File Name</th>
+              <th  className="border px-5">Split Pages</th>
             </tr>
           </thead>
           <tbody >
             {splitHistory.map((split, index) => (
               <tr key={index}>
-                <td className=' px-5' >{index + 1}</td>
-                <td className='px-20' >{split.splitFileName}</td>
-                <td className='px-10 ' >{split.splitPages}</td>
+                <td className='border px-10' >{index + 1}</td>
+                <td className='border px-10' >{split.splitFileName}</td>
+                <td className='border px-10 ' >{split.splitPages}</td>
               </tr>
             ))}
           </tbody>
