@@ -29,6 +29,7 @@ const TableList = ({ }) => {
     const [pageNumber, setPageNumber] = useState(1);
     const [selectedOcrStatus, setSelectedOcrStatus] = useState('All Status'); // State for selected ocrStatus
     const [selectedFaxStatus, setSelectedFaxStatus] = useState('All Status');
+    const [filteredData, setFilteredData] = useState([]);
 
 
 
@@ -98,6 +99,22 @@ const TableList = ({ }) => {
         setSelectedFaxStatus(event.target.value);
     };
 
+    useEffect(() => {
+        // Filter the data when search, ocr status, or fax status changes
+        const filtered = faxData.filter((item) => {
+          const matchesSearch = search === "" || item.faxId.includes(search);
+          const matchesOcrStatus =
+            selectedOcrStatus === "All Status" || item.ocrStatus === selectedOcrStatus;
+          const matchesFaxStatus =
+            selectedFaxStatus === "All Status" || item.faxStatus === selectedFaxStatus;
+    
+          return matchesSearch && matchesOcrStatus && matchesFaxStatus;
+        });
+    
+        // Set the filtered data and reset the current page to 1
+        setFilteredData(filtered);
+        setCurrentPage(1);
+      }, [faxData, search, selectedOcrStatus, selectedFaxStatus]);
     
     return (
         <>
@@ -184,15 +201,8 @@ const TableList = ({ }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {currentPosts.filter((item) => {
-                                           const matchesSearch = search === "" || item.faxId.includes(search);
-                                           const matchesOcrStatus =
-                                               selectedOcrStatus === "All Status" || item.ocrStatus === selectedOcrStatus;
-                                           const matchesFaxStatus =
-                                               selectedFaxStatus === "All Status" || item.faxStatus === selectedFaxStatus;
-                                       
-                                           return matchesSearch && matchesOcrStatus && matchesFaxStatus;
-                                        }).map((item, index) => (
+                                    {filteredData
+                                           .slice(firstPostIndex, lastPostIndex).map((item, index) => (
                                             <tr
                                                 key={index}
                                                 className={`${index % 2 === 0 ? "" : "bg-[#f2f3f5] "

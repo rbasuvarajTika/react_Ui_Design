@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaArrowLeft, FaArrowRight, } from 'react-icons/fa';
-import { AiFillCloseCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { DuplicateContext } from '../../context/DuplicateContext';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import fax from "../../assets/pdf/fax.pdf"
 import jsPDF from 'jspdf';
-
+import { AiFillCloseCircle } from 'react-icons/ai';
 import { Document, Page, pdfjs } from 'react-pdf';
 import axios from 'axios';
 import "react-pdf/dist/esm/Page/TextLayer.css";
@@ -496,7 +495,9 @@ const handleOptionClick = (option) => {
     )}
   </div>
 </div>
-
+<div className='text-blue-400 text-2xl absolute top-2 -right-2 cursor-pointer' >
+          <AiFillCloseCircle />
+        </div>
       </div>
       
         <div className='relative'>
@@ -504,25 +505,20 @@ const handleOptionClick = (option) => {
         </div>
        
         <div className='flex justify-center gap-2 mt-1'>
-          <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <= 1 ? "bg-[#d9e0e3]" : "bg-[#00aee6]"}`} onClick={previousPage}> <FaArrowLeft /></div>
-          <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
+          <div className={`text-white sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <= 1 ? "bg-[#d9e0e3]" : "bg-[#00aee6]"}`} onClick={previousPage}> <FaArrowLeft /></div>
+          <div className={`text-white sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
         </div>
-        {/* <span className="flex flex-col gap-2">
-        <div style={splitButtonStyle} onClick={handleSplitClick}>Split</div>
-                                        </span> */}
-                                        
-
-
+     
         <div className='flex flex-col gap-2 absolute top-1/4 md:right-4 right-2'>
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSaveRotate} > <SaveIcon  className='md:text-base text-xs' /></div>
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
+        <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSaveRotate} > <SaveIcon  className='md:text-base text-xs' /></div>
+        <div className=' text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotate}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
 
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSendFaxEmail}> <AttachEmailIcon className='md:text-base text-xs' /></div>
+        <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSendFaxEmail}> <AttachEmailIcon className='md:text-base text-xs' /></div>
 
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer 'onClick={downloadPdf}> <DownloadIcon className='md:text-base text-xs' /></div>
+        <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer 'onClick={downloadPdf}> <DownloadIcon className='md:text-base text-xs' /></div>
 
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
-        <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+        <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
+        <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
         </div>
        
             </div>
@@ -597,36 +593,45 @@ const handleOptionClick = (option) => {
           
         )}
             </div>
-                 
-         <div className='absolute md:bottom-50 top-60 right-1 rounded-xl bg-[#00aee6] w-28 cursor-pointer z-50 w-[calc(90vh-1rem)] h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative overflow-y-auto'>        <table className="w-full">
-          <thead >
-            <tr>
-              <th  className="border px-5" >Sl. No</th>
-              <th  className="border px-5">Split File Name</th>
-              <th  className="border px-5">Split Pages</th>
-            </tr>
-          </thead>
-          <tbody >
-            {splitHistory.map((split, index) => (
-              <tr key={index}>
-                <td className='border px-10' >{index + 1}</td>
-                <td className='border px-10' >{split.splitFileName}</td>
-                <td className='border px-10 ' >{split.splitPages}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+           
+            <div className='absolute md:bottom-50 top-60 right-1 rounded-xl bg-[#00aee6] w-28 cursor-pointer z-50 w-[calc(90vh-1rem)] h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative overflow-y-auto'>
+  <div className='w-[calc(90vh-1rem)] h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>
+    <div className='w-100 flex justify-center shadow-2xlw- shadow-[#e36c09] relative mb-4'>
+      <hr className="h-px border-[#e36c09] border w-32 absolute left-1/2 transform -translate-x-1/2" />
+      <p className='absolute top-0 text-[#e36c09] text-sm left-1/2 transform -translate-x-1/2'>Split Completed</p>
+    </div>
+    <table className="w-full">
+      <thead>
+        <tr className='text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl'>
+          <th className="px-2 py-3 border">Sl. No</th>
+          <th className="px-2 py-3 border">Split File Name</th>
+          <th className="px-2 py-3 border">Split Pages</th>
+        </tr>
+      </thead>
+      <tbody>
+        {splitHistory.map((split, index) => (
+          <tr key={index}>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{index + 1}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitFileName}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitPages}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
           </div>
-          
-          <div style={buttonStyle} className='sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
+         
+          <div style={buttonStyle} className='text-white sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
     
           </div>  
            
             </div>
-           {/* Display split information */}
+       
      
-        
+          
         <ToastContainer />
       </div>
     </div >
