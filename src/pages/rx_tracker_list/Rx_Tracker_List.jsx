@@ -20,6 +20,7 @@ const [selectedRxStatus, setSelectedRxStatus] = useState('');
 const [searchHCP, setSearchHCP] = useState('');
 const [searchAccount, setSearchAccount] = useState('');
 const [searchPatient, setSearchPatient] = useState('');
+const [filteredData, setFilteredData] = useState([]);
 
 
 
@@ -78,7 +79,22 @@ const firstPostIndex = lastPostIndex - postsPerPage;
 const currentPosts = rxTrackerData.slice(firstPostIndex, lastPostIndex);
 const npage = Math.ceil(rxTrackerData.length / postsPerPage);
 
-
+useEffect(() => {
+    const filtered = rxTrackerData
+    .filter((item) => selectedRxStatus === '' || item.processStatus === selectedRxStatus)
+    .filter((item) => searchHCP === '' || item.hcpName.toLowerCase().includes(searchHCP.toLowerCase()))
+    .filter((item) => searchAccount === '' || (item.accountName && item.accountName.toLowerCase().includes(searchAccount.toLowerCase())))
+    .filter((item) => searchPatient === '' || (item.patientName && item.patientName.toLowerCase().includes(searchPatient.toLowerCase())));
+    console.log("Current Page:", currentpage);
+console.log("Posts Per Page:", postsPerPage);
+console.log("Last Post Index:", lastPostIndex);
+console.log("First Post Index:", firstPostIndex);
+  
+    console.log("Filtered Data:", filtered); // Check the filtered data
+    setFilteredData(filtered);
+    setCurrentPage(1); // Reset current page when filters change
+  }, [rxTrackerData, selectedRxStatus, searchHCP, searchAccount, searchPatient]);
+  
     return (
         <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative z-50 h-screen">
         <Header_Navigation/>
@@ -132,7 +148,7 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                     />
                                 </span>
                                 <Pagination
-                                        totalPosts={data.length}
+                                        totalPosts={filteredData.length}
                                         postsPerPage={postsPerPage}
                                         setCurrentPage={setCurrentPage}
                                         currentPage={currentpage}
@@ -165,31 +181,7 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                             </tr>
                         </thead>
                         <tbody>
-                            {currentPosts.filter((item) => {
-                                    if (selectedRxStatus === '' || item.processStatus === selectedRxStatus) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .filter((item) => {
-                                    if (searchHCP === '' || item.hcpName.toLowerCase().includes(searchHCP.toLowerCase())) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .filter((item) => {
-                                    if (searchAccount === '' || (item.accountName && item.accountName.toLowerCase().includes(searchAccount.toLowerCase()))) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .filter((item) => {
-                                    if (searchPatient === '' || (item.patientName && item.patientName.toLowerCase().includes(searchPatient.toLowerCase()))) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .map((item, index) => (
+                        {filteredData.slice(firstPostIndex, lastPostIndex).map((item, index) => (
                                 <tr
                                     key={index}
                                     className={`${index % 2 === 0 ? "" : "bg-[#f6f6f6]  "
