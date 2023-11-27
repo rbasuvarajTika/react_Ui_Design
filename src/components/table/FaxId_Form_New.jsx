@@ -22,6 +22,7 @@ import { useParams } from 'react-router-dom';
 import Header_Navigation from '../header/Header_Navigation';
 import "../Background"
 import SaveIcon from '@mui/icons-material/Save';
+import { AdminContext } from '../../context/AdminContext';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const FaxId_Form_New = ({ }) => {
@@ -46,6 +47,8 @@ const FaxId_Form_New = ({ }) => {
   const [selectedThumbnail, setSelectedThumbnail] = useState(null);
   const [splitHistory, setSplitHistory] = useState([]);
   const [thumbnailPageNumbers, setThumbnailPageNumbers] = useState([]);
+  const { selectedUserData } = useContext(AdminContext);
+  const [userName, setUserName] = useState(null);
 
 
   const { faxId } = useParams();
@@ -147,7 +150,7 @@ const handleSplitPDfPageClick = () => {
   if (pagesToSplit.length > 0) {
     const selectedPagesString = pagesToSplit.join(',');
     axiosBaseURL
-      .post(`/api/v1/fax/sendPdfByPages`, { faxId ,pages: selectedPagesString })
+      .post(`/api/v1/fax/sendPdfByPages`, { faxId ,userName,pages: selectedPagesString })
       .then((response) => {
         console.log('Split PDF Successfully:', response.data);
         if (response.data.message === 'Successfully ') {
@@ -174,33 +177,31 @@ const parsePageRange = () => {
   return pages;
 };
 
- const handleSplitPDfRangeClick = () => {
-  // const token = localStorage.getItem('tokenTika');
-     axiosBaseURL
-       .get(`/api/v1/fax/splitPdfByRange/${faxId}/${fromPage}/${toPage}`, {
-         // headers: {
-         //   Authorization: `Bearer ${token}`,
-         // },
-       })
-       .then((response) => {
-         // Handle success
-         console.log('Split PDF Successfully:', response.data);
-         if(response.data.message == 'Successfully '){
-          toast.success("PDF Splitted Sucessfully")
+const handleSplitPDfRangeClick = () => {
+  const selectedPagesArray = parsePageRange();
+
+  if (selectedPagesArray.length > 0) {
+    const selectedPagesString = selectedPagesArray.join(',');
+    axiosBaseURL
+      .post(`/api/v1/fax/sendPdfByPages`, { faxId, userName,pages: selectedPagesString })
+      .then((response) => {
+        console.log('Split PDF Successfully:', response.data);
+        if (response.data.message === 'Successfully ') {
+          toast.success('PDF Splitted Successfully');
           setShowInputBoxes(false);
-         }else{
-          toast.error(response.data.message)
-         }
-         // You may want to update the state or perform other actions on success.
-       })
-       .catch((error) => {
-         // Handle error
-         setShowInputBoxes(false);
-         console.error('Keep Duplicate Error:', error);
-         // You can set an error state or show an error message to the user.
-       });
-  
- };
+        } else {
+          toast.error(response.data.message);
+        }
+      })
+      .catch((error) => {
+        setShowInputBoxes(false);
+        console.error('Split PDF Error:', error);
+      });
+  } else {
+    toast.error('Please select at least one page before splitting.');
+  }
+};
+
 
  const handleSaveSplit = () => {
   if (selectedOption === 'By Page') {
@@ -438,8 +439,19 @@ const handleOptionClick = (option) => {
         fetchSplitHistory();
       }, [faxId]);
 
-      
-  return (
+      console.log(" <h2>Fax ID Form for " ,userName );
+
+      useEffect(() => {
+        // Retrieve userId from localStorage
+        const storedUserName = localStorage.getItem('userName');
+        if (storedUserName) {
+            setUserName(storedUserName);
+        }
+    }, []);
+
+
+
+      return (
     <>
      <Header_Navigation/> 
     <section className="w-full h-full absolute top-0 left-0 overflow-hidden -z-10">  
@@ -520,7 +532,10 @@ const handleOptionClick = (option) => {
         <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
         <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
         </div>
-       
+        <div>
+      
+      {/* Other components using selectedUserData */}
+    </div>
             </div>
             </div>
             <div className='w-[calc(120vh-1rem)]  h-[calc(60vh-10rem)] bg-white rounded-2xl border-2 shadow-xl relative'>
@@ -606,6 +621,9 @@ const handleOptionClick = (option) => {
           <th className="px-2 py-3 border">Sl. No</th>
           <th className="px-2 py-3 border">Split File Name</th>
           <th className="px-2 py-3 border">Split Pages</th>
+          <th className="px-2 py-3 border">User Name</th>
+          <th className="px-2 py-3 border">Created Date</th>
+
         </tr>
       </thead>
       <tbody>
@@ -614,6 +632,9 @@ const handleOptionClick = (option) => {
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{index + 1}</td>
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitFileName}</td>
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitPages}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.createdUser}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.createdDate }</td>
+
           </tr>
         ))}
       </tbody>
