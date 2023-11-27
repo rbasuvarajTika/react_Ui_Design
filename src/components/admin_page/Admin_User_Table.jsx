@@ -53,10 +53,10 @@ const Admin_User_Table = () => {
         console.log(event.target.value);
         setSelectedUserStatus(event.target.value);
     };
-    const lastPostIndex = currentpage * postsPerPage;
-    const firstPostIndex = lastPostIndex - postsPerPage;
-    const currentPosts = faxData.slice(firstPostIndex, lastPostIndex);
     const npage = Math.ceil(faxData.length / postsPerPage);
+const lastPostIndex = currentpage * postsPerPage;
+const firstPostIndex = lastPostIndex - postsPerPage;
+const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
 
     useEffect(() => {
         setSortOrder(faxData);
@@ -67,10 +67,10 @@ const Admin_User_Table = () => {
         // Toggle the sorting order
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         setSortOrder(newSortOrder);
-
+    
         // Clone the data to avoid mutating the original array
-        const newData = [...faxData];
-
+        const newData = [...sortedData];
+    
         // Sort the data based on the "firstName" field
         newData.sort((a, b) => {
             // Change the comparison logic based on the sorting order
@@ -80,16 +80,12 @@ const Admin_User_Table = () => {
                 return b.firstName.localeCompare(a.firstName);
             }
         });
-
+    
         // Update the sorted data
         setSortedData(newData);
     };
-
-
+    
     console.log("sortOrder", sortOrder);
-
-
-
     return (
         <>
 
@@ -128,17 +124,7 @@ const Admin_User_Table = () => {
                             </div>
                             <div className='lg:block hidde'>
                                 <div className="flex items-center xl:gap-10 gap-4 ">
-                                    <div className="flex lg:flex-row flex-col gap-1">
-                                    <div className=" sm:hidden">
-                                         <Pagination
-                                        totalPosts={faxData.length}
-                                        postsPerPage={postsPerPage}
-                                        setCurrentPage={setCurrentPage}
-                                        currentPage={currentpage}
-                                        lastPostIndex={lastPostIndex}
-                                        npage={npage}
-                                    />
-                                    </div>
+                                    <div className="flex lg:flex-row flex-col gap-1">                                  
                                         <span className="hidde md:flex items-center gap-1 z-50 text-[#ffffff] text-sm  relative">
                                             <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={CreateNewUser}>Create New User</div>
                                         </span>
@@ -148,14 +134,14 @@ const Admin_User_Table = () => {
                                         </span>
                                     </div>
                                     <div className=" sm:block hidden">
-                                         <Pagination
-                                        totalPosts={faxData.length}
-                                        postsPerPage={postsPerPage}
-                                        setCurrentPage={setCurrentPage}
-                                        currentPage={currentpage}
-                                        lastPostIndex={lastPostIndex}
-                                        npage={npage}
-                                    />
+                                    <Pagination
+                        totalPosts={faxData.length}
+                        postsPerPage={postsPerPage}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentpage}
+                        lastPostIndex={lastPostIndex}
+                        npage={npage}
+                                       />
                                     </div>
                                    
                                 </div>
@@ -209,15 +195,16 @@ const Admin_User_Table = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {sortedData.filter((item) => {
-                                    const matchesSearch = search === "" || item.username.includes(search);
-                                    if (selectedUserStatus === "All Status") {
-                                        return matchesSearch;
-                                    } else {
-                                        const matchesUserStatus = selectedUserStatus === "" || item.userStatusFlag === selectedUserStatus;
-                                        return matchesSearch && matchesUserStatus;
-                                    }
-                                }).map((item, index) => (
+                            {sortedData.filter((item) => {
+                                       const matchesSearch = search === "" || item.firstName.includes(search);
+                                     if (selectedUserStatus === "All Status") {
+                                return matchesSearch;
+                               } else {
+                                const matchesUserStatus = selectedUserStatus === "" || item.userStatusFlag === selectedUserStatus;
+                                      return matchesSearch && matchesUserStatus;
+                           }
+                             })
+                                   .slice(firstPostIndex, lastPostIndex).map((item, index) => (
                                     <tr
                                         key={index}
                                         className={`${index % 2 === 0 ? "" : "bg-[#f2f3f5] "
