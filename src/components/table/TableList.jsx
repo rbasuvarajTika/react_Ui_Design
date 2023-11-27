@@ -192,6 +192,7 @@ const TableList = ({ }) => {
                                             <th className="px-6 py-3 ">Fax ID</th>
                                             <th className="px-6 py-3">Case ID</th>
                                             <th className="px-6 py-3">Fax Status</th>
+                                            <th className="px-6 py-3">No of Rx</th>
                                             <th className="px-6 py-3">Verified</th>
                                             <th className="px-6 py-3">Main Fax ID</th>
                                             <th className="px-6 py-3">Fax Date</th>
@@ -217,6 +218,7 @@ const TableList = ({ }) => {
                                                 </td>
                                                 <td className="px-6 py-4">{item.caseId}</td>
                                                 <td className="px-6 py-4 cursor-pointer" >{item.faxStatus}</td>
+                                                <td className="px-6 py-4 cursor-pointer" >{item.noOfRxs}</td>
                                                 <td className="px-6 py-4">{item.verifiedFlag}</td>
                                                 <td className="px-6 py-4">{item.dupeFaxId}</td>
                                                 <td className="px-6 py-4">{item.faxDate}</td>
