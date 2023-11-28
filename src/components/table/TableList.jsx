@@ -12,6 +12,7 @@ import { MdOutlineArrowDropDown } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import FaxId_Form_New from "./FaxId_Form_New";
+import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
 
 
@@ -29,11 +30,11 @@ const TableList = ({ }) => {
     const [pageNumber, setPageNumber] = useState(1);
     const [selectedOcrStatus, setSelectedOcrStatus] = useState('All Status'); // State for selected ocrStatus
     const [selectedFaxStatus, setSelectedFaxStatus] = useState('All Status');
-    const [filteredData, setFilteredData] = useState([]);
 
+    const [sortedData, setSortedData] = useState([]);
+    const [sortOrder, setSortOrder] = useState('asc');
 
-
-
+  
 
 
     const lastPostIndex = currentpage * postsPerPage;
@@ -65,7 +66,7 @@ const TableList = ({ }) => {
                     setFaxData(res?.data.data.data)
                     setSendDate(res?.data.data.data[0].faxDate)
                     setSendFaxNumber(res?.data.data.data[0].faxNumber)
-                    
+                    setSortedData(res?.data.data.data)
                     console.log(sendDate);
                     console.log(sendFaxNumber);
                     console.log(sendFaxId);
@@ -99,23 +100,37 @@ const TableList = ({ }) => {
         setSelectedFaxStatus(event.target.value);
     };
 
-    useEffect(() => {
-        // Filter the data when search, ocr status, or fax status changes
-        const filtered = faxData.filter((item) => {
-          const matchesSearch = search === "" || item.faxId.includes(search);
-          const matchesOcrStatus =
-            selectedOcrStatus === "All Status" || item.ocrStatus === selectedOcrStatus;
-          const matchesFaxStatus =
-            selectedFaxStatus === "All Status" || item.faxStatus === selectedFaxStatus;
+      const handleSort = () => {
+        // Toggle the sorting order
+        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        setSortOrder(newSortOrder);
     
-          return matchesSearch && matchesOcrStatus && matchesFaxStatus;
+        // Clone the data to avoid mutating the original array
+        const newData = [...sortedData];
+    
+        // Sort the data based on the "caseId" field
+        newData.sort((a, b) => {
+            // Change the comparison logic based on the sorting order
+            const caseIdA = parseInt(a.caseId, 10); // Convert to number
+            const caseIdB = parseInt(b.caseId, 10); // Convert to number
+    
+            if (newSortOrder === 'asc') {
+                return caseIdA - caseIdB;
+            } else {
+                return caseIdB - caseIdA;
+            }
         });
     
-        // Set the filtered data and reset the current page to 1
-        setFilteredData(filtered);
-        setCurrentPage(1);
-      }, [faxData, search, selectedOcrStatus, selectedFaxStatus]);
+        // Log the sorted data and other relevant values
+        console.log('Sorted Data:', newData);
+        console.log('Sort Order:', newSortOrder);
     
+        // Update the sorted data
+        setSortedData(newData);
+    };
+    
+    
+
     return (
         <>
             <ToastContainer />
@@ -157,7 +172,8 @@ const TableList = ({ }) => {
                                     <option value="Duplicate">Duplicate</option>
                                     <option value="New">New</option>
                                     <option value="Main">Main</option>
-                                        
+                                    <option value="MutiRx">MutiRx
+                                        </option>  
                                         </select>
                         
                                     </span>
@@ -173,7 +189,7 @@ const TableList = ({ }) => {
                                     <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
                                     </span>
                                     <Pagination
-                                                totalPosts={data.length}
+                                                totalPosts={faxData.length}
                                                 postsPerPage={postsPerPage}
                                                 setCurrentPage={setCurrentPage}
                                                 currentPage={currentpage}
@@ -189,21 +205,58 @@ const TableList = ({ }) => {
                                 <table className="w-full text-sm text-center table-auto  ">
                                     <thead className="">
                                         <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                                            <th className="px-6 py-3 ">Fax ID</th>
-                                            <th className="px-6 py-3">Case ID</th>
-                                            <th className="px-6 py-3">Fax Status</th>
-                                            <th className="px-6 py-3">No of Rx</th>
-                                            <th className="px-6 py-3">Verified</th>
-                                            <th className="px-6 py-3">Main Fax ID</th>
-                                            <th className="px-6 py-3">Fax Date</th>
-                                            <th className="px-6 py-3">Fax Time</th>
-                                            <th className="px-6 py-3 ">Sender Fax #</th>
-                                            <th className="px-6 py-3 ">OCR Status</th>
+                                            <th className="px-6 py-3 ">Fax ID <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                           
+                                            <th className="px-6 py-3">Case ID<div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3">Fax Status <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3">No of Rx <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3">Verified <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3">Main Fax ID <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3">Fax Date <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3">Fax Time <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3 ">Sender Fax # <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                            <th className="px-6 py-3 ">OCR Status <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {filteredData
-                                           .slice(firstPostIndex, lastPostIndex).map((item, index) => (
+                                    {sortedData.filter((item) => {
+                                       const matchesSearch = search === "" || item.faxId.includes(search);
+                                    const matchesOcrStatus = 
+                                    selectedOcrStatus === "All Status" || item.ocrStatus === selectedOcrStatus;
+                                    const matchesFaxStatus =
+                                    selectedFaxStatus === "All Status" || item.faxStatus === selectedFaxStatus;
+                                   return matchesSearch && matchesOcrStatus && matchesFaxStatus;
+                                      }).slice(firstPostIndex, lastPostIndex).map((item, index) => (
                                             <tr
                                                 key={index}
                                                 className={`${index % 2 === 0 ? "" : "bg-[#f2f3f5] "

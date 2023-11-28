@@ -82,8 +82,10 @@ function Table() {
     }
 
     const openAdminUserList = () => {
+        console.log("Clicked Admin User List");
         setOpenAdminList(true)
         setAdminList("User List")
+       
         setOpenTrackerList(false)
         setShoeForms(false)
         setOpenCase(false)
@@ -151,7 +153,7 @@ function Table() {
                         <span className="hidden md:block z-50" onClick={fax_handleClick}>Fax List</span>
                     </span>
                     <span className="flex items-center z-50 cursor-pointer" onClick={openRxTrackerList}>
-                        <InsertDriveFile />
+                        <InsertDriveFile  />
                         <span className="hidden md:block z-50" onClick={openRxTrackerList}> Rx Tracker List</span>
                     </span>
                     <span className="flex items-center gap-1 z-50 cursor-pointer" onClick={logout}>

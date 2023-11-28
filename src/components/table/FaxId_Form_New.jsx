@@ -149,8 +149,11 @@ const handleSplitPDfPageClick = () => {
 
   if (pagesToSplit.length > 0) {
     const selectedPagesString = pagesToSplit.join(',');
+    const splitType = selectedOption === 'By Page' ? 'BY_PAGE' : 'BY_RANGE';
+    console.log('Split Type:', splitType); // Log splitType here
+
     axiosBaseURL
-      .post(`/api/v1/fax/sendPdfByPages`, { faxId ,userName,pages: selectedPagesString })
+      .post(`/api/v1/fax/sendPdfByPages`, { faxId ,userName,pages: selectedPagesString ,splitType})
       .then((response) => {
         console.log('Split PDF Successfully:', response.data);
         if (response.data.message === 'Successfully ') {
@@ -183,7 +186,7 @@ const handleSplitPDfRangeClick = () => {
   if (selectedPagesArray.length > 0) {
     const selectedPagesString = selectedPagesArray.join(',');
     axiosBaseURL
-      .post(`/api/v1/fax/sendPdfByPages`, { faxId, userName,pages: selectedPagesString })
+      .post(`/api/v1/fax/sendPdfByPages`, { faxId, userName,pages: selectedPagesString ,splitType: 'BY_RANGE'})
       .then((response) => {
         console.log('Split PDF Successfully:', response.data);
         if (response.data.message === 'Successfully ') {
@@ -448,9 +451,7 @@ const handleOptionClick = (option) => {
             setUserName(storedUserName);
         }
     }, []);
-
-
-
+  
       return (
     <>
      <Header_Navigation/> 
@@ -620,8 +621,11 @@ const handleOptionClick = (option) => {
         <tr className='text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl'>
           <th className="px-2 py-3 border">Sl. No</th>
           <th className="px-2 py-3 border">Split File Name</th>
+          <th className="px-2 py-3 border">Split Type</th>
           <th className="px-2 py-3 border">Split Pages</th>
+          <th className="px-2 py-3 border">Split Attempts</th>
           <th className="px-2 py-3 border">User Name</th>
+          <th className="px-2 py-3 border">Split Status</th>
           <th className="px-2 py-3 border">Created Date</th>
 
         </tr>
@@ -631,8 +635,11 @@ const handleOptionClick = (option) => {
           <tr key={index}>
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{index + 1}</td>
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitFileName}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitType}</td>
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitPages}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitAttempts}</td>
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.createdUser}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitStatus}</td>
             <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.createdDate }</td>
 
           </tr>
