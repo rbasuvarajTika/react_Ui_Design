@@ -48,12 +48,14 @@ function Login() {
                     
                 ).then((res) => {                
                         if (res.data && res.data.token) {
-                            const { token,userId } = res.data;
+                            const { token,userId,userName } = res.data;
                             localStorage.setItem('token', token);
                             localStorage.setItem('tokenTika', token);
                             
                             localStorage.setItem('userId', userId);
-                            console.log(      'userId', userId);
+                            localStorage.setItem('userName', userName);
+                            console.log('userId', userId);
+                            console.log( 'userName', userName);
                          // Store "Remember Me" in cookies
                          if (rememberMe) {
                             Cookies.set('rememberMe', JSON.stringify(rememberMe));

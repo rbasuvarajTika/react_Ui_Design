@@ -1,4 +1,5 @@
 import "./Background.css"
+
 function Background() {
     return (
         <section className="w-full h-full absolute top-0 left-0 overflow-hidden -z-10">

@@ -6,7 +6,7 @@ import Forgot_Password from "./pages/forgot _page/Forgot_Password"
 import Forgot_UserId from "./pages/forgot _page/Forgot_UserId"
 import { DuplicateContext } from "./context/DuplicateContext"
 import { useEffect, useState } from "react"
-import { AdminContext } from "./context/AdminContext"
+import { AdminContext} from "./context/AdminContext"
 import { EditUserContext } from "./context/EditUserContext"
 import CaseDetails from "./pages/case_details/CaseDetails"
 import Duplicate_Fax from "./components/fax/Duplicate_Fax"
@@ -30,6 +30,7 @@ function App() {
   //admin section 
   const [openNewUser, setOpenNewUser] = useState(false)
   const [openEditUser, setOpenEditUser] = useState(false)
+  const [selectedUserData, setSelectedUserData] = useState(null);
 
   const navigate = useNavigate()
 
@@ -42,7 +43,7 @@ function App() {
 
   return (
     <DuplicateContext.Provider value={{ setOpenDuplicate, openDuplicate, setShoeForms, showForms, openNetSuit, setNetSuit}} >
-      <AdminContext.Provider value={{setOpenNewUser, openNewUser}}>
+      <AdminContext.Provider value={{setOpenNewUser, setSelectedUserData}}>
       <EditUserContext.Provider value={{setOpenEditUser, openEditUser}}>
         
         <Routes>

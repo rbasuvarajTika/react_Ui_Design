@@ -6,6 +6,7 @@ import Pagination from '../../components/Pagination'
 import { useNavigate } from 'react-router-dom';
 import Background from '../../components/Background';
 import Header_Navigation from '../../components/header/Header_Navigation'
+import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
 const Rx_Tracker_List = () => {
 
@@ -20,7 +21,9 @@ const [selectedRxStatus, setSelectedRxStatus] = useState('');
 const [searchHCP, setSearchHCP] = useState('');
 const [searchAccount, setSearchAccount] = useState('');
 const [searchPatient, setSearchPatient] = useState('');
-
+const [filteredData, setFilteredData] = useState([]);
+const [sortedData, setSortedData] = useState([]);
+const [sortOrder, setSortOrder] = useState('asc');
 
 
  const [patientData, setPatientData] = useState({});
@@ -55,6 +58,7 @@ useEffect(() => {
     })
     .then((response) => {
         setRxTrackerData(response.data.data); 
+        setSortedData(response.data.data)
         console.log(response.data.data);
         console.log(response.data.data[0].trnRxId);
         settrnRxId(response.data.data[0].trnRxId);
@@ -79,6 +83,36 @@ const currentPosts = rxTrackerData.slice(firstPostIndex, lastPostIndex);
 const npage = Math.ceil(rxTrackerData.length / postsPerPage);
 
 
+
+const handleSort = () => {
+    // Toggle the sorting order
+    const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    setSortOrder(newSortOrder);
+
+    // Clone the data to avoid mutating the original array
+    const newData = [...sortedData];
+
+    // Sort the data based on the "caseId" field
+    newData.sort((a, b) => {
+        // Change the comparison logic based on the sorting order
+        const trnRxIdA = parseInt(a.trnRxId, 10); // Convert to number
+        const trnRxIdB = parseInt(b.trnRxId, 10); // Convert to number
+
+        if (newSortOrder === 'asc') {
+            return trnRxIdA - trnRxIdB;
+        } else {
+            return trnRxIdB - trnRxIdA;
+        }
+    });
+
+    // Log the sorted data and other relevant values
+    console.log('Sorted Data:', newData);
+    console.log('Sort Order:', newSortOrder);
+
+    // Update the sorted data
+    setSortedData(newData);
+};
+  
     return (
         <div className=" px-2 pb-5 text-white  bg-[#1B4A68] min-h-fit w-screen relative z-50 h-screen">
         <Header_Navigation/>
@@ -132,7 +166,7 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                                     />
                                 </span>
                                 <Pagination
-                                        totalPosts={data.length}
+                                        totalPosts={filteredData.length}
                                         postsPerPage={postsPerPage}
                                         setCurrentPage={setCurrentPage}
                                         currentPage={currentpage}
@@ -149,47 +183,63 @@ const npage = Math.ceil(rxTrackerData.length / postsPerPage);
                     <table className="w-full text-sm text-center table-auto  ">
                         <thead className="">
                             <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                                <th className="px-6 py-3 ">Rx ID</th>
-                                <th className="px-6 py-3 ">Case ID</th>
-                                <th className="px-6 py-3">Process Status</th>
-                                <th className="px-6 py-3">Fulfillment <p>Status</p></th>
-                                <th className="px-6 py-3">NetSuite <p>ID</p></th>
-                                <th className="px-6 py-3">Fax <p>ID</p></th>
-                                <th className="px-6 py-3">Patient Name </th>
-                                <th className="px-6 py-3">Patient <p>ID</p></th>
-                                <th className="px-6 py-3">HCP</th>
-                                <th className="px-6 py-3 ">Account</th>
-                                <th className="px-6 py-3 ">Payer</th>
-                                <th className="px-6 py-3 ">Payer<p>Type</p></th>
+                                <th className="px-6 py-3 ">Rx ID<div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3 ">Case ID<div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3">Process Status<div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3">Fulfillment <p>Status</p><div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3">NetSuite <p>ID</p><div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3">Fax <p>ID</p><div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3">Patient Name <div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3">Patient <p>ID</p><div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3">HCP<div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3 ">Account<div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3 ">Payer<div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
+                                <th className="px-6 py-3 ">Payer<p>Type</p><div onClick={handleSort} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div> </th>
                                 
                             </tr>
                         </thead>
                         <tbody>
-                            {currentPosts.filter((item) => {
-                                    if (selectedRxStatus === '' || item.processStatus === selectedRxStatus) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .filter((item) => {
-                                    if (searchHCP === '' || item.hcpName.toLowerCase().includes(searchHCP.toLowerCase())) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .filter((item) => {
-                                    if (searchAccount === '' || (item.accountName && item.accountName.toLowerCase().includes(searchAccount.toLowerCase()))) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .filter((item) => {
-                                    if (searchPatient === '' || (item.patientName && item.patientName.toLowerCase().includes(searchPatient.toLowerCase()))) {
-                                        return true;
-                                    }
-                                    return false;
-                                })
-                                .map((item, index) => (
+                        {sortedData
+                                      .filter((item) => selectedRxStatus === '' || item.processStatus === selectedRxStatus)
+                                      .filter((item) => searchHCP === '' || item.hcpName.toLowerCase().includes(searchHCP.toLowerCase()))
+                                      .filter((item) => searchAccount === '' || (item.accountName && item.accountName.toLowerCase().includes(searchAccount.toLowerCase())))
+                                      .filter((item) => searchPatient === '' || (item.patientName && item.patientName.toLowerCase().includes(searchPatient.toLowerCase()))).slice(firstPostIndex, lastPostIndex).map((item, index) => (
                                 <tr
                                     key={index}
                                     className={`${index % 2 === 0 ? "" : "bg-[#f6f6f6]  "
