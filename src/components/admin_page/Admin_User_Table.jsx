@@ -196,7 +196,9 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
                             </thead>
                             <tbody>
                             {sortedData.filter((item) => {
-                                       const matchesSearch = search === "" || item.firstName.includes(search);
+                                       const searchTerm = search.toLowerCase();
+                                       const itemUsername = item.username.toLowerCase();
+                                       const matchesSearch = searchTerm === "" || itemUsername.includes(searchTerm);                                   
                                      if (selectedUserStatus === "All Status") {
                                 return matchesSearch;
                                } else {
