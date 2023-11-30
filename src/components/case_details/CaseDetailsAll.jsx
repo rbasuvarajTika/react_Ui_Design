@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { DuplicateContext } from '../../context/DuplicateContext';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import "react-pdf/dist/esm/Page/TextLayer.css";
@@ -22,6 +23,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import { ClickAwayListener } from '@mui/material';
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
+import DownloadIcon from '@mui/icons-material/Download';
+
 import SearchableDropdown from '../drop_down_search/SearchableDropdown';
 import DatePicker from '../../datepicker/Datepicker'
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -1282,8 +1285,46 @@ const zoomInSecond = () => {
       setRotates(0);
     }
   }
+  const downloadPdf = () => {
+    
+    axiosBaseURL({
+      method: 'GET',
+      url: `/api/v1/fax/download-fax-pdf/${faxId}`, // Replace with your API endpoint for downloading the PDF
+      responseType: 'blob',
+      headers: {
+        // Add headers if required
+      },
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'fax.pdf');
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((error) => {
+        console.error('Error downloading PDF:', error);
+      });
+  } 
 
+  const handleSendFaxEmail = () => {
 
+    axiosBaseURL
+      .post(`/api/v1/fax/faxRx/alertMail/${faxId}`, {
+        
+      })
+      .then((response) => {
+        // Handle success
+        console.log('Fax PDF sent successfully:', response.data);
+        toast.success('Fax PDF sent successfully');
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error sending fax PDF:', error);
+        toast.error('Error sending fax PDF. Please try again later.');
+      });
+  };
 
     return (
         <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-3rem)] no-scrollbar">
@@ -2374,9 +2415,12 @@ const zoomInSecond = () => {
                                         </div>
 
                                         <div className='flex flex-col gap-2 absolute top-1/2 md:right-4 right-2'>
+                                        <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer 'onClick={downloadPdf}> <DownloadIcon className='md:text-base text-xs' /></div>
                                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleRotates}> <ThreeSixtyIcon className='md:text-base text-xs' /></div>
                                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={zoomInSecond}> <ZoomInIcon className='md:text-base text-xs' /></div>
                                             <div className=' rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={zoomOutSecond}> <ZoomOutIcon className='md:text-base text-xs' /></div>
+                                            <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleSendFaxEmail} > <AttachEmailIcon className='md:text-base text-xs' /></div>
+
                                         </div>
 
                                         <div className='xl:w-[calc(100%-100px)] md:w-[calc(100%-150px)]   w-[calc(100%-70px)]   h-[calc(100%-100px)]  border mt-14 overflow-y-scroll absolute overflow-hidden no-scrollbar no-scrollbar  '>

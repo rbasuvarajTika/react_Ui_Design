@@ -23,7 +23,6 @@ import Header_Navigation from '../header/Header_Navigation';
 import "../Background"
 import SaveIcon from '@mui/icons-material/Save';
 import { AdminContext } from '../../context/AdminContext';
-import ReplayIcon from '@mui/icons-material/Replay';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const FaxId_Form_New = () => {
@@ -49,17 +48,6 @@ const FaxId_Form_New = () => {
   const [thumbnailPageNumbers, setThumbnailPageNumbers] = useState([]);
   const [userName, setUserName] = useState(null);
   const [sendNoOfRxs, setSendNoOfRxs] = useState(null)
-  const [faxIds, setfaxId] = useState(null)
-  const [splitFaxId, setSplitFaxId] = useState(null)
-  const [trnFaxSplitId, setTrnFaxSplitId] = useState(null)
-  const [pages, setpages] = useState(null)
-  const [splitType, setsplitType] = useState(null)
-  const [splitAttempts, setsplitAttempts] = useState(null)
-  const [splitStatus, setsplitStatus] = useState(null)
-
-
-  const [retryNeeded, setRetryNeeded] = useState(false);
-  const [showRetryConfirmation, setShowRetryConfirmation] = useState(false);
 
 
   const { faxId } = useParams();
@@ -81,7 +69,7 @@ const FaxId_Form_New = () => {
 // }, []); 
 
 useEffect(() => {
-  const fetchFaxList = async () => {
+  const fetchSplitHistory = async () => {
     try {
       const response = await axiosBaseURL.get(`/api/v1/fax/faxList`);
       const noOfRxs = response?.data.data.data[0].noOfRxs;
@@ -92,7 +80,7 @@ useEffect(() => {
     }
   };
 
-  fetchFaxList();
+  fetchSplitHistory();
 }, []);
 
 
@@ -427,7 +415,8 @@ const handleOptionClick = (option) => {
       
         // Update the rotate state with the valid rotation value
         setRotate(validRotation);
-        
+        // console.log('Rotated Pages:', rotatedPages);
+        // console.log('Page Rotation Data:', pageRotationData);
       };
       useEffect(() => {
         // This will log the updated state after it's been processed
@@ -442,6 +431,19 @@ const handleOptionClick = (option) => {
           [currentPage]: 0, // Set the rotation to 0 for the current page
         };
       
+        // Iterate over rotatedPages to build the rotationData object
+        // rotatedPages.forEach(({ page, rotation }) => {
+        //   rotationData[page] = rotation;
+        // });
+      
+        // const allPageNumbers = Array.from({ length: numPages }, (_, index) => index + 1);
+        // allPageNumbers.forEach((pageNumber) => {
+        //   if (rotationData[pageNumber] === undefined) {
+        //     rotationData[pageNumber] = 0;
+        //   }
+        // });
+      
+        // Make a POST request to the server endpoint to save rotation information
         axiosBaseURL.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, rotationData)
           .then((response) => {
             console.log('Rotation saved successfully:', response.data);
@@ -463,87 +465,23 @@ const handleOptionClick = (option) => {
 
       const buttonStyle = {
         position: 'absolute',
-          top: '1000px',
-        left: '1600px',
+          bottom: '110px',
+        right: '250px',
       };
-
-      const fetchSplitHistory = async () => {
-        try {
-          const response = await axiosBaseURL.get(`/api/v1/fax/faxRxSplitHist/${faxId}`);
-          const splitHistoryData = response.data.data;
-          console.log( response.data.data);
-          // Assuming splitHistoryData is an array of split history objects
-          setSplitHistory(splitHistoryData);
-        } catch (error) {
-          console.error('Error fetching split history:', error);
-        }
-      };
-      
-      
-      const handleRetryClick = async (index) => {
-        try {
-          // Assuming there is an update API for retrying failed splits
-          console.log('Retrying failed split at index:', index);
-      
-          const splitInfo = splitHistory[index];
-    const pagesToRetry = getRetryPages(splitInfo);
-
-          const retryData = {
-            faxId: splitHistory[index].faxId,
-            splitFaxId: splitHistory[index].splitFaxId,
-            trnFaxSplitId: splitHistory[index].trnFaxSplitId,
-            pages: splitHistory[index].splitPages,
-            userName,
-            splitType: splitHistory[index].splitType,
-            splitAttempts: splitHistory[index].splitAttempts,
-            splitStatus: splitHistory[index].splitStatus
-          };
-      
-          const response = await axiosBaseURL.post(`api/v1/fax/sendPdfByPagesRetrive`, retryData);
-      
-          // Check the response and handle accordingly
-          if (response.data.success) {
-            console.log('Failed split retried successfully.');
-            // Optionally, you can fetch the split history again to update the UI
-            fetchSplitHistory();
-          } else {
-            console.error('Failed to retry split:', response.data.message);
-            // Handle the case where retrying the failed split was not successful
-          }
-        } catch (error) {
-          console.error('Error retrying failed split:', error);
-          // Handle the case where an error occurred while retrying the failed split
-        } finally {
-          // Reset retryNeeded after retrying, whether successful or not
-          setRetryNeeded(false);
-        }
-      };
-      
       useEffect(() => {
+        const fetchSplitHistory = async () => {
+          try {
+            const response = await axiosBaseURL.get(`/api/v1/fax/faxRxSplitHist/${faxId}`);
+            setSplitHistory(response.data.data); // Assuming the API response is an array of split history objects
+          } catch (error) {
+            console.error('Error fetching split history:', error);
+          }
+        };
+    
         fetchSplitHistory();
       }, [faxId]);
 
-      const getRetryPages = (splitInfo) => {
-        if (splitInfo.splitType === 'BY_PAGE') {
-          // Assuming selectedPages is an array of selected pages
-          return selectedPages.join(',');
-        } else if (splitInfo.splitType === 'BY_RANGE') {
-          // Assuming fromPage and toPage are available for range selection
-          const pages = [];
-          for (let i = parseInt(fromPage); i <= parseInt(toPage); i++) {
-            pages.push(i);
-          }
-          return pages.join(',');
-        } else {
-          // Handle other split types if needed
-          return '';
-        }
-      };
-
-
-
-
-
+      console.log(" <h2>Fax ID Form for " ,userName );
 
       useEffect(() => {
         // Retrieve userId from localStorage
@@ -640,7 +578,6 @@ const handleOptionClick = (option) => {
 
         <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow shadow-[#00aee6] cursor-pointer ' onClick={handleZoomIn}> <ZoomInIcon className='md:text-base text-xs' /></div>
         <div className='text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer' onClick={handleZoomOut}> <ZoomOutIcon className='md:text-base text-xs' /></div>
-
         </div>
         <div>
       
@@ -746,21 +683,7 @@ const handleOptionClick = (option) => {
           <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitFileName}</td>
           <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitType}</td>
           <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitPages}</td>
-          <td className='bg-[#f2f2f2] text-gray-600 border px-10'>
-  {split.splitStatus === 'failure' ? (
-    <div className="flex items-center">
-      <span>{split.splitStatus}</span>
-      <div
-        className='ml-2 text-white rounded-lg md:w-7 w-5 h-5 md:h-7 bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer'
-        onClick={() => handleRetryClick(index)}
-      >
-        <ReplayIcon className='md:text-base text-xs' />
-      </div>
-    </div>
-  ) : (
-    <span>{split.splitStatus}</span>
-  )}
-</td>
+          <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.splitStatus}</td>
           <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.createdUser}</td>
           <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{split.createdDate}</td>
         </tr>
@@ -775,10 +698,9 @@ const handleOptionClick = (option) => {
 
 
           </div>
-          <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3'>
-
+         
           <div style={buttonStyle} className='text-white sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
-          </div>
+    
           </div>  
            
             </div>

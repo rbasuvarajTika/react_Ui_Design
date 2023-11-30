@@ -6,9 +6,8 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { DuplicateContext } from "../../context/DuplicateContext";
 import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { ToastContainer, toast } from 'react-toast'
-import axios from "axios";
+import axiosBaseURL from "../axios";
 import fax from "../../assets/pdf/fax.pdf"
-import { MdOutlineArrowDropDown } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import FaxId_Form_New from "./FaxId_Form_New";
@@ -24,6 +23,8 @@ const TableList = ({ }) => {
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
     const [faxData, setFaxData] = useState([])
     const [sendFaxId, setSendFaxId] =useState(null)
+    const [sendNoOfRxs, setSendNoOfRxs] = useState(null)
+
     const[sendDate, setSendDate] = useState(null)
     const[sendFaxNumber, setSendFaxNumber]=useState(null)
     const [numPages, setNumPages] = useState(null);
@@ -34,7 +35,8 @@ const TableList = ({ }) => {
     const [sortedData, setSortedData] = useState([]);
     const [sortOrder, setSortOrder] = useState('asc');
 
-  
+    const [loading, setLoading] = useState(true);
+
 
 
     const lastPostIndex = currentpage * postsPerPage;
@@ -51,14 +53,14 @@ const TableList = ({ }) => {
     const close_Form = () => {
         setShoeForms(false)
 
-        useEffect(() => {
+     
             toast.error("Please enter password")
-        }, [])
+        
     }
 
     useEffect(() => {
         try {
-            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/fax/faxList", {
+            axiosBaseURL.get("/api/v1/fax/faxList", {
                 headers: { "Content-Type": "application/json" }
             })
                 .then((res) => {
@@ -67,19 +69,23 @@ const TableList = ({ }) => {
                     setSendDate(res?.data.data.data[0].faxDate)
                     setSendFaxNumber(res?.data.data.data[0].faxNumber)
                     setSortedData(res?.data.data.data)
+                    setSendNoOfRxs(res?.data.data.data[0].noOfRxs);
+                    setLoading(false);
                     console.log(sendDate);
+                    console.log(faxData);
                     console.log(sendFaxNumber);
-                    console.log(sendFaxId);
+                    console.log(" in TableLIst",sendNoOfRxs);
                 })
         } catch (error) {
             console.log(error);
         }
     }, [])
 
-    const handleFaxStatus = (status, faxId) => {
+    const handleFaxStatus = (status, faxId,noOfRxs) => {
         
         setSendFaxId(faxId)
-     
+        setSendNoOfRxs(noOfRxs); 
+
         if(status === "Duplicate"){
             setSendFaxId(faxId)
             
@@ -129,7 +135,7 @@ const TableList = ({ }) => {
         setSortedData(newData);
     };
     
-    
+    const someValue = 5;
 
     return (
         <>
@@ -264,7 +270,7 @@ const TableList = ({ }) => {
                                             >
                                                 <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                                     <div className="cursor-pointer" 
-                                                   onClick={() => handleFaxStatus(item.faxStatus, item.faxId)}
+                                                   onClick={() => handleFaxStatus(item.faxStatus, item.faxId,item.noOfRxs)}
                                                     >
                                                         {item.faxId}
                                                     </div>
@@ -289,7 +295,7 @@ const TableList = ({ }) => {
 
 
                 {
-                  showForms && <FaxId_Form_New close_Form={close_Form} setShoeForm={setShoeForm} sendFaxId={sendFaxId}/>
+             showForms  &&  <FaxId_Form_New close_Form={close_Form} setShoeForm={setShoeForms} sendFaxId={sendFaxId}  sendNoOfRxs={sendNoOfRxs}/>
                 }
             </div>
         </>
