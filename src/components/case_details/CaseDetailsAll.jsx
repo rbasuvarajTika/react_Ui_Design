@@ -1608,15 +1608,15 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star   flex-col w-full '>
                                                     <p className='text-xs text-black    ' htmlFor="">Sales Rep Name:</p>
                                                     {!openNetSuit ? <>
-                                                      {/* <SearchableDropdown 
-                                                      options={patientNewData.repName}
-                                                      name="repName"
-                                                      label="repName"
-                                                      id="repName"
-                                                      selectedVal={patientNewData.repName || ''}
                                                       
-                                                      onChange={handlepatientInputChange}
-                                                      /> */}
+                                                      {/* <SearchableDropdown 
+                                                       options={patientNewData.repName}
+                                                       label="repName"
+                                                      id="repName"
+                                                          selectedVal={patientNewData.repName || ''}
+                                                       handleChange={handlepatientInputChange}
+                                                              /> */}
+
                                                         <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
                                                              type="text"
                                                              id="salesRepName"
