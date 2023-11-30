@@ -93,7 +93,9 @@ const TableList = ({ }) => {
             navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
         console.log(!showForm);
         } else if(status === "Main"||"New"){
-            navigate(`/nsrxmgt/fax-list-page/${faxId}`);
+            navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}`);
+            console.log('Handling fax status click');
+            console.log('Fax ID:', faxId, 'Number of Rxs:', noOfRxs);
            // setShoeForms(true)
              setShoeForms(false)
         }
@@ -295,7 +297,7 @@ const TableList = ({ }) => {
 
 
                 {
-             showForms  &&  <FaxId_Form_New close_Form={close_Form} setShoeForm={setShoeForms} sendFaxId={sendFaxId}  sendNoOfRxs={sendNoOfRxs}/>
+             showForms  &&  <FaxId_Form_New close_Form={close_Form} setShoeForm={setShoeForms} sendFaxId={sendFaxId} />
                 }
             </div>
         </>

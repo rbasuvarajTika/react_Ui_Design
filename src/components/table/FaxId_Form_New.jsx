@@ -48,7 +48,7 @@ const FaxId_Form_New = () => {
   const [splitHistory, setSplitHistory] = useState([]);
   const [thumbnailPageNumbers, setThumbnailPageNumbers] = useState([]);
   const [userName, setUserName] = useState(null);
-  const [sendNoOfRxs, setSendNoOfRxs] = useState(null)
+  //const [sendNoOfRxs, setSendNoOfRxs] = useState(null)
   const [faxIds, setfaxId] = useState(null)
   const [splitFaxId, setSplitFaxId] = useState(null)
   const [trnFaxSplitId, setTrnFaxSplitId] = useState(null)
@@ -62,43 +62,7 @@ const FaxId_Form_New = () => {
   const [showRetryConfirmation, setShowRetryConfirmation] = useState(false);
 
 
-  const { faxId } = useParams();
-//   useEffect(() => {
-//     try {
-//         axiosBaseURL.get("", {
-//             headers: { "Content-Type": "application/json" }
-//         })
-//         .then((res) => {
-           
-//             // Move inside the .then block
-//         })
-//         .catch((error) => {
-//             console.log(error);
-//         });
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }, []); 
-
-useEffect(() => {
-  const fetchFaxList = async () => {
-    try {
-      const response = await axiosBaseURL.get(`/api/v1/fax/faxList`);
-      const noOfRxs = response?.data.data.data[0].noOfRxs;
-      setSendNoOfRxs(noOfRxs);
-      console.log(" in TableList", sendNoOfRxs);
-    } catch (error) {
-      console.error('Error fetching split history:', error);
-    }
-  };
-
-  fetchFaxList();
-}, []);
-
-
-
-console.log("start", sendNoOfRxs);
-console.log("noOfRxs:", sendNoOfRxs );
+  const { faxId ,sendNoOfRxs} = useParams();
 
   const navigate = useNavigate();
   const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -484,10 +448,6 @@ const handleOptionClick = (option) => {
         try {
           // Assuming there is an update API for retrying failed splits
           console.log('Retrying failed split at index:', index);
-      
-          const splitInfo = splitHistory[index];
-    const pagesToRetry = getRetryPages(splitInfo);
-
           const retryData = {
             faxId: splitHistory[index].faxId,
             splitFaxId: splitHistory[index].splitFaxId,
@@ -504,6 +464,7 @@ const handleOptionClick = (option) => {
           // Check the response and handle accordingly
           if (response.data.success) {
             console.log('Failed split retried successfully.');
+            toast.success('Failed split retried successfully');
             // Optionally, you can fetch the split history again to update the UI
             fetchSplitHistory();
           } else {
@@ -522,26 +483,6 @@ const handleOptionClick = (option) => {
       useEffect(() => {
         fetchSplitHistory();
       }, [faxId]);
-
-      const getRetryPages = (splitInfo) => {
-        if (splitInfo.splitType === 'BY_PAGE') {
-          // Assuming selectedPages is an array of selected pages
-          return selectedPages.join(',');
-        } else if (splitInfo.splitType === 'BY_RANGE') {
-          // Assuming fromPage and toPage are available for range selection
-          const pages = [];
-          for (let i = parseInt(fromPage); i <= parseInt(toPage); i++) {
-            pages.push(i);
-          }
-          return pages.join(',');
-        } else {
-          // Handle other split types if needed
-          return '';
-        }
-      };
-
-
-
 
 
 
