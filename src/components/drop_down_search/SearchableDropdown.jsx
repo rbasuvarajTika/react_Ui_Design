@@ -66,14 +66,14 @@ const SearchableDropdown = ({
         {filter(options).map((option, index) => {
           return (
             <div
-              onClick={() => selectOption(option)}
-              className={`option ${
-                option[label] === selectedVal ? "selected" : ""
-              }`}
-              key={`${id}-${index}`}
-            >
+     onClick={() => selectOption(option)}
+          className={`option ${
+       option[label] === selectedVal ? "selected" : ""
+          }`}
+          key={option.id}  // Assuming there is an 'id' property in the 'options' array
+               >
               {option[label]}
-            </div>
+          </div>
           );
         })}
       </div>
