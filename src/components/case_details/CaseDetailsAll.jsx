@@ -27,6 +27,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 
 import SearchableDropdown from '../drop_down_search/SearchableDropdown';
 import DatePicker from '../../datepicker/Datepicker'
+import Datepicker from '../../datepicker/Datepicker';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 
@@ -96,9 +97,12 @@ const CaseDetailsAll = () => {
    const [ssnError, setSsnError] = useState('');
 
    const[dateOfBirthError,setDateOfBirthError]=useState('');
-   const [patientNewData, setPatientNewData] = useState([]);
    const [placeOfServices, setPlaceOfServices] = useState([]);
     const [orderTypeData, setOrderTypeData] = useState([]);
+    const [patientNewData, setPatientNewData] = useState({
+      dateOfBirth: '', // Initialize with an empty string or default value
+      // other fields...
+    });
   // Total Save Call
   const handleSavePatientData = () => {
     
@@ -189,7 +193,7 @@ const CaseDetailsAll = () => {
     };
 
     fetchPatientData();
-  }, []);
+  }, [trnRxId]);
 
   useEffect(() => {
     // Define a function to fetch distributor data from the API
@@ -1415,18 +1419,16 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
                                                     {!openNetSuit ? <>
-                                                  {/* <DatePicker 
+                                                      <Datepicker
+                                                    initialDate={new Date(patientNewData.dateOfBirth)}  // Set the initial date
+                                                    onChange={handlepatientInputChange}
+                                                            />
+                                                          {/* <input  className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
                                                           type="text"
                                                           id="dateOfBirth"
                                                           name="dateOfBirth"
                                                           value={patientNewData.dateOfBirth || ''}
                                                           onChange={handlepatientInputChange}     /> */}
-                                                          <input  className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
-                                                          type="text"
-                                                          id="dateOfBirth"
-                                                          name="dateOfBirth"
-                                                          value={patientNewData.dateOfBirth || ''}
-                                                          onChange={handlepatientInputChange}     />
                                                           <p className="text-red-500 text-xs">{dateOfBirthError}</p> 
 
                                                     </> : <>
