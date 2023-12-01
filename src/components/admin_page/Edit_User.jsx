@@ -24,7 +24,7 @@ const Edit_User = () =>{
             };
             axiosBaseURL({
                 method: 'GET',
-                url: `/api/v1/users/usersList/userId/${userId}`,
+                url: `/api/v1/users/usersDetails/userId/${userId}`,
                 headers: {
                  // Authorization: `Bearer ${token}`,
                 },
@@ -182,9 +182,9 @@ const Edit_User = () =>{
                                         <div className=' flex  justify-start  flex-col w-full '>
                                             <label className='text-xs text-black w-full text-start' htmlFor="">*User Id (primary email) </label>
                                             <input className='gap-1 bg-[#919194] rounded-2xl border border-gray-300 w-56  text-black py-0.5 text-xs t-1' 
-                                            name="username"
+                                            name="userName"
                                             type="text" 
-                                            value={space+userData.username}
+                                            value={space+userData.userName}
                                             onChange={handleInputChange}
                                             readOnly
     
@@ -229,9 +229,9 @@ const Edit_User = () =>{
                                         <div className=' flex  justify-start  flex-col w-full '>
                                             <label className='text-xs text-black w-full text-start' htmlFor="">Address: </label>
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
-                                            name="address"
+                                            name="address1"
                                             type="text" 
-                                            value={userData.address}
+                                            value={userData.address1}
                                             onChange={handleInputChange}
                                             />
                                         </div>
@@ -305,7 +305,8 @@ const Edit_User = () =>{
                                             <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                         type="text" 
                                             name="role"
-                                            value={userData.role}  >
+                                            value={userData.role} 
+                                            onChange={handleInputChange} >
                                     <MdOutlineArrowDropDown size={20} />
                                     <option value="Admin">Admin</option>
                                     <option value="Power User">Power User</option>
@@ -339,8 +340,8 @@ const Edit_User = () =>{
                                             <label className='text-xs text-black w- text-start' htmlFor="">Confirm Password:</label>
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs' 
                                             type="password"
-                                            name="confirm password"
-                                            value={userData.password}
+                                            name="confirmPassword"
+                                            value={userData.confirmPassword}
                                             onChange={handleInputChange}
                                             />
                                         </div>
@@ -353,9 +354,9 @@ const Edit_User = () =>{
                                             <label className='text-xs text-black w-full text-start' htmlFor="">User Status: </label>
                                             <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1' 
                                         type="text" 
-                                            name="status"
+                                            name="userStatusFlag"
                                             value={userData.userStatusFlag}
-                                                            >
+                                            onChange={handleInputChange}              >
                                     <MdOutlineArrowDropDown size={20} />
                                     <option value="Active">Active</option>
                                     <option value="Deactivated">Deactivated</option>

@@ -34,15 +34,15 @@ const SearchableDropdown = ({
     return "";
   };
 
-  const filter = (options) => {
-    if (options && Array.isArray(options)) {
-      return options.filter(
-        (option) =>
-          option[label].toLowerCase().indexOf(query.toLowerCase()) > -1
-      );
-    }
-    return [];
-  };
+ const filter = (options) => {
+  if (options && Array.isArray(options)) {
+    return options.filter((option) => {
+      const optionLabel = option[label] || ''; // Handle undefined or null label
+      return optionLabel.toLowerCase().indexOf(query.toLowerCase()) > -1;
+    });
+  }
+  return [];
+};
   return (
     <div className="dropdown">
       <div className="control">
@@ -66,14 +66,14 @@ const SearchableDropdown = ({
         {filter(options).map((option, index) => {
           return (
             <div
-     onClick={() => selectOption(option)}
-          className={`option ${
-       option[label] === selectedVal ? "selected" : ""
-          }`}
-          key={option.id}  // Assuming there is an 'id' property in the 'options' array
-               >
+              onClick={() => selectOption(option)}
+              className={`option ${
+                option[label] === selectedVal ? "selected" : ""
+              }`}
+              key={`${id}-${index}`}
+            >
               {option[label]}
-          </div>
+            </div>
           );
         })}
       </div>

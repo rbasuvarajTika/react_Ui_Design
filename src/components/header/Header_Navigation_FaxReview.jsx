@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import axiosBaseURL from "../axios";
 
 
-function Header_Navigation() {
+function Header_Navigation_FaxReview() {
     const [fax_name, set_fax_name] = useState(null)
     const [TrackerLIst, setTrackerLIst] = useState(null)
     const [AdminLIst, setAdminList] = useState(null)
@@ -70,13 +70,7 @@ function Header_Navigation() {
         fetchUserData();
       }, []);
 
-      useEffect(() => {
-        // Navigate when TrackerList changes
-        if (TrackerLIst === "RX Tracker List") {
-          console.log("Navigating to /nsrxmgt/rx-tracker-list");
-          navigate("/nsrxmgt/rx-tracker-list");
-        }
-      }, [TrackerLIst, navigate]);
+
     const fax_handleClick = () => {
         console.log("Inside fax")
         setTrackerLIst(null)
@@ -131,7 +125,7 @@ function Header_Navigation() {
                 </div>
                 <div>
                     <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
-                       Fax List
+                       Fax Review
 
                     </span>
                 </div>
@@ -163,4 +157,4 @@ function Header_Navigation() {
     )
 }
 
-export default Header_Navigation
+export default Header_Navigation_FaxReview
