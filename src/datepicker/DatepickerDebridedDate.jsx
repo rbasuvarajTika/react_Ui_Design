@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Datepicker.css';
 
-const Datepicker = ({ initialDate, onChange }) => {
+const DatepickerDebridedDate = ({ initialDate, onChange }) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Datepicker = ({ initialDate, onChange }) => {
     setSelectedDate(date);
     // Format the date to "MM/dd/yyyy" before passing it to the parent component
     const formattedDate = date ? `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}` : '';
-    onChange({ target: { name: 'dateOfBirth', value: formattedDate } });
+    onChange({ target: { name: 'debridedDate', value: formattedDate } });
   };
 
   return (
@@ -36,4 +36,4 @@ const Datepicker = ({ initialDate, onChange }) => {
   );
 };
 
-export default Datepicker;
+export default DatepickerDebridedDate;

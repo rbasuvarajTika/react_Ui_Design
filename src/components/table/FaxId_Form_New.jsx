@@ -49,7 +49,7 @@ const FaxId_Form_New = () => {
   const [splitHistory, setSplitHistory] = useState([]);
   const [thumbnailPageNumbers, setThumbnailPageNumbers] = useState([]);
   const [userName, setUserName] = useState(null);
-  const [sendNoOfRxs, setSendNoOfRxs] = useState(null)
+  //const [sendNoOfRxs, setSendNoOfRxs] = useState(null)
   const [faxIds, setfaxId] = useState(null)
   const [splitFaxId, setSplitFaxId] = useState(null)
   const [trnFaxSplitId, setTrnFaxSplitId] = useState(null)
@@ -63,7 +63,7 @@ const FaxId_Form_New = () => {
   const [showRetryConfirmation, setShowRetryConfirmation] = useState(false);
 
 
-  const { faxId } = useParams();
+  const { faxId,sendNoOfRxs } = useParams();
   //   useEffect(() => {
   //     try {
   //         axiosBaseURL.get("", {

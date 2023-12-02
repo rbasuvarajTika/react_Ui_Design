@@ -28,6 +28,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import SearchableDropdown from '../drop_down_search/SearchableDropdown';
 import DatePicker from '../../datepicker/Datepicker'
 import Datepicker from '../../datepicker/Datepicker';
+import DatepickerDebridedDate from '../../datepicker/DatepickerDebridedDate';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 
@@ -268,7 +269,7 @@ const CaseDetailsAll = () => {
     orderType: patientNewData.orderType,
     woundActive:patientNewData.woundActive,
     };
-  
+    console.log('Date before sending to server:', patientNewData.dateOfBirth);
     try {
       // Send a PUT request to your API to save the data and include the authorization header
       const response = await axiosBaseURL.put(`/api/v1/fax/rxpatient` ,dataToSave, {
@@ -282,17 +283,9 @@ const CaseDetailsAll = () => {
       if (response.status== 200) {
         // Data saved successfully
         setLoading(false);
+        console.log('Date received on the server:', receivedDate);
         toast.success("Patient Details Saved Sucessfully")
-        // toast('Patient Details Saved Sucessfully', {
-        //   position: toast.POSITION.TOP_RIGHT,
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        //   theme: "light",
-        //   });
+      
         setOnDirtyPatientSave(false);
       } else {
         setOnDirtyPatientSave(false);
@@ -1949,11 +1942,15 @@ const zoomInSecond = () => {
                                                     </td>
                                                     <td className="p-1 rounded-2xl border">
                                                     {!openNetSuit ?<>
-                                                      {/* <DatePicker type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
-                                                        onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}/> */}
-                                                         <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
+                                                      <DatepickerDebridedDate
+                                                  name="debridedDate"
+                                             
+                                              initialDate={new Date(row.debridedDate)}   // Make sure row.debridedDate is a valid date string
+                                        onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
+                                          />
+                                                         {/* <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                                         onChange={(e) => handleEditRowChange(index, 'debridedDate', e.target.value)}
-                                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/> 
+                                                        className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-20 text-xs'/>  */}
                                                             </>:<>
                                                     <input type="text" name="debridedDate" id="debridedDate" value={row.debridedDate} 
                                                         className=' text-black h-5 w-10 text-xs'/>
