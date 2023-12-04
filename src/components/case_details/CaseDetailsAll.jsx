@@ -283,7 +283,7 @@ const CaseDetailsAll = () => {
       if (response.status== 200) {
         // Data saved successfully
         setLoading(false);
-        console.log('Date received on the server:', receivedDate);
+        console.log('Auth Type:', authType);
         toast.success("Patient Details Saved Sucessfully")
       
         setOnDirtyPatientSave(false);

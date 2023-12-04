@@ -19,10 +19,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DownloadIcon from '@mui/icons-material/Download';
 import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import { useParams } from 'react-router-dom';
-import Header_Navigation from '../header/Header_Navigation';
 import "../Background"
 import SaveIcon from '@mui/icons-material/Save';
-import { AdminContext } from '../../context/AdminContext';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Header_Navigation_FaxReview from '../header/Header_Navigation_FaxReview';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -49,57 +47,9 @@ const FaxId_Form_New = () => {
   const [splitHistory, setSplitHistory] = useState([]);
   const [thumbnailPageNumbers, setThumbnailPageNumbers] = useState([]);
   const [userName, setUserName] = useState(null);
-  //const [sendNoOfRxs, setSendNoOfRxs] = useState(null)
-  const [faxIds, setfaxId] = useState(null)
-  const [splitFaxId, setSplitFaxId] = useState(null)
-  const [trnFaxSplitId, setTrnFaxSplitId] = useState(null)
-  const [pages, setpages] = useState(null)
-  const [splitType, setsplitType] = useState(null)
-  const [splitAttempts, setsplitAttempts] = useState(null)
-  const [splitStatus, setsplitStatus] = useState(null)
-
-
   const [retryNeeded, setRetryNeeded] = useState(false);
-  const [showRetryConfirmation, setShowRetryConfirmation] = useState(false);
-
-
   const { faxId,sendNoOfRxs } = useParams();
-  //   useEffect(() => {
-  //     try {
-  //         axiosBaseURL.get("", {
-  //             headers: { "Content-Type": "application/json" }
-  //         })
-  //         .then((res) => {
-
-  //             // Move inside the .then block
-  //         })
-  //         .catch((error) => {
-  //             console.log(error);
-  //         });
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-  // }, []); 
-
-  useEffect(() => {
-    const fetchFaxList = async () => {
-      try {
-        const response = await axiosBaseURL.get(`/api/v1/fax/faxList`);
-        const noOfRxs = response?.data.data.data[0].noOfRxs;
-        setSendNoOfRxs(noOfRxs);
-        console.log(" in TableList", sendNoOfRxs);
-      } catch (error) {
-        console.error('Error fetching split history:', error);
-      }
-    };
-
-    fetchFaxList();
-  }, []);
-
-
-
-  console.log("start", sendNoOfRxs);
-  console.log("noOfRxs:", sendNoOfRxs);
+  const [noOfRxs, setNoOfRxs] = useState(0);
 
   const navigate = useNavigate();
   const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -545,16 +495,16 @@ const FaxId_Form_New = () => {
 
 
 
-
   useEffect(() => {
-    // Retrieve userId from localStorage
-    const storedUserName = localStorage.getItem('userName');
-    if (storedUserName) {
-      setUserName(storedUserName);
-    }
-  }, []);
-  console.log("end", sendNoOfRxs);
-
+    // Convert sendNoOfRxs to a number, defaulting to 0 if it's null or NaN
+    const parsedNoOfRxs = sendNoOfRxs !== null ? parseInt(sendNoOfRxs, 10) : null;
+  
+    // Check if parsedNoOfRxs is a valid number, if not, default to 0
+    const updatedNoOfRxs = Number.isNaN(parsedNoOfRxs) ? 0 : parsedNoOfRxs;
+  
+    setNoOfRxs(updatedNoOfRxs);
+  }, [sendNoOfRxs]);
+console.log(sendNoOfRxs);
   return (
     <>
       <Header_Navigation_FaxReview />
@@ -570,11 +520,8 @@ const FaxId_Form_New = () => {
                 <div className='w-full flex md:flex-row flex-col gap-5'>
 
                   <div className="relative  md:w-[50%] w-full bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5.5rem)]  max-w2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">
-                    {/* <p className="text-2xl text-[#596edb] font-semibold absolute top-1 left-4">
-                           Fax ID Form for {faxId}
-                           </p> */}
                     <p className='text-[#596edb] text-xs absolute font-semibold top-0 left-10'>Fax ID: {faxId}</p>
-                    <p className='text-[#596edb] text-xs absolute font-semibold top-0 right-3'>No Of Rx: {sendNoOfRxs}</p>
+                    <p className='text-[#596edb] text-xs absolute font-semibold top-0 right-3'> No Of Rx: {noOfRxs}</p>
                     <div className="flex h-full">
                       {/* Left section for thumbnails */}
                       <div className="w-1/5 border mr-4 overflow-y-auto">

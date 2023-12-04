@@ -17,11 +17,24 @@ const Datepicker = ({ initialDate, onChange }) => {
   }, [initialDate]);
 
   const handleDateChange = date => {
+    // Ensure the date is a valid Date object
+    if (!date || isNaN(date.getTime())) {
+      setSelectedDate(null);
+      onChange({ target: { name: 'dateOfBirth', value: '' } });
+      return;
+    }
+  
+    // Convert the date to a string in "MM/dd/yyyy" format
+    const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
+  
+    // Set the selected date in the state
     setSelectedDate(date);
-    // Format the date to "MM/dd/yyyy" before passing it to the parent component
-    const formattedDate = date ? `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}` : '';
+  
+    // Update the parent component with the formatted date
     onChange({ target: { name: 'dateOfBirth', value: formattedDate } });
   };
+  
+  
 
   return (
     <div>
