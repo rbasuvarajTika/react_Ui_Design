@@ -21,6 +21,8 @@ import CaseDetailsNewPage from "./pages/case_details/CaseDetailsNewPage"
 import FaxId_Form_New from "./components/table/FaxId_Form_New"
 import Fax_show_project from "./components/table/Fax_show_project"
 import Test_fax from "./components/table/Test_fax"
+import NewRxCaseDetails from "./components/case_details/NewRxCaseDetails"
+import NewRx from "./pages/case_details/NewRx"
 
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false)
@@ -60,12 +62,12 @@ function App() {
           <Route path="/nsrxmgt/admin-edit-user/:userId" element={<Admin_Edit_User />} />
           <Route path="/nsrxmgt/admin-edit-profile/:userId" element={<Admin_Edit_Profile />} />
           <Route path="/nsrxmgt/fax-list" element={<Fax_List />} />
-          <Route path="/nsrxmgt/fax-list-page/:faxId/:sendNoOfRxs" element={<FaxId_Form_New />} />
+          <Route path="/nsrxmgt/fax-list-page/:faxId/:sendNoOfRxs/:trnFaxId" element={<FaxId_Form_New />} />
           <Route path="/nsrxmgt/duplicate-fax/:faxId" element={<Duplicate_Fax_Page />} />
           <Route path="/nsrxmgt/rx-tracker-list" element={<Rx_Tracker_List />} />
           <Route path="/nsrxmgt/case-details-new/:trnRxId/:paramFaxId/:netSuitId/:paramPatientId" element={<CaseDetailsNewPage />} />
           <Route path="/nsrxmgt/fax_project" element={<Fax_show_project />} />
-          <Route path="/nsrxmgt/test" element={<Test_fax />} />
+          <Route path="/nsrxmgt/newrx/:faxId/:trnFaxId" element={<NewRx />} />
          
         </Routes>
       </EditUserContext.Provider>  

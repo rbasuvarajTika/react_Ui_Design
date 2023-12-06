@@ -48,7 +48,7 @@ const FaxId_Form_New = () => {
   const [thumbnailPageNumbers, setThumbnailPageNumbers] = useState([]);
   const [userName, setUserName] = useState(null);
   const [retryNeeded, setRetryNeeded] = useState(false);
-  const { faxId,sendNoOfRxs } = useParams();
+  const { faxId,sendNoOfRxs,trnFaxId } = useParams();
   const [noOfRxs, setNoOfRxs] = useState(0);
 
   const navigate = useNavigate();
@@ -409,7 +409,7 @@ const FaxId_Form_New = () => {
   const inputBoxesStyle = {
     position: 'absolute',
     top: '70px',
-    left: '160px',
+    left: '340px',
   };
 
   const buttonStyle = {
@@ -520,8 +520,11 @@ console.log(sendNoOfRxs);
                 <div className='w-full flex md:flex-row flex-col gap-5'>
 
                   <div className="relative  md:w-[50%] w-full bg-[#ffffff] rounded-2xl shadow-md shadow-gray-300 h-[calc(100vh-5.5rem)]  max-w2xl md:pt-6 pb-10 py-3 md:pl-10 pl-5 md:pr-14 pr-10 mt-53">
-                    <p className='text-[#596edb] text-xs absolute font-semibold top-0 left-10'>Fax ID: {faxId}</p>
-                    <p className='text-[#596edb] text-xs absolute font-semibold top-0 right-3'> No Of Rx: {noOfRxs}</p>
+                    <p className='text-[#596edb] text-xs absolute font-semibold top-0 right-40'>Fax ID: {faxId}</p>
+                    <p className='text-[#596edb] text-xs absolute font-semibold top-0 right-5'> No Of Rx: {noOfRxs}</p>
+                    <div className='relative'>
+                      <p className='text-[#717171] text-sm absolute -top-6'>{pageNumber} of {numPages}</p>
+                    </div>
                     <div className="flex h-full">
                       {/* Left section for thumbnails */}
                       <div className="w-1/5 border mr-4 overflow-y-auto">
@@ -667,6 +670,7 @@ console.log(sendNoOfRxs);
                           </div>
 
                         )}
+                        
                       </div>
 
                       <div className=' hidde md:bottom-50 xl:top-72 top-60 right-1   cursor-pointer z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto'>
@@ -736,6 +740,12 @@ console.log(sendNoOfRxs);
                 </div>
                 <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3 pt-3'>
                   <div  className='text-white sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
+                  {noOfRxs === 0 && (
+        <div className='text-white sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer'  onClick={() => navigate(`/nsrxmgt/newrx/${faxId}/${trnFaxId}`)}>
+          New Rx
+        </div>
+      )}
+    
                 </div>
               
               </div>

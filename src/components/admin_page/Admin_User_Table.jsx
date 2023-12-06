@@ -10,7 +10,7 @@ import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
 const Admin_User_Table = () => {
     const [currentpage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostPerPage] = useState(14);
+    const [postsPerPage, setPostPerPage] = useState(10);
     const [faxData, setFaxData] = useState([]);
     const [search, setSearch] = useState("")
     const navigate = useNavigate()
@@ -63,27 +63,55 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
         console.log(";kjbkhbklh");
     }, [faxData])
 
-    const handleSort = () => {
-        // Toggle the sorting order
-        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    // const handleSort = () => {
+    //     // Toggle the sorting order
+    //     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    //     setSortOrder(newSortOrder);
+    
+    //     // Clone the data to avoid mutating the original array
+    //     const newData = [...sortedData];
+    
+    //     // Sort the data based on the "firstName" field
+    //     newData.sort((a, b) => {
+    //         // Change the comparison logic based on the sorting order
+    //         if (newSortOrder === 'asc') {
+    //             return a.firstName.localeCompare(b.firstName);
+    //         } else {
+    //             return b.firstName.localeCompare(a.firstName);
+    //         }
+    //     });
+    
+    //     // Update the sorted data
+    //     setSortedData(newData);
+    // };
+
+    const handleSort = (columnName) => {
+        const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
         setSortOrder(newSortOrder);
     
-        // Clone the data to avoid mutating the original array
         const newData = [...sortedData];
     
-        // Sort the data based on the "firstName" field
         newData.sort((a, b) => {
-            // Change the comparison logic based on the sorting order
-            if (newSortOrder === 'asc') {
-                return a.firstName.localeCompare(b.firstName);
+            const columnA = a[columnName];
+            const columnB = b[columnName];
+    
+            // Handle cases where the property may be null or undefined
+            const valueA = columnA !== null && columnA !== undefined ? columnA : "";
+            const valueB = columnB !== null && columnB !== undefined ? columnB : "";
+    
+            // Adjust the comparison logic based on the column type
+            if (typeof valueA === "string") {
+                // For string comparison
+                return newSortOrder === "asc" ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
             } else {
-                return b.firstName.localeCompare(a.firstName);
+                // For numeric comparison
+                return newSortOrder === "asc" ? valueA - valueB : valueB - valueA;
             }
         });
     
-        // Update the sorted data
         setSortedData(newData);
     };
+    
     
     console.log("sortOrder", sortOrder);
     return (
@@ -155,38 +183,38 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
                             <thead className="">
                                 <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
                                     <th className="px-6 py-3 ">User ID
-                                        <div onClick={handleSort} className="cursor-pointer">
+                                        <div  onClick={() => handleSort("username")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
                                     <th className="px-6 py-3">First Name
-                                        <div onClick={handleSort} className="cursor-pointer">
+                                        <div onClick={() => handleSort("firstName")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div>
                                     </th>
                                     <th className="px-6 py-3">Last Name
-                                        <div onClick={handleSort} className="cursor-pointer">
+                                        <div onClick={() => handleSort("lastName")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
                                     <th className="px-6 py-3">Phone
-                                        <div onClick={handleSort} className="cursor-pointer">
+                                        <div onClick={() => handleSort("phone")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
                                     <th className="px-6 py-3">Role
-                                        <div onClick={handleSort} className="cursor-pointer">
+                                        <div onClick={() => handleSort("role")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
                                     <th className="px-6 py-3">Type
-                                        <div onClick={handleSort} className="cursor-pointer">
+                                        <div onClick={() => handleSort("userType")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
                                     <th className="px-6 py-3">Status
-                                        <div onClick={handleSort} className="cursor-pointer">
+                                        <div onClick={() => handleSort("userStatusFlag")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>

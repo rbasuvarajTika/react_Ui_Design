@@ -32,11 +32,12 @@ import DatepickerDebridedDate from '../../datepicker/DatepickerDebridedDate';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 
-const CaseDetailsAll = () => {
-  const { trnRxId } = useParams();
+const NewRxCaseDetails = () => {
+  const { trnFaxId,faxId } = useParams();
   const { paramFaxId } = useParams();
   const { netSuitId } = useParams();
   const { paramPatientId } = useParams();
+  console.log("faxIddddd",faxId);
   const navigate = useNavigate();
 
   const [patientFirstName, setPatientFirstName] = useState('');
@@ -46,6 +47,8 @@ const CaseDetailsAll = () => {
   const [loading, setLoading] = useState(false)
 
   const [onDirtyPatientSave, setOnDirtyPatientSave] = useState(false)
+  const [onDirtyPatientPost, setOnDirtyPatientPost] = useState(false)
+
   const [onDirtyOrdertSave, setOnDirtyOrderSave] = useState(false)
   const [onDirtyOrderDelete, setOnDirtyOrderDelete] = useState(false)
 
@@ -68,8 +71,7 @@ const CaseDetailsAll = () => {
   const [distributorData, setDistributorData] = useState([]);
   const [states, setStates] = useState([]);
   const [patientId, setPatientId] = useState(''); 
-  const [trnFaxId, setTrnFaxId] = useState('');
-  const [faxId, setFaxId] = useState('');
+  const [trnRxId , setTrnFaxId] = useState('');
   const [patientData, setPatientData] = useState({
     state: '', // Initialize patientData with an object containing 'state' property
   });
@@ -106,9 +108,10 @@ const CaseDetailsAll = () => {
     });
   // Total Save Call
   const handleSavePatientData = () => {
-    
+    console.log('onDirtyPatientPost:', onDirtyPatientPost);
+    console.log('onDirtyPatientSave:', onDirtyPatientSave);
     if(onDirtyPatientSave){
-    handlePatientSave();
+         handlePatientSave();
     }
     if(onDirtyOrdertSave){
     handleWoundUpdate();
@@ -137,7 +140,7 @@ const CaseDetailsAll = () => {
     if(onDirtyOfficeSave){
       setOnDirtyOfficeSave();
     }
-    navigate(`/nsrxmgt/case-details-new/${trnRxId}/${paramFaxId}/${netSuitId}/${paramPatientId}`);
+    navigate(`/nsrxmgt/fax-list`);
   };
 // Total Save Call
 
@@ -242,58 +245,118 @@ const CaseDetailsAll = () => {
     fetchStateData();
   }, []);
 
+//   const handlePatientSave = async () => {
+//     // Get the token from localStorage
+//     setOnDirtyPatientSave(true);
+//     const token = localStorage.getItem('token');
+//     console.log("Patient Save Data Call")
+//     setLoading(true);
+//     // Send the data to your API for saving
+//     const dataToSave = {
+//     patientId: patientId,
+//     trnFaxId:trnFaxId,
+//     faxId:faxId,
+//     patientFirstName: patientNewData.patientFirstName,
+//     patientMiddleName:patientNewData.patientMiddleName,
+//     patientLastName:patientNewData.patientLastName,
+//     cellPhone: patientNewData.cellPhone,
+//     shipToAddress: patientNewData.shipToAddress,
+//     ssn: patientNewData.ssn,
+//     city:  patientNewData.city,
+//     state:patientNewData.state,
+//     zip: patientNewData.zip,
+//     dateOfBirth: patientNewData.dateOfBirth,
+//     repName: patientNewData.repName,
+//     repPhoneNo:patientNewData.repPhoneNo,
+//     placeOfService: patientNewData.placeOfService,
+//     distributorName: patientNewData.distributorName,
+//     orderType: patientNewData.orderType,
+//     woundActive:patientNewData.woundActive,
+//     };
+//     console.log('Date before sending to server:', patientNewData.dateOfBirth);
+//     try {
+//       // Send a PUT request to your API to save the data and include the authorization header
+//       const response = await axiosBaseURL.put(`/api/v1/fax/rxpatient` ,dataToSave, {
+//         method: 'PUT',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           //'Authorization': `Bearer ${token}`, // Include the token in the headers
+//         },
+//         body: JSON.stringify(dataToSave),
+//       });
+//       if (response.status== 200) {
+//         // Data saved successfully
+//         setLoading(false);
+//         console.log('Auth Type:', authType);
+//         toast.success("Patient Details Saved Sucessfully")
+      
+//         setOnDirtyPatientSave(false);
+//       } else {
+//         setOnDirtyPatientSave(false);
+//         setLoading(false);
+//       }
+//     } catch (error) {
+//       setLoading(false);
+//       setOnDirtyPatientSave(false);
+//       toast.error("Error to save Patient Details")
+//       console.error('Error saving data:', error);
+//     }
+//   };
   const handlePatientSave = async () => {
     // Get the token from localStorage
+    setOnDirtyPatientPost(true);
+    setOnDirtyPatientSave(false);
     const token = localStorage.getItem('token');
-    console.log("Patient Save Data Call")
+    console.log("Patient Post Data Call")
     setLoading(true);
     // Send the data to your API for saving
     const dataToSave = {
-    patientId: patientId,
-    trnFaxId:trnFaxId,
-    faxId:faxId,
-    patientFirstName: patientNewData.patientFirstName,
-    patientMiddleName:patientNewData.patientMiddleName,
-    patientLastName:patientNewData.patientLastName,
-    cellPhone: patientNewData.cellPhone,
-    shipToAddress: patientNewData.shipToAddress,
-    ssn: patientNewData.ssn,
-    city:  patientNewData.city,
-    state:patientNewData.state,
-    zip: patientNewData.zip,
-    dateOfBirth: patientNewData.dateOfBirth,
-    repName: patientNewData.repName,
-    repPhoneNo:patientNewData.repPhoneNo,
-    placeOfService: patientNewData.placeOfService,
-    distributorName: patientNewData.distributorName,
-    orderType: patientNewData.orderType,
-    woundActive:patientNewData.woundActive,
+      trnFaxId: trnFaxId,
+      trnRxId: '',
+      faxId: faxId,
+      patientFirstName: patientNewData.patientFirstName,
+      patientMiddleName: patientNewData.patientMiddleName,
+      patientLastName: patientNewData.patientLastName,
+      cellPhone: patientNewData.cellPhone,
+      shipToAddress: patientNewData.shipToAddress,
+      email:'',
+      ssn: patientNewData.ssn,
+      city: patientNewData.city,
+      state: patientNewData.state,
+      zip: patientNewData.zip,
+      dateOfBirth: patientNewData.dateOfBirth,
+      repName: patientNewData.repName,
+      repPhoneNo: patientNewData.repPhoneNo,
+      placeOfService: patientNewData.placeOfService,
+      distributorName: patientNewData.distributorName,
+      orderType: patientNewData.orderType,
+      woundActive: patientNewData.woundActive,
+      createdUser:''
     };
     console.log('Date before sending to server:', patientNewData.dateOfBirth);
     try {
-      // Send a PUT request to your API to save the data and include the authorization header
-      const response = await axiosBaseURL.put(`/api/v1/fax/rxpatient` ,dataToSave, {
-        method: 'PUT',
+      // Send a POST request to your API to save the data and include the authorization header
+      const response = await axiosBaseURL.post(`/api/v1/fax/patientDetailsInfo`, dataToSave, {
         headers: {
           'Content-Type': 'application/json',
           //'Authorization': `Bearer ${token}`, // Include the token in the headers
         },
-        body: JSON.stringify(dataToSave),
       });
-      if (response.status== 200) {
+  
+      if (response.status === 201) {
         // Data saved successfully
         setLoading(false);
         console.log('Auth Type:', authType);
-        toast.success("Patient Details Saved Sucessfully")
-      
-        setOnDirtyPatientSave(false);
+        toast.success("Patient Details Saved Successfully")
+  
+        setOnDirtyPatientPost(false);
       } else {
-        setOnDirtyPatientSave(false);
+        setOnDirtyPatientPost(false);
         setLoading(false);
       }
     } catch (error) {
       setLoading(false);
-      setOnDirtyPatientSave(false);
+      setOnDirtyPatientPost(false);
       toast.error("Error to save Patient Details")
       console.error('Error saving data:', error);
     }
@@ -1128,6 +1191,55 @@ const handleDeleteHcpConfirm = (index) => {
         toast.error("Error to save Health Care Provider Information");
       });
   };
+
+  // const handleSavNewOfficeClick = () => {
+
+  //   // Get the token from your authentication mechanism, e.g., localStorage
+  //   const token = localStorage.getItem('token');
+  //   setLoading(true);
+  //   // Define the request headers with the Authorization header
+  //   const config = {
+  //     headers: {
+  //       //Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+  //    console.log('Data Saving:', officeData);
+  //    const dataToSave = {
+  //     accountName: '',
+  //     phone: '',
+  //     email: faxId,
+  //     city: patientNewData.patientFirstName,
+  //     state: 'patientNewData.patientMiddleName',
+  //     zip: '',
+  //     createdUser:''
+  //   };
+  //   // Send a POST request to the API with the headers
+  //   axiosBaseURL
+  //     .post('/api/v1/fax/officeDetailsInfo', dataToSave, config)
+  //     .then((response) => {
+  //       // Handle the response from the API if needed
+  //       console.log('Data saved successfully:', response.data);
+  //       setLoading(false);
+  //       setOnDirtyOfficeSave(false)
+
+  //       toast.success("Health Care Provider Information Saved Sucessfully");
+  //     })
+  //     .catch((error) => {
+  //       // Handle any errors that occurred during the request
+  //       setLoading(false);
+  //       setOnDirtyOfficeSave(false)
+
+  //       console.error('Error saving data:', error);
+  //       toast.error("Error to save Health Care Provider Information");
+  //     });
+  // };
+
+
+
+
+
+
+
   const handleDeleteHcpClick = () => {
 
     // Get the token from your authentication mechanism, e.g., localStorage
@@ -1227,7 +1339,7 @@ const handleDeleteHcpConfirm = (index) => {
       setIsPdfLoading(true)
       axiosBaseURL({
         method: 'GET',
-        url: `/api/v1/fax/getFaxPdf/${paramFaxId}`,
+        url: `/api/v1/fax/getFaxPdf/${faxId}`,
         responseType: 'arraybuffer',
         headers: {
           //Authorization: `Bearer ${token}`,
@@ -1464,25 +1576,7 @@ const zoomInSecond = () => {
 
                                         <div className='px-5 pt-2 xl:w-full'>
                                             <div className='flex w-full xl:flex-row flex-col  justify-between gap-1 '>
-                                            <div className=' flex  justify-star  flex-col w-full '>
-                                                <label className='text-xs text-black w-28 text-start' htmlFor="">Ship to Address : </label>
-                                                    {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black h-5 text-xs mr-5 t-1'
-                                                            type="text"
-                                                            id="shipToAddress"
-                                                            name="shipToAddress"
-                                                            value={patientNewData.shipToAddress || ''}
-                                                            onChange={handlepatientInputChange}
-                                                        />
-                                                    </> : <>
-                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
-                                                             type="text"
-                                                             id="shipToAddress"
-                                                             name="shipToAddress"
-                                                             value={patientNewData.shipToAddress || ''}
-                                                        />
-                                                    </>}
-                                                </div>
+
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">Phone No : </label>
                                                     {!openNetSuit ? <>
@@ -1505,7 +1599,25 @@ const zoomInSecond = () => {
 
                                                 </div>
 
-                                               
+                                                <div className=' flex flex-col'>
+                                                    <p className='text-xs text-black  w-28' htmlFor="">Ship to Address :</p>
+                                                    {!openNetSuit ? <>
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black h-5 text-xs mr-5 t-1'
+                                                            type="text"
+                                                            id="shipToAddress"
+                                                            name="shipToAddress"
+                                                            value={patientNewData.shipToAddress || ''}
+                                                            onChange={handlepatientInputChange}
+                                                        />
+                                                    </> : <>
+                                                        <input className='w-30  text-black py-0.5 text-xs t-1'
+                                                             type="text"
+                                                             id="shipToAddress"
+                                                             name="shipToAddress"
+                                                             value={patientNewData.shipToAddress || ''}
+                                                        />
+                                                    </>}
+                                                </div>
 
 
                                                 <div className=' flex  justify-star  flex-col w-full '>
@@ -2592,4 +2704,4 @@ const zoomInSecond = () => {
     )
 }
 
-export default CaseDetailsAll
+export default NewRxCaseDetails
