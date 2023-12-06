@@ -17,7 +17,7 @@ import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
 const TableList = ({ }) => {
     const [currentpage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostPerPage] = useState(14)
+    const [postsPerPage, setPostPerPage] = useState(10)
     const [showForm, setShoeForm] = useState(false)
     const [search, setSearch] = useState("")
     const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -81,7 +81,7 @@ const TableList = ({ }) => {
         }
     }, [])
 
-    const handleFaxStatus = (status, faxId,noOfRxs) => {
+    const handleFaxStatus = (status, faxId,noOfRxs,trnFaxId) => {
         
         setSendFaxId(faxId)
         setSendNoOfRxs(noOfRxs); 
@@ -93,7 +93,7 @@ const TableList = ({ }) => {
             navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
         console.log(!showForm);
         } else if(status === "Main"||"New"){
-            navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}`);
+            navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}/${trnFaxId}`);
             console.log('Handling fax status click');
             console.log('Fax ID:', faxId, 'Number of Rxs:', noOfRxs);
            // setShoeForms(true)
@@ -108,36 +108,59 @@ const TableList = ({ }) => {
         setSelectedFaxStatus(event.target.value);
     };
 
-      const handleSort = () => {
-        // Toggle the sorting order
-        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    //   const handleSort = () => {
+    //     // Toggle the sorting order
+    //     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    //     setSortOrder(newSortOrder);
+    
+    //     // Clone the data to avoid mutating the original array
+    //     const newData = [...sortedData];
+    
+    //     // Sort the data based on the "caseId" field
+    //     newData.sort((a, b) => {
+    //         // Change the comparison logic based on the sorting order
+    //         const caseIdA = parseInt(a.caseId, 10); // Convert to number
+    //         const caseIdB = parseInt(b.caseId, 10); // Convert to number
+    
+    //         if (newSortOrder === 'asc') {
+    //             return caseIdA - caseIdB;
+    //         } else {
+    //             return caseIdB - caseIdA;
+    //         }
+    //     });
+    
+    //     // Log the sorted data and other relevant values
+    //     console.log('Sorted Data:', newData);
+    //     console.log('Sort Order:', newSortOrder);
+    
+    //     // Update the sorted data
+    //     setSortedData(newData);
+    // };
+    
+    const handleSort = (columnName) => {
+        const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
         setSortOrder(newSortOrder);
     
-        // Clone the data to avoid mutating the original array
         const newData = [...sortedData];
     
-        // Sort the data based on the "caseId" field
         newData.sort((a, b) => {
-            // Change the comparison logic based on the sorting order
-            const caseIdA = parseInt(a.caseId, 10); // Convert to number
-            const caseIdB = parseInt(b.caseId, 10); // Convert to number
+          const columnA = a[columnName];
+          const columnB = b[columnName];
     
-            if (newSortOrder === 'asc') {
-                return caseIdA - caseIdB;
-            } else {
-                return caseIdB - caseIdA;
-            }
+          // Adjust the comparison logic based on the column type
+          if (typeof columnA === "string") {
+            // For string comparison
+            return newSortOrder === "asc"
+              ? columnA.localeCompare(columnB)
+              : columnB.localeCompare(columnA);
+          } else {
+            // For numeric comparison
+            return newSortOrder === "asc" ? columnA - columnB : columnB - columnA;
+          }
         });
     
-        // Log the sorted data and other relevant values
-        console.log('Sorted Data:', newData);
-        console.log('Sort Order:', newSortOrder);
-    
-        // Update the sorted data
         setSortedData(newData);
-    };
-    
-    const someValue = 5;
+      };
 
     return (
         <>
@@ -213,44 +236,44 @@ const TableList = ({ }) => {
                                 <table className="w-full text-sm text-center table-auto  ">
                                     <thead className="">
                                         <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                                            <th className="px-6 py-3 ">Fax ID <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3 ">Fax ID <div onClick={() => handleSort("faxId")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div> </th>
                                            
-                                            <th className="px-6 py-3">Case ID<div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3">Case ID<div onClick={() => handleSort("caseId")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3">Fax Status <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3">Fax Status <div onClick={() => handleSort("faxStatus")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3">No of Rx <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3">No of Rx <div onClick={() => handleSort("noOfRxs")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3">Verified <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3">ACTION REQUIRED  <div onClick={() => handleSort("verifiedFlag")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3">Main Fax ID <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3">Main Fax ID <div onClick={() => handleSort("dupeFaxId")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3">Fax Date <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3">Fax Date <div onClick={() => handleSort("faxDate")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3">Fax Time <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3">Fax Time <div onClick={() => handleSort("faxDateTime")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3 ">Sender Fax # <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3 ">Sender Fax # <div onClick={() => handleSort("faxNumber")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                            <th className="px-6 py-3 ">OCR Status <div onClick={handleSort} className="cursor-pointer">
+                                            <th className="px-6 py-3 ">OCR Status <div onClick={() => handleSort("ocrStatus")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
@@ -272,7 +295,7 @@ const TableList = ({ }) => {
                                             >
                                                 <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                                                     <div className="cursor-pointer" 
-                                                   onClick={() => handleFaxStatus(item.faxStatus, item.faxId,item.noOfRxs)}
+                                                   onClick={() => handleFaxStatus(item.faxStatus, item.faxId,item.noOfRxs,item.trnFaxId)}
                                                     >
                                                         {item.faxId}
                                                     </div>
