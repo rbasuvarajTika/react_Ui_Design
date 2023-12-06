@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Datepicker.css';
 
-const Datepicker = ({ initialDate, onChange }) => {
+const DatepickerDebridedDate = ({ initialDate, onChange }) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
@@ -17,24 +17,11 @@ const Datepicker = ({ initialDate, onChange }) => {
   }, [initialDate]);
 
   const handleDateChange = date => {
-    // Ensure the date is a valid Date object
-    if (!date || isNaN(date.getTime())) {
-      setSelectedDate(null);
-      onChange({ target: { name: 'dateOfBirth', value: '' } });
-      return;
-    }
-  
-    // Convert the date to a string in "MM/dd/yyyy" format
-    const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
-  
-    // Set the selected date in the state
     setSelectedDate(date);
-  
-    // Update the parent component with the formatted date
-    onChange({ target: { name: 'dateOfBirth', value: formattedDate } });
+    // Format the date to "MM/dd/yyyy" before passing it to the parent component
+    const formattedDate = date ? `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}` : '';
+    onChange({ target: { name: 'debridedDate', value: formattedDate } });
   };
-  
-  
 
   return (
     <div>
@@ -49,4 +36,4 @@ const Datepicker = ({ initialDate, onChange }) => {
   );
 };
 
-export default Datepicker;
+export default DatepickerDebridedDate;

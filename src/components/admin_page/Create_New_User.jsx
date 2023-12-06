@@ -21,6 +21,7 @@ const [roleError, setRoleError] = useState('');
 const [requiredFirstName, setRequiredFirstName] = useState('');
 const [requiredLastName, setRequiredLastName] = useState('');
 const [passwordError, setPasswordError] = useState('');
+const [authType, setAuthType] = useState('Standard'); // 'Standard' or 'SAML'
 
 
 const [userData, setUserData] = useState({
@@ -115,6 +116,7 @@ Authorization: `Bearer ${token}`,
 };
 userData.email=userData.userName;
 userData.role=role;
+userData.type = authType;
 try {
 await axiosBaseURL.post("/api/v1/users/create/user",userData, config, {
     headers: { "Content-Type": "application/json" }
@@ -263,14 +265,22 @@ setUserData(updatedUserData);
 const [value, setValue] = useState("Select Role...");
 const [role, setRole] = useState("Select Role...");
 
+const toggleAuthType = () => {
+    console.log('Before toggleAuthType:', authType);
+    setAuthType((prevType) => {
+      const newType = prevType === 'Standard' ? 'SAML' : 'Standard';
+      console.log('After toggleAuthType:', newType);
+      return newType;
+    });
+  };
 return (
 <section className=" h-scree  flex justify-center  bg-[#ffffff] md:px-0 px-4 ">
 
 <div className="bg-[#ffffff] shadow-xl border rounded-3xl max-w-[800px] max-h-[450px] w-full h-full  mt-5 overflow-hidden overflow-y-scroll pb-5 no-scrollbar">
     <div className='pt-5 flex justify-center'>
         <div className=' border  h-5 rounded-xl w-40 relative'>
-            <div className='bg-orange-500 w-20 h-6 rounded-xl flex justify-center items-center absolute -top-[3px] text-xs'>Standard</div>
-            <p className='text-gray-400 absolute right-7 flex justify-center items-cente text-xs'>SMAL</p>
+            <div className='bg-orange-500 w-20 h-6 rounded-xl flex justify-center items-center absolute -top-[3px] text-xs' onClick={toggleAuthType}> {authType}</div>
+            <p className='text-gray-400 absolute right-7 flex justify-center items-center text-xs'>{authType === 'Standard' ? 'SAML' : 'Standard'}</p>
         </div>
         <ToastContainer />
     </div>
