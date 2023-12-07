@@ -307,6 +307,7 @@ const NewRxCaseDetails = () => {
     setOnDirtyPatientPost(true);
     setOnDirtyPatientSave(false);
     const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('userName');
     console.log("Patient Post Data Call")
     setLoading(true);
     // Send the data to your API for saving
@@ -331,7 +332,7 @@ const NewRxCaseDetails = () => {
       distributorName: patientNewData.distributorName,
       orderType: patientNewData.orderType,
       woundActive: patientNewData.woundActive,
-      createdUser:''
+      createdUser:userName
     };
     console.log('Date before sending to server:', patientNewData.dateOfBirth);
     try {
@@ -1158,41 +1159,7 @@ const handleDeleteHcpConfirm = (index) => {
   }, []);
 
 
-  const handleSaveOfficeClick = () => {
-
-    // Get the token from your authentication mechanism, e.g., localStorage
-    const token = localStorage.getItem('token');
-    setLoading(true);
-    // Define the request headers with the Authorization header
-    const config = {
-      headers: {
-        //Authorization: `Bearer ${token}`,
-      },
-    };
-     console.log('Data Saving:', officeData);
-     const dataToSave =officeData;
-    // Send a POST request to the API with the headers
-    axiosBaseURL
-      .put('/api/v1/fax/officeInfo', dataToSave, config)
-      .then((response) => {
-        // Handle the response from the API if needed
-        console.log('Data saved successfully:', response.data);
-        setLoading(false);
-        setOnDirtyOfficeSave(false)
-
-        toast.success("Health Care Provider Information Saved Sucessfully");
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the request
-        setLoading(false);
-        setOnDirtyOfficeSave(false)
-
-        console.error('Error saving data:', error);
-        toast.error("Error to save Health Care Provider Information");
-      });
-  };
-
-  // const handleSavNewOfficeClick = () => {
+  // const handleSaveOfficeClick = () => {
 
   //   // Get the token from your authentication mechanism, e.g., localStorage
   //   const token = localStorage.getItem('token');
@@ -1204,18 +1171,10 @@ const handleDeleteHcpConfirm = (index) => {
   //     },
   //   };
   //    console.log('Data Saving:', officeData);
-  //    const dataToSave = {
-  //     accountName: '',
-  //     phone: '',
-  //     email: faxId,
-  //     city: patientNewData.patientFirstName,
-  //     state: 'patientNewData.patientMiddleName',
-  //     zip: '',
-  //     createdUser:''
-  //   };
+  //    const dataToSave =officeData;
   //   // Send a POST request to the API with the headers
   //   axiosBaseURL
-  //     .post('/api/v1/fax/officeDetailsInfo', dataToSave, config)
+  //     .put('/api/v1/fax/officeInfo', dataToSave, config)
   //     .then((response) => {
   //       // Handle the response from the API if needed
   //       console.log('Data saved successfully:', response.data);
@@ -1233,6 +1192,49 @@ const handleDeleteHcpConfirm = (index) => {
   //       toast.error("Error to save Health Care Provider Information");
   //     });
   // };
+
+  const handleSaveOfficeClick = () => {
+
+    // Get the token from your authentication mechanism, e.g., localStorage
+    const token = localStorage.getItem('token');
+    setLoading(true);
+    // Define the request headers with the Authorization header
+    const config = {
+      headers: {
+        //Authorization: `Bearer ${token}`,
+      },
+    };
+    //  console.log('Data Saving:', officeData);
+    //  const dataToSave = {
+    //   accountName: '',
+    //   phone: '',
+    //   email: faxId,
+    //   city: patientNewData.patientFirstName,
+    //   state: 'patientNewData.patientMiddleName',
+    //   zip: '',
+    //   createdUser:''
+    // };
+    const dataToSave =officeData;
+    // Send a POST request to the API with the headers
+    axiosBaseURL
+      .post('/api/v1/fax/officeDetailsInfo', dataToSave, config)
+      .then((response) => {
+        // Handle the response from the API if needed
+        console.log('Data saved successfully:', response.data);
+        setLoading(false);
+        setOnDirtyOfficeSave(false)
+
+        toast.success("Health Care Provider Information Saved Sucessfully");
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        setLoading(false);
+        setOnDirtyOfficeSave(false)
+
+        console.error('Error saving data:', error);
+        toast.error("Error to save Health Care Provider Information");
+      });
+  };
 
 
 

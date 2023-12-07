@@ -412,11 +412,6 @@ const FaxId_Form_New = () => {
     left: '340px',
   };
 
-  const buttonStyle = {
-    position: 'absolute',
-    top: '1000px',
-    left: '1600px',
-  };
 
   const fetchSplitHistory = async () => {
     try {
