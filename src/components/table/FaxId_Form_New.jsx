@@ -387,14 +387,16 @@ const FaxId_Form_New = () => {
   }, [rotatedPages, pageRotationData]); // Dependency array ensures the effect runs when these values change
 
   const sendRotateToServer = () => {
-    const currentPage = pageNumber; // Get the current page number
-    const newRotation = rotate + 0;
-    const validRotation = newRotation % 360;
-     const rotationData = {
-       [currentPage]: validRotation, // Set the rotation to 0 for the current page
-    };
-
-    axiosBaseURL.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`,  rotationData)
+    const allRotationData = {};
+  
+    // Iterate over each rotated page and add rotation data to the object
+    rotatedPages.forEach((rotatedPage) => {
+      const { page, rotation } = rotatedPage;
+      allRotationData[page] = rotation;
+    });
+  
+    axiosBaseURL
+      .post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, allRotationData)
       .then((response) => {
         console.log('Rotation saved successfully:', response.data);
         toast.success('Rotation saved Successfully');
@@ -403,6 +405,7 @@ const FaxId_Form_New = () => {
         console.error('Error saving rotation:', error);
       });
   };
+  
   const handleSaveRotate = () => {
     sendRotateToServer(rotatedPages);
   };
@@ -547,13 +550,13 @@ console.log(sendNoOfRxs);
                       <div className="w-4/5 overflow-hidden">
                         <div className="text-black overflow-hidden overflow-x-scroll overflow-y-scroll h-screen max-h-[75vh]">
                           {!isloading ? (
-                            <Document file={pdfData} onLoadSuccess={onDocumentLoadSuccess}>
+                            <Document file={pdfData}  onLoadSuccess={onDocumentLoadSuccess}>
                               <Page
                                 pageNumber={pageNumber}
                                 scale={scalePopUp}
                                 width={400}
                                 height={200}
-                                rotate={rotate}
+                                 rotate={rotate}
                               />
                             </Document>
                           ) : (
