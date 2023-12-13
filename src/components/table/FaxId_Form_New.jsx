@@ -386,14 +386,15 @@ const FaxId_Form_New = () => {
     console.log('Page Rotation Data:', pageRotationData);
   }, [rotatedPages, pageRotationData]); // Dependency array ensures the effect runs when these values change
 
-  const sendRotateToServer = (rotatedPages) => {
+  const sendRotateToServer = () => {
     const currentPage = pageNumber; // Get the current page number
-
-    const rotationData = {
-      [currentPage]: 0, // Set the rotation to 0 for the current page
+    const newRotation = rotate + 0;
+    const validRotation = newRotation % 360;
+     const rotationData = {
+       [currentPage]: validRotation, // Set the rotation to 0 for the current page
     };
 
-    axiosBaseURL.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`, rotationData)
+    axiosBaseURL.post(`/api/v1/fax/rotateAndSavePdf/${faxId}`,  rotationData)
       .then((response) => {
         console.log('Rotation saved successfully:', response.data);
         toast.success('Rotation saved Successfully');
