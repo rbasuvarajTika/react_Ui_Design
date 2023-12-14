@@ -302,66 +302,155 @@ const NewRxCaseDetails = () => {
 //       console.error('Error saving data:', error);
 //     }
 //   };
-  const handlePatientSave = async () => {
-    // Get the token from localStorage
-    setOnDirtyPatientPost(true);
-    setOnDirtyPatientSave(false);
-    const token = localStorage.getItem('token');
-    const userName = localStorage.getItem('userName');
-    console.log("Patient Post Data Call")
-    setLoading(true);
-    // Send the data to your API for saving
-    const dataToSave = {
-      trnFaxId: trnFaxId,
-      trnRxId: '',
+
+const handlePatientSave = async () => {
+  // Get the token from localStorage
+  setOnDirtyPatientPost(true);
+  setOnDirtyPatientSave(false);
+  const token = localStorage.getItem('token');
+  const userName = localStorage.getItem('userName');
+  setLoading(true);
+
+  try {
+    // Make the first API call to get trnFaxId
+    const faxApiPayload = {
       faxId: faxId,
-      patientFirstName: patientNewData.patientFirstName,
-      patientMiddleName: patientNewData.patientMiddleName,
-      patientLastName: patientNewData.patientLastName,
-      cellPhone: patientNewData.cellPhone,
-      shipToAddress: patientNewData.shipToAddress,
-      email:'',
-      ssn: patientNewData.ssn,
-      city: patientNewData.city,
-      state: patientNewData.state,
-      zip: patientNewData.zip,
-      dateOfBirth: patientNewData.dateOfBirth,
-      repName: patientNewData.repName,
-      repPhoneNo: patientNewData.repPhoneNo,
-      placeOfService: patientNewData.placeOfService,
-      distributorName: patientNewData.distributorName,
-      orderType: patientNewData.orderType,
-      woundActive: patientNewData.woundActive,
-      createdUser:userName
+      faxNumber: '',
+      faxStatus: 'LT',
+      processStatus: '',
+      rxStatus: '',
+      faxDate: '',
+      faxFilename: '',
+      faxPages: '',
+      faxCallerId: '',
+      faxUrl: '',
+      createdUser: userName
     };
-    console.log('Date before sending to server:', patientNewData.dateOfBirth);
-    try {
-      // Send a POST request to your API to save the data and include the authorization header
-      const response = await axiosBaseURL.post(`/api/v1/fax/patientDetailsInfo`, dataToSave, {
+
+    const faxApiResponse = await axiosBaseURL.post('/api/v1/fax/addTrnFaxRxDetails', faxApiPayload, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (faxApiResponse.status === 200) {
+      const newTrnFaxId = faxApiResponse.data.data;
+      console.log('newTrnFaxId',newTrnFaxId);
+      // Use trnFaxId in the dataToSave object
+      const dataToSave = {
+        trnFaxId: newTrnFaxId,
+        trnRxId: '',
+        faxId: faxId,
+        patientFirstName: patientNewData.patientFirstName,
+        patientMiddleName: patientNewData.patientMiddleName,
+        patientLastName: patientNewData.patientLastName,
+        cellPhone: patientNewData.cellPhone,
+        shipToAddress: patientNewData.shipToAddress,
+        email:'',
+        ssn: patientNewData.ssn,
+        city: patientNewData.city,
+        state: patientNewData.state,
+        zip: patientNewData.zip,
+        dateOfBirth: patientNewData.dateOfBirth,
+        repName: patientNewData.repName,
+        repPhoneNo: patientNewData.repPhoneNo,
+        placeOfService: patientNewData.placeOfService,
+        distributorName: patientNewData.distributorName,
+        orderType: patientNewData.orderType,
+        woundActive: patientNewData.woundActive,
+        createdUser:userName
+      };
+
+      console.log('Data before sending to server:', dataToSave);
+
+      // Continue with the rest of your handlePatientSave logic
+      const response = await axiosBaseURL.post('/api/v1/fax/patientDetailsInfo', dataToSave, {
         headers: {
           'Content-Type': 'application/json',
-          //'Authorization': `Bearer ${token}`, // Include the token in the headers
+          // 'Authorization': `Bearer ${token}`, // Include the token in the headers
         },
       });
-  
+
       if (response.status === 201) {
-        // Data saved successfully
         setLoading(false);
         console.log('Auth Type:', authType);
-        toast.success("Patient Details Saved Successfully")
-  
+        toast.success('Patient Details Saved Successfully');
         setOnDirtyPatientPost(false);
       } else {
         setOnDirtyPatientPost(false);
         setLoading(false);
       }
-    } catch (error) {
-      setLoading(false);
+    } else {
       setOnDirtyPatientPost(false);
-      toast.error("Error to save Patient Details")
-      console.error('Error saving data:', error);
+      setLoading(false);
     }
-  };
+  } catch (error) {
+    setLoading(false);
+    setOnDirtyPatientPost(false);
+    toast.error('Error saving Patient Details');
+    console.error('Error saving data:', error);
+  }
+};
+  // const handlePatientSave = async () => {
+  //   // Get the token from localStorage
+  //   setOnDirtyPatientPost(true);
+  //   setOnDirtyPatientSave(false);
+  //   const token = localStorage.getItem('token');
+  //   const userName = localStorage.getItem('userName');
+  //   console.log("Patient Post Data Call")
+  //   setLoading(true);
+  //   // Send the data to your API for saving
+  //   const dataToSave = {
+  //     trnFaxId: trnFaxId,
+  //     trnRxId: '',
+  //     faxId: faxId,
+  //     patientFirstName: patientNewData.patientFirstName,
+  //     patientMiddleName: patientNewData.patientMiddleName,
+  //     patientLastName: patientNewData.patientLastName,
+  //     cellPhone: patientNewData.cellPhone,
+  //     shipToAddress: patientNewData.shipToAddress,
+  //     email:'',
+  //     ssn: patientNewData.ssn,
+  //     city: patientNewData.city,
+  //     state: patientNewData.state,
+  //     zip: patientNewData.zip,
+  //     dateOfBirth: patientNewData.dateOfBirth,
+  //     repName: patientNewData.repName,
+  //     repPhoneNo: patientNewData.repPhoneNo,
+  //     placeOfService: patientNewData.placeOfService,
+  //     distributorName: patientNewData.distributorName,
+  //     orderType: patientNewData.orderType,
+  //     woundActive: patientNewData.woundActive,
+  //     createdUser:userName
+  //   };
+  //   console.log('Date before sending to server:', patientNewData.dateOfBirth);
+  //   try {
+  //     // Send a POST request to your API to save the data and include the authorization header
+  //     const response = await axiosBaseURL.post(`/api/v1/fax/patientDetailsInfo`, dataToSave, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         //'Authorization': `Bearer ${token}`, // Include the token in the headers
+  //       },
+  //     });
+  
+  //     if (response.status === 201) {
+  //       // Data saved successfully
+  //       setLoading(false);
+  //       console.log('Auth Type:', authType);
+  //       toast.success("Patient Details Saved Successfully")
+  
+  //       setOnDirtyPatientPost(false);
+  //     } else {
+  //       setOnDirtyPatientPost(false);
+  //       setLoading(false);
+  //     }
+  //   } catch (error) {
+  //     setLoading(false);
+  //     setOnDirtyPatientPost(false);
+  //     toast.error("Error to save Patient Details")
+  //     console.error('Error saving data:', error);
+  //   }
+  // };
 
   const handleStateChange = (event) => {
     setPatientData({ ...patientData, state: event.target.value });

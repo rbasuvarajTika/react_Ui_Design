@@ -94,6 +94,8 @@
             if (response.status === 201 || response.status === 200) {
                 // User was successfully updated
                 // You can handle success here, e.g., show a success message
+                
+                navigate(`/nsrxmgt/admin-user-list`)
                 toast.success("User Updated Successfully");
             } else {
                 // Handle errors, e.g., show an error message
