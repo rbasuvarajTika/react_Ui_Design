@@ -31,7 +31,7 @@ const FaxId_Form_New = () => {
   const [pdfData, setPdfData] = useState(null);
   const [isloading, setIsLoading] = useState(false)
   const [scalePopUp, setScalePopoup] = useState(1);
-  const [rotate, setRotate] = useState(0);
+  const [rotate, setRotate] = useState({});
   const [showInputBoxes, setShowInputBoxes] = useState(false);
   const [splitPage, setSplitPage] = useState('');
   const [fromPage, setFromPage] = useState('');
@@ -50,6 +50,8 @@ const FaxId_Form_New = () => {
   const [retryNeeded, setRetryNeeded] = useState(false);
   const { faxId,sendNoOfRxs,trnFaxId } = useParams();
   const [noOfRxs, setNoOfRxs] = useState(0);
+  const [pageDegree, setPageDegree] = useState([]);
+
 
   const navigate = useNavigate();
   const { setOpenDuplicate, openDuplicate, showForms, setShoeForms } = useContext(DuplicateContext)
@@ -94,6 +96,8 @@ const FaxId_Form_New = () => {
 
     fetchPdf();
   }, []);
+
+  
 
 
   const handleZoomOut = () => {
@@ -257,30 +261,62 @@ const FaxId_Form_New = () => {
     return canvas.toDataURL('image/png');
   };
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
+  const onDocumentLoadSuccess = async ({ numPages }) => {
     setNumPages(numPages);
-    generateThumbnails(numPages);
-
-    // Check if any pages are rotated and apply rotation
-    rotatedPages.forEach(({ page, rotation }) => {
-      const canvas = document.getElementById(`page-${page}`);
-      if (canvas) {
-        const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.save();
-        context.translate(canvas.width / 2, canvas.height / 2);
-        context.rotate((rotation * Math.PI) / 180);
-        context.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
-        context.restore();
-      }
-    });
-
-    // Pass the rotation to the Page component
-    const rotationForPage = pageRotationData[pageNumber] || 0;
-    setRotate(rotationForPage);
+  
+    // Load the main pages
+    for (let i = 1; i <= numPages; i++) {
+      await renderMainPage(i);
+    }
+  
+    // Generate thumbnails after main pages are loaded
+    await generateThumbnails(numPages);
+  
+    // Delay rendering for debugging purposes
+    setTimeout(() => {
+      // Check if any pages are rotated and apply rotation
+      rotatedPages.forEach(({ page, rotation }) => {
+        const canvas = document.getElementById(`page-${page}`);
+        if (canvas) {
+          const context = canvas.getContext('2d');
+          context.clearRect(0, 0, canvas.width, canvas.height);
+  
+          const thumbnailIndex = pageThumbnailNumbers.indexOf(page);
+          const thumbnailRotation = thumbnails[thumbnailIndex]?.rotation || 0;
+  
+          context.save();
+          context.translate(canvas.width / 2, canvas.height / 2);
+          context.rotate((thumbnailRotation * Math.PI) / 180);
+          context.drawImage(canvas, -canvas.width / 2, -canvas.height / 2);
+          context.restore();
+        }
+      });
+  
+      // Pass the rotation to the Page component
+      const rotationForPage = pageRotationData[pageNumber] || 0;
+      setRotate(rotationForPage);
+    }, 1000); // Delay for 1 second
   };
-
-
+  
+  
+  
+  const renderMainPage = async (pageNumber) => {
+    const canvas = document.getElementById(`page-${pageNumber}`);
+    if (canvas) {
+      const pdfPage = await pdf.getPage(pageNumber);
+      const context = canvas.getContext('2d');
+      const viewport = pdfPage.getViewport({ scale: 1 });
+  
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+  
+      await pdfPage.render({
+        canvasContext: context,
+        viewport,
+      }).promise;
+    }
+  };
+  
   const handleThumbnailClick = (pageIndex) => {
     setPageNumber(pageIndex + 1);
 
@@ -359,27 +395,23 @@ const FaxId_Form_New = () => {
 
 
   const handleRotate = () => {
-    const currentPage = pageNumber; // Get the current page number
-
-    const newRotation = rotate + 90;
-    const validRotation = newRotation % 360;
-
-    // Update the local state with the new rotation information
-    setRotatedPages((prevRotatedPages) => [
-      ...prevRotatedPages,
-      { page: currentPage, rotation: validRotation },
-    ]);
-
-    // Update the page rotation data state
-    setPageRotationData((prevData) => ({
-      ...prevData,
-      [currentPage]: validRotation,
+    const currentPage = pageNumber;
+  
+    const currentRotation = rotate[currentPage] || 0;
+    const newRotation = (currentRotation + 90) % 360; // Ensure the rotation is within [0, 90, 180, 270]
+  
+    console.log('Before Rotation Update:', rotate);
+  
+    // Update the local state with the new rotation information for the current page
+    setRotate((prevRotate) => ({
+      ...prevRotate,
+      [currentPage]: newRotation,
     }));
-
-    // Update the rotate state with the valid rotation value
-    setRotate(validRotation);
-
+  
+    console.log('After Rotation Update:', rotate);
   };
+  
+  
   useEffect(() => {
     // This will log the updated state after it's been processed
     console.log('Rotated Pages:', rotatedPages);
@@ -389,10 +421,9 @@ const FaxId_Form_New = () => {
   const sendRotateToServer = () => {
     const allRotationData = {};
   
-    // Iterate over each rotated page and add rotation data to the object
-    rotatedPages.forEach((rotatedPage) => {
-      const { page, rotation } = rotatedPage;
-      allRotationData[page] = rotation;
+    // Include the individual page rotations in the object
+    Object.keys(rotate).forEach((page) => {
+      allRotationData[page] = rotate[page];
     });
   
     axiosBaseURL
@@ -407,9 +438,50 @@ const FaxId_Form_New = () => {
   };
   
   const handleSaveRotate = () => {
-    sendRotateToServer(rotatedPages);
+    sendRotateToServer();
   };
-
+  useEffect(() => {
+    console.log('Component Rendered');
+  }, []);
+  
+  // Main useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosBaseURL.get(`/api/v1/fax/getFaxPdfRotation/${faxId}`);
+        const pageRotationData = response.data.pageRotation;
+  
+        console.log('Fetched Page Rotation Data:', pageRotationData);
+  
+        // Convert string values to numbers
+        const numericPageRotationData = {};
+        Object.keys(pageRotationData).forEach((key) => {
+          numericPageRotationData[key] = Number(pageRotationData[key]);
+        });
+  
+        // Initialize the rotation state based on the fetched data
+        setRotate((prevRotate) => {
+          // Merge the existing state with the fetched data
+          const updatedRotate = { ...prevRotate, ...numericPageRotationData };
+  
+          console.log('After Setting Rotation:', updatedRotate);
+  
+          return updatedRotate;
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+  // Logging for State Changes
+  useEffect(() => {
+    console.log('Rotate State Updated:', rotate);
+  }, [rotate]);
+  
+  
   const inputBoxesStyle = {
     position: 'absolute',
     top: '70px',
@@ -421,7 +493,7 @@ const FaxId_Form_New = () => {
     try {
       const response = await axiosBaseURL.get(`/api/v1/fax/faxRxSplitHist/${faxId}`);
       const splitHistoryData = response.data.data;
-      console.log(response.data.data);
+     // console.log(response.data.data);
       // Assuming splitHistoryData is an array of split history objects
       setSplitHistory(splitHistoryData);
     } catch (error) {
@@ -503,7 +575,6 @@ const FaxId_Form_New = () => {
   
     setNoOfRxs(updatedNoOfRxs);
   }, [sendNoOfRxs]);
-console.log(sendNoOfRxs);
   return (
     <>
       <Header_Navigation_FaxReview />
@@ -556,7 +627,7 @@ console.log(sendNoOfRxs);
                                 scale={scalePopUp}
                                 width={400}
                                 height={200}
-                                 rotate={rotate}
+                                rotate={rotate[pageNumber]}
                               />
                             </Document>
                           ) : (
