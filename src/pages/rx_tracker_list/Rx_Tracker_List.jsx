@@ -112,16 +112,18 @@ useEffect(() => {
     newData.sort((a, b) => {
       const columnA = a[columnName];
       const columnB = b[columnName];
+      const valueA = columnA !== null ? columnA : "";
+      const valueB = columnB !== null ? columnB : "";
 
       // Adjust the comparison logic based on the column type
-      if (typeof columnA === "string") {
+      if (typeof valueA === "string") {
         // For string comparison
         return newSortOrder === "asc"
-          ? columnA.localeCompare(columnB)
-          : columnB.localeCompare(columnA);
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
       } else {
         // For numeric comparison
-        return newSortOrder === "asc" ? columnA - columnB : columnB - columnA;
+        return newSortOrder === "asc" ? valueA - valueB : valueB - valueA;
       }
     });
 
@@ -345,22 +347,7 @@ useEffect(() => {
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
-                    Patient <p>ID</p>
-                    <div onClick={() => handleSort("patientId")} className="cursor-pointer">
-                      {sortOrder === "asc" ? (
-                        <AiOutlineCaretUp
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      ) : (
-                        <AiOutlineCaretDown
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      )}
-                    </div>{" "}
-                  </th>
+                 
                   <th className="px-6 py-3">
                     HCP
                     <div onClick={() => handleSort("hcpName")} className="cursor-pointer">
@@ -393,38 +380,8 @@ useEffect(() => {
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3 ">
-                    Payer
-                    <div onClick={() => handleSort("primaryPayerName")} className="cursor-pointer">
-                      {sortOrder === "asc" ? (
-                        <AiOutlineCaretUp
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      ) : (
-                        <AiOutlineCaretDown
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      )}
-                    </div>{" "}
-                  </th>
-                  <th className="px-6 py-3 ">
-                    Payer<p>Type</p>
-                    <div  onClick={() => handleSort("payerType")}  className="cursor-pointer">
-                      {sortOrder === "asc" ? (
-                        <AiOutlineCaretUp
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      ) : (
-                        <AiOutlineCaretDown
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      )}
-                    </div>{" "}
-                  </th>
+                
+                 
                 </tr>
               </thead>
               <tbody>
@@ -494,11 +451,9 @@ useEffect(() => {
                       <td className="px-6 py-4">{item.netsuiteRxId}</td>
                       <td className="px-6 py-4">{item.faxId}</td>
                       <td className="px-6 py-4">{item.patientName}</td>
-                      <td className="px-6 py-4">{item.patientId}</td>
                       <td className="px-6 py-4">{item.hcpName}</td>
                       <td className="px-6 py-4">{item.accountName}</td>
-                      <td className="px-6 py-4">{item.primaryPayerName}</td>
-                      <td className="px-6 py-4">{item.payerType}</td>
+                      
                     </tr>
                   ))}
               </tbody>
