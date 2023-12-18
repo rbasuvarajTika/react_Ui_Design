@@ -362,7 +362,7 @@ const TableList = ({}) => {
                       </div>
                     </th>
                     <th className="px-6 py-3">
-                      ACTION REQUIRED{" "}
+                      Action Required{" "}
                       <div
                         onClick={() => handleSort("verifiedFlag")}
                         className="cursor-pointer"
@@ -420,7 +420,7 @@ const TableList = ({}) => {
                       </div>
                     </th>
                     <th className="px-6 py-3">
-                      HCP NAME{" "}
+                      HCP Name{" "}
                       <div
                         onClick={() => handleSort("hcpFirstName")}
                         className="cursor-pointer"
@@ -439,7 +439,7 @@ const TableList = ({}) => {
                       </div>
                     </th>
                     <th className="px-6 py-3">
-                      ACCOUNT{" "}
+                      Account{" "}
                       <div
                         onClick={() => handleSort("accountName")}
                         className="cursor-pointer"

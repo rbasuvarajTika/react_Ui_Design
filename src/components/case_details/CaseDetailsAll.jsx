@@ -248,6 +248,7 @@ const CaseDetailsAll = () => {
     console.log("Patient Save Data Call")
     setLoading(true);
     // Send the data to your API for saving
+    const userName = localStorage.getItem('userName');
     const dataToSave = {
     patientId: patientId,
     trnFaxId:trnFaxId,
@@ -268,6 +269,10 @@ const CaseDetailsAll = () => {
     distributorName: patientNewData.distributorName,
     orderType: patientNewData.orderType,
     woundActive:patientNewData.woundActive,
+    createdUser:userName,
+    updatedUser:userName,
+    userName:userName
+    
     };
     console.log('Date before sending to server:', patientNewData.dateOfBirth);
     try {
@@ -540,7 +545,10 @@ const handleEditRowChange = (index, column, value) => {
       icdCode: '',
       debridedDate:'',
       status:'insert',
-      createdUser:userName
+      createdUser:userName,
+      updatedUser:userName,
+      userName:userName
+      
     }
     console.log(updatedWoundData);
     setWoundData([...woundData, updatedWoundData]);
@@ -748,7 +756,9 @@ const handleEditRowChange = (index, column, value) => {
       wnd4: 0,
       wndCode:'',
       status:'insert',
-      createdUser:userName
+      createdUser:userName,
+      updatedUser:userName,
+      userName:userName
     }
     console.log(addKitData);
     setKitData([...kitData, addKitData]);
@@ -997,7 +1007,9 @@ useEffect(() => {
       signature_Date: '',
       profId:'',
       status:'insert',
-      createdUser:userName
+      createdUser:userName,
+      updatedUser:userName,
+      userName:userName
     }
     console.log(addHcpData);
     setHcpData([...hcpData, addHcpData]);
@@ -1147,10 +1159,13 @@ const handleDeleteHcpConfirm = (index) => {
       },
     };
      console.log('Delete Data Saving:', deleteHcp);
+     const userName = localStorage.getItem('userName');
+
      const dataToSave =deleteHcp;
+    
     // Send a POST request to the API with the headers
     axiosBaseURL
-      .post('/api/v1/fax/deleteHcpInfoList', dataToSave, config)
+      .post('/api/v1/fax/deleteHcpInfoList', dataToSave,userName, config)
       .then((response) => {
         // Handle the response from the API if needed
         console.log('Data saved successfully:', response.data);
