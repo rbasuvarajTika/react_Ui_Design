@@ -282,14 +282,16 @@ const CaseDetailsAll = () => {
       });
       if (response.status== 200) {
         // Data saved successfully
-        setLoading(false);
-        console.log('Auth Type:', authType);
+       
+        console.log('Auth Type:', response.status);
         toast.success("Patient Details Saved Sucessfully")
       
         setOnDirtyPatientSave(false);
       } else {
         setOnDirtyPatientSave(false);
+       
         setLoading(false);
+        toast.success("Error to save Patient Details")
       }
     } catch (error) {
       setLoading(false);
@@ -522,6 +524,7 @@ const handleEditRowChange = (index, column, value) => {
 
  const handleAddWound = () => {
   setOnDirtyOrderSave(true);
+  const userName = localStorage.getItem('userName');
     const updatedWoundData = {
       trnRxId:woundDataRxId,
       trnFaxId:woundDataTranFaxId,
@@ -536,7 +539,8 @@ const handleEditRowChange = (index, column, value) => {
       debrided: '',
       icdCode: '',
       debridedDate:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(updatedWoundData);
     setWoundData([...woundData, updatedWoundData]);
@@ -729,7 +733,7 @@ const handleEditRowChange = (index, column, value) => {
 
   const handleAddKit = () => {
     setOnDirtyKitSave(true);
-
+    const userName = localStorage.getItem('userName');
     const addKitData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -743,7 +747,8 @@ const handleEditRowChange = (index, column, value) => {
       wnd3: 0,
       wnd4: 0,
       wndCode:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(addKitData);
     setKitData([...kitData, addKitData]);
@@ -977,6 +982,7 @@ useEffect(() => {
 
   const handleAddHcp = () => {
     setOnDirtyHcpSave(true)
+    const userName = localStorage.getItem('userName');
     const addHcpData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -990,7 +996,8 @@ useEffect(() => {
       signature_Flag: '',
       signature_Date: '',
       profId:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(addHcpData);
     setHcpData([...hcpData, addHcpData]);

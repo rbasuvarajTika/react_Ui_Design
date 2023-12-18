@@ -42,6 +42,8 @@ const Validate_Note = () => {
   const [showSearchPatient, setShowSearchPatient] = useState(false);
   const [showSearchHcp, setShowSearchHcp] = useState(false);
   const { faxId, sendNoOfRxs, trnFaxId } = useParams();
+  const [faxIds, setFaxIds] = useState('');
+  const [selectedRxId, setSelectedRxId] = useState(null);
   const [noOfRxs, setNoOfRxs] = useState(0);
   const navigate = useNavigate();
 
@@ -78,6 +80,15 @@ const Validate_Note = () => {
 
     fetchPdf();
   }, []);
+
+  const handleCheckboxChange = (rxId) => {
+    // Toggle the checkbox status for the given rxId
+    setSelectedRxId((prevSelectedRxId) => {
+      // If the clicked checkbox is already selected, deselect it
+      return prevSelectedRxId === rxId ? null : rxId;
+    });
+  };
+
 
   const handleZoomOut = () => {
     console.log("clicked");
@@ -329,7 +340,8 @@ const Validate_Note = () => {
     const retryData = {
       
       userName:userName,
-      trnFaxId: trnFaxId,
+      trnFaxIdMain: faxId,
+      trnFaxIdDuplicate: faxIds,
     };
     axiosBaseURL
       .put(`/api/v1/fax/updateFaxRxAttachNotes`,retryData,{
@@ -347,33 +359,29 @@ const Validate_Note = () => {
       });
   };
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const userName = localStorage.getItem('userName');
-          const retryData = {
-            userName: userName,
-            trnFaxId: trnFaxId,
-          };
-    
-          const response =  axiosBaseURL.get("/api/v1/fax/showPrevRxHcp", retryData, );
-    
-          // Assuming response.data contains the desired data
-          setRxList( response.data);
-    
-          // Accessing properties of the first item in the array (index 0)
-          // if (response.data.length > 0) {
-          //   console.log("hcpName:", response.data[0].hcpName);
-          // }
-    
-          console.log("RxList:", response);
-        } catch (error) {
-          console.error("Error fetching data:", error);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userName = localStorage.getItem('userName');
+        const response = await axiosBaseURL.get(`/api/v1/fax/showPrevRxHcp/${userName}/${trnFaxId}`);
+
+        // Assuming response.data contains the desired data
+        setRxList(response.data.data);
+
+        // Accessing faxId from the first item in the array (index 0)
+        if (response.data.data.length > 0) {
+          setFaxIds(response.data.data[0].faxId);
+          console.log(response.data.data[0].faxId);
         }
-      };
-    
-      fetchData();
-    }, []);
+
+        console.log("RxList:", response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   
   return (
     <>
@@ -654,7 +662,52 @@ const Validate_Note = () => {
                           <p className="absolute top-0 text-[#e36c09] text-sm flex justify-center w-full">
                             List Of Rx
                           </p>
-                          {/* </div> */}
+                          <div className='pt-5'>
+  {rxlist.length > 0 ? (
+    <table className="w-full">
+      <thead className=''>
+        <tr className='text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl'>
+        <th className="px-2 py-3 border">Select</th>
+          <th className="px-2 py-3 border">RX ID</th>
+          <th className="px-2 py-3 border">Case ID</th>
+
+          <th className="px-2 py-3 border">Fax Date</th>
+          <th className="px-2 py-3 border">HCP</th>
+
+          <th className="px-2 py-3 border">Fax ID</th>
+
+
+          {/* Add more headers based on your data structure */}
+        </tr>
+      </thead>
+      <tbody>
+        {rxlist.map((rx, index) => (
+          <tr key={index}>
+         <td className='bg-[#f2f2f2] text-gray-600 border px-10'>
+                  <input
+                    type="checkbox"
+                    checked={selectedRxId === rx.trnRxId}
+                    onChange={() => handleCheckboxChange(rx.trnRxId)}
+                  />
+                </td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.trnRxId}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.caseId}</td>
+
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxDate}</td>
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td>
+
+            <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxId}</td>
+
+
+            {/* Add more cells based on your data structure */}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p className="text-center text-gray-600">No data available</p>
+  )}
+</div>
                         </div>
                       </div>
                     </div>

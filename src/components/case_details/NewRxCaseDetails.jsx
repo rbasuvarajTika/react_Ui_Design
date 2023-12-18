@@ -711,6 +711,8 @@ const handleEditRowChange = (index, column, value) => {
 
  const handleAddWound = () => {
   setOnDirtyOrderSave(true);
+  const userName = localStorage.getItem('userName');
+
     const updatedWoundData = {
       trnRxId:woundDataRxId,
       trnFaxId:trnFaxId,
@@ -725,7 +727,8 @@ const handleEditRowChange = (index, column, value) => {
       debrided: '',
       icdCode: '',
       debridedDate:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(updatedWoundData);
     setWoundData([...woundData, updatedWoundData]);
@@ -918,6 +921,7 @@ const handleEditRowChange = (index, column, value) => {
 
   const handleAddKit = () => {
     setOnDirtyKitSave(true);
+    const userName = localStorage.getItem('userName');
 
     const addKitData = {
       trnRxId:kitDataRxId,
@@ -932,7 +936,8 @@ const handleEditRowChange = (index, column, value) => {
       wnd3: 0,
       wnd4: 0,
       wndCode:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(addKitData);
     setKitData([...kitData, addKitData]);
@@ -1166,6 +1171,8 @@ useEffect(() => {
 
   const handleAddHcp = () => {
     setOnDirtyHcpSave(true)
+    const userName = localStorage.getItem('userName');
+
     const addHcpData = {
       trnRxId:kitDataRxId,
       trnFaxId:trnFaxId,
@@ -1179,7 +1186,8 @@ useEffect(() => {
       signature_Flag: '',
       signature_Date: '',
       profId:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(addHcpData);
     setHcpData([...hcpData, addHcpData]);
