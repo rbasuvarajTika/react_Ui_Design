@@ -37,7 +37,9 @@ const TableList = ({}) => {
   const [loading, setLoading] = useState(true);
   const [faxStatusOptions, setFaxStatusOptions] = useState([]);
   const [ocrStatusOptions, setOcrStatusOptions] = useState([]);
-
+  const [searchHCP, setSearchHCP] = useState("");
+  const [searchAccount, setSearchAccount] = useState("");
+  const [searchPatient, setSearchPatient] = useState("");
 
   const lastPostIndex = currentpage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
@@ -80,24 +82,42 @@ const TableList = ({}) => {
     }
   }, []);
 
+  // const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId) => {
+  //   setSendFaxId(faxId);
+  //   setSendNoOfRxs(noOfRxs);
+
+  //   if (status === "Duplicate") {
+  //     setSendFaxId(faxId);
+
+  //     //setOpenDuplicate(true)
+  //     navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
+  //     console.log(!showForm);
+  //   } else if (status === "Main" || "New") {
+  //     navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}/${trnFaxId}`);
+  //     console.log("Handling fax status click");
+  //     console.log("Fax ID:", faxId, "Number of Rxs:", noOfRxs);
+  //     // setShoeForms(true)
+  //     setShoeForms(false);
+  //   }
+  // };
+
   const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId) => {
     setSendFaxId(faxId);
     setSendNoOfRxs(noOfRxs);
 
-    if (status === "Duplicate") {
-      setSendFaxId(faxId);
-
-      //setOpenDuplicate(true)
+    if (noOfRxs === 0) {
+      // If noOfRxs is 0, navigate to "/nsrxmgt/validatenote"
+      navigate(`/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}`);
+    } else if (status === "Duplicate") {
+      // If noOfRxs is greater than 0 and status is "Duplicate", navigate to "/nsrxmgt/duplicate-fax/:faxId"
       navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
-      console.log(!showForm);
-    } else if (status === "Main" || "New") {
+    } else if (status === "Main" || status === "New") {
+      // If noOfRxs is greater than 0 and status is "Main" or "New", navigate to "/nsrxmgt/fax-list-page/:faxId/:noOfRxs/:trnFaxId"
       navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}/${trnFaxId}`);
-      console.log("Handling fax status click");
-      console.log("Fax ID:", faxId, "Number of Rxs:", noOfRxs);
-      // setShoeForms(true)
       setShoeForms(false);
     }
   };
+
   const handleOcrStatusChange = (event) => {
     setSelectedOcrStatus(event.target.value);
   };
@@ -143,15 +163,19 @@ const TableList = ({}) => {
       const columnA = a[columnName];
       const columnB = b[columnName];
 
+      // Add null checks before calling localeCompare
+      const valueA = columnA !== null ? columnA : "";
+      const valueB = columnB !== null ? columnB : "";
+
       // Adjust the comparison logic based on the column type
-      if (typeof columnA === "string") {
+      if (typeof valueA === "string") {
         // For string comparison
         return newSortOrder === "asc"
-          ? columnA.localeCompare(columnB)
-          : columnB.localeCompare(columnA);
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
       } else {
         // For numeric comparison
-        return newSortOrder === "asc" ? columnA - columnB : columnB - columnA;
+        return newSortOrder === "asc" ? valueA - valueB : valueB - valueA;
       }
     });
 
@@ -166,7 +190,7 @@ const TableList = ({}) => {
           <>
             <div className="w-full h-ful flex justify-between items-center p-2 ">
               <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
+                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
                   OCR Status:
                   <select
                     className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1"
@@ -184,7 +208,7 @@ const TableList = ({}) => {
                 </span>
               </div>
               <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">
+                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
                   Fax Status:
                   <select
                     className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black text-cen py-0.5 text-xs t-1"
@@ -202,13 +226,44 @@ const TableList = ({}) => {
                 </span>
               </div>
               <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                <span className="hidden md:flex items-center gap-0 z-50 text-[#194a69] text-sm  relative">
                   <label className="text-xs text-black  text-start" htmlFor="">
                     Search Fax ID:
                   </label>
                   <input
                     type="search"
                     onChange={(e) => setSearch(e.target.value)}
+                    className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                  />
+                </span>
+                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                  <label className="text-xs text-black  text-start" htmlFor="">
+                    Search HCP:
+                  </label>
+                  <input
+                    value={searchHCP}
+                    onChange={(e) => setSearchHCP(e.target.value)}
+                    className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                  />
+                </span>
+
+                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                  <label className="text-xs text-black  text-start" htmlFor="">
+                    Search Account:
+                  </label>
+                  <input
+                    value={searchAccount}
+                    onChange={(e) => setSearchAccount(e.target.value)}
+                    className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                  />
+                </span>
+                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                  <label className="text-xs text-black  text-start" htmlFor="">
+                    Search Patient:
+                  </label>
+                  <input
+                    value={searchPatient}
+                    onChange={(e) => setSearchPatient(e.target.value)}
                     className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                   />
                 </span>
@@ -344,6 +399,65 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
+
+                    <th className="px-6 py-3">
+                      Patient Name{" "}
+                      <div
+                        onClick={() => handleSort("patientFirstName")}
+                        className="cursor-pointer"
+                      >
+                        {sortOrder === "asc" ? (
+                          <AiOutlineCaretUp
+                            className="cursor-pointer"
+                            size={13}
+                          />
+                        ) : (
+                          <AiOutlineCaretDown
+                            className="cursor-pointer"
+                            size={13}
+                          />
+                        )}
+                      </div>
+                    </th>
+                    <th className="px-6 py-3">
+                      HCP NAME{" "}
+                      <div
+                        onClick={() => handleSort("hcpFirstName")}
+                        className="cursor-pointer"
+                      >
+                        {sortOrder === "asc" ? (
+                          <AiOutlineCaretUp
+                            className="cursor-pointer"
+                            size={13}
+                          />
+                        ) : (
+                          <AiOutlineCaretDown
+                            className="cursor-pointer"
+                            size={13}
+                          />
+                        )}
+                      </div>
+                    </th>
+                    <th className="px-6 py-3">
+                      ACCOUNT{" "}
+                      <div
+                        onClick={() => handleSort("accountName")}
+                        className="cursor-pointer"
+                      >
+                        {sortOrder === "asc" ? (
+                          <AiOutlineCaretUp
+                            className="cursor-pointer"
+                            size={13}
+                          />
+                        ) : (
+                          <AiOutlineCaretDown
+                            className="cursor-pointer"
+                            size={13}
+                          />
+                        )}
+                      </div>
+                    </th>
+
                     <th className="px-6 py-3">
                       Fax Date{" "}
                       <div
@@ -423,22 +537,47 @@ const TableList = ({}) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedData
-                    .filter((item) => {
-                      const matchesSearch =
-                        search === "" || item.faxId.includes(search);
-                      const matchesOcrStatus =
-                        selectedOcrStatus === "All Status" ||
-                        item.ocrStatus === selectedOcrStatus;
-                      const matchesFaxStatus =
-                        selectedFaxStatus === "All Status" ||
-                        item.faxStatus === selectedFaxStatus;
-                      return (
-                        matchesSearch && matchesOcrStatus && matchesFaxStatus
-                      );
-                    })
-                    .slice(firstPostIndex, lastPostIndex)
-                    .map((item, index) => (
+                {sortedData
+  .filter((item) => {
+    const matchesSearch =
+      search === "" || (item.faxId && item.faxId.includes(search));
+    const matchesOcrStatus =
+      selectedOcrStatus === "All Status" ||
+      (item.ocrStatus && item.ocrStatus === selectedOcrStatus);
+    const matchesFaxStatus =
+      selectedFaxStatus === "All Status" ||
+      (item.faxStatus && item.faxStatus === selectedFaxStatus);
+    const matchesHCP =
+      searchHCP === "" ||
+      (item.hcpFirstName &&
+        item.hcpFirstName.toLowerCase().includes(searchHCP.toLowerCase())) ||
+      (item.hcpLastName &&
+        item.hcpLastName.toLowerCase().includes(searchHCP.toLowerCase()));
+    const matchesAccount =
+      searchAccount === "" ||
+      (item.accountName &&
+        item.accountName.toLowerCase().includes(searchAccount.toLowerCase()));
+    const matchesPatient =
+      searchPatient === "" ||
+      (item.patientFirstName &&
+        item.patientFirstName
+          .toLowerCase()
+          .includes(searchPatient.toLowerCase())) ||
+      (item.patientLastName &&
+        item.patientLastName
+          .toLowerCase()
+          .includes(searchPatient.toLowerCase()));
+
+    return (
+      matchesSearch &&
+      matchesOcrStatus &&
+      matchesFaxStatus &&
+      matchesHCP &&
+      matchesAccount &&
+      matchesPatient
+    );
+  })
+  .slice(firstPostIndex, lastPostIndex).map((item, index) => (
                       <tr
                         key={index}
                         className={`${
@@ -469,6 +608,15 @@ const TableList = ({}) => {
                         </td>
                         <td className="px-6 py-4">{item.verifiedFlag}</td>
                         <td className="px-6 py-4">{item.dupeFaxId}</td>
+                        <td className="px-6 py-4">
+                          {item.patientFirstName}
+                          {item.patientLastName}
+                        </td>
+                        <td className="px-6 py-4">
+                          {item.hcpFirstName}
+                          {item.hcpLastName}
+                        </td>
+                        <td className="px-6 py-4">{item.accountName}</td>
                         <td className="px-6 py-4">{item.faxDate}</td>
                         <td className="px-6 py-4">{item.faxDateTime}</td>
                         <td className="px-6 py-4">{item.faxNumber}</td>
