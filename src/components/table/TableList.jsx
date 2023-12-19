@@ -1,15 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { data } from "../../Data/Data";
 import Pagination from "../Pagination";
-import FaxId_Form from "./FaxId_Form";
-import { IoMdArrowDropdown } from "react-icons/io";
 import { DuplicateContext } from "../../context/DuplicateContext";
-import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { ToastContainer, toast } from "react-toast";
 import axiosBaseURL from "../axios";
-import fax from "../../assets/pdf/fax.pdf";
 import { useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
 import FaxId_Form_New from "./FaxId_Form_New";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
@@ -81,25 +75,6 @@ const TableList = ({}) => {
       console.log(error);
     }
   }, []);
-
-  // const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId) => {
-  //   setSendFaxId(faxId);
-  //   setSendNoOfRxs(noOfRxs);
-
-  //   if (status === "Duplicate") {
-  //     setSendFaxId(faxId);
-
-  //     //setOpenDuplicate(true)
-  //     navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
-  //     console.log(!showForm);
-  //   } else if (status === "Main" || "New") {
-  //     navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}/${trnFaxId}`);
-  //     console.log("Handling fax status click");
-  //     console.log("Fax ID:", faxId, "Number of Rxs:", noOfRxs);
-  //     // setShoeForms(true)
-  //     setShoeForms(false);
-  //   }
-  // };
 
   const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId) => {
     setSendFaxId(faxId);
