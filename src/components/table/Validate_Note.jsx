@@ -363,7 +363,7 @@ const Validate_Note = () => {
     const fetchData = async () => {
       try {
         const userName = localStorage.getItem('userName');
-        const response = await axiosBaseURL.get(`/api/v1/fax/showPrevRxHcp/${userName}/5`);
+        const response = await axiosBaseURL.get(`/api/v1/fax/showPrevRxHcp/${userName}/${trnFaxId}`);
 
         // Assuming response.data contains the desired data
         setRxList(response.data.data);
