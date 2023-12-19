@@ -69,9 +69,7 @@ function App() {
           <Route path="/nsrxmgt/case-details-new/:trnRxId/:paramFaxId/:netSuitId/:paramPatientId" element={<CaseDetailsNewPage />} />
           <Route path="/nsrxmgt/fax_project" element={<Fax_show_project />} />
           <Route path="/nsrxmgt/newrx/:faxId/:trnFaxId" element={<NewRx />} />
-          <Route path="/nsrxmgt/validatenote/:faxId/:sendNoOfRxs/:trnFaxId" element={<Validate_Note />} />
-
-         
+          <Route path="/nsrxmgt/validatenote/:faxId/:sendNoOfRxs/:trnFaxId/:patientFirstName/:patientLastName/:hcpFirstName/:hcpLastName" element={<Validate_Note />} />    
         </Routes>
       </EditUserContext.Provider>  
       </AdminContext.Provider>

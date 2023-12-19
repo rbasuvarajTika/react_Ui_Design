@@ -41,12 +41,23 @@ const Validate_Note = () => {
   const [hcpName, setHcpName] = useState("");
   const [showSearchPatient, setShowSearchPatient] = useState(false);
   const [showSearchHcp, setShowSearchHcp] = useState(false);
-  const { faxId, sendNoOfRxs, trnFaxId } = useParams();
+  const { faxId, sendNoOfRxs, trnFaxId ,patientFirstName,patientLastName,hcpFirstName,hcpLastName} = useParams();
+  const [patientNames, setPatientNames] = useState('');
+  const [allPatients] = useState([
+    { id: 1, patient: "jack" },
+    { id: 2, patient: "Glenn" },
+    { id: 2, patient: "Glenn Maxwell" },
+    { id: 3, patient: "steveeerr" },
+    { id: 4, patient: "steverre" },
+    { id: 5, patient: "steqqve" },
+    { id: 6, patient: "steqerdve" },
+    { id: 6, patient: "steqerdve" },
+  ]); 
+  const [filteredPatients, setFilteredPatients] = useState([]);
   const [faxIds, setFaxIds] = useState('');
   const [selectedRxId, setSelectedRxId] = useState(null);
   const [noOfRxs, setNoOfRxs] = useState(0);
   const navigate = useNavigate();
-
   const previousPage = () => {
     setPageNumber(pageNumber <= 1 ? 1 : pageNumber - 1);
   };
@@ -359,10 +370,10 @@ const Validate_Note = () => {
       });
   };
 
-  const handleSearch = (searchPatientName,searchHcpName) => {
+  const handleSearch = () => {
     const userName = localStorage.getItem('userName');
     axiosBaseURL
-      .get(`/api/v1/fax/showPrevRxNameSearch/${patientName}/${hcpName}`)
+      .get(`/api/v1/fax/showPrevRxNameSearch/${patientNames}/${hcpName}`)
       .then((response) => {
         setRxList(response.data.data);
         // Handle success
@@ -400,6 +411,38 @@ const Validate_Note = () => {
 
     fetchData();
   }, []);
+
+
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/rxpatient');
+        setAllPatients(response.data.data); // Assuming the response data is an array of patients
+        console.log('setAllPatients',response.data.data);
+      } catch (error) {
+        console.error('Error fetching patients:', error);
+      }
+    };
+
+    fetchPatients();
+  }, []); 
+
+
+
+  const handleInputChange = (e) => {
+    const searchTerm = e.target.value;
+    setPatientNames(searchTerm);
+
+    // Filter the patients based on the search term if there's a search term; otherwise, show all patients
+    const filteredResults = searchTerm
+      ? allPatients.filter(patient =>
+          patient.patient.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : [];
+
+    setFilteredPatients(filteredResults);
+  };
 
   return (
     <>
@@ -599,20 +642,25 @@ const Validate_Note = () => {
                                 <div className="flex gap-40">
                                   <div className="relative left-40">
                                     <label htmlFor="patientName" className="text-sm text-gray-600">
-                                      Patient Name
+                                      Patient Name: {patientFirstName} {patientLastName}
                                     </label>
                                     <input
                                       type="text"
                                       id="searchPatientName"
-                                      value={patientName}
-                                      onChange={(e) => setPatientName(e.target.value)}
+                                      value={patientNames}
+                                      onChange={handleInputChange }
                                       className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                                     />
-                                  </div>
+                                   <ul>
+        {filteredPatients.map(patient => (
+          <li key={patient.id}>{patient.patient}</li>
+        ))}
+      </ul>
+    </div>
 
                                   <div className="relative left-40 ">
                                     <label htmlFor="hcpName" className="text-sm text-gray-600">
-                                      HCP Name
+                                      HCP Name :{hcpFirstName} {hcpLastName}
                                     </label>
                                     <input
                                       type="text"
@@ -630,10 +678,7 @@ const Validate_Note = () => {
                                 <div className="relative left-20 top-10 ">
                                   <div
                                     className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
-                                    onClick={ handleSearch
-                                      
-                                      //console.log("Search Rx clicked")
-                                    }
+                                    onClick={ handleSearch     }
                                   >
                                     Search Rx
                                   </div></div>
@@ -707,14 +752,9 @@ const Validate_Note = () => {
                               <div className="flex flex-col items-center">
                                 <div className="flex gap-40">
                                   <div className='relative right-10 pt-5 flex flex-row justify-center mb-3'>
-                                    <div
-                                      className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
-                                      onClick={handleSubmit}
-                                    >
-                                      Attach Notes to Rx
-                                    </div>
+                                   
 
-                                    <div
+                                    {/* <div
                                       className=" relative left-10 text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer"
                                       onClick={() =>
                                         navigate(
@@ -723,7 +763,7 @@ const Validate_Note = () => {
                                       }
                                     >
                                       Create New Rx
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
                               </div>
@@ -735,7 +775,12 @@ const Validate_Note = () => {
                   </div>
                 </div>
                 <div className="flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3 pt-3">
-
+                <div
+                                      className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
+                                      onClick={handleSubmit}
+                                    >
+                                      Attach Notes to Rx
+                                    </div>
                 </div>
               </div>
             </div>
