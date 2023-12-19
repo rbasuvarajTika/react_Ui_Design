@@ -359,6 +359,24 @@ const Validate_Note = () => {
       });
   };
 
+  const handleSearch = (searchPatientName,searchHcpName) => {
+    const userName = localStorage.getItem('userName');
+    axiosBaseURL
+      .get(`/api/v1/fax/showPrevRxNameSearch/${patientName}/${hcpName}`)
+      .then((response) => {
+        setRxList(response.data.data);
+        // Handle success
+        console.log("search list:", response.data);
+        toast.success("Submitted successfully");
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error search list:", error);
+        toast.error("Failed to submit.");
+      });
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -551,7 +569,7 @@ const Validate_Note = () => {
                         <p className="absolute top-0 text-[#e36c09] text-sm flex justify-center w-full"></p>
                         <div className="absolute md:top-7 top-6  md:right-20 sm:right-10 right-2 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50">
                           {/* By Page */}
-                          <div
+                          {/* <div
                             className="flex justify-around px-6"
                             onClick={() => handleOptionClick("By Page")}
                           >
@@ -559,11 +577,11 @@ const Validate_Note = () => {
                               <div className="text-lg absolute  -right-1 h-full bg-gray-100"></div>
                             </div>
 
-                          </div>
+                          </div> */}
                         </div>
                         <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  cursor-pointer z-50">
                           {/* By Range */}
-                          <div
+                          {/* <div
                             className="flex justify-around px-6"
                             onClick={() => handleOptionClick("By Range")}
                           >
@@ -571,55 +589,62 @@ const Validate_Note = () => {
                               <div className="text-lg absolute   -right-1 h-full bg-gray-100"></div>
                             </div>
 
-                          </div>
+                          </div> */}
 
                           <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  cursor-pointer z-50">
-        {/* Always show patient and HCP input fields */}
-        <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28 cursor-pointer z-50">
-  {/* Always show patient and HCP input fields */}
-  <div className="flex flex-col gap-3 mt-3">
-    <div className="relative right-17 ">
-      <label htmlFor="patientName" className="text-sm text-gray-600">
-        Patient Name
-      </label>
-      <input
-        type="text"
-        id="patientName"
-        value={patientName}
-        onChange={(e) => setPatientName(e.target.value)}
-        className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
-      />
-    </div>
+                            {/* Always show patient and HCP input fields */}
+                            <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28 cursor-pointer z-50">
+                              {/* Always show patient and HCP input fields */}
+                              <div className="flex flex-col items-center">
+                                <div className="flex gap-40">
+                                  <div className="relative left-40">
+                                    <label htmlFor="patientName" className="text-sm text-gray-600">
+                                      Patient Name
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="searchPatientName"
+                                      value={patientName}
+                                      onChange={(e) => setPatientName(e.target.value)}
+                                      className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                                    />
+                                  </div>
 
-    
-    <div className="relativ left-12 bottom-1 ">
-      <label htmlFor="hcpName" className=" text-sm text-gray-600">
-        HCP Name
-      </label>
-      <input
-        type="text"
-        id="hcpName"
-        value={hcpName}
-        onChange={(e) => setHcpName(e.target.value)}
-        className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
-      />
-      
-    </div>
-    <div
-      className="text-white bg-[#00aee6] px-4 py-2 rounded-lg"
-      onClick={() => {
-        // Add logic for searching Rx here
-        console.log("Search Rx clicked");
-      }}
-    >
-      Search Rx
-    </div>
+                                  <div className="relative left-40 ">
+                                    <label htmlFor="hcpName" className="text-sm text-gray-600">
+                                      HCP Name
+                                    </label>
+                                    <input
+                                      type="text"
+                                      id="searchHcpName"
+                                      value={hcpName}
+                                      onChange={(e) => setHcpName(e.target.value)}
+                                      className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                                    />
+                                  </div>
+                                </div>
 
-  </div>
-</div>
-</div>
-</div>
-</div>
+
+                              </div>
+                              <div className=" relative left-20 top-10">
+                                <div className="relative left-20 top-10 ">
+                                  <div
+                                    className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
+                                    onClick={ handleSearch
+                                      
+                                      //console.log("Search Rx clicked")
+                                    }
+                                  >
+                                    Search Rx
+                                  </div></div>
+                              </div>
+                            </div>
+
+                          </div>
+
+
+                        </div>
+                      </div>
 
 
 
@@ -677,23 +702,31 @@ const Validate_Note = () => {
                               <p className="text-center text-gray-600">No data available</p>
                             )}
                           </div>
-                          <div className='pt-5 flex flex-row justify-center mb-3'>
-                            <div
-                              className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
-                              onClick={handleSubmit}
-                            >
-                              Attach Notes to Rx
-                            </div>
+                          <div className=" relative left-10 top-20">
+                            <div className=" relative left-10 top-20">
+                              <div className="flex flex-col items-center">
+                                <div className="flex gap-40">
+                                  <div className='relative right-10 pt-5 flex flex-row justify-center mb-3'>
+                                    <div
+                                      className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
+                                      onClick={handleSubmit}
+                                    >
+                                      Attach Notes to Rx
+                                    </div>
 
-                            <div
-                              className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer"
-                              onClick={() =>
-                                navigate(
-                                  `/nsrxmgt/newrx/${faxId}/${trnFaxId}`
-                                )
-                              }
-                            >
-                              Create New Rx
+                                    <div
+                                      className=" relative left-10 text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer"
+                                      onClick={() =>
+                                        navigate(
+                                          `/nsrxmgt/newrx/${faxId}/${trnFaxId}`
+                                        )
+                                      }
+                                    >
+                                      Create New Rx
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
