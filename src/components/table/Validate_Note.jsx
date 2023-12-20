@@ -41,8 +41,9 @@ const Validate_Note = () => {
   const [hcpName, setHcpName] = useState("");
   const [showSearchPatient, setShowSearchPatient] = useState(false);
   const [showSearchHcp, setShowSearchHcp] = useState(false);
-  const { faxId, sendNoOfRxs, trnFaxId ,patientFirstName,patientLastName,hcpFirstName,hcpLastName} = useParams();
-  const [patientNames, setPatientNames] = useState('');
+  const { faxId, sendNoOfRxs, trnFaxId, patientFirstName, patientLastName, hcpFirstName, hcpLastName } = useParams();
+  const [patientNames, setPatientNames] = useState(`${patientFirstName} ${patientLastName}`);
+  const [hcpNames, setHcpNames] = useState(`${hcpFirstName} ${hcpLastName}`);
   const [allPatients] = useState([
     { id: 1, patient: "jack" },
     { id: 2, patient: "Glenn" },
@@ -52,10 +53,16 @@ const Validate_Note = () => {
     { id: 5, patient: "steqqve" },
     { id: 6, patient: "steqerdve" },
     { id: 6, patient: "steqerdve" },
-  ]); 
+  ]);
   const [filteredPatients, setFilteredPatients] = useState([]);
+  const [searchPatients, setSearchPatients] = useState([]);
+  const [filteredHcps, setFilteredHcps] = useState([]);
+  const [searchHcps, setSearchHcps] = useState([]);
+  const [isPatientListVisible, setIsPatientListVisible] = useState(false);
+  const [isHcpListVisible, setIsHcpListVisible] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('');
   const [faxIds, setFaxIds] = useState('');
-  const [selectedRxId, setSelectedRxId] = useState(null);
+  const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null });
   const [noOfRxs, setNoOfRxs] = useState(0);
   const navigate = useNavigate();
   const previousPage = () => {
@@ -92,14 +99,34 @@ const Validate_Note = () => {
     fetchPdf();
   }, []);
 
-  const handleCheckboxChange = (rxId) => {
-    // Toggle the checkbox status for the given rxId
-    setSelectedRxId((prevSelectedRxId) => {
-      // If the clicked checkbox is already selected, deselect it
-      return prevSelectedRxId === rxId ? null : rxId;
-    });
+  // const isSelected = (rxId) => {
+  //   return selectedRxId === rxId;
+  // };
+
+  //const isChecked = (rxId) => selectedRxId === rxId;
+
+  // Function to handle checkbox changes
+  // const handleCheckboxChange = (rxId) => {
+  //   setSelectedRxId(rxId);
+  // };
+
+  const isSelected = (index, rxId, faxId) => {
+    return selectedRxId.rxId === rxId && selectedRxId.index === index && selectedRxId.faxId == faxId;
   };
 
+  const handleCheckboxChange = (index, rxId, faxId) => {
+    //setSelectedRxId({index: index , rxId: rxId, faxId : faxId});
+
+    setSelectedRxId((prevSelectedRx) => {
+      // If the clicked checkbox is already selected, deselect it
+      if (prevSelectedRx.index === index && prevSelectedRx.rxId === rxId && prevSelectedRx.faxId === faxId) {
+        return { id: null, index: null };
+      }
+
+      // Otherwise, select the new checkbox
+      return { index: index, rxId: rxId, faxId: faxId };
+    });
+  };
 
   const handleZoomOut = () => {
     console.log("clicked");
@@ -347,13 +374,14 @@ const Validate_Note = () => {
 
   const handleSubmit = () => {
     const userName = localStorage.getItem('userName');
-
+    console.log("duplicate fax Id:", selectedRxId.faxId);
     const retryData = {
 
       userName: userName,
       trnFaxIdMain: faxId,
-      trnFaxIdDuplicate: faxIds,
+      trnFaxIdDuplicate: selectedRxId.faxId,
     };
+    //console.log("duplicate fax Id:", trnFaxIdDuplicate);
     axiosBaseURL
       .put(`/api/v1/fax/updateFaxRxAttachNotes`, retryData, {
         headers: { "Content-Type": "application/json" }
@@ -371,14 +399,28 @@ const Validate_Note = () => {
   };
 
   const handleSearch = () => {
-    const userName = localStorage.getItem('userName');
+    //const userName = localStorage.getItem('userName');
+    if (!patientNames.trim()) {
+      toast.error('Please enter Patient Name.');
+      return;
+    }
+
+    if (!hcpNames.trim()) {
+      toast.error('Please enter HCP Name.');
+      return;
+    }
+    setWarningMessage('');
     axiosBaseURL
-      .get(`/api/v1/fax/showPrevRxNameSearch/${patientNames}/${hcpName}`)
+      .get(`/api/v1/fax/showPrevRxNameSearch/${patientNames}/${hcpNames}`)
       .then((response) => {
         setRxList(response.data.data);
         // Handle success
-        console.log("search list:", response.data);
-        toast.success("Submitted successfully");
+        console.log("search list:", response.data.data);
+        if (response.data.data.length === 0) {
+          toast.info("No data found.");
+        } else {
+          setRxList(response.data.data);
+        }
       })
       .catch((error) => {
         // Handle error
@@ -386,7 +428,6 @@ const Validate_Note = () => {
         toast.error("Failed to submit.");
       });
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -419,30 +460,86 @@ const Validate_Note = () => {
       try {
         const response = await axiosBaseURL.get('/api/v1/fax/rxpatient');
         setAllPatients(response.data.data); // Assuming the response data is an array of patients
-        console.log('setAllPatients',response.data.data);
+        console.log('setAllPatients', response.data.data);
       } catch (error) {
         console.error('Error fetching patients:', error);
       }
     };
 
     fetchPatients();
-  }, []); 
+  }, []);
 
+  useEffect(() => {
+    const getAllPatientNames = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/searchPatientName');
+        setSearchPatients(response.data.data);
+        console.log("patients search list:", searchPatients);
+      } catch (error) {
+        console.error('Error fetching patients search list:', error);
+      }
+    };
 
+    getAllPatientNames();
+  }, []);
 
-  const handleInputChange = (e) => {
+  const handlePatientInputChange = (e) => {
     const searchTerm = e.target.value;
     setPatientNames(searchTerm);
-
     // Filter the patients based on the search term if there's a search term; otherwise, show all patients
     const filteredResults = searchTerm
-      ? allPatients.filter(patient =>
-          patient.patient.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+      ? searchPatients.filter(patient =>
+        patient.patientName.toLowerCase().includes(searchTerm.toLowerCase())
+      )
       : [];
 
     setFilteredPatients(filteredResults);
   };
+
+  const handlePatientSelection = (selectedPatient) => {
+    setPatientNames(`${selectedPatient.patientName}`);
+    setIsPatientListVisible(false);
+  };
+
+  const handlePatientInputClick = () => {
+    setIsPatientListVisible(!isPatientListVisible);
+  };
+
+  useEffect(() => {
+    const getAllHcpNames = async () => {
+      try {
+        const response = await axiosBaseURL.get('/api/v1/fax/searchHcpName');
+        setSearchHcps(response.data.data);
+        console.log("hcp search list:", searchHcps);
+      } catch (error) {
+        console.error('Error fetching hcp search list:', error);
+      }
+    };
+
+    getAllHcpNames();
+  }, []);
+
+  const handleHcpsInputChange = (e) => {
+    const searchTerm = e.target.value;
+    setHcpNames(searchTerm);
+    // Filter the patients based on the search term if there's a search term; otherwise, show all patients
+    const filteredResults = searchTerm
+      ? searchHcps.filter(hcps =>
+        hcps.hcpName.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      : [];
+
+    setFilteredHcps(filteredResults);
+  };
+
+  const handleHcpSelection = (selectedHcp) => {
+    setHcpNames(`${selectedHcp.hcpName}`);
+    setIsHcpListVisible(false);
+  };
+  const handleHcpInputClick = () => {
+    setIsHcpListVisible(!isHcpListVisible);
+  };
+
 
   return (
     <>
@@ -638,50 +735,81 @@ const Validate_Note = () => {
                             {/* Always show patient and HCP input fields */}
                             <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28 cursor-pointer z-50">
                               {/* Always show patient and HCP input fields */}
-                              <div className="flex flex-col items-center">
-                                <div className="flex gap-40">
+                              <div className="flex flex-col items-center relative ">
+                                <div className="flex gap-40 relative  bottom-10">
                                   <div className="relative left-40">
-                                    <label htmlFor="patientName" className="text-sm text-gray-600">
-                                      Patient Name: {patientFirstName} {patientLastName}
+                                    <label htmlFor="patientName" className="text-sm text-gray-600 overflow-hidden">
+                                      Patient Name:
+                                      <div className="flex items-center">
+                                        <span
+                                          title={`${patientFirstName} ${patientLastName}`}
+                                          className="truncate inline-block max-w-[100px] cursor-pointer"
+                                        >
+                                          <strong>{`${patientFirstName} ${patientLastName}`}</strong>
+                                        </span>
+                                      </div>
                                     </label>
                                     <input
                                       type="text"
                                       id="searchPatientName"
                                       value={patientNames}
-                                      onChange={handleInputChange }
+                                      onChange={handlePatientInputChange}
+                                      onClick={handlePatientInputClick}
                                       className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                                     />
-                                   <ul>
-        {filteredPatients.map(patient => (
-          <li key={patient.id}>{patient.patient}</li>
-        ))}
-      </ul>
-    </div>
+                                    {isPatientListVisible && (
+                                      <ul className="max-h-40 overflow-y-auto">
+                                        {filteredPatients.map(patient => (
+                                          <li key={patient.patientId} onClick={() => handlePatientSelection(patient)}>
+                                            {patient.patientName}</li>
+                                        ))}
+                                      </ul>
+                                    )}
+                                  </div>
 
                                   <div className="relative left-40 ">
-                                    <label htmlFor="hcpName" className="text-sm text-gray-600">
-                                      HCP Name :{hcpFirstName} {hcpLastName}
+                                    <label htmlFor="hcpName" className="text-sm text-gray-600 overflow-hidden">
+                                      HCP Name:
+                                      <div className="flex items-center">
+                                        <span
+                                          title={`${hcpFirstName} ${hcpLastName}`}
+                                          className="truncate inline-block max-w-[100px] cursor-pointer"
+                                        >
+                                          <strong>{`${hcpFirstName} ${hcpLastName}`}</strong>
+                                        </span>
+                                      </div>
                                     </label>
                                     <input
                                       type="text"
                                       id="searchHcpName"
-                                      value={hcpName}
-                                      onChange={(e) => setHcpName(e.target.value)}
+                                      value={hcpNames}
+                                      onChange={handleHcpsInputChange}
+                                      onClick={handleHcpInputClick}
                                       className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                                     />
+                                    {isHcpListVisible && (
+                                      <ul className="max-h-40 overflow-y-auto">
+                                        {filteredHcps.map(hcps => (
+                                          <li key={hcps.hcpId} onClick={() => handleHcpSelection(hcps)} >{hcps.hcpName}</li>
+                                        ))}
+                                      </ul>
+                                    )}
                                   </div>
                                 </div>
 
 
                               </div>
-                              <div className=" relative left-20 top-10">
-                                <div className="relative left-20 top-10 ">
-                                  <div
-                                    className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
-                                    onClick={ handleSearch     }
-                                  >
-                                    Search Rx
-                                  </div></div>
+                              <div className="absolute">
+                                <div className="relative left-20 top-20 ">
+                                  <div className="relative left-20 top-10 ">
+                                    <div
+                                      className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
+                                      onClick={handleSearch}
+                                    >
+                                      Search Rx
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
 
@@ -725,8 +853,12 @@ const Validate_Note = () => {
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>
                                         <input
                                           type="checkbox"
-                                          checked={selectedRxId === rx.trnRxId}
-                                          onChange={() => handleCheckboxChange(rx.trnRxId)}
+                                          id={`checkbox-${index}`}
+                                          //checked={rx.trnRxId}
+                                          // checked={isSelected(index,rx.trnRxId)}
+                                          checked={isSelected(index, rx.trnRxId, rx.faxId)}
+                                          //defaultChecked={rx.trnRxId}
+                                          onChange={() => handleCheckboxChange(index, rx.trnRxId, rx.faxId)}
                                         />
                                       </td>
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.trnRxId}</td>
@@ -752,7 +884,7 @@ const Validate_Note = () => {
                               <div className="flex flex-col items-center">
                                 <div className="flex gap-40">
                                   <div className='relative right-10 pt-5 flex flex-row justify-center mb-3'>
-                                   
+
 
                                     {/* <div
                                       className=" relative left-10 text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer"
@@ -775,12 +907,12 @@ const Validate_Note = () => {
                   </div>
                 </div>
                 <div className="flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3 pt-3">
-                <div
-                                      className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
-                                      onClick={handleSubmit}
-                                    >
-                                      Attach Notes to Rx
-                                    </div>
+                  <div
+                    className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
+                    onClick={handleSubmit}
+                  >
+                    Attach Notes to Rx
+                  </div>
                 </div>
               </div>
             </div>
@@ -788,7 +920,7 @@ const Validate_Note = () => {
             <ToastContainer />
           </div>
         </div>
-      </section>
+      </section >
     </>
   );
 };
