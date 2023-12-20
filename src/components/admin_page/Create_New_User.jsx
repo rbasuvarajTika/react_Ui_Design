@@ -141,6 +141,8 @@ await axiosBaseURL.post("/api/v1/users/create/user",userData, config, {
                 userStatusFlag:'Active',
             });
             // Handle success here, e.g., show a success message
+            navigate(`/nsrxmgt/admin-user-list`)
+            
         } 
         if(res.data.success === false){
         toast.error("Email Already Exists")

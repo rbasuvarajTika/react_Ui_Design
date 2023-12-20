@@ -21,7 +21,6 @@ import Loader from '../Loader';
 //import { ToastContainer, toast } from 'react-toast'
 import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
-import { ClickAwayListener } from '@mui/material';
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 import DownloadIcon from '@mui/icons-material/Download';
 
@@ -48,6 +47,8 @@ const NewRxCaseDetails = () => {
 
   const [onDirtyPatientSave, setOnDirtyPatientSave] = useState(false)
   const [onDirtyPatientPost, setOnDirtyPatientPost] = useState(false)
+  const [onDirtyNewRxSave, setOnDirtyNewRxSave] = useState(false)
+
 
   const [onDirtyOrdertSave, setOnDirtyOrderSave] = useState(false)
   const [onDirtyOrderDelete, setOnDirtyOrderDelete] = useState(false)
@@ -110,37 +111,72 @@ const NewRxCaseDetails = () => {
   const handleSavePatientData = () => {
     console.log('onDirtyPatientPost:', onDirtyPatientPost);
     console.log('onDirtyPatientSave:', onDirtyPatientSave);
-    if(onDirtyPatientSave){
-         handlePatientSave();
-    }
-    if(onDirtyOrdertSave){
-    handleWoundUpdate();
-    }
-    if(onDirtyOrderDelete){
-      handleWoundDelete();
-    }
-    if(onDirtyKitSave){
-      handleSaveKitClick();
-    }
-    if(onDirtyKitDelete){
-      handleDeleteKitClick();
-    }
-    if(onDirtyHcpDelete){
-      handleDeleteHcpClick();
-    }
+    // if(onDirtyPatientSave){
+    //      handlePatientSave();
+    // }
+    // if(onDirtyOrdertSave){
+    // handleWoundUpdate();
+    // }
+    // if(onDirtyOrderDelete){
+    //   handleWoundDelete();
+    // }
+    // if(onDirtyKitSave){
+    //   handleSaveKitClick();
+    // }
+    // if(onDirtyKitDelete){
+    //   handleDeleteKitClick();
+    // }
+    // if(onDirtyHcpDelete){
+    //   handleDeleteHcpClick();
+    // }
 
 
     
-    if(onDirtyOfficeSave){
-      handleSaveOfficeClick();
-    }
-    if(onDirtyHcpSave){
-      handleSaveHcpClick();
-    }
-    if(onDirtyOfficeSave){
-      setOnDirtyOfficeSave();
-    }
-    navigate(`/nsrxmgt/fax-list`);
+    // if(onDirtyOfficeSave){
+    //   handleSaveOfficeClick();
+    // }
+    // if(onDirtyHcpSave){
+    //   handleSaveHcpClick();
+    // }
+    // if(onDirtyOfficeSave){
+    //   setOnDirtyOfficeSave();
+    // }
+
+
+    if(onDirtyPatientSave){
+      handlePatientSave();
+ }
+ if(onDirtyHcpDelete){
+  handleDeleteHcpClick();
+}
+
+if(onDirtyHcpSave){
+  handleSaveHcpClick();
+}
+if(onDirtyKitSave){
+  handleSaveKitClick();
+}
+if(onDirtyKitDelete){
+  handleDeleteKitClick();
+}
+ if(onDirtyOrdertSave){
+ handleWoundUpdate();
+ }
+ if(onDirtyOrderDelete){
+   handleWoundDelete();
+ }
+
+ 
+ if(onDirtyOfficeSave){
+   setOnDirtyOfficeSave();
+ }
+ if(onDirtyOfficeSave){
+  handleSaveOfficeClick();
+}
+if(onDirtyOfficeSave){
+  handleNewRxSave();
+}
+    navigate(`/nsrxmgt/rx-tracker-list`);
   };
 // Total Save Call
 
@@ -302,11 +338,101 @@ const NewRxCaseDetails = () => {
 //       console.error('Error saving data:', error);
 //     }
 //   };
+
+// const handlePatientSave = async () => {
+//   // Get the token from localStorage
+//   setOnDirtyPatientPost(true);
+//   setOnDirtyPatientSave(false);
+//   const token = localStorage.getItem('token');
+//   const userName = localStorage.getItem('userName');
+//   setLoading(true);
+
+//   try {
+//     // Make the first API call to get trnFaxId
+//     const faxApiPayload = {
+//       faxId: faxId,
+//       faxNumber: '',
+//       faxStatus: 'LT',
+//       processStatus: '',
+//       rxStatus: '',
+//       faxDate: '',
+//       faxFilename: '',
+//       faxPages: '',
+//       faxCallerId: '',
+//       faxUrl: '',
+//       createdUser: userName
+//     };
+
+//     const faxApiResponse = await axiosBaseURL.post('/api/v1/fax/addTrnFaxRxDetails', faxApiPayload, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
+
+//     if (faxApiResponse.status === 200) {
+//       const newTrnFaxId = faxApiResponse.data.data;
+//       console.log('newTrnFaxId',newTrnFaxId);
+//       // Use trnFaxId in the dataToSave object
+//       const dataToSave = {
+//         trnFaxId: newTrnFaxId,
+//         trnRxId: '',
+//         faxId: faxId,
+//         patientFirstName: patientNewData.patientFirstName,
+//         patientMiddleName: patientNewData.patientMiddleName,
+//         patientLastName: patientNewData.patientLastName,
+//         cellPhone: patientNewData.cellPhone,
+//         shipToAddress: patientNewData.shipToAddress,
+//         email:'',
+//         ssn: patientNewData.ssn,
+//         city: patientNewData.city,
+//         state: patientNewData.state,
+//         zip: patientNewData.zip,
+//         dateOfBirth: patientNewData.dateOfBirth,
+//         repName: patientNewData.repName,
+//         repPhoneNo: patientNewData.repPhoneNo,
+//         placeOfService: patientNewData.placeOfService,
+//         distributorName: patientNewData.distributorName,
+//         orderType: patientNewData.orderType,
+//         woundActive: patientNewData.woundActive,
+//         createdUser:userName
+//       };
+
+//       console.log('Data before sending to server:', dataToSave);
+
+//       // Continue with the rest of your handlePatientSave logic
+//       const response = await axiosBaseURL.post('/api/v1/fax/patientDetailsInfo', dataToSave, {
+//         headers: {
+//           'Content-Type': 'application/json',
+//           // 'Authorization': `Bearer ${token}`, // Include the token in the headers
+//         },
+//       });
+
+//       if (response.status === 201) {
+//         setLoading(false);
+//         console.log('Auth Type:', authType);
+//         toast.success('Patient Details Saved Successfully');
+//         setOnDirtyPatientPost(false);
+//       } else {
+//         setOnDirtyPatientPost(false);
+//         setLoading(false);
+//       }
+//     } else {
+//       setOnDirtyPatientPost(false);
+//       setLoading(false);
+//     }
+//   } catch (error) {
+//     setLoading(false);
+//     setOnDirtyPatientPost(false);
+//     toast.error('Error saving Patient Details');
+//     console.error('Error saving data:', error);
+//   }
+// };
   const handlePatientSave = async () => {
     // Get the token from localStorage
     setOnDirtyPatientPost(true);
     setOnDirtyPatientSave(false);
     const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('userName');
     console.log("Patient Post Data Call")
     setLoading(true);
     // Send the data to your API for saving
@@ -331,7 +457,7 @@ const NewRxCaseDetails = () => {
       distributorName: patientNewData.distributorName,
       orderType: patientNewData.orderType,
       woundActive: patientNewData.woundActive,
-      createdUser:''
+      createdUser:userName
     };
     console.log('Date before sending to server:', patientNewData.dateOfBirth);
     try {
@@ -585,10 +711,12 @@ const handleEditRowChange = (index, column, value) => {
 
  const handleAddWound = () => {
   setOnDirtyOrderSave(true);
+  const userName = localStorage.getItem('userName');
+
     const updatedWoundData = {
       trnRxId:woundDataRxId,
-      trnFaxId:woundDataTranFaxId,
-      faxId:woundDataFaxId,
+      trnFaxId:trnFaxId,
+      faxId:faxId,
       woundNo: lastWoundData+1,
       woundLocation: '',
       woundLength: '',
@@ -599,7 +727,8 @@ const handleEditRowChange = (index, column, value) => {
       debrided: '',
       icdCode: '',
       debridedDate:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(updatedWoundData);
     setWoundData([...woundData, updatedWoundData]);
@@ -792,11 +921,12 @@ const handleEditRowChange = (index, column, value) => {
 
   const handleAddKit = () => {
     setOnDirtyKitSave(true);
+    const userName = localStorage.getItem('userName');
 
     const addKitData = {
       trnRxId:kitDataRxId,
-      trnFaxId:kitDataTranFaxId,
-      faxId:kitDataFaxId,
+      trnFaxId:trnFaxId,
+      faxId:faxId,
       productId: '',
       productCode: '',
       productDisplayName:'',
@@ -806,7 +936,8 @@ const handleEditRowChange = (index, column, value) => {
       wnd3: 0,
       wnd4: 0,
       wndCode:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(addKitData);
     setKitData([...kitData, addKitData]);
@@ -1040,10 +1171,12 @@ useEffect(() => {
 
   const handleAddHcp = () => {
     setOnDirtyHcpSave(true)
+    const userName = localStorage.getItem('userName');
+
     const addHcpData = {
       trnRxId:kitDataRxId,
-      trnFaxId:kitDataTranFaxId,
-      faxId:kitDataFaxId,
+      trnFaxId:trnFaxId,
+      faxId:faxId,
       hcpId: '',
       firstName: '',
       middleName: '',
@@ -1053,7 +1186,8 @@ useEffect(() => {
       signature_Flag: '',
       signature_Date: '',
       profId:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName
     }
     console.log(addHcpData);
     setHcpData([...hcpData, addHcpData]);
@@ -1158,41 +1292,7 @@ const handleDeleteHcpConfirm = (index) => {
   }, []);
 
 
-  const handleSaveOfficeClick = () => {
-
-    // Get the token from your authentication mechanism, e.g., localStorage
-    const token = localStorage.getItem('token');
-    setLoading(true);
-    // Define the request headers with the Authorization header
-    const config = {
-      headers: {
-        //Authorization: `Bearer ${token}`,
-      },
-    };
-     console.log('Data Saving:', officeData);
-     const dataToSave =officeData;
-    // Send a POST request to the API with the headers
-    axiosBaseURL
-      .put('/api/v1/fax/officeInfo', dataToSave, config)
-      .then((response) => {
-        // Handle the response from the API if needed
-        console.log('Data saved successfully:', response.data);
-        setLoading(false);
-        setOnDirtyOfficeSave(false)
-
-        toast.success("Health Care Provider Information Saved Sucessfully");
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the request
-        setLoading(false);
-        setOnDirtyOfficeSave(false)
-
-        console.error('Error saving data:', error);
-        toast.error("Error to save Health Care Provider Information");
-      });
-  };
-
-  // const handleSavNewOfficeClick = () => {
+  // const handleSaveOfficeClick = () => {
 
   //   // Get the token from your authentication mechanism, e.g., localStorage
   //   const token = localStorage.getItem('token');
@@ -1204,18 +1304,10 @@ const handleDeleteHcpConfirm = (index) => {
   //     },
   //   };
   //    console.log('Data Saving:', officeData);
-  //    const dataToSave = {
-  //     accountName: '',
-  //     phone: '',
-  //     email: faxId,
-  //     city: patientNewData.patientFirstName,
-  //     state: 'patientNewData.patientMiddleName',
-  //     zip: '',
-  //     createdUser:''
-  //   };
+  //    const dataToSave =officeData;
   //   // Send a POST request to the API with the headers
   //   axiosBaseURL
-  //     .post('/api/v1/fax/officeDetailsInfo', dataToSave, config)
+  //     .put('/api/v1/fax/officeInfo', dataToSave, config)
   //     .then((response) => {
   //       // Handle the response from the API if needed
   //       console.log('Data saved successfully:', response.data);
@@ -1233,6 +1325,49 @@ const handleDeleteHcpConfirm = (index) => {
   //       toast.error("Error to save Health Care Provider Information");
   //     });
   // };
+
+  const handleSaveOfficeClick = () => {
+
+    // Get the token from your authentication mechanism, e.g., localStorage
+    const token = localStorage.getItem('token');
+    setLoading(true);
+    // Define the request headers with the Authorization header
+    const config = {
+      headers: {
+        //Authorization: `Bearer ${token}`,
+      },
+    };
+    //  console.log('Data Saving:', officeData);
+    //  const dataToSave = {
+    //   accountName: '',
+    //   phone: '',
+    //   email: faxId,
+    //   city: patientNewData.patientFirstName,
+    //   state: 'patientNewData.patientMiddleName',
+    //   zip: '',
+    //   createdUser:''
+    // };
+    const dataToSave =officeData;
+    // Send a POST request to the API with the headers
+    axiosBaseURL
+      .post('/api/v1/fax/officeDetailsInfo', dataToSave, config)
+      .then((response) => {
+        // Handle the response from the API if needed
+        console.log('Data saved successfully:', response.data);
+        setLoading(false);
+        setOnDirtyOfficeSave(false)
+
+        toast.success("Health Care Provider Information Saved Sucessfully");
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        setLoading(false);
+        setOnDirtyOfficeSave(false)
+
+        console.error('Error saving data:', error);
+        toast.error("Error to save Health Care Provider Information");
+      });
+  };
 
 
 
@@ -1434,6 +1569,55 @@ const zoomInSecond = () => {
         toast.error('Error sending fax PDF. Please try again later.');
       });
   };
+
+
+
+  const handleNewRxSave = async () => {
+    // Get the token from localStorage
+    setOnDirtyPatientPost(true);
+    setOnDirtyPatientSave(false);
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('userName');
+    console.log("Patient Post Data Call")
+    setLoading(true);
+    // Send the data to your API for saving
+    const dataToSave = {
+      trnFaxId: trnFaxId,
+      userName:userName
+    };
+    
+    try {
+      // Send a POST request to your API to save the data and include the authorization header
+      const response = await axiosBaseURL.post(`/api/v1/fax/addTrnFaxRxDetails`, dataToSave, {
+        headers: {
+          'Content-Type': 'application/json',
+          //'Authorization': `Bearer ${token}`, // Include the token in the headers
+        },
+      });
+  
+      if (response.status === 201) {
+        // Data saved successfully
+        setLoading(false);
+        console.log('Auth Type:', authType);
+        toast.success("Patient Details Saved Successfully")
+  
+        setOnDirtyPatientPost(false);
+      } else {
+        setOnDirtyPatientPost(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      setOnDirtyPatientPost(false);
+      toast.error("Error to save Patient Details")
+      console.error('Error saving data:', error);
+    }
+  };
+
+
+
+
+
 
     return (
         <div className="w-ful  relative overflow-x-auto rounded-xl bg-white p-3 overflow-y-scroll max-h-[630px h-[calc(100%-3rem)] no-scrollbar">
@@ -2427,7 +2611,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                     type="text"
                                                                     id='firstName'
                                                                     name='firstName'
@@ -2441,7 +2625,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                      type="text"
                                                                      id='middleName'
                                                                      name='middleName'
@@ -2455,7 +2639,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                    type="text"
                                                                    id='lastName'
                                                                    name='lastName'
@@ -2483,7 +2667,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                    type="text"
                                                                    id='npi'
                                                                    name='npi'

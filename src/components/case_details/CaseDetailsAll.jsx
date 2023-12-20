@@ -248,6 +248,7 @@ const CaseDetailsAll = () => {
     console.log("Patient Save Data Call")
     setLoading(true);
     // Send the data to your API for saving
+    const userName = localStorage.getItem('userName');
     const dataToSave = {
     patientId: patientId,
     trnFaxId:trnFaxId,
@@ -268,6 +269,10 @@ const CaseDetailsAll = () => {
     distributorName: patientNewData.distributorName,
     orderType: patientNewData.orderType,
     woundActive:patientNewData.woundActive,
+    createdUser:userName,
+    updatedUser:userName,
+    userName:userName
+    
     };
     console.log('Date before sending to server:', patientNewData.dateOfBirth);
     try {
@@ -282,14 +287,16 @@ const CaseDetailsAll = () => {
       });
       if (response.status== 200) {
         // Data saved successfully
-        setLoading(false);
-        console.log('Auth Type:', authType);
+       
+        console.log('Auth Type:', response.status);
         toast.success("Patient Details Saved Sucessfully")
       
         setOnDirtyPatientSave(false);
       } else {
         setOnDirtyPatientSave(false);
+       
         setLoading(false);
+        toast.success("Error to save Patient Details")
       }
     } catch (error) {
       setLoading(false);
@@ -522,6 +529,7 @@ const handleEditRowChange = (index, column, value) => {
 
  const handleAddWound = () => {
   setOnDirtyOrderSave(true);
+  const userName = localStorage.getItem('userName');
     const updatedWoundData = {
       trnRxId:woundDataRxId,
       trnFaxId:woundDataTranFaxId,
@@ -536,7 +544,11 @@ const handleEditRowChange = (index, column, value) => {
       debrided: '',
       icdCode: '',
       debridedDate:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName,
+      updatedUser:userName,
+      userName:userName
+      
     }
     console.log(updatedWoundData);
     setWoundData([...woundData, updatedWoundData]);
@@ -729,7 +741,7 @@ const handleEditRowChange = (index, column, value) => {
 
   const handleAddKit = () => {
     setOnDirtyKitSave(true);
-
+    const userName = localStorage.getItem('userName');
     const addKitData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -743,7 +755,10 @@ const handleEditRowChange = (index, column, value) => {
       wnd3: 0,
       wnd4: 0,
       wndCode:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName,
+      updatedUser:userName,
+      userName:userName
     }
     console.log(addKitData);
     setKitData([...kitData, addKitData]);
@@ -977,6 +992,7 @@ useEffect(() => {
 
   const handleAddHcp = () => {
     setOnDirtyHcpSave(true)
+    const userName = localStorage.getItem('userName');
     const addHcpData = {
       trnRxId:kitDataRxId,
       trnFaxId:kitDataTranFaxId,
@@ -990,7 +1006,10 @@ useEffect(() => {
       signature_Flag: '',
       signature_Date: '',
       profId:'',
-      status:'insert'
+      status:'insert',
+      createdUser:userName,
+      updatedUser:userName,
+      userName:userName
     }
     console.log(addHcpData);
     setHcpData([...hcpData, addHcpData]);
@@ -1140,10 +1159,13 @@ const handleDeleteHcpConfirm = (index) => {
       },
     };
      console.log('Delete Data Saving:', deleteHcp);
+     const userName = localStorage.getItem('userName');
+
      const dataToSave =deleteHcp;
+    
     // Send a POST request to the API with the headers
     axiosBaseURL
-      .post('/api/v1/fax/deleteHcpInfoList', dataToSave, config)
+      .post('/api/v1/fax/deleteHcpInfoList', dataToSave,userName, config)
       .then((response) => {
         // Handle the response from the API if needed
         console.log('Data saved successfully:', response.data);
@@ -2315,7 +2337,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                     type="text"
                                                                     id='firstName'
                                                                     name='firstName'
@@ -2343,7 +2365,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                    type="text"
                                                                    id='lastName'
                                                                    name='lastName'
@@ -2371,7 +2393,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                    type="text"
                                                                    id='npi'
                                                                    name='npi'

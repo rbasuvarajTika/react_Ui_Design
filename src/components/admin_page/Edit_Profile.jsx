@@ -72,8 +72,9 @@ const Edit_Profile =() =>{
             // User was successfully updated
             // You can handle success here, e.g., show a success message
            // alert('User Updated Successfully');
+           
            toast.success('User Updated Successfully');
-            navigate("/nsrxmgt/admin-user-list");
+          
           } else {
             // Handle errors, e.g., show an error message
           }

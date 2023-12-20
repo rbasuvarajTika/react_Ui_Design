@@ -23,6 +23,7 @@ import Fax_show_project from "./components/table/Fax_show_project"
 import Test_fax from "./components/table/Test_fax"
 import NewRxCaseDetails from "./components/case_details/NewRxCaseDetails"
 import NewRx from "./pages/case_details/NewRx"
+import Validate_Note from "./components/table/Validate_Note"
 
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false)
@@ -68,7 +69,7 @@ function App() {
           <Route path="/nsrxmgt/case-details-new/:trnRxId/:paramFaxId/:netSuitId/:paramPatientId" element={<CaseDetailsNewPage />} />
           <Route path="/nsrxmgt/fax_project" element={<Fax_show_project />} />
           <Route path="/nsrxmgt/newrx/:faxId/:trnFaxId" element={<NewRx />} />
-         
+          <Route path="/nsrxmgt/validatenote/:faxId/:sendNoOfRxs/:trnFaxId/:patientFirstName/:patientLastName/:hcpFirstName/:hcpLastName" element={<Validate_Note />} />    
         </Routes>
       </EditUserContext.Provider>  
       </AdminContext.Provider>

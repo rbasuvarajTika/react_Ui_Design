@@ -22,6 +22,8 @@ const Rx_Tracker_List = () => {
   const [sortedData, setSortedData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [searchFax, setSearchFax] = useState("");
+  const [rxStatusOptions, setRxStatusOptions] = useState([]);
+
 
   const [patientData, setPatientData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -88,35 +90,19 @@ const Rx_Tracker_List = () => {
   const npage = Math.ceil(rxTrackerData.length / postsPerPage);
 console.log("lastPostIndex",lastPostIndex);
 
-  // const handleSort = () => {
-  //     // Toggle the sorting order
-  //     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-  //     setSortOrder(newSortOrder);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axiosBaseURL.get("/api/v1/fax/processStatus");
+      // Assuming the response data is an array of options
+      setRxStatusOptions(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-  //     // Clone the data to avoid mutating the original array
-  //     const newData = [...sortedData];
-
-  //     // Sort the data based on the "caseId" field
-  //     newData.sort((a, b) => {
-  //         // Change the comparison logic based on the sorting order
-  //         const trnRxIdA = parseInt(a.trnRxId, 10); // Convert to number
-  //         const trnRxIdB = parseInt(b.trnRxId, 10); // Convert to number
-
-  //         if (newSortOrder === 'asc') {
-  //             return trnRxIdA - trnRxIdB;
-  //         } else {
-  //             return trnRxIdB - trnRxIdA;
-  //         }
-  //     });
-
-  //     // Log the sorted data and other relevant values
-  //     console.log('Sorted Data:', newData);
-  //     console.log('Sort Order:', newSortOrder);
-
-  //     // Update the sorted data
-  //     setSortedData(newData);
-  // };
-
+  fetchData();
+}, []);
   const handleSort = (columnName) => {
     const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
     setSortOrder(newSortOrder);
@@ -126,16 +112,18 @@ console.log("lastPostIndex",lastPostIndex);
     newData.sort((a, b) => {
       const columnA = a[columnName];
       const columnB = b[columnName];
+      const valueA = columnA !== null ? columnA : "";
+      const valueB = columnB !== null ? columnB : "";
 
       // Adjust the comparison logic based on the column type
-      if (typeof columnA === "string") {
+      if (typeof valueA === "string") {
         // For string comparison
         return newSortOrder === "asc"
-          ? columnA.localeCompare(columnB)
-          : columnB.localeCompare(columnA);
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
       } else {
         // For numeric comparison
-        return newSortOrder === "asc" ? columnA - columnB : columnB - columnA;
+        return newSortOrder === "asc" ? valueA - valueB : valueB - valueA;
       }
     });
 
@@ -159,8 +147,11 @@ console.log("lastPostIndex",lastPostIndex);
                     className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1"
                   >
                     <option value="">All</option>
-                    <option value="Submitted">Submitted</option>
-                    <option value="Pending">Pending</option>
+                    {rxStatusOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
                 </span>
               </div>
@@ -236,7 +227,7 @@ console.log("lastPostIndex",lastPostIndex);
               <thead className="">
                 <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
                   <th
-                    className="px-6 py-3"
+                    className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis"
                     onClick={() => handleSort("trnRxId")}
                   >
                     Rx ID
@@ -255,7 +246,7 @@ console.log("lastPostIndex",lastPostIndex);
                     </div>
                   </th>
                   <th
-                    className="px-6 py-3"
+                    className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis"
                     onClick={() => handleSort("caseId")}
                   >
                     Case ID
@@ -274,7 +265,7 @@ console.log("lastPostIndex",lastPostIndex);
                     </div>
                   </th>
                   <th
-                    className="px-6 py-3"
+                    className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis"
                     onClick={() => handleSort("processStatus")}
                   >
                    Process Status
@@ -292,7 +283,7 @@ console.log("lastPostIndex",lastPostIndex);
                       )}
                     </div>
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Fulfillment <p>Status</p>
                     <div onClick={() => handleSort("rxFulfilmentStatus")}>
                       {sortOrder === "asc" ? (
@@ -308,7 +299,7 @@ console.log("lastPostIndex",lastPostIndex);
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     NetSuite <p>ID</p>
                     <div onClick={() => handleSort("netsuiteRxId")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -324,7 +315,7 @@ console.log("lastPostIndex",lastPostIndex);
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Fax <p>ID</p>
                     <div onClick={() => handleSort("faxId")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -340,7 +331,7 @@ console.log("lastPostIndex",lastPostIndex);
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Patient Name{" "}
                     <div  onClick={() => handleSort("patientName")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -356,23 +347,8 @@ console.log("lastPostIndex",lastPostIndex);
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
-                    Patient <p>ID</p>
-                    <div onClick={() => handleSort("patientId")} className="cursor-pointer">
-                      {sortOrder === "asc" ? (
-                        <AiOutlineCaretUp
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      ) : (
-                        <AiOutlineCaretDown
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      )}
-                    </div>{" "}
-                  </th>
-                  <th className="px-6 py-3">
+                 
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     HCP
                     <div onClick={() => handleSort("hcpName")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -388,7 +364,7 @@ console.log("lastPostIndex",lastPostIndex);
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3 ">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Account
                     <div onClick={() => handleSort("accountName")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -404,38 +380,8 @@ console.log("lastPostIndex",lastPostIndex);
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3 ">
-                    Payer
-                    <div onClick={() => handleSort("primaryPayerName")} className="cursor-pointer">
-                      {sortOrder === "asc" ? (
-                        <AiOutlineCaretUp
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      ) : (
-                        <AiOutlineCaretDown
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      )}
-                    </div>{" "}
-                  </th>
-                  <th className="px-6 py-3 ">
-                    Payer<p>Type</p>
-                    <div  onClick={() => handleSort("payerType")}  className="cursor-pointer">
-                      {sortOrder === "asc" ? (
-                        <AiOutlineCaretUp
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      ) : (
-                        <AiOutlineCaretDown
-                          className="cursor-pointer"
-                          size={13}
-                        />
-                      )}
-                    </div>{" "}
-                  </th>
+                
+                 
                 </tr>
               </thead>
               <tbody>
@@ -484,7 +430,7 @@ console.log("lastPostIndex",lastPostIndex);
                         index % 2 === 0 ? "" : "bg-[#f6f6f6]  "
                       } bg-white text-black/70 text-xs`}
                     >
-                      <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
+                      <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap max-w-[200px] overflow-hidden overflow-ellipsis">
                         <div
                           className="cursor-pointer"
                           onClick={() =>
@@ -499,17 +445,15 @@ console.log("lastPostIndex",lastPostIndex);
                           {item.trnRxId}
                         </div>
                       </td>
-                      <td className="px-6 py-4">{item.caseId}</td>
-                      <td className="px-6 py-4">{item.processStatus}</td>
-                      <td className="px-6 py-4">{item.rxFulfilmentStatus}</td>
-                      <td className="px-6 py-4">{item.netsuiteRxId}</td>
-                      <td className="px-6 py-4">{item.faxId}</td>
-                      <td className="px-6 py-4">{item.patientName}</td>
-                      <td className="px-6 py-4">{item.patientId}</td>
-                      <td className="px-6 py-4">{item.hcpName}</td>
-                      <td className="px-6 py-4">{item.accountName}</td>
-                      <td className="px-6 py-4">{item.primaryPayerName}</td>
-                      <td className="px-6 py-4">{item.payerType}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.processStatus}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.rxFulfilmentStatus}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.netsuiteRxId}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.faxId}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.patientName}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.hcpName}</td>
+                      <td className="px-6 py-4 max-w-[20px] overflow-hidden overflow-ellipsis">{item.accountName}</td>
+                      
                     </tr>
                   ))}
               </tbody>
