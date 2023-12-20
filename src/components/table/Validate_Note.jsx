@@ -540,6 +540,9 @@ const Validate_Note = () => {
     setIsHcpListVisible(!isHcpListVisible);
   };
 
+  const handleThumbnailClick = (pageIndex) => {
+    setPageNumber(pageIndex + 1);
+  };
 
   return (
     <>
@@ -800,7 +803,7 @@ const Validate_Note = () => {
 
                               </div>
                               <div className="absolute">
-                                <div className="relative left-20 top-20 ">
+                                <div className="relative left-20 top-04 ">
                                   <div className="relative left-20 top-10 ">
                                     <div
                                       className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
@@ -818,8 +821,6 @@ const Validate_Note = () => {
 
                         </div>
                       </div>
-
-
 
                       <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   cursor-pointer z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
                         <div className="w-[calc(90vh-1rem) h-[calc(60vh-10rem)] 500 rounded-2xl border- shadow-xl relative">
