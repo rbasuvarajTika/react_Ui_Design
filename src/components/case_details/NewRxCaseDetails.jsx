@@ -2611,7 +2611,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                     type="text"
                                                                     id='firstName'
                                                                     name='firstName'
@@ -2625,7 +2625,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                      type="text"
                                                                      id='middleName'
                                                                      name='middleName'
@@ -2639,7 +2639,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                    type="text"
                                                                    id='lastName'
                                                                    name='lastName'
@@ -2667,7 +2667,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                    type="text"
                                                                    id='npi'
                                                                    name='npi'

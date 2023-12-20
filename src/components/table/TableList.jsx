@@ -1,15 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { data } from "../../Data/Data";
 import Pagination from "../Pagination";
-import FaxId_Form from "./FaxId_Form";
-import { IoMdArrowDropdown } from "react-icons/io";
 import { DuplicateContext } from "../../context/DuplicateContext";
-import Duplicate_Fax from "../fax/Duplicate_Fax";
 import { ToastContainer, toast } from "react-toast";
 import axiosBaseURL from "../axios";
-import fax from "../../assets/pdf/fax.pdf";
 import { useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
 import FaxId_Form_New from "./FaxId_Form_New";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
@@ -82,32 +76,13 @@ const TableList = ({}) => {
     }
   }, []);
 
-  // const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId) => {
-  //   setSendFaxId(faxId);
-  //   setSendNoOfRxs(noOfRxs);
-
-  //   if (status === "Duplicate") {
-  //     setSendFaxId(faxId);
-
-  //     //setOpenDuplicate(true)
-  //     navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
-  //     console.log(!showForm);
-  //   } else if (status === "Main" || "New") {
-  //     navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}/${trnFaxId}`);
-  //     console.log("Handling fax status click");
-  //     console.log("Fax ID:", faxId, "Number of Rxs:", noOfRxs);
-  //     // setShoeForms(true)
-  //     setShoeForms(false);
-  //   }
-  // };
-
-  const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId) => {
+  const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId,patientFirstName, patientLastName, hcpFirstName,hcpLastName) => {
     setSendFaxId(faxId);
     setSendNoOfRxs(noOfRxs);
 
     if (noOfRxs === 0) {
       // If noOfRxs is 0, navigate to "/nsrxmgt/validatenote"
-      navigate(`/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}`);
+      navigate(`/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}/${patientFirstName}/${patientLastName}/${hcpFirstName}/${hcpLastName}`);
     } else if (status === "Duplicate") {
       // If noOfRxs is greater than 0 and status is "Duplicate", navigate to "/nsrxmgt/duplicate-fax/:faxId"
       navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
@@ -280,11 +255,11 @@ const TableList = ({}) => {
               </div>
             </div>
             <div></div>
-            <div className="relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll xl:h-[600px]  h-[500px]   no-scrollbar ">
+            <div className="relative overflow-x-auto rounded-xl bg-white p-1 overflow-y-scroll xl:h-[600px] h-[500px] no-scrollbar ">
               <table className="w-full text-sm text-center table-auto  ">
                 <thead className="">
                   <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                    <th className="px-6 py-3 ">
+                    <th className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis ">
                       Fax ID{" "}
                       <div
                         onClick={() => handleSort("faxId")}
@@ -304,7 +279,7 @@ const TableList = ({}) => {
                       </div>{" "}
                     </th>
 
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Case ID
                       <div
                         onClick={() => handleSort("caseId")}
@@ -323,7 +298,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Fax Status{" "}
                       <div
                         onClick={() => handleSort("faxStatus")}
@@ -342,7 +317,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       No of Rx{" "}
                       <div
                         onClick={() => handleSort("noOfRxs")}
@@ -361,7 +336,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Action Required{" "}
                       <div
                         onClick={() => handleSort("verifiedFlag")}
@@ -380,7 +355,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Main Fax ID{" "}
                       <div
                         onClick={() => handleSort("dupeFaxId")}
@@ -400,7 +375,7 @@ const TableList = ({}) => {
                       </div>
                     </th>
 
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Patient Name{" "}
                       <div
                         onClick={() => handleSort("patientFirstName")}
@@ -419,7 +394,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       HCP Name{" "}
                       <div
                         onClick={() => handleSort("hcpFirstName")}
@@ -438,7 +413,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Account{" "}
                       <div
                         onClick={() => handleSort("accountName")}
@@ -458,7 +433,7 @@ const TableList = ({}) => {
                       </div>
                     </th>
 
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Fax Date{" "}
                       <div
                         onClick={() => handleSort("faxDate")}
@@ -477,7 +452,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Fax Time{" "}
                       <div
                         onClick={() => handleSort("faxDateTime")}
@@ -496,7 +471,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3 ">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Sender Fax #{" "}
                       <div
                         onClick={() => handleSort("faxNumber")}
@@ -515,7 +490,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
-                    <th className="px-6 py-3 ">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       OCR Status{" "}
                       <div
                         onClick={() => handleSort("ocrStatus")}
@@ -592,35 +567,39 @@ const TableList = ({}) => {
                                 item.faxStatus,
                                 item.faxId,
                                 item.noOfRxs,
-                                item.trnFaxId
+                                item.trnFaxId,
+                                item.patientFirstName,
+                          item.patientLastName,
+                          item.hcpFirstName,
+                          item.hcpLastName
                               )
                             }
                           >
                             {item.faxId}
                           </div>
                         </td>
-                        <td className="px-6 py-4">{item.caseId}</td>
-                        <td className="px-6 py-4 cursor-pointer">
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.faxStatus}
                         </td>
-                        <td className="px-6 py-4 cursor-pointer">
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.noOfRxs}
                         </td>
-                        <td className="px-6 py-4">{item.verifiedFlag}</td>
-                        <td className="px-6 py-4">{item.dupeFaxId}</td>
-                        <td className="px-6 py-4">
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.verifiedFlag}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.dupeFaxId}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.patientFirstName}
                           {item.patientLastName}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.hcpFirstName}
                           {item.hcpLastName}
                         </td>
-                        <td className="px-6 py-4">{item.accountName}</td>
-                        <td className="px-6 py-4">{item.faxDate}</td>
-                        <td className="px-6 py-4">{item.faxDateTime}</td>
-                        <td className="px-6 py-4">{item.faxNumber}</td>
-                        <td className="px-6 py-4">{item.ocrStatus}</td>
+                        <td className="px-1 py-1 max-w-[20px] overflow-hidden overflow-ellipsis">{item.accountName}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.faxDate}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.faxDateTime}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.faxNumber}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis  ">{item.ocrStatus}</td>
                       </tr>
                     ))}
                 </tbody>

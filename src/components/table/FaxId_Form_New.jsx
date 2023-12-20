@@ -562,29 +562,7 @@ const FaxId_Form_New = () => {
     }
   };
 
-  const handleReviewSubmit = () => {
-    const userName = localStorage.getItem('userName');
 
-    const retryData = {
-      
-      userName:userName,
-      trnFaxId: trnFaxId,
-    };
-    axiosBaseURL
-      .put(`/api/v1/fax/updateFaxRxConfirm`,retryData,{
-        headers: { "Content-Type": "application/json" }
-      })
-      .then((response) => {
-        // Handle success
-        console.log("Fax PDF sent successfully:", response.data);
-        toast.success("Submitted successfully");
-      })
-      .catch((error) => {
-        // Handle error
-        console.error("Error sending fax PDF:", error);
-        toast.error("Failed to submit.");
-      });
-  };
 
 
 
@@ -831,7 +809,12 @@ const FaxId_Form_New = () => {
 
                 </div>
                 <div className='flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3 pt-3'>
-                  <div  className='text-white sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' onClick={handleReviewSubmit}>Reviewed & Exit</div>
+                  <div  className='text-white sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer' >Reviewed & Exit</div>
+                  {noOfRxs === 0 && (
+        <div className='text-white sm:w-44 csm:w-32  vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer'  onClick={() => navigate(`/nsrxmgt/newrx/${faxId}/${trnFaxId}`)}>
+          New Rx
+        </div>
+      )}
     
                 </div>
               

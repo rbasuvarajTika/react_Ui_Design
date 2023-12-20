@@ -227,7 +227,7 @@ useEffect(() => {
               <thead className="">
                 <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
                   <th
-                    className="px-6 py-3"
+                    className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis"
                     onClick={() => handleSort("trnRxId")}
                   >
                     Rx ID
@@ -246,7 +246,7 @@ useEffect(() => {
                     </div>
                   </th>
                   <th
-                    className="px-6 py-3"
+                    className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis"
                     onClick={() => handleSort("caseId")}
                   >
                     Case ID
@@ -265,7 +265,7 @@ useEffect(() => {
                     </div>
                   </th>
                   <th
-                    className="px-6 py-3"
+                    className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis"
                     onClick={() => handleSort("processStatus")}
                   >
                    Process Status
@@ -283,7 +283,7 @@ useEffect(() => {
                       )}
                     </div>
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Fulfillment <p>Status</p>
                     <div onClick={() => handleSort("rxFulfilmentStatus")}>
                       {sortOrder === "asc" ? (
@@ -299,7 +299,7 @@ useEffect(() => {
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     NetSuite <p>ID</p>
                     <div onClick={() => handleSort("netsuiteRxId")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -315,7 +315,7 @@ useEffect(() => {
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Fax <p>ID</p>
                     <div onClick={() => handleSort("faxId")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -331,7 +331,7 @@ useEffect(() => {
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Patient Name{" "}
                     <div  onClick={() => handleSort("patientName")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -348,7 +348,7 @@ useEffect(() => {
                     </div>{" "}
                   </th>
                  
-                  <th className="px-6 py-3">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     HCP
                     <div onClick={() => handleSort("hcpName")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -364,7 +364,7 @@ useEffect(() => {
                       )}
                     </div>{" "}
                   </th>
-                  <th className="px-6 py-3 ">
+                  <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                     Account
                     <div onClick={() => handleSort("accountName")} className="cursor-pointer">
                       {sortOrder === "asc" ? (
@@ -430,7 +430,7 @@ useEffect(() => {
                         index % 2 === 0 ? "" : "bg-[#f6f6f6]  "
                       } bg-white text-black/70 text-xs`}
                     >
-                      <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
+                      <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap max-w-[200px] overflow-hidden overflow-ellipsis">
                         <div
                           className="cursor-pointer"
                           onClick={() =>
@@ -445,14 +445,14 @@ useEffect(() => {
                           {item.trnRxId}
                         </div>
                       </td>
-                      <td className="px-6 py-4">{item.caseId}</td>
-                      <td className="px-6 py-4">{item.processStatus}</td>
-                      <td className="px-6 py-4">{item.rxFulfilmentStatus}</td>
-                      <td className="px-6 py-4">{item.netsuiteRxId}</td>
-                      <td className="px-6 py-4">{item.faxId}</td>
-                      <td className="px-6 py-4">{item.patientName}</td>
-                      <td className="px-6 py-4">{item.hcpName}</td>
-                      <td className="px-6 py-4">{item.accountName}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.processStatus}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.rxFulfilmentStatus}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.netsuiteRxId}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.faxId}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.patientName}</td>
+                      <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.hcpName}</td>
+                      <td className="px-6 py-4 max-w-[20px] overflow-hidden overflow-ellipsis">{item.accountName}</td>
                       
                     </tr>
                   ))}
