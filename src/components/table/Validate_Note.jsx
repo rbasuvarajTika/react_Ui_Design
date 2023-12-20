@@ -822,8 +822,6 @@ const Validate_Note = () => {
                         </div>
                       </div>
 
-
-
                       <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   cursor-pointer z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
                         <div className="w-[calc(90vh-1rem) h-[calc(60vh-10rem)] 500 rounded-2xl border- shadow-xl relative">
                           <div className="flex justify-center ">
