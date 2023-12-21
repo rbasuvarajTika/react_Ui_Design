@@ -112,7 +112,7 @@ function Header_Navigation_Admin() {
                     
                     <span className="uppercase flex items-center gap-1" onClick={() => navigate(-1)}>
                         <span className="bg-white rounded-full z-50">
-                            <ArrowBack className="text-teal-400" onClick={() => navigate(-1)} />
+                            <ArrowBack className="text-teal-400 cursor-pointer" onClick={() => navigate(-1)} />
                         </span>
                         <span className="text-white hidden md:block z-50" onClick={() => navigate(-1)}>Next science</span>
                     </span>
@@ -124,7 +124,7 @@ function Header_Navigation_Admin() {
                     )}
                 </div>
                 <div>
-                    <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
+                    <span className="uppercase  text-[#FE7D00] text-sm font-bold z-50" >
                        User List
 
                     </span>

@@ -299,6 +299,7 @@ return (
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56  text-black py-1 text-xs t-1' 
                                 name="userName"
                                 type="text" 
+                                autoComplete='off'
                                 value={userData.userName}
                                 onChange={handleInputChange}
                                 />
@@ -314,6 +315,7 @@ return (
                                 <label className='text-xs text-black w-28 text-start' htmlFor="">*First Name: </label>
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 type="text"
+                                autoComplete='off'
                                 name="firstName"
                                 value={userData.firstName}
                                 onChange={handleInputChange}
@@ -331,6 +333,7 @@ return (
                                 <label className='text-xs text-black w-28 text-start' htmlFor="">*Last Name </label>
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 name="lastName"
+                                autoComplete='off'
                                 value={userData.lastName}
                                 onChange={handleInputChange}
                                 type="text" 
@@ -353,6 +356,7 @@ return (
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs t-1' 
                                 name="address"
                                 type="text" 
+                                autoComplete='off'
                                 value={userData.address}
 
                                 onChange={handleInputChange}
@@ -367,6 +371,7 @@ return (
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 type="text"
                                 name="city"
+                                autoComplete='off'
                                 value={userData.city}
                                 onChange={handleInputChange}    
                                 />
@@ -381,6 +386,7 @@ return (
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs'
                                 type="text"
                                 name="state"
+                                autoComplete='off'
                                 value={userData.state}
                                 onChange={handleInputChange}
                                 />
@@ -400,6 +406,7 @@ return (
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs t-1' 
                                 name="zip"
                                 type="text"
+                                autoComplete='off'
                                 value={userData.zip}
                                 onChange={handleInputChange}
                                 />
@@ -416,6 +423,7 @@ return (
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs'
                                 type="text"
                                 name="phone"
+                                autoComplete='off'
                                 value={userData.phone}
                                 onChange={handleInputChange}
                                 />
@@ -433,6 +441,7 @@ return (
                                 <input className='bg-[#f2f2f2] rounded-[5px] border border-gray-300 w-56 text-black py-1 text-xs' 
                                 type="password"
                                 name="password"
+                                autoComplete='off'
                                 value={userData.password}
                                 onChange={handleInputChange}
                                 

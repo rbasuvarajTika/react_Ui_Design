@@ -1372,6 +1372,7 @@ const zoomInSecond = () => {
                                                         <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
                                                               type="text"
                                                               id="firstName"
+                                                              autoComplete='off'
                                                               name="patientFirstName"
                                                               value={patientNewData.patientFirstName || ''}
                                                               onChange={handlepatientInputChange}
@@ -1380,6 +1381,7 @@ const zoomInSecond = () => {
                                                         <input className='2xl:w-32 xl:w-24  text-black py-0.5 text-xs t-1'
                                                             type="text"
                                                             id="firstName"
+                                                            autoComplete='off'
                                                             name="firstName"
                                                             value={patientNewData.patientFirstName || ''}
                                                         />
@@ -1394,6 +1396,7 @@ const zoomInSecond = () => {
                                                         <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs'
                                                             type="text"
                                                             id="middleName"
+                                                            autoComplete='off'
                                                             name="patientMiddleName"
                                                             value={patientNewData.patientMiddleName || ''}
                                                             onChange={handlepatientInputChange}
@@ -1403,6 +1406,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="middleName"
                                                              name="middleName"
+                                                             autoComplete='off'
                                                              value={patientNewData.patientMiddleName || ''}
                                                         />
                                                     </>}
@@ -1417,6 +1421,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="lastName"
                                                             name="patientLastName"
+                                                            autoComplete='off'
                                                             value={patientNewData.patientLastName || ''}
                                                             onChange={handlepatientInputChange}        
                                                         />
@@ -1425,6 +1430,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="lastName"
                                                             name="lastName"
+                                                            autoComplete='off'
                                                             value={patientNewData.patientLastName || ''}
                                                         />
                                                     </>}
@@ -1451,6 +1457,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="dateOfBirth"
                                                              name="dateOfBirth"
+                                                             autoComplete='off'
                                                              value={patientNewData.dateOfBirth || ''}
                                                         />
                                                     </>}
@@ -1465,6 +1472,7 @@ const zoomInSecond = () => {
                                                            type="text"
                                                            id="ssn"
                                                            name="ssn"
+                                                           autoComplete='off'
                                                            value={patientNewData.ssn || ''}
                                                            onChange={handlepatientInputChange}
                                                         />
@@ -1474,6 +1482,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="ssn"
                                                             name="ssn"
+                                                            autoComplete='off'
                                                             value={patientNewData.ssn || ''}
                                                         />
                                                     </>}
@@ -1493,6 +1502,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="shipToAddress"
                                                             name="shipToAddress"
+                                                            autoComplete='off'
                                                             value={patientNewData.shipToAddress || ''}
                                                             onChange={handlepatientInputChange}
                                                         />
@@ -1501,6 +1511,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="shipToAddress"
                                                              name="shipToAddress"
+                                                             autoComplete='off'
                                                              value={patientNewData.shipToAddress || ''}
                                                         />
                                                     </>}
@@ -1512,6 +1523,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="cellPhone"
                                                             name="cellPhone"
+                                                            autoComplete='off'
                                                             value={patientNewData.cellPhone || ''}
                                                             onChange={handlepatientInputChange}
                                                         />
@@ -1521,6 +1533,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="cellPhone"
                                                             name="cellPhone"
+                                                            autoComplete='off'
                                                             value={patientNewData.cellPhone || ''}
                                                         />
                                                     </>}
@@ -1537,6 +1550,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="city"
                                                              name="city"
+                                                             autoComplete='off'
                                                              value={patientNewData.city || ''}
                                                              onChange={handlepatientInputChange}
                                                         />
@@ -1545,6 +1559,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="city"
                                                             name="city"
+                                                            autoComplete='off'
                                                             value={patientNewData.city || ''}
                                                         />
                                                     </>}
@@ -1556,6 +1571,7 @@ const zoomInSecond = () => {
                                                     {!openNetSuit ? <>
                                                         <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
                                                             name="state"
+                                                            autoComplete='off'
                                                             value={patientNewData.state}
                                                              onChange={handlepatientInputChange}
                      
@@ -1571,6 +1587,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="state"
                                                              name="state"
+                                                             autoComplete='off'
                                                              value={patientNewData.state}
                                                         />
                                                     </>}
@@ -1585,6 +1602,7 @@ const zoomInSecond = () => {
                                                            type="text"
                                                            id="zip"
                                                            name="zip"
+                                                           autoComplete='off'
                                                            value={patientNewData.zip || ''}
                                                            onChange={handlepatientInputChange}
                                                         />
@@ -1594,6 +1612,7 @@ const zoomInSecond = () => {
                                                            type="text"
                                                            id="zip"
                                                            name="zip"
+                                                           autoComplete='off'
                                                            value={patientNewData.zip || ''}
                                                         />
                                                     </>}
@@ -1638,6 +1657,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="salesRepName"
                                                              name="repName"
+                                                             autoComplete='off'
                                                              value={patientNewData.repName || ''}
                                                              onChange={handlepatientInputChange}
                                                         />
@@ -1646,6 +1666,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="salesRepName"
                                                              name="salesRepName"
+                                                             autoComplete='off'
                                                              value={patientNewData.repName || ''}
                                                         />
                                                     </>}
@@ -1659,6 +1680,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="salesRepCell"
                                                              name="repPhoneNo"
+                                                             autoComplete='off'
                                                              value={patientNewData.repPhoneNo || ''}
                                                              onChange={handlepatientInputChange}
                                                         />
@@ -1667,6 +1689,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="salesRepCell"
                                                               name="salesRepCell"
+                                                              autoComplete='off'
                                                               value={patientNewData.repPhoneNo || ''}
                                                         />
                                                     </>}
@@ -1678,6 +1701,7 @@ const zoomInSecond = () => {
                                                     {!openNetSuit ? <>
                                                         <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 ma-56 text-black py-0.5 text-xs t-1'
                                                            name="distributorName"
+                                                           autoComplete='off'
                                                            value={patientNewData.distributorName}
                                                            onChange={handlepatientInputChange}
                                                        >
@@ -1692,6 +1716,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="distributor"
                                                             name="distributor"
+                                                            autoComplete='off'
                                                             value={patientNewData.distributor || ''}
                                                         />
                                                     </>}
@@ -1709,6 +1734,7 @@ const zoomInSecond = () => {
                                                              name="placeOfService"
 
                                                              id="placeOfService"
+                                                             autoComplete='off'
                                                              value={patientNewData.placeOfService || ''}
                                                              onChange={handlepatientInputChange}
                                                              >
@@ -1725,6 +1751,7 @@ const zoomInSecond = () => {
                                                              type="text"
                                                              id="placeOfService"
                                                              name="placeOfService"
+                                                             autoComplete='off'
                                                              value={patientNewData.placeOfService || ''}
                                                         />
                                                     </>}
@@ -1737,6 +1764,7 @@ const zoomInSecond = () => {
                                                         <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
                                                     name="orderType"
                                                     id="orderType"
+                                                    autoComplete='off'
                                                     value={patientNewData.orderType || ''}
                                                     onChange={handlepatientInputChange}
 
@@ -1751,6 +1779,7 @@ const zoomInSecond = () => {
                                                         <input className='w-56  text-black py-0.5 text-xs t-1'
                                                                  type="text"
                                                                  id="orderType"
+                                                                 autoComplete='off'
                                                                  name="orderType"
                                                                  value={patientNewData.orderType || ''}
                                                         />
@@ -1773,6 +1802,7 @@ const zoomInSecond = () => {
                                                             type="text"
                                                             id="woundActive"
                                                             name="woundActive"
+                                                            autoComplete='off'
                                                             value={patientNewData.woundActive || ''}
                                                         />
                                                     </>}
@@ -2078,7 +2108,7 @@ const zoomInSecond = () => {
                                                         ))}
                                                 </select>
                                                         </>:<>
-                                                    <input type="text" name="quantity" id="quantity" value={kit.quantity} 
+                                                    <input type="text" name="quantity" autoComplete='off' id="quantity" value={kit.quantity} 
                                                         className=' text-black h-5 w-10 text-xs'/>
                                                     </>}
                                                     </td>
@@ -2111,6 +2141,7 @@ const zoomInSecond = () => {
                                                                     className="relative h-3 w-3 cursor-pointer"
                                                                     id={`checkbox-${index}`}
                                                                     defaultChecked={kit.wnd2}
+                                                                    autoComplete='off'
                                                                 
                                                                 />
                                                             </>}
@@ -2121,6 +2152,7 @@ const zoomInSecond = () => {
                                                             className="relative h-3 w-3 cursor-pointer"
                                                             id={`checkbox-${index}`}
                                                             defaultChecked={kit.wnd3}
+                                                            autoComplete='off'
                                                             onChange={(e) => handleKitEditRowChange(index, 'wnd3', e.target.checked)}
                                                         />
                                                     </td>
@@ -2128,6 +2160,7 @@ const zoomInSecond = () => {
                                                     <input
                                                             type="checkbox"
                                                             className="relative h-3 w-3 cursor-pointer"
+                                                            autoComplete='off'
                                                             id={`checkbox-${index}`}
                                                             defaultChecked={kit.wnd4}
                                                             onChange={(e) => handleKitEditRowChange(index, 'wnd4', e.target.checked)}
@@ -2185,6 +2218,7 @@ const zoomInSecond = () => {
                                                 type="text"
                                                 name="accountName"
                                                 id='accountName'
+                                                autoComplete='off'
                                                 value={officeData.accountName}
                                                 onChange={handleOfficeInputChange}
                                             />
@@ -2193,6 +2227,7 @@ const zoomInSecond = () => {
                                                type="text"
                                                name="accountName"
                                                id='accountName'
+                                               autoComplete='off'
                                                value={officeData.accountName}
                                             />
                                         </>}
@@ -2205,6 +2240,7 @@ const zoomInSecond = () => {
                                                 type="text"
                                                 id='phone'
                                                 name="phone"
+                                                autoComplete='off'
                                                 value={officeData.phone}
                                                 onChange={handleOfficeInputChange}
                                             />
@@ -2213,6 +2249,7 @@ const zoomInSecond = () => {
                                                type="text"
                                                id='phone'
                                                name="phone"
+                                               autoComplete='off'
                                                value={officeData.phone}
                                             />
                                         </>}
@@ -2225,6 +2262,7 @@ const zoomInSecond = () => {
                                                  type="text"
                                                  id='email'
                                                  name="email"
+                                                 autoComplete='off'
                                                  value={officeData.email}
                                                  onChange={handleOfficeInputChange}
                                             />
@@ -2244,6 +2282,7 @@ const zoomInSecond = () => {
                                             <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
                                                   type="text"
                                                   value={officeData.city}
+                                                  autoComplete='off'
                                                   name="city"
                                                   onChange={handleOfficeInputChange}
                                             />
@@ -2264,6 +2303,7 @@ const zoomInSecond = () => {
                                                 fullWidth
                                                 size="small"
                                                 name="state"
+                                                
                                                 value={officeData.state}
                                                 onChange={handleOfficeInputChange}
                                             >
@@ -2289,6 +2329,7 @@ const zoomInSecond = () => {
                                                 type="text"
                                                 value={officeData.zip}
                                                 name="zip"
+                                                autoComplete='off'
                                                 onChange={handleOfficeInputChange}
                                             />
                                         </> : <>
@@ -2342,6 +2383,7 @@ const zoomInSecond = () => {
                                                                     id='firstName'
                                                                     name='firstName'
                                                                     value= {data.firstName}
+                                                                    autoComplete='off'
                                                                     onChange={(e) => handleHcpEditRowChange(index, 'firstName', e.target.value)}
                                                                 />
                                                             </> : <>
@@ -2355,6 +2397,7 @@ const zoomInSecond = () => {
                                                                      type="text"
                                                                      id='middleName'
                                                                      name='middleName'
+                                                                     autoComplete='off'
                                                                      value= {data.middleName}
                                                                      onChange={(e) => handleHcpEditRowChange(index, 'middleName', e.target.value)}
                                                                 />
@@ -2368,6 +2411,7 @@ const zoomInSecond = () => {
                                                                 <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
                                                                    type="text"
                                                                    id='lastName'
+                                                                   autoComplete='off'
                                                                    name='lastName'
                                                                    value= {data.lastName}
                                                                    onChange={(e) => handleHcpEditRowChange(index, 'lastName', e.target.value)}
@@ -2382,6 +2426,7 @@ const zoomInSecond = () => {
                                                             <input  className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
                                                                         type="text"
                                                                         id='designation'
+                                                                        autoComplete='off'
                                                                         name='designation'
                                                                     value= ''
                                                                     // onChange={(e) => handleHcpEditRowChange(index, 'designation', e.target.value)}
@@ -2397,6 +2442,7 @@ const zoomInSecond = () => {
                                                                    type="text"
                                                                    id='npi'
                                                                    name='npi'
+                                                                   autoComplete='off'
                                                                    value= {data.npi}
                                                                    onChange={(e) => handleHcpEditRowChange(index, 'npi', e.target.value)}
                                                                 />
