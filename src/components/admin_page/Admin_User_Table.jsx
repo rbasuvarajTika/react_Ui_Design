@@ -182,43 +182,43 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
                         <table className="w-full text-sm text-center table-auto  ">
                             <thead className="">
                                 <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                                    <th className="px-6 py-3 ">User ID
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis ">User ID
                                         <div  onClick={() => handleSort("username")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                    <th className="px-6 py-3">First Name
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">First Name
                                         <div onClick={() => handleSort("firstName")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div>
                                     </th>
-                                    <th className="px-6 py-3">Last Name
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Last Name
                                         <div onClick={() => handleSort("lastName")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                    <th className="px-6 py-3">Phone
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Phone
                                         <div onClick={() => handleSort("phone")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                    <th className="px-6 py-3">Role
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Role
                                         <div onClick={() => handleSort("role")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                    <th className="px-6 py-3">Type
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Type
                                         <div onClick={() => handleSort("userType")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                    <th className="px-6 py-3">Status
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Status
                                         <div onClick={() => handleSort("userStatusFlag")} className="cursor-pointer">
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
-                                    <th className="px-6 py-3 ">Edit</th>
+                                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Edit</th>
 
                                 </tr>
                             </thead>
@@ -241,19 +241,19 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
                                             } bg-white text-black/70 text-xs`}
                                     >
                                         <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
-                                            <div className="cursor-pointer"
+                                            <div className=""
                                             >
                                                 {item.username}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">{item.firstName}</td>
-                                        <td className="px-6 py-4 cursor-pointer" >{item.lastName}</td>
-                                        <td className="px-6 py-4">{item.phone}</td>
-                                        <td className="px-6 py-4">{item.role}</td>
-                                        <td className="px-6 py-4">{item.userType}</td>
-                                        <td className="px-6 py-4">{item.userStatusFlag}</td>
-                                        <td className="px-6 py-4">
-                                            <MdEditDocument className="text-[#1b5d7d]" size={25} onClick={() => handleEditUser(item.userId)} />
+                                        <td className="px-6 py-4 max-w-[20px] overflow-hidden overflow-ellipsis">{item.firstName}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis " >{item.lastName}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.phone}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.role}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.userType}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.userStatusFlag}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">
+                                            <MdEditDocument className="text-[#1b5d7d] cursor-pointer" size={25} onClick={() => handleEditUser(item.userId)} />
                                         </td>
 
                                     </tr>
