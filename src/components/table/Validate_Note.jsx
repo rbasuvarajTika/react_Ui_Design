@@ -17,6 +17,7 @@ import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import { useParams } from "react-router-dom";
 import "../Background";
 import SaveIcon from "@mui/icons-material/Save";
+import FaxId_Form from "./FaxId_Form";
 import Header_Navigation_FaxReview from "../header/Header_Navigation_FaxReview";
 import Header_Navigation_Validate_Fax from "../header/Header_Navigation_Validate_Fax";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -42,18 +43,13 @@ const Validate_Note = () => {
   const [showSearchPatient, setShowSearchPatient] = useState(false);
   const [showSearchHcp, setShowSearchHcp] = useState(false);
   const { faxId, sendNoOfRxs, trnFaxId, patientFirstName, patientLastName, hcpFirstName, hcpLastName } = useParams();
-  const [patientNames, setPatientNames] = useState(`${patientFirstName} ${patientLastName}`);
-  const [hcpNames, setHcpNames] = useState(`${hcpFirstName} ${hcpLastName}`);
-  const [allPatients] = useState([
-    { id: 1, patient: "jack" },
-    { id: 2, patient: "Glenn" },
-    { id: 2, patient: "Glenn Maxwell" },
-    { id: 3, patient: "steveeerr" },
-    { id: 4, patient: "steverre" },
-    { id: 5, patient: "steqqve" },
-    { id: 6, patient: "steqerdve" },
-    { id: 6, patient: "steqerdve" },
-  ]);
+  const sanitizedPatientFirstName = patientFirstName === 'null' || patientFirstName === null ? ' ' : patientFirstName;
+  const sanitizedPatientLastName = patientLastName === 'null' || patientLastName === null ? ' ' : patientLastName;
+  const sanitizedHcpFirstName = hcpFirstName === 'null' || hcpFirstName === null ? ' ' : hcpFirstName;
+  const sanitizedHcpLastName = hcpLastName === 'null' || hcpLastName === null ? ' ' : hcpLastName;
+  const [patientNames, setPatientNames] = useState(`${sanitizedPatientFirstName.trim()} ${sanitizedPatientLastName.trim()}`);
+  const [hcpNames, setHcpNames] = useState(`${sanitizedHcpFirstName.trim()} ${sanitizedHcpLastName.trim()}`);
+
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [searchPatients, setSearchPatients] = useState([]);
   const [filteredHcps, setFilteredHcps] = useState([]);
@@ -61,6 +57,8 @@ const Validate_Note = () => {
   const [isPatientListVisible, setIsPatientListVisible] = useState(false);
   const [isHcpListVisible, setIsHcpListVisible] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
+  const [selectedFaxId, setSelectedFaxId] = useState(null);
+const [showFaxForm, setShowFaxForm] = useState(false);
   const [faxIds, setFaxIds] = useState('');
   const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null });
   const [noOfRxs, setNoOfRxs] = useState(0);
@@ -73,6 +71,9 @@ const Validate_Note = () => {
     setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
   };
 
+  console.log("pa :", hcpFirstName)
+  console.log("spa :", sanitizedHcpFirstName)
+  console.log('Sanitized values:', sanitizedPatientFirstName, sanitizedPatientLastName, sanitizedHcpFirstName, sanitizedHcpLastName);
   useEffect(() => {
     const fetchPdf = () => {
       setIsLoading(true);
@@ -453,6 +454,12 @@ const Validate_Note = () => {
     fetchData();
   }, []);
 
+  const handleFaxStatus = (faxIds) => {
+    setSelectedFaxId(faxIds);
+    setShowFaxForm(true);
+  };
+  
+ 
 
 
   useEffect(() => {
@@ -494,6 +501,7 @@ const Validate_Note = () => {
       : [];
 
     setFilteredPatients(filteredResults);
+    setIsPatientListVisible(!!searchTerm);
   };
 
   const handlePatientSelection = (selectedPatient) => {
@@ -530,6 +538,7 @@ const Validate_Note = () => {
       : [];
 
     setFilteredHcps(filteredResults);
+    setIsHcpListVisible(!!searchTerm);
   };
 
   const handleHcpSelection = (selectedHcp) => {
@@ -734,9 +743,9 @@ const Validate_Note = () => {
 
                           </div> */}
 
-                          <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  cursor-pointer z-50">
+                          <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28   z-50">
                             {/* Always show patient and HCP input fields */}
-                            <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28 cursor-pointer z-50">
+                            <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  z-50">
                               {/* Always show patient and HCP input fields */}
                               <div className="flex flex-col items-center relative ">
                                 <div className="flex gap-40 relative  bottom-10">
@@ -744,18 +753,21 @@ const Validate_Note = () => {
                                     <label htmlFor="patientName" className="text-sm text-gray-600 overflow-hidden">
                                       Patient Name:
                                       <div className="flex items-center">
-                                        <span
-                                          title={`${patientFirstName} ${patientLastName}`}
-                                          className="truncate inline-block max-w-[100px] cursor-pointer"
-                                        >
-                                          <strong>{`${patientFirstName} ${patientLastName}`}</strong>
-                                        </span>
+                                        <div className="absoulute">
+                                          <span
+                                            title={`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}
+                                            className="truncate inline-block max-w-[100px] cursor-pointer"
+                                          >
+                                            <strong>{`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}</strong>
+                                          </span>
+                                        </div>
                                       </div>
                                     </label>
                                     <input
                                       type="text"
                                       id="searchPatientName"
                                       value={patientNames}
+                                      autoComplete="off"
                                       onChange={handlePatientInputChange}
                                       onClick={handlePatientInputClick}
                                       className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
@@ -774,18 +786,21 @@ const Validate_Note = () => {
                                     <label htmlFor="hcpName" className="text-sm text-gray-600 overflow-hidden">
                                       HCP Name:
                                       <div className="flex items-center">
-                                        <span
-                                          title={`${hcpFirstName} ${hcpLastName}`}
-                                          className="truncate inline-block max-w-[100px] cursor-pointer"
-                                        >
-                                          <strong>{`${hcpFirstName} ${hcpLastName}`}</strong>
-                                        </span>
+                                        <div className="absoulute">
+                                          <span
+                                            title={`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}
+                                            className="truncate inline-block max-w-[100px] cursor-pointer"
+                                          >
+                                            <strong>{`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}</strong>
+                                          </span>
+                                        </div>
                                       </div>
                                     </label>
                                     <input
                                       type="text"
                                       id="searchHcpName"
                                       value={hcpNames}
+                                      autoComplete="off"
                                       onChange={handleHcpsInputChange}
                                       onClick={handleHcpInputClick}
                                       className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
@@ -822,7 +837,7 @@ const Validate_Note = () => {
                         </div>
                       </div>
 
-                      <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   cursor-pointer z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
+                      <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
                         <div className="w-[calc(90vh-1rem) h-[calc(60vh-10rem)] 500 rounded-2xl border- shadow-xl relative">
                           <div className="flex justify-center ">
                             <hr className="h-px border-[#e36c09] border w-32 absolute flex justify-center   " />
@@ -840,9 +855,9 @@ const Validate_Note = () => {
                                     <th className="px-2 py-3 border">Case ID</th>
 
                                     <th className="px-2 py-3 border">Fax Date</th>
-                                    <th className="px-2 py-3 border">HCP</th>
+                                    {/* <th className="px-2 py-3 border">HCP</th> */}
 
-                                    <th className="px-2 py-3 border">Fax ID</th>
+                                    <th className="px-2 py-3 border" >Fax ID</th>
 
 
                                     {/* Add more headers based on your data structure */}
@@ -851,7 +866,7 @@ const Validate_Note = () => {
                                 <tbody>
                                   {rxlist.map((rx, index) => (
                                     <tr key={index}>
-                                      <td className='bg-[#f2f2f2] text-gray-600 border px-10'>
+                                      <td className='bg-[#f2f2f2] text-gray-600 border px-14'>
                                         <input
                                           type="checkbox"
                                           id={`checkbox-${index}`}
@@ -866,9 +881,9 @@ const Validate_Note = () => {
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.caseId}</td>
 
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxDate}</td>
-                                      <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td>
+                                      {/* <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td> */}
 
-                                      <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxId}</td>
+                                      <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10'  onClick={() => handleFaxStatus(rx.faxId)}>{rx.faxId}</td>
 
 
                                       {/* Add more cells based on your data structure */}
@@ -922,6 +937,8 @@ const Validate_Note = () => {
           </div>
         </div>
       </section >
+      {showFaxForm && <FaxId_Form close_Form={() => setShowFaxForm(false)} sendFaxId={selectedFaxId} />}
+
     </>
   );
 };

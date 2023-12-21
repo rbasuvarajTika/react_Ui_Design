@@ -119,7 +119,7 @@ function Header_Navigation_Admin() {
                     {userData && (
                     <span className="text-white flex items-center gap-1 z-50" onClick={openEditUserProfile}>
                         <AccountCircle />
-                        <span className="underline hidden md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
+                        <span className="underline hidden cursor-pointer md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
                     </span>
                     )}
                 </div>
