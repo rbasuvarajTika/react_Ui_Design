@@ -42,18 +42,13 @@ const Validate_Note = () => {
   const [showSearchPatient, setShowSearchPatient] = useState(false);
   const [showSearchHcp, setShowSearchHcp] = useState(false);
   const { faxId, sendNoOfRxs, trnFaxId, patientFirstName, patientLastName, hcpFirstName, hcpLastName } = useParams();
-  const [patientNames, setPatientNames] = useState(`${patientFirstName} ${patientLastName}`);
-  const [hcpNames, setHcpNames] = useState(`${hcpFirstName} ${hcpLastName}`);
-  const [allPatients] = useState([
-    { id: 1, patient: "jack" },
-    { id: 2, patient: "Glenn" },
-    { id: 2, patient: "Glenn Maxwell" },
-    { id: 3, patient: "steveeerr" },
-    { id: 4, patient: "steverre" },
-    { id: 5, patient: "steqqve" },
-    { id: 6, patient: "steqerdve" },
-    { id: 6, patient: "steqerdve" },
-  ]);
+  const sanitizedPatientFirstName = patientFirstName === 'null' || patientFirstName === null ? ' ' : patientFirstName;
+  const sanitizedPatientLastName = patientLastName === 'null' || patientLastName === null ? ' ' : patientLastName;
+  const sanitizedHcpFirstName = hcpFirstName === 'null' || hcpFirstName === null ? ' ' : hcpFirstName;
+  const sanitizedHcpLastName = hcpLastName === 'null' || hcpLastName === null ? ' ' : hcpLastName;
+  const [patientNames, setPatientNames] = useState(`${sanitizedPatientFirstName.trim()} ${sanitizedPatientLastName.trim()}`);
+  const [hcpNames, setHcpNames] = useState(`${sanitizedHcpFirstName.trim()} ${sanitizedHcpLastName.trim()}`);
+
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [searchPatients, setSearchPatients] = useState([]);
   const [filteredHcps, setFilteredHcps] = useState([]);
@@ -73,6 +68,9 @@ const Validate_Note = () => {
     setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
   };
 
+  console.log("pa :", hcpFirstName)
+  console.log("spa :", sanitizedHcpFirstName)
+  console.log('Sanitized values:', sanitizedPatientFirstName, sanitizedPatientLastName, sanitizedHcpFirstName, sanitizedHcpLastName);
   useEffect(() => {
     const fetchPdf = () => {
       setIsLoading(true);
@@ -494,6 +492,7 @@ const Validate_Note = () => {
       : [];
 
     setFilteredPatients(filteredResults);
+    setIsPatientListVisible(!!searchTerm);
   };
 
   const handlePatientSelection = (selectedPatient) => {
@@ -530,6 +529,7 @@ const Validate_Note = () => {
       : [];
 
     setFilteredHcps(filteredResults);
+    setIsHcpListVisible(!!searchTerm);
   };
 
   const handleHcpSelection = (selectedHcp) => {
@@ -744,18 +744,21 @@ const Validate_Note = () => {
                                     <label htmlFor="patientName" className="text-sm text-gray-600 overflow-hidden">
                                       Patient Name:
                                       <div className="flex items-center">
-                                        <span
-                                          title={`${patientFirstName} ${patientLastName}`}
-                                          className="truncate inline-block max-w-[100px] cursor-pointer"
-                                        >
-                                          <strong>{`${patientFirstName} ${patientLastName}`}</strong>
-                                        </span>
+                                        <div className="absoulute">
+                                          <span
+                                            title={`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}
+                                            className="truncate inline-block max-w-[100px] cursor-pointer"
+                                          >
+                                            <strong>{`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}</strong>
+                                          </span>
+                                        </div>
                                       </div>
                                     </label>
                                     <input
                                       type="text"
                                       id="searchPatientName"
                                       value={patientNames}
+                                      autoComplete="off"
                                       onChange={handlePatientInputChange}
                                       onClick={handlePatientInputClick}
                                       className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
@@ -774,18 +777,21 @@ const Validate_Note = () => {
                                     <label htmlFor="hcpName" className="text-sm text-gray-600 overflow-hidden">
                                       HCP Name:
                                       <div className="flex items-center">
-                                        <span
-                                          title={`${hcpFirstName} ${hcpLastName}`}
-                                          className="truncate inline-block max-w-[100px] cursor-pointer"
-                                        >
-                                          <strong>{`${hcpFirstName} ${hcpLastName}`}</strong>
-                                        </span>
+                                        <div className="absoulute">
+                                          <span
+                                            title={`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}
+                                            className="truncate inline-block max-w-[100px] cursor-pointer"
+                                          >
+                                            <strong>{`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}</strong>
+                                          </span>
+                                        </div>
                                       </div>
                                     </label>
                                     <input
                                       type="text"
                                       id="searchHcpName"
                                       value={hcpNames}
+                                      autoComplete="off"
                                       onChange={handleHcpsInputChange}
                                       onClick={handleHcpInputClick}
                                       className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
@@ -840,7 +846,7 @@ const Validate_Note = () => {
                                     <th className="px-2 py-3 border">Case ID</th>
 
                                     <th className="px-2 py-3 border">Fax Date</th>
-                                    <th className="px-2 py-3 border">HCP</th>
+                                    {/* <th className="px-2 py-3 border">HCP</th> */}
 
                                     <th className="px-2 py-3 border">Fax ID</th>
 
@@ -866,7 +872,7 @@ const Validate_Note = () => {
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.caseId}</td>
 
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxDate}</td>
-                                      <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td>
+                                      {/* <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td> */}
 
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxId}</td>
 
