@@ -86,7 +86,7 @@ const TableList = ({}) => {
     } else if (status === "Duplicate") {
       // If noOfRxs is greater than 0 and status is "Duplicate", navigate to "/nsrxmgt/duplicate-fax/:faxId"
       navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
-    } else if (status === "Main" || status === "New") {
+    } else if (status === "Main" || status === "New"||status === "MutiRx") {
       // If noOfRxs is greater than 0 and status is "Main" or "New", navigate to "/nsrxmgt/fax-list-page/:faxId/:noOfRxs/:trnFaxId"
       navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}/${trnFaxId}`);
       setShoeForms(false);
@@ -163,25 +163,7 @@ const TableList = ({}) => {
       <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
         {
           <>
-            <div className="w-full h-ful flex justify-between items-center p-2 ">
-              <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
-                  OCR Status:
-                  <select
-                    className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1"
-                    type="text"
-                    value={selectedOcrStatus}
-                    onChange={handleOcrStatusChange}
-                  >
-                    <option value="All Status">All Status</option>
-                    {ocrStatusOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </span>
-              </div>
+            <div className="w-full h-ful flex justify-between items-center p-2 ">          
               <div className="flex gap-5">
                 <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
                   Fax Status:
@@ -193,6 +175,24 @@ const TableList = ({}) => {
                   >
                     <option value="All Status">All Status</option>
                     {faxStatusOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </span>
+              </div>
+              <div className="flex gap-5">
+                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
+                  OCR Status:
+                  <select
+                    className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1"
+                    type="text"
+                    value={selectedOcrStatus}
+                    onChange={handleOcrStatusChange}
+                  >
+                    <option value="All Status">All Status</option>
+                    {ocrStatusOptions.map((option) => (
                       <option key={option} value={option}>
                         {option}
                       </option>
@@ -492,7 +492,9 @@ const TableList = ({}) => {
                     </th>
                     <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       OCR Status{" "}
-                      <div
+                     
+                    </th>
+                    <div
                         onClick={() => handleSort("ocrStatus")}
                         className="cursor-pointer"
                       >
@@ -508,7 +510,6 @@ const TableList = ({}) => {
                           />
                         )}
                       </div>
-                    </th>
                   </tr>
                 </thead>
                 <tbody>

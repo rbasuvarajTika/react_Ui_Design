@@ -817,11 +817,11 @@ const [showFaxForm, setShowFaxForm] = useState(false);
 
 
                               </div>
-                              <div className="absolute">
-                                <div className="relative left-20 top-04 ">
-                                  <div className="relative left-20 top-10 ">
+                              <div className="fixed top-25 left-210">
+                                <div className=" left-110 top-4 ">
+                                  <div className=" left-10 top-10 ">
                                     <div
-                                      className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
+                                      className=" text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
                                       onClick={handleSearch}
                                     >
                                       Search Rx
@@ -916,19 +916,22 @@ const [showFaxForm, setShowFaxForm] = useState(false);
                                 </div>
                               </div>
                             </div>
+                            
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3 pt-3">
-                  <div
+                      <div
                     className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
                     onClick={handleSubmit}
                   >
                     Attach Notes to Rx
                   </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div className="flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3 pt-3">
+                  
                 </div>
               </div>
             </div>
