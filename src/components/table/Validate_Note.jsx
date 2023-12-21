@@ -17,6 +17,7 @@ import AttachEmailIcon from "@mui/icons-material/AttachEmail";
 import { useParams } from "react-router-dom";
 import "../Background";
 import SaveIcon from "@mui/icons-material/Save";
+import FaxId_Form from "./FaxId_Form";
 import Header_Navigation_FaxReview from "../header/Header_Navigation_FaxReview";
 import Header_Navigation_Validate_Fax from "../header/Header_Navigation_Validate_Fax";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -56,6 +57,8 @@ const Validate_Note = () => {
   const [isPatientListVisible, setIsPatientListVisible] = useState(false);
   const [isHcpListVisible, setIsHcpListVisible] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
+  const [selectedFaxId, setSelectedFaxId] = useState(null);
+const [showFaxForm, setShowFaxForm] = useState(false);
   const [faxIds, setFaxIds] = useState('');
   const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null });
   const [noOfRxs, setNoOfRxs] = useState(0);
@@ -451,6 +454,12 @@ const Validate_Note = () => {
     fetchData();
   }, []);
 
+  const handleFaxStatus = (faxIds) => {
+    setSelectedFaxId(faxIds);
+    setShowFaxForm(true);
+  };
+  
+ 
 
 
   useEffect(() => {
@@ -734,9 +743,9 @@ const Validate_Note = () => {
 
                           </div> */}
 
-                          <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  cursor-pointer z-50">
+                          <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28   z-50">
                             {/* Always show patient and HCP input fields */}
-                            <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28 cursor-pointer z-50">
+                            <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  z-50">
                               {/* Always show patient and HCP input fields */}
                               <div className="flex flex-col items-center relative ">
                                 <div className="flex gap-40 relative  bottom-10">
@@ -828,7 +837,7 @@ const Validate_Note = () => {
                         </div>
                       </div>
 
-                      <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   cursor-pointer z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
+                      <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
                         <div className="w-[calc(90vh-1rem) h-[calc(60vh-10rem)] 500 rounded-2xl border- shadow-xl relative">
                           <div className="flex justify-center ">
                             <hr className="h-px border-[#e36c09] border w-32 absolute flex justify-center   " />
@@ -848,7 +857,7 @@ const Validate_Note = () => {
                                     <th className="px-2 py-3 border">Fax Date</th>
                                     {/* <th className="px-2 py-3 border">HCP</th> */}
 
-                                    <th className="px-2 py-3 border">Fax ID</th>
+                                    <th className="px-2 py-3 border" >Fax ID</th>
 
 
                                     {/* Add more headers based on your data structure */}
@@ -857,7 +866,7 @@ const Validate_Note = () => {
                                 <tbody>
                                   {rxlist.map((rx, index) => (
                                     <tr key={index}>
-                                      <td className='bg-[#f2f2f2] text-gray-600 border px-10'>
+                                      <td className='bg-[#f2f2f2] text-gray-600 border px-14'>
                                         <input
                                           type="checkbox"
                                           id={`checkbox-${index}`}
@@ -874,7 +883,7 @@ const Validate_Note = () => {
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxDate}</td>
                                       {/* <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td> */}
 
-                                      <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxId}</td>
+                                      <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10'  onClick={() => handleFaxStatus(rx.faxId)}>{rx.faxId}</td>
 
 
                                       {/* Add more cells based on your data structure */}
@@ -928,6 +937,8 @@ const Validate_Note = () => {
           </div>
         </div>
       </section >
+      {showFaxForm && <FaxId_Form close_Form={() => setShowFaxForm(false)} sendFaxId={selectedFaxId} />}
+
     </>
   );
 };

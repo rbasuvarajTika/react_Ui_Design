@@ -281,8 +281,8 @@ return (
 <div className="bg-[#ffffff] shadow-xl border rounded-3xl max-w-[800px] max-h-[450px] w-full h-full  mt-5 overflow-hidden overflow-y-scroll pb-5 no-scrollbar">
     <div className='pt-5 flex justify-center'>
         <div className=' border  h-5 rounded-xl w-40 relative'>
-            <div className='bg-orange-500 w-20 h-6 rounded-xl flex justify-center items-center absolute -top-[3px] text-xs' onClick={toggleAuthType}> {authType}</div>
-            <p className='text-gray-400 absolute right-7 flex justify-center items-center text-xs'>{authType === 'Standard' ? 'SAML' : 'Standard'}</p>
+            <div className='bg-orange-500 w-20 h-6 rounded-xl flex justify-center items-center absolute -top-[3px] text-xs cursor-pointer' onClick={toggleAuthType}> {authType}</div>
+            <p className='text-gray-400 absolute right-7 flex justify-center items-center text-xs cursor-pointer' onClick={toggleAuthType}>{authType === 'Standard' ? 'SAML' : 'Standard'}</p>
         </div>
         <ToastContainer />
     </div>

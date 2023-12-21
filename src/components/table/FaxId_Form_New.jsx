@@ -669,19 +669,19 @@ const FaxId_Form_New = () => {
                   <div className=' md:w-[50%] w-full relative'>
                     <div className='flex flex-col h-full justify-betwee gap-5'>
 
-                      <div className=' hidde md:bottom-50 xl:top-72 top-60 right-1    cursor-pointer z-50  w-full  md:h-full h-[calc(100vh-25rem)] overflow-x-scroll bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto'>
+                      <div className=' hidde md:bottom-50 xl:top-72 top-60 right-1     z-50  w-full  md:h-full h-[calc(100vh-25rem)] overflow-x-scroll bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto'>
                         <div className='flex justify-center '>
                           <hr className="h-px border-[#e36c09] border w-32 absolute   " />
                         </div>
 
                         <p className='absolute top-0 text-[#e36c09] text-sm flex justify-center w-full'>Split Pdf</p>
-                        <div className='absolute md:top-7 top-6  md:right-20 sm:right-10 right-2 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'>
+                        <div className='absolute md:top-7 top-6  md:right-20 sm:right-10 right-2 rounded-xl bg-[#00aee6] w-28   z-50'>
                           {/* By Page */}
                           <div className='flex justify-around px-6' onClick={() => handleOptionClick('By Page')} >
                             <div className='flex relative'>
                               <div className='text-lg absolute  -right-1 h-full bg-gray-100'></div>
                             </div>
-                            <p className='text-white text-xs'>By Page</p>
+                            <p className='text-white text-xs cursor-pointer'>By Page</p>
                           </div>
                         </div>
                         <div className='absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#00aee6] w-28  cursor-pointer z-50'>
@@ -743,7 +743,7 @@ const FaxId_Form_New = () => {
                         
                       </div>
 
-                      <div className=' hidde md:bottom-50 xl:top-72 top-60 right-1   cursor-pointer z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto'>
+                      <div className=' hidde md:bottom-50 xl:top-72 top-60 right-1    z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto'>
                         <div className='w-[calc(90vh-1rem) h-[calc(60vh-10rem)] 500 rounded-2xl border- shadow-xl relative'>
                           <div className='flex justify-center '>
                             <hr className="h-px border-[#e36c09] border w-32 absolute flex justify-center   " />

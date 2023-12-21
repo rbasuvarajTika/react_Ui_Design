@@ -119,12 +119,12 @@ function Header_Navigation_FaxDup() {
                     {userData && (
                     <span className="text-white flex items-center gap-1 z-50" onClick={openEditUserProfile}>
                         <AccountCircle />
-                        <span className="underline hidden md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
+                        <span className="underline hidden  cursor-pointer md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
                     </span>
                     )}
                 </div>
                 <div>
-                    <span className="uppercase cursor-pointer text-[#FE7D00] text-sm font-bold z-50" >
+                    <span className="uppercase  text-[#FE7D00] text-sm font-bold z-50" >
                        Duplicate Fax Review 
 
                     </span>
