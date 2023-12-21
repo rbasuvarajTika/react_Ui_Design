@@ -883,7 +883,7 @@ const [showFaxForm, setShowFaxForm] = useState(false);
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxDate}</td>
                                       {/* <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td> */}
 
-                                      <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10'  onClick={() => handleFaxStatus(rx.faxId)}>{rx.faxId}</td>
+                                      <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10 cursor-pointer'  onClick={() => handleFaxStatus(rx.faxId)}>{rx.faxId}</td>
 
 
                                       {/* Add more cells based on your data structure */}
