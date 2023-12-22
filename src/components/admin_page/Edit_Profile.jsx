@@ -17,6 +17,7 @@ const Edit_Profile =() =>{
         zip: '',
         phone: ''
     });
+    const navigate = useNavigate();
 
     const [userEditData, setUserEditData] = useState();
 
@@ -208,10 +209,14 @@ const Edit_Profile =() =>{
                                             value={userData.phone}
                                             onChange={handleInputChange}                                            />
                                         </div>
+                                 
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className='pt-1 flex justify-center'>
+                    <label className='text-xs text-black w-55 text-start underline font-medium whitespace-nowrap'  onClick={() => navigate("/nsrxmgt/reset")} htmlFor="">Reset Password</label>
                     </div>
                     <div className='flex justify-center item pt-5'>
                         <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={updateUser}

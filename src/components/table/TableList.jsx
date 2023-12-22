@@ -259,8 +259,8 @@ const TableList = ({}) => {
               <table className="w-full text-sm text-center table-auto  ">
                 <thead className="">
                   <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                    <th className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis ">
-                      Fax ID{" "}
+                    <th className="px-1 py-1 max-w-[150px]  w-[150px] overflow-hidden overflow-ellipsis ">
+                    <div>  Fax ID{" "}</div>
                       <div
                         onClick={() => handleSort("faxId")}
                         className="cursor-pointer"
@@ -278,10 +278,10 @@ const TableList = ({}) => {
                         )}
                       </div>{" "}
                     </th>
-
-                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
-                      Case ID
-                      <div
+                   
+                    <th className="px-1 py-1 max-w-[50px] w-[150px] overflow-hidden overflow-ellipsis">
+                    Case ID
+                    <div
                         onClick={() => handleSort("caseId")}
                         className="cursor-pointer"
                       >
@@ -298,6 +298,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
+                   
                     <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Fax Status{" "}
                       <div
@@ -492,9 +493,7 @@ const TableList = ({}) => {
                     </th>
                     <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       OCR Status{" "}
-                     
-                    </th>
-                    <div
+                      <div
                         onClick={() => handleSort("ocrStatus")}
                         className="cursor-pointer"
                       >
@@ -510,6 +509,8 @@ const TableList = ({}) => {
                           />
                         )}
                       </div>
+                    </th>
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -579,7 +580,7 @@ const TableList = ({}) => {
                             {item.faxId}
                           </div>
                         </td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
+                        <td className="px-1 py-1 max-w-[150px] w-[250px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
                         <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.faxStatus}
                         </td>

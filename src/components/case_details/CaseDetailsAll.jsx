@@ -1204,7 +1204,7 @@ const handleDeleteHcpConfirm = (index) => {
         // Handle the response from the API if needed
         setLoading(false);
         console.log('Data saved successfully:', response.data);
-        toast.success("Health Care Provider Information Saved SUccessfully");
+        toast.success("Health Care Provider Information Saved Successfully");
         setOnDirtyHcpSave(false)
 
       })
@@ -1336,7 +1336,7 @@ const zoomInSecond = () => {
       .then((response) => {
         // Handle success
         console.log('Fax PDF sent successfully:', response.data);
-        toast.success('Fax PDF sent successfully');
+        toast.success('Fax PDF sent Successfully');
       })
       .catch((error) => {
         // Handle error
@@ -1438,10 +1438,11 @@ const zoomInSecond = () => {
 
 
                                                 <div className=' flex  justify-star  flex-col w-full '>
-                                                    <label className='text-xs text-black w-full text-start' htmlFor="">Date Of Birth: </label>
+                                                    <label className=' text-xs text-black w-28 text-start ' htmlFor="">Date Of Birth: </label>
                                                     {!openNetSuit ? <>
                                                       <Datepicker
-                                                    initialDate={new Date(patientNewData.dateOfBirth)}  // Set the initial date
+                                                      
+                                                    initialDate={new Date(patientNewData.dateOfBirth)}  
                                                     onChange={handlepatientInputChange}
                                                             />
                                                           {/* <input  className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
@@ -1569,7 +1570,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">State : </label>
                                                     {!openNetSuit ? <>
-                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 text-xs'
                                                             name="state"
                                                             autoComplete='off'
                                                             value={patientNewData.state}
@@ -2477,6 +2478,7 @@ const zoomInSecond = () => {
                                 <div className='lg:w-[calc(100vw-50vw)]  fle flex-col gap-2 '>
                                     <div className='text-white  w-full lg:h-[calc(114%-7rem)  lg:h-full h-screen  bg-[#ffff] shadow-2xl border-2  rounded-xl  relative  flex justify-center '>
                                         <div className='flex justify-center gap-2 mt-1 absolute top-3 w-full'>
+                                        <p className='text-[#596edb] text-xs absolute font-semibold top-0 right-10'>Fax ID: {faxId}</p>
                                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full  flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber <= 1 ? "bg-[#d9e0e3]" : "bg-[#00aee6]"}`} onClick={previousPage}> <FaArrowLeft /></div>
                                             <div className={`sm:w-7 sm:h-7 w-6 h-6 rounded-full bg-[#00aee6] flex justify-center items-center shadow-[#00aee6] cursor-pointer sm:text-base   text-xs z-50 ${pageNumber === numPages ? "bg-[#e7eaea]" : "bg-[#00aee6]"}`} onClick={nextPage}> <FaArrowRight /></div>
                                         </div>

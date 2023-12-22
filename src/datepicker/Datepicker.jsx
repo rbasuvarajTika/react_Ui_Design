@@ -39,7 +39,8 @@ const Datepicker = ({ initialDate, onChange }) => {
   return (
     <div>
       <DatePicker
-        className='DatePicker'
+         className='DatePicker'
+       // className="bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5  text-xs"
         selected={selectedDate}
         onChange={handleDateChange}
         showYearDropdown

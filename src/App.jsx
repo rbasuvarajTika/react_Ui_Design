@@ -25,6 +25,8 @@ import NewRxCaseDetails from "./components/case_details/NewRxCaseDetails"
 import NewRx from "./pages/case_details/NewRx"
 import Validate_Note from "./components/table/Validate_Note"
 import FaxId_Form from "./components/table/FaxId_Form"
+import ResetPassword from "./components/admin_page/ResetPassword"
+import Admin_Create_Password from "./pages/admin_Pages/Admin_Create_Password"
 
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false)
@@ -72,6 +74,8 @@ function App() {
           <Route path="/nsrxmgt/newrx/:faxId/:trnFaxId" element={<NewRx />} />
           <Route path="/nsrxmgt/validatenote/:faxId/:sendNoOfRxs/:trnFaxId/:patientFirstName/:patientLastName/:hcpFirstName/:hcpLastName" element={<Validate_Note />} />   
           <Route path="/nsrxmgt/faxform/:faxId" element={<FaxId_Form/>} />
+          <Route path="/nsrxmgt/reset" element={<Admin_Create_Password/>} />
+
  
         </Routes>
       </EditUserContext.Provider>  

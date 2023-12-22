@@ -821,7 +821,7 @@ const Validate_Note = () => {
                           </div>
                           {/* <div className="absolute"> */}
                           {/* <div className="relative left-20 top-04 "> */}
-                          <div   style={{ marginLeft: '380px',margin: '150px', textAlign: 'center' }}>
+                          <div   style={{ marginLeft: '400px',margin: '150px', textAlign: 'center' }}>
                         <div className="absolute  ">
                           <div
                             className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
@@ -830,8 +830,9 @@ const Validate_Note = () => {
                             Search Rx
                           </div>
                         </div> </div>
+                        
                       </div>
-
+                     
                       <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
                         <div className="w-[calc(90vh-1rem) h-[calc(60vh-10rem)] 500 rounded-2xl border- shadow-xl relative">
                           <div className="flex justify-center ">

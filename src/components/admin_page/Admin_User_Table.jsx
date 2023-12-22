@@ -157,9 +157,6 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
                                             <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={CreateNewUser}>Create New User</div>
                                         </span>
 
-                                        <span className="hidde md:flex items-center gap-1 z-50 text-[#ffffff] text-sm  relative">
-                                            <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-1 bg-[#e60000] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer'>Report Fields</div>
-                                        </span>
                                     </div>
                                     <div className=" sm:block hidden">
                                     <Pagination
@@ -218,6 +215,16 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
                                             {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
                                                 <AiOutlineCaretDown className='cursor-pointer' size={13} />}
                                         </div></th>
+                                        <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Updated User
+                                        <div onClick={() => handleSort("userStatusFlag")} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
+                                        <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Updated Date
+                                        <div onClick={() => handleSort("userStatusFlag")} className="cursor-pointer">
+                                            {sortOrder === 'asc' ? <AiOutlineCaretUp className='cursor-pointer' size={13} /> :
+                                                <AiOutlineCaretDown className='cursor-pointer' size={13} />}
+                                        </div></th>
                                     <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">Edit</th>
 
                                 </tr>
@@ -251,6 +258,8 @@ const currentPosts = sortedData.slice(firstPostIndex, lastPostIndex);
                                         <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.phone}</td>
                                         <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.role}</td>
                                         <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.userType}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.userStatusFlag}</td>
+                                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.userStatusFlag}</td>
                                         <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">{item.userStatusFlag}</td>
                                         <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">
                                             <MdEditDocument className="text-[#1b5d7d] cursor-pointer" size={25} onClick={() => handleEditUser(item.userId)} />

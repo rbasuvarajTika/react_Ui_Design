@@ -230,11 +230,16 @@ const Duplicate_Fax = () => {
             })
             .then((response) => {
               // Handle success
-              console.log('Keep Duplicate Success:', response.data);          
-                alert('Fax has been kept as a duplicate.');
-               
-                // Redirect to the fax page
+              console.log('Keep Duplicate Success:', response.data); 
+              const confirmation = window.confirm('Fax has been kept as a duplicate');
+    
+              // If the user clicks "OK" in the alert box, redirect to the fax page
+              if (confirmation) {
+                // Replace 'fax-page-url' with the actual URL of your fax page
+               console.log("clicked");
                 navigate("/nsrxmgt/fax-list");
+                
+              }
             })
             .catch((error) => {
               // Handle error
