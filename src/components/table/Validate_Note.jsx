@@ -379,8 +379,8 @@ const Validate_Note = () => {
     const retryData = {
 
       userName: userName,
-      trnFaxIdMain: faxId,
-      trnFaxIdDuplicate: selectedRxId.faxId,
+      faxIdMain: faxId,
+      faxIdDuplicate: selectedRxId.faxId,
     };
     //console.log("duplicate fax Id:", trnFaxIdDuplicate);
     axiosBaseURL
