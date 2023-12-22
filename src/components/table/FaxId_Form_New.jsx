@@ -152,6 +152,8 @@ const FaxId_Form_New = () => {
     if (pagesToSplit.length > 0) {
       const selectedPagesString = pagesToSplit.join(',');
       const splitType = selectedOption === 'By Page' ? 'BY_PAGE' : 'BY_RANGE';
+      const userName = localStorage.getItem('userName');
+
       console.log('Split Type:', splitType); // Log splitType here
 
       axiosBaseURL
@@ -188,13 +190,15 @@ const FaxId_Form_New = () => {
 
     if (selectedPagesArray.length > 0) {
       const selectedPagesString = selectedPagesArray.join(',');
+      const userName = localStorage.getItem('userName');
+
       axiosBaseURL
         .post(`/api/v1/fax/sendPdfByPages`, { faxId, userName, pages: selectedPagesString, splitType: 'BY_RANGE' })
         .then((response) => {
           console.log('Split PDF Successfully:', response.data);
           if (response.data.message === 'Successfully ') {
             toast.success('PDF Splitted Successfully');
-            window.location.reload();
+            //window.location.reload();
             setShowInputBoxes(false);
           } else {
             toast.error(response.data.message);
@@ -509,13 +513,14 @@ const FaxId_Form_New = () => {
 
       const splitInfo = splitHistory[index];
       const pagesToRetry = getRetryPages(splitInfo);
+      const userName = localStorage.getItem('userName');
 
       const retryData = {
         faxId: splitHistory[index].faxId,
         splitFaxId: splitHistory[index].splitFaxId,
         trnFaxSplitId: splitHistory[index].trnFaxSplitId,
         pages: splitHistory[index].splitPages,
-        userName,
+        userName:userName,
         splitType: splitHistory[index].splitType,
         splitAttempts: splitHistory[index].splitAttempts,
         splitStatus: splitHistory[index].splitStatus
