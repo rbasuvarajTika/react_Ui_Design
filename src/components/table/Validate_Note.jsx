@@ -58,7 +58,7 @@ const Validate_Note = () => {
   const [isHcpListVisible, setIsHcpListVisible] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
   const [selectedFaxId, setSelectedFaxId] = useState(null);
-const [showFaxForm, setShowFaxForm] = useState(false);
+  const [showFaxForm, setShowFaxForm] = useState(false);
   const [faxIds, setFaxIds] = useState('');
   const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null });
   const [noOfRxs, setNoOfRxs] = useState(0);
@@ -458,8 +458,8 @@ const [showFaxForm, setShowFaxForm] = useState(false);
     setSelectedFaxId(faxIds);
     setShowFaxForm(true);
   };
-  
- 
+
+
 
 
   useEffect(() => {
@@ -731,7 +731,7 @@ const [showFaxForm, setShowFaxForm] = useState(false);
 
                           </div> */}
                         </div>
-                        <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  cursor-pointer z-50">
+                        {/* <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  cursor-pointer z-50"> */}
                           {/* By Range */}
                           {/* <div
                             className="flex justify-around px-6"
@@ -743,98 +743,93 @@ const [showFaxForm, setShowFaxForm] = useState(false);
 
                           </div> */}
 
-                          <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28   z-50">
-                            {/* Always show patient and HCP input fields */}
-                            <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  z-50">
-                              {/* Always show patient and HCP input fields */}
-                              <div className="flex flex-col items-center relative ">
-                                <div className="flex gap-40 relative  bottom-10">
-                                  <div className="relative left-40">
-                                    <label htmlFor="patientName" className="text-sm text-gray-600 overflow-hidden">
-                                      Patient Name:
-                                      <div className="flex items-center">
-                                        <div className="absoulute">
-                                          <span
-                                            title={`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}
-                                            className="truncate inline-block max-w-[100px] cursor-pointer"
-                                          >
-                                            <strong>{`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}</strong>
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      id="searchPatientName"
-                                      value={patientNames}
-                                      autoComplete="off"
-                                      onChange={handlePatientInputChange}
-                                      onClick={handlePatientInputClick}
-                                      className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
-                                    />
-                                    {isPatientListVisible && (
-                                      <ul className="max-h-40 overflow-y-auto">
-                                        {filteredPatients.map(patient => (
-                                          <li key={patient.patientId} onClick={() => handlePatientSelection(patient)}>
-                                            {patient.patientName}</li>
-                                        ))}
-                                      </ul>
-                                    )}
-                                  </div>
-
-                                  <div className="relative left-40 ">
-                                    <label htmlFor="hcpName" className="text-sm text-gray-600 overflow-hidden">
-                                      HCP Name:
-                                      <div className="flex items-center">
-                                        <div className="absoulute">
-                                          <span
-                                            title={`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}
-                                            className="truncate inline-block max-w-[100px] cursor-pointer"
-                                          >
-                                            <strong>{`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}</strong>
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      id="searchHcpName"
-                                      value={hcpNames}
-                                      autoComplete="off"
-                                      onChange={handleHcpsInputChange}
-                                      onClick={handleHcpInputClick}
-                                      className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
-                                    />
-                                    {isHcpListVisible && (
-                                      <ul className="max-h-40 overflow-y-auto">
-                                        {filteredHcps.map(hcps => (
-                                          <li key={hcps.hcpId} onClick={() => handleHcpSelection(hcps)} >{hcps.hcpName}</li>
-                                        ))}
-                                      </ul>
-                                    )}
-                                  </div>
-                                </div>
-
-
-                              </div>
-                              <div className="fixed top-25 left-210">
-                                <div className=" left-110 top-4 ">
-                                  <div className=" left-10 top-10 ">
-                                    <div
-                                      className=" text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
-                                      onClick={handleSearch}
+                          {/* <div className="absolute md:top-7 top-6  md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28   z-50"> */}
+                          {/* Always show patient and HCP input fields */}
+                          {/* <div className="absolute md:top-7 top-6 md:left-20 sm:left-10 left-2 rounded-xl bg-[#] w-28  z-50"> */}
+                          {/* Always show patient and HCP input fields */}
+                          {/* <div className="flex flex-col items-center relative "> */}
+                          <div className="flex gap-10 relative left-10 top-2">
+                            <div className="absolute left-1">
+                              <label htmlFor="patientName" className="text-sm text-gray-600 overflow-hidden">
+                                Patient Name:
+                                <div className="flex items-center">
+                                  <div className="absoulute">
+                                    <span
+                                      title={`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}
+                                      className="truncate inline-block max-w-[100px] cursor-pointer"
                                     >
-                                      Search Rx
-                                    </div>
+                                      <strong>{`${sanitizedPatientFirstName} ${sanitizedPatientLastName}`}</strong>
+                                    </span>
                                   </div>
                                 </div>
-                              </div>
+                              </label>
+                              <input
+                                type="text"
+                                id="searchPatientName"
+                                value={patientNames}
+                                autoComplete="off"
+                                onChange={handlePatientInputChange}
+                                onClick={handlePatientInputClick}
+                                className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                              />
+                              {isPatientListVisible && (
+                                <ul className="max-h-40 max-w-[12.5rem] overflow-y-auto">
+                                  {filteredPatients.map(patient => (
+                                    <li key={patient.patientId} onClick={() => handlePatientSelection(patient)}>
+                                      {patient.patientName}</li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
 
+                            <div className="absolute right-20 ">
+                              <label htmlFor="hcpName" className="text-sm text-gray-600 overflow-hidden">
+                                HCP Name:
+                                <div className="flex items-center">
+                                  <div className="absoulute">
+                                    <span
+                                      title={`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}
+                                      className="truncate inline-block max-w-[100px] cursor-pointer"
+                                    >
+                                      <strong>{`${sanitizedHcpFirstName} ${sanitizedHcpLastName}`}</strong>
+                                    </span>
+                                  </div>
+                                </div>
+                              </label>
+                              <input
+                                type="text"
+                                id="searchHcpName"
+                                value={hcpNames}
+                                autoComplete="off"
+                                onChange={handleHcpsInputChange}
+                                onClick={handleHcpInputClick}
+                                className="border px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
+                              />
+                              {isHcpListVisible && (
+                                <ul className="max-h-40 max-w-[12.5rem] overflow-y-auto">
+                                  {filteredHcps.map(hcps => (
+                                    <li key={hcps.hcpId} onClick={() => handleHcpSelection(hcps)} >{hcps.hcpName}</li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                            {/* </div> */}
+
+
+                            {/* </div> */}
+
                           </div>
-
-
-                        </div>
+                          {/* <div className="absolute"> */}
+                          {/* <div className="relative left-20 top-04 "> */}
+                          <div   style={{ marginLeft: '380px',margin: '150px', textAlign: 'center' }}>
+                        <div className="absolute  ">
+                          <div
+                            className="text-white bg-[#00aee6]  px-4 py-2 rounded-lg"
+                            onClick={handleSearch}
+                          >
+                            Search Rx
+                          </div>
+                        </div> </div>
                       </div>
 
                       <div className=" hidde md:bottom-50 xl:top-72 top-60 right-1   z-50  w-full  h-full bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
@@ -883,7 +878,7 @@ const [showFaxForm, setShowFaxForm] = useState(false);
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxDate}</td>
                                       {/* <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td> */}
 
-                                      <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10 cursor-pointer'  onClick={() => handleFaxStatus(rx.faxId)}>{rx.faxId}</td>
+                                      <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10 cursor-pointer' onClick={() => handleFaxStatus(rx.faxId)}>{rx.faxId}</td>
 
 
                                       {/* Add more cells based on your data structure */}
@@ -916,22 +911,22 @@ const [showFaxForm, setShowFaxForm] = useState(false);
                                 </div>
                               </div>
                             </div>
-                            
+
                           </div>
                         </div>
                       </div>
                       <div
-                    className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
-                    onClick={handleSubmit}
-                  >
-                    Attach Notes to Rx
-                  </div>
+                        className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3"
+                        onClick={handleSubmit}
+                      >
+                        Attach Notes to Rx
+                      </div>
                     </div>
-                    
+
                   </div>
                 </div>
                 <div className="flex csm:flex-row flex-col  p-1 csm:justify-evenly justify-center items-center sm:gap-0 csm:gap-5 gap-3 pt-3">
-                  
+
                 </div>
               </div>
             </div>
