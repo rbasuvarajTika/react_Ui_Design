@@ -915,7 +915,7 @@ const Validate_Note = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {rxlist.map((rx, index) => (
+                                    {rxNoteslist.map((rx, index) => (
                                       <tr key={index}>
                                         <td className='bg-[#f2f2f2] text-gray-600 border px-14'>
                                           <input
