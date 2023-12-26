@@ -62,7 +62,7 @@ const Validate_Note = () => {
   const [selectedFaxId, setSelectedFaxId] = useState(null);
   const [showFaxForm, setShowFaxForm] = useState(false);
   const [faxIds, setFaxIds] = useState('');
-  const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null ,trnFaxId:null});
+  const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null, trnFaxId: null });
   const [selectedNotesRxId, setSelectedNotesRxId] = useState({ rxNotesId: null, faxNotesId: null, indexNotes: null });
   const [noOfRxs, setNoOfRxs] = useState(0);
   const navigate = useNavigate();
@@ -73,6 +73,8 @@ const Validate_Note = () => {
   const nextPage = () => {
     setPageNumber(pageNumber >= numPages ? pageNumber : pageNumber + 1);
   };
+
+  const [searchNotesFlag, setSearchNotesFlag] = useState(1);
 
   console.log("pa :", hcpFirstName)
   console.log("spa :", sanitizedHcpFirstName)
@@ -114,21 +116,21 @@ const Validate_Note = () => {
   //   setSelectedRxId(rxId);
   // };
 
-  const isSelected = (index, rxId, faxId,trnFaxId) => {
+  const isSelected = (index, rxId, faxId, trnFaxId) => {
     return selectedRxId.rxId === rxId && selectedRxId.index === index && selectedRxId.faxId == faxId && selectedRxId.trnFaxId == trnFaxId;
   };
 
-  const handleCheckboxChange = (index, rxId, faxId,trnFaxId) => {
+  const handleCheckboxChange = (index, rxId, faxId, trnFaxId) => {
     //setSelectedRxId({index: index , rxId: rxId, faxId : faxId});
 
     setSelectedRxId((prevSelectedRx) => {
       // If the clicked checkbox is already selected, deselect it
-      if (prevSelectedRx.index === index && prevSelectedRx.rxId === rxId && prevSelectedRx.faxId === faxId && prevSelectedRx.trnFaxId === trnFaxId ) {
+      if (prevSelectedRx.index === index && prevSelectedRx.rxId === rxId && prevSelectedRx.faxId === faxId && prevSelectedRx.trnFaxId === trnFaxId) {
         return { id: null, index: null };
       }
 
       // Otherwise, select the new checkbox
-      return { index: index, rxId: rxId, faxId: faxId ,trnFaxId: trnFaxId};
+      return { index: index, rxId: rxId, faxId: faxId, trnFaxId: trnFaxId };
     });
   };
 
@@ -395,7 +397,7 @@ const Validate_Note = () => {
 
 
   const handleSubmit = () => {
-    if(rxNoteslist.length>0){
+    if (rxNoteslist.length > 0) {
       return toast.error("Failed to submit,remove notes.");
     }
     const userName = localStorage.getItem('userName');
@@ -413,9 +415,18 @@ const Validate_Note = () => {
       })
       .then((response) => {
         // Handle success
-        console.log("Fax PDF sent successfully:", response.data);
-        toast.success("Submitted successfully");
-        fetchNotesRxData();
+        console.log("search notes flag in submit:", searchNotesFlag),
+          console.log("attached rx notes successfully:", response.data),
+          console.log("search notes flag in submit:", searchNotesFlag),
+          toast.success("Submitted successfully");
+
+        if (searchNotesFlag === 0) {
+          fetchSearchNotesRxData();
+        } else {
+          fetchNotesRxData();
+        }
+
+
       })
       .catch((error) => {
         // Handle error
@@ -435,20 +446,23 @@ const Validate_Note = () => {
       toast.error('Please enter HCP Name.');
       return;
     }
-    axiosBaseURL
-      .get(`/api/v1/fax/showNotesPrevRxNameSearch/${patientNames}/${hcpNames}`)
-      .then((response1) => {
-        setRxNotesList(response1.data.data);
-        // Handle success
-        console.log("search notes list:", response1.data.data);     
-          setRxNotesList(response1.data.data);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error("Error search notes list:", error);
-        //toast.error("Failed to submit.");
-      });
-   // setRxNotesList('');
+    setSearchNotesFlag(0);
+    // axiosBaseURL
+    //   .get(`/api/v1/fax/showNotesPrevRxNameSearch/${patientNames}/${hcpNames}`)
+    //   .then((response1) => {
+    //     setRxNotesList(response1.data.data);
+    //     // Handle success
+    //     console.log("search notes list:", response1.data.data);     
+    //       setRxNotesList(response1.data.data);
+    //       setSearchNotesFlag('0');
+    //   })
+    //   .catch((error) => {
+    //     // Handle error
+    //     console.error("Error search notes list:", error);
+    //     //toast.error("Failed to submit.");
+    //   });
+    // setRxNotesList('');
+    fetchSearchNotesRxData();
     setWarningMessage('');
     axiosBaseURL
       .get(`/api/v1/fax/showPrevRxNameSearch/${patientNames}/${hcpNames}`)
@@ -513,7 +527,27 @@ const Validate_Note = () => {
       console.error("Error fetching data:", error);
     }
   };
-  
+
+  const fetchSearchNotesRxData = async () => {
+    try {
+      const userName = localStorage.getItem('userName');
+      const response = await axiosBaseURL.get(`/api/v1/fax/showNotesPrevRxNameSearch/${patientNames}/${hcpNames}`);
+
+      // Assuming response.data contains the desired data
+      setRxNotesList(response.data.data);
+
+      console.log("search notes flag :", searchNotesFlag)
+      console.log("search notes list:", response.data.data);
+      // Accessing faxId from the first item in the array (index 0)
+      // if (response.data.data.length > 0) {
+      //   setFaxIds(response.data.data[0].faxId);
+      //   console.log(response.data.data[0].faxId);
+      // }
+    } catch (error) {
+      console.error("Error fetching earch notes list:", error);
+    }
+  };
+
   useEffect(() => {
     fetchNotesRxData();
   }, []);
@@ -547,7 +581,7 @@ const Validate_Note = () => {
       .catch((error) => {
         // Handle error
         console.error("Error Rx Notes Remove:", error);
-       // window.location.reload();
+        // window.location.reload();
         //toast.error("Failed to submit.");
         fetchNotesRxData();
       });
@@ -934,13 +968,13 @@ const Validate_Note = () => {
                           </p>
                           <div className='top-30 bottom-10 pt-5'>
                             {rxNoteslist.length > 0 ? (
-                          <p className="text-center bg-orange-300	 text-orange-600 m-1">
-                          {`This note is currently attached to this following rx `}
-                      </p> ):(
-                        null
-                      )}
+                              <p className="text-center bg-orange-300	 text-orange-600 m-1">
+                                {`This note is currently attached to this following rx `}
+                              </p>) : (
+                              null
+                            )}
                             {rxNoteslist.length > 0 ? (
-                              <div className=" "> 
+                              <div className=" ">
                                 <table className="w-full">
                                   <thead className=''>
                                     <tr className='text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl'>
@@ -956,10 +990,10 @@ const Validate_Note = () => {
 
                                       {/* Add more headers based on your data structure */}
                                     </tr>
-                                   
+
                                   </thead>
                                   <tbody>
-                                  
+
                                     {rxNoteslist.map((rxNotes, indexNotes) => (
                                       <tr key={indexNotes}>
                                         <td className='bg-[#f2f2f2] text-gray-600 border px-14'>
@@ -968,7 +1002,7 @@ const Validate_Note = () => {
                                             id={`checkbox-${indexNotes}`}
                                             //checked={rx.trnRxId}
                                             // checked={isSelected(index,rx.trnRxId)}
-                                            checked={isNotesSelected(indexNotes, rxNotes.trnRxId,rxNotes.faxId)}
+                                            checked={isNotesSelected(indexNotes, rxNotes.trnRxId, rxNotes.faxId)}
                                             //defaultChecked={rx.trnRxId}
                                             onChange={() => handleNotesCheckboxChange(indexNotes, rxNotes.trnRxId, rxNotes.faxId)}
                                           />
@@ -989,10 +1023,10 @@ const Validate_Note = () => {
                                 </table>
                                 <div className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] 
                               rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3 m-2" onClick={handleRemoveNotesSubmit}>
-                              Remove Rx From Notes
-                            </div>
+                                  Remove Rx From Notes
+                                </div>
                               </div>
-                              
+
                             ) : (
                               <p className="text-center text-gray-600">No data available</p>
                             )}
@@ -1036,9 +1070,9 @@ const Validate_Note = () => {
                                           id={`checkbox-${index}`}
                                           //checked={rx.trnRxId}
                                           // checked={isSelected(index,rx.trnRxId)}
-                                          checked={isSelected(index, rx.trnRxId, rx.faxId,rx.trnFaxId)}
+                                          checked={isSelected(index, rx.trnRxId, rx.faxId, rx.trnFaxId)}
                                           //defaultChecked={rx.trnRxId}
-                                          onChange={() => handleCheckboxChange(index, rx.trnRxId, rx.faxId,rx.trnFaxId)}
+                                          onChange={() => handleCheckboxChange(index, rx.trnRxId, rx.faxId, rx.trnFaxId)}
                                         />
                                       </td>
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.trnRxId}</td>
