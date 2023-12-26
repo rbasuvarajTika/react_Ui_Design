@@ -107,7 +107,7 @@ const Edit_Profile =() =>{
                 </div>
                 <form className=''>
                     <div className=' flex  flex-col xl:items-start items-center'>
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                 <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
@@ -137,7 +137,7 @@ const Edit_Profile =() =>{
                             </div>
                         </div>
 
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                 <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
@@ -166,7 +166,7 @@ const Edit_Profile =() =>{
                             </div>
                         </div>
 
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                             <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
@@ -197,19 +197,19 @@ const Edit_Profile =() =>{
                             </div>
                         </div>
 
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                 <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
                                         <div className=' flex  justify-start  flex-col w-full '>
                                             <label className='text-xs text-black w-28 text-start' htmlFor="">Phone: </label>
-                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs'
+                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 mb-1 text-black py-0.5 text-xs'
                                             type="text"
                                             name="phone"
                                             value={userData.phone}
                                             onChange={handleInputChange}                                            />
                                         </div>
-                                        <label className='bg-orange-500 rounded-2xl border border-gray-300 w-56 text-white py-2 px-7 text-xs cursor-pointer'  onClick={() => navigate("/nsrxmgt/reset")} htmlFor="">Reset Password</label>
+                                        <label className='bg-orange-500 rounded-2xl border border-gray-300 w-56 text-white mr-7 mt-4 py-1 px-7 text-xs cursor-pointer'  onClick={() => navigate("/nsrxmgt/reset")} htmlFor="">Reset Password</label>
 
                                     </div>
                                 </div>

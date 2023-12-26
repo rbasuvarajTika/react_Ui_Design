@@ -944,6 +944,7 @@ useEffect(() => {
 
 
   const [hcpData, setHcpData] = useState([]);
+
   const [deleteHcp, setDeletHcp] = useState([]); 
   const [hcpDataRxId, setHcpDataRxId] = useState(null);
   const [hcpDataTranFaxId, setHcpDataRxIdTranFaxID] = useState(null);
@@ -1369,7 +1370,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-full text-start' htmlFor="">First Name :</label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 px-1 text-xs t-1'
                                                               type="text"
                                                               id="firstName"
                                                               autoComplete='off'
@@ -1393,7 +1394,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">Middle Name : </label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 px-1 text-xs'
                                                             type="text"
                                                             id="middleName"
                                                             autoComplete='off'
@@ -1417,7 +1418,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">Last Name :</label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 text-xs'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 px-1 text-xs'
                                                             type="text"
                                                             id="lastName"
                                                             name="patientLastName"
@@ -1438,10 +1439,10 @@ const zoomInSecond = () => {
 
 
                                                 <div className=' flex  justify-star  flex-col w-full '>
-                                                    <label className=' text-xs text-black w-28 text-start ' htmlFor="">Date Of Birth: </label>
+                                                    
                                                     {!openNetSuit ? <>
                                                       <Datepicker
-                                                      
+                                                    // className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black px-1 text-xs'
                                                     initialDate={new Date(patientNewData.dateOfBirth)}  
                                                     onChange={handlepatientInputChange}
                                                             />
@@ -1469,7 +1470,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">Last 4 of SSN : </label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 px-1 text-xs t-1'
                                                            type="text"
                                                            id="ssn"
                                                            name="ssn"
@@ -1499,7 +1500,7 @@ const zoomInSecond = () => {
                                             <div className=' flex  justify-star  flex-col w-full '>
                                                 <label className='text-xs text-black w-28 text-start' htmlFor="">Ship to Address : </label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black h-5 text-xs mr-5 t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black h-5 text-xs mr-5 t-1 px-1'
                                                             type="text"
                                                             id="shipToAddress"
                                                             name="shipToAddress"
@@ -1520,7 +1521,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">Phone No : </label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 px-1 text-xs t-1'
                                                             type="text"
                                                             id="cellPhone"
                                                             name="cellPhone"
@@ -1547,7 +1548,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-full text-start' htmlFor="">City: </label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 text-xs t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 px-1 text-xs t-1'
                                                              type="text"
                                                              id="city"
                                                              name="city"
@@ -1570,7 +1571,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star  flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">State : </label>
                                                     {!openNetSuit ? <>
-                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 text-xs'
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300  xl:w-[120px] text-black py-0.5 px-1 text-xs'
                                                             name="state"
                                                             autoComplete='off'
                                                             value={patientNewData.state}
@@ -1599,7 +1600,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star   flex-col w-full '>
                                                     <label className='text-xs text-black w- text-start' htmlFor="">Zip :</label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 text-xs t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 xl:w-[120px]  text-black py-0.5 px-1 text-xs t-1'
                                                            type="text"
                                                            id="zip"
                                                            name="zip"
@@ -1654,7 +1655,7 @@ const zoomInSecond = () => {
                                                        handleChange={handlepatientInputChange}
                                                               /> */}
 
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 px-1 text-xs t-1'
                                                              type="text"
                                                              id="salesRepName"
                                                              name="repName"
@@ -1677,7 +1678,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star   flex-col w-full '>
                                                     <label className='text-xs text-black w- text-start' htmlFor="">Sales Rep Cell: :</label>
                                                     {!openNetSuit ? <>
-                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                        <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 px-1 text-xs t-1'
                                                             type="text"
                                                             id="salesRepCell"
                                                              name="repPhoneNo"
@@ -1700,7 +1701,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star    flex-col w-full '>
                                                     <label className='text-xs text-black w- text-start' htmlFor="">Distributer: : </label>
                                                     {!openNetSuit ? <>
-                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 ma-56 text-black py-0.5 text-xs t-1'
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 ma-56 text-black py-0.5 px-1 text-xs t-1'
                                                            name="distributorName"
                                                            autoComplete='off'
                                                            value={patientNewData.distributorName}
@@ -1731,7 +1732,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star    flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">Place of Service: </label>
                                                     {!openNetSuit ? <>
-                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 px-1 text-xs t-1'
                                                              name="placeOfService"
 
                                                              id="placeOfService"
@@ -1762,7 +1763,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star    flex-col w-full '>
                                                     <label className='text-xs text-black w-28 text-start' htmlFor="">Order Information: : </label>
                                                     {!openNetSuit ? <>
-                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1'
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 px-1 text-xs t-1'
                                                     name="orderType"
                                                     id="orderType"
                                                     autoComplete='off'
@@ -1789,7 +1790,7 @@ const zoomInSecond = () => {
                                                 <div className=' flex  justify-star    flex-col w-full '>
                                                     <label className='text-xs text-black w-full text-start' htmlFor="">Does patient still have an active wound?:</label>
                                                     {!openNetSuit ? <>
-                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 text-xs t-1'
+                                                        <select className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w56 text-black py-0.5 px-1 text-xs t-1'
                                                              name="woundActive"
                                                              id="woundActive"
                                                              value={patientNewData.woundActive || ''}
@@ -2215,7 +2216,7 @@ const zoomInSecond = () => {
                                     <div className=' flex  items-center  gap-5 '>
                                         <p className='text-xs text-black pl-2 ' htmlFor="">Office Name:</p>
                                         {!openNetSuit ? <>
-                                            <input className='bg-[#f2f2f2] mr-4 rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                            <input className='bg-[#f2f2f2] mr-4 rounded-2xl border border-gray-300 w-32 px-1 text-black h-5 text-xs'
                                                 type="text"
                                                 name="accountName"
                                                 id='accountName'
@@ -2237,7 +2238,7 @@ const zoomInSecond = () => {
                                     <div className=' flex  items-center  gap-5 pt-1'>
                                         <p className='text-xs text-black pl-1   ' htmlFor="">Cell Phone:</p>
                                         {!openNetSuit ? <>
-                                            <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs '
+                                            <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs px-1 '
                                                 type="text"
                                                 id='phone'
                                                 name="phone"
@@ -2259,7 +2260,7 @@ const zoomInSecond = () => {
                                     <div className=' flex  items-center  gap-5 pt-1'>
                                         <p className='text-xs text-black pl-[31px]  ' htmlFor="">Email:</p>
                                         {!openNetSuit ? <>
-                                            <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                            <input className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs px-1'
                                                  type="text"
                                                  id='email'
                                                  name="email"
@@ -2280,7 +2281,7 @@ const zoomInSecond = () => {
                                     <div className=' flex  items-center  gap-5 pt-1'>
                                         <p className='text-xs text-black pl-10     ' htmlFor="">City:</p>
                                         {!openNetSuit ? <>
-                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs px-1'
                                                   type="text"
                                                   value={officeData.city}
                                                   autoComplete='off'
@@ -2299,7 +2300,7 @@ const zoomInSecond = () => {
                                     <div className=' flex  items-center  gap-5 pt-1'>
                                         <p className='text-xs text-black pl-[33px]   ' htmlFor="">State:</p>
                                         {!openNetSuit ? <>
-                                            <select className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                            <select className='bg-[#f2f2f2]  rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs px-1'
                                                 // style={{ width: '7rem', margin: '2px' }}
                                                 fullWidth
                                                 size="small"
@@ -2326,7 +2327,7 @@ const zoomInSecond = () => {
                                     <div className=' flex  items-center  gap-5 pt-1'>
                                         <p className='text-xs text-black pl-[39px]   ' htmlFor="">ZIp:</p>
                                         {!openNetSuit ? <>
-                                            <input className='bg-[#f2f2f2] ml-1 rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs'
+                                            <input className='bg-[#f2f2f2] ml-1 rounded-2xl border border-gray-300 w-32 text-black h-5 text-xs px-1'
                                                 type="text"
                                                 value={officeData.zip}
                                                 name="zip"
@@ -2373,13 +2374,13 @@ const zoomInSecond = () => {
                                                                 type="checkbox"
                                                                 className="relative h-3 w-3 cursor-pointer"
                                                                 id={`checkbox-${index}`}
-                                                                defaultChecked={data.signed}
-                                                                onChange={(e) => handleHcpEditRowChange(index, 'signed', e.target.checked)}
+                                                                defaultChecked={data.signature_Flag}
+                                                                onChange={(e) => handleHcpEditRowChange(index, 'signature_Flag', e.target.checked)}
                                                             />
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs px-1'
                                                                     type="text"
                                                                     id='firstName'
                                                                     name='firstName'
@@ -2394,7 +2395,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-10 text-xs px-1'
                                                                      type="text"
                                                                      id='middleName'
                                                                      name='middleName'
@@ -2409,7 +2410,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs px-1'
                                                                    type="text"
                                                                    id='lastName'
                                                                    autoComplete='off'
@@ -2439,7 +2440,7 @@ const zoomInSecond = () => {
                                                         </td>
                                                         <td className="p- rounded-2xl border">
                                                             {!openNetSuit ? <>
-                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs'
+                                                                <input className='bg-gray-200 text-gray-600 rounded-3xl h-5 w-15 text-xs px-1'
                                                                    type="text"
                                                                    id='npi'
                                                                    name='npi'
