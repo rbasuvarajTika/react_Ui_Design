@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import axiosBaseURL from "../axios";
 
 
-function Header_Navigation_EditProfile() {
+function Header_Navigation_ResetPass() {
     const [fax_name, set_fax_name] = useState(null)
     const [TrackerLIst, setTrackerLIst] = useState(null)
     const [AdminLIst, setAdminList] = useState(null)
@@ -125,8 +125,7 @@ function Header_Navigation_EditProfile() {
                 </div>
                 <div>
                     <span className="uppercase  text-[#FE7D00] text-sm font-bold z-50" >
-                       Edit Profile
-
+                       Reset Password
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
@@ -157,4 +156,4 @@ function Header_Navigation_EditProfile() {
     )
 }
 
-export default Header_Navigation_EditProfile
+export default Header_Navigation_ResetPass

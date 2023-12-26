@@ -112,7 +112,7 @@ function Header_Navigation_Case() {
                     
                     <span className="uppercase flex items-center gap-1" onClick={() => navigate(-1)}>
                         <span className="bg-white rounded-full z-50">
-                            <ArrowBack className="text-teal-400" onClick={() => navigate(-1)} />
+                            <ArrowBack className="cursor-pointer text-teal-400" onClick={() => navigate(-1)} />
                         </span>
                         <span className="text-white hidden md:block z-50" onClick={() => navigate(-1)}>Next science</span>
                     </span>
@@ -125,7 +125,7 @@ function Header_Navigation_Case() {
                 </div>
                 <div>
                     <span className="uppercase text-[#FE7D00] text-sm font-bold z-50" >
-                       Case Details
+                       Rx Details
 
                     </span>
                 </div>

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import FaxId_Form_New from "./FaxId_Form_New";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
-const TableList = ({}) => {
+const TableList = ({ }) => {
   const [currentpage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostPerPage] = useState(10);
   const [showForm, setShoeForm] = useState(false);
@@ -76,17 +76,27 @@ const TableList = ({}) => {
     }
   }, []);
 
-  const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId,patientFirstName, patientLastName, hcpFirstName,hcpLastName) => {
+  const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId, patientFirstName, patientLastName, hcpFirstName, hcpLastName) => {
     setSendFaxId(faxId);
     setSendNoOfRxs(noOfRxs);
 
+    console.log("hcp first name : ",hcpFirstName)
+    console.log("hcp last name : ",hcpLastName)
     if (noOfRxs === 0) {
+      if (patientFirstName =='' || patientFirstName == null)
+        patientFirstName = null
+      if (patientLastName=='' || patientLastName == null)
+        patientLastName = null
+      if (hcpFirstName=='' || hcpFirstName == null)
+        hcpFirstName = null
+      if (hcpLastName=='' || hcpLastName == null) 
+        hcpLastName = null
       // If noOfRxs is 0, navigate to "/nsrxmgt/validatenote"
       navigate(`/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}/${patientFirstName}/${patientLastName}/${hcpFirstName}/${hcpLastName}`);
     } else if (status === "Duplicate") {
       // If noOfRxs is greater than 0 and status is "Duplicate", navigate to "/nsrxmgt/duplicate-fax/:faxId"
       navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
-    } else if (status === "Main" || status === "New") {
+    } else if (status === "Main" || status === "New" || status === "MutiRx") {
       // If noOfRxs is greater than 0 and status is "Main" or "New", navigate to "/nsrxmgt/fax-list-page/:faxId/:noOfRxs/:trnFaxId"
       navigate(`/nsrxmgt/fax-list-page/${faxId}/${noOfRxs}/${trnFaxId}`);
       setShoeForms(false);
@@ -166,24 +176,6 @@ const TableList = ({}) => {
             <div className="w-full h-ful flex justify-between items-center p-2 ">
               <div className="flex gap-5">
                 <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
-                  OCR Status:
-                  <select
-                    className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1"
-                    type="text"
-                    value={selectedOcrStatus}
-                    onChange={handleOcrStatusChange}
-                  >
-                    <option value="All Status">All Status</option>
-                    {ocrStatusOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </span>
-              </div>
-              <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
                   Fax Status:
                   <select
                     className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black text-cen py-0.5 text-xs t-1"
@@ -193,6 +185,24 @@ const TableList = ({}) => {
                   >
                     <option value="All Status">All Status</option>
                     {faxStatusOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </span>
+              </div>
+              <div className="flex gap-5">
+                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
+                  OCR Status:
+                  <select
+                    className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1"
+                    type="text"
+                    value={selectedOcrStatus}
+                    onChange={handleOcrStatusChange}
+                  >
+                    <option value="All Status">All Status</option>
+                    {ocrStatusOptions.map((option) => (
                       <option key={option} value={option}>
                         {option}
                       </option>
@@ -259,8 +269,8 @@ const TableList = ({}) => {
               <table className="w-full text-sm text-center table-auto  ">
                 <thead className="">
                   <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
-                    <th className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis ">
-                      Fax ID{" "}
+                    <th className="px-1 py-1 max-w-[150px]  w-[150px] overflow-hidden overflow-ellipsis ">
+                      <div>  Fax ID{" "}</div>
                       <div
                         onClick={() => handleSort("faxId")}
                         className="cursor-pointer"
@@ -279,7 +289,7 @@ const TableList = ({}) => {
                       </div>{" "}
                     </th>
 
-                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
+                    <th className="px-1 py-1 max-w-[50px] w-[150px] overflow-hidden overflow-ellipsis">
                       Case ID
                       <div
                         onClick={() => handleSort("caseId")}
@@ -298,6 +308,7 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
+
                     <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
                       Fax Status{" "}
                       <div
@@ -509,55 +520,55 @@ const TableList = ({}) => {
                         )}
                       </div>
                     </th>
+
                   </tr>
                 </thead>
                 <tbody>
-                {sortedData
-  .filter((item) => {
-    const matchesSearch =
-      search === "" || (item.faxId && item.faxId.includes(search));
-    const matchesOcrStatus =
-      selectedOcrStatus === "All Status" ||
-      (item.ocrStatus && item.ocrStatus === selectedOcrStatus);
-    const matchesFaxStatus =
-      selectedFaxStatus === "All Status" ||
-      (item.faxStatus && item.faxStatus === selectedFaxStatus);
-    const matchesHCP =
-      searchHCP === "" ||
-      (item.hcpFirstName &&
-        item.hcpFirstName.toLowerCase().includes(searchHCP.toLowerCase())) ||
-      (item.hcpLastName &&
-        item.hcpLastName.toLowerCase().includes(searchHCP.toLowerCase()));
-    const matchesAccount =
-      searchAccount === "" ||
-      (item.accountName &&
-        item.accountName.toLowerCase().includes(searchAccount.toLowerCase()));
-    const matchesPatient =
-      searchPatient === "" ||
-      (item.patientFirstName &&
-        item.patientFirstName
-          .toLowerCase()
-          .includes(searchPatient.toLowerCase())) ||
-      (item.patientLastName &&
-        item.patientLastName
-          .toLowerCase()
-          .includes(searchPatient.toLowerCase()));
+                  {sortedData
+                    .filter((item) => {
+                      const matchesSearch =
+                        search === "" || (item.faxId && item.faxId.includes(search));
+                      const matchesOcrStatus =
+                        selectedOcrStatus === "All Status" ||
+                        (item.ocrStatus && item.ocrStatus === selectedOcrStatus);
+                      const matchesFaxStatus =
+                        selectedFaxStatus === "All Status" ||
+                        (item.faxStatus && item.faxStatus === selectedFaxStatus);
+                      const matchesHCP =
+                        searchHCP === "" ||
+                        (item.hcpFirstName &&
+                          item.hcpFirstName.toLowerCase().includes(searchHCP.toLowerCase())) ||
+                        (item.hcpLastName &&
+                          item.hcpLastName.toLowerCase().includes(searchHCP.toLowerCase()));
+                      const matchesAccount =
+                        searchAccount === "" ||
+                        (item.accountName &&
+                          item.accountName.toLowerCase().includes(searchAccount.toLowerCase()));
+                      const matchesPatient =
+                        searchPatient === "" ||
+                        (item.patientFirstName &&
+                          item.patientFirstName
+                            .toLowerCase()
+                            .includes(searchPatient.toLowerCase())) ||
+                        (item.patientLastName &&
+                          item.patientLastName
+                            .toLowerCase()
+                            .includes(searchPatient.toLowerCase()));
 
-    return (
-      matchesSearch &&
-      matchesOcrStatus &&
-      matchesFaxStatus &&
-      matchesHCP &&
-      matchesAccount &&
-      matchesPatient
-    );
-  })
-  .slice(firstPostIndex, lastPostIndex).map((item, index) => (
+                      return (
+                        matchesSearch &&
+                        matchesOcrStatus &&
+                        matchesFaxStatus &&
+                        matchesHCP &&
+                        matchesAccount &&
+                        matchesPatient
+                      );
+                    })
+                    .slice(firstPostIndex, lastPostIndex).map((item, index) => (
                       <tr
                         key={index}
-                        className={`${
-                          index % 2 === 0 ? "" : "bg-[#f2f3f5] "
-                        } bg-white text-black/70 text-xs`}
+                        className={`${index % 2 === 0 ? "" : "bg-[#f2f3f5] "
+                          } bg-white text-black/70 text-xs`}
                       >
                         <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                           <div
@@ -569,16 +580,16 @@ const TableList = ({}) => {
                                 item.noOfRxs,
                                 item.trnFaxId,
                                 item.patientFirstName,
-                          item.patientLastName,
-                          item.hcpFirstName,
-                          item.hcpLastName
+                                item.patientLastName,
+                                item.hcpFirstName,
+                                item.hcpLastName
                               )
                             }
                           >
                             {item.faxId}
                           </div>
                         </td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
+                        <td className="px-1 py-1 max-w-[150px] w-[250px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
                         <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.faxStatus}
                         </td>
