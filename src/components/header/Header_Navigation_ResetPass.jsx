@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import axiosBaseURL from "../axios";
 
 
-function Header_Navigation_Case() {
+function Header_Navigation_ResetPass() {
     const [fax_name, set_fax_name] = useState(null)
     const [TrackerLIst, setTrackerLIst] = useState(null)
     const [AdminLIst, setAdminList] = useState(null)
@@ -119,14 +119,13 @@ function Header_Navigation_Case() {
                     {userData && (
                     <span className="text-white flex items-center gap-1 z-50" onClick={openEditUserProfile}>
                         <AccountCircle />
-                        <span className="underline cursor-pointer hidden md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
+                        <span className="underline hidden cursor-pointer md:block z-50" onClick={openEditUserProfile}>{userData.firstName} {userData.middleName} {userData.lastName}</span>
                     </span>
                     )}
                 </div>
                 <div>
-                    <span className="uppercase text-[#FE7D00] text-sm font-bold z-50" >
-                       Rx Details
-
+                    <span className="uppercase  text-[#FE7D00] text-sm font-bold z-50" >
+                       Reset Password
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
@@ -157,4 +156,4 @@ function Header_Navigation_Case() {
     )
 }
 
-export default Header_Navigation_Case
+export default Header_Navigation_ResetPass

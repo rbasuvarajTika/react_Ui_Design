@@ -17,6 +17,7 @@ const Edit_Profile =() =>{
         zip: '',
         phone: ''
     });
+    const navigate = useNavigate();
 
     const [userEditData, setUserEditData] = useState();
 
@@ -106,7 +107,7 @@ const Edit_Profile =() =>{
                 </div>
                 <form className=''>
                     <div className=' flex  flex-col xl:items-start items-center'>
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                 <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
@@ -136,7 +137,7 @@ const Edit_Profile =() =>{
                             </div>
                         </div>
 
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                 <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
@@ -165,7 +166,7 @@ const Edit_Profile =() =>{
                             </div>
                         </div>
 
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                             <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
@@ -196,22 +197,26 @@ const Edit_Profile =() =>{
                             </div>
                         </div>
 
-                        <div className='px-5 pt-10'>
+                        <div className='px-5 pt-5'>
                             <div className='flex w-full xl:flex-row flex-col  xl:gap-5 gap-1 justify-between '>
                                 <div className='flex flex-col'>
                                     <div className=' flex items-center flex-row w-full g '>
                                         <div className=' flex  justify-start  flex-col w-full '>
                                             <label className='text-xs text-black w-28 text-start' htmlFor="">Phone: </label>
-                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs'
+                                            <input className='bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 mb-1 text-black py-0.5 text-xs'
                                             type="text"
                                             name="phone"
                                             value={userData.phone}
                                             onChange={handleInputChange}                                            />
                                         </div>
+                                        <label className='bg-orange-500 rounded-2xl border border-gray-300 w-56 text-white mr-7 mt-4 py-1 px-7 text-xs cursor-pointer'  onClick={() => navigate("/nsrxmgt/reset")} htmlFor="">Reset Password</label>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className='pt-1 flex justify-center'>
                     </div>
                     <div className='flex justify-center item pt-5'>
                         <div className='sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer' onClick={updateUser}

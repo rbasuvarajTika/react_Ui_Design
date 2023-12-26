@@ -196,7 +196,7 @@ const Duplicate_Fax = () => {
             .then((response) => {
               // Handle success
               console.log('Keep Duplicate Success:', response.data);
-              const confirmation = window.confirm('Fax has been made the master. Do you want to redirect to the fax page?');
+              const confirmation = window.confirm('Fax has been made the master. Do you want to go to the Fax List?');
     
               // If the user clicks "OK" in the alert box, redirect to the fax page
               if (confirmation) {
@@ -230,11 +230,16 @@ const Duplicate_Fax = () => {
             })
             .then((response) => {
               // Handle success
-              console.log('Keep Duplicate Success:', response.data);          
-                alert('Fax has been kept as a duplicate.');
-               
-                // Redirect to the fax page
+              console.log('Keep Duplicate Success:', response.data); 
+              const confirmation = window.confirm('Fax has been kept as a duplicate.Do you want to go to the Fax List?');
+    
+              // If the user clicks "OK" in the alert box, redirect to the fax page
+              if (confirmation) {
+                // Replace 'fax-page-url' with the actual URL of your fax page
+               console.log("clicked");
                 navigate("/nsrxmgt/fax-list");
+                
+              }
             })
             .catch((error) => {
               // Handle error
