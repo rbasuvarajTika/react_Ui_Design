@@ -83,9 +83,9 @@ const TableList = ({ }) => {
     console.log("hcp first name : ",hcpFirstName)
     console.log("hcp last name : ",hcpLastName)
     if (noOfRxs === 0) {
-      if (patientFirstName=='' || patientFirstName.trim() == '')
+      if (patientFirstName=='')
         patientFirstName = null
-      if (patientLastName=='' || patientLastName.trim() == '')
+      if (patientLastName=='' )
         patientLastName = null
       if (hcpFirstName=='' )
         hcpFirstName = null
