@@ -534,7 +534,7 @@ const Validate_Note = () => {
         // Handle error
         console.error("Error Rx Notes Remove:", error);
         window.location.reload();
-        toast.error("Failed to submit.");
+        //toast.error("Failed to submit.");
       });
   };
 
