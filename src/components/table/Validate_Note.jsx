@@ -62,7 +62,7 @@ const Validate_Note = () => {
   const [selectedFaxId, setSelectedFaxId] = useState(null);
   const [showFaxForm, setShowFaxForm] = useState(false);
   const [faxIds, setFaxIds] = useState('');
-  const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null });
+  const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null ,trnFaxId:null});
   const [selectedNotesRxId, setSelectedNotesRxId] = useState({ rxNotesId: null, faxNotesId: null, indexNotes: null });
   const [noOfRxs, setNoOfRxs] = useState(0);
   const navigate = useNavigate();
@@ -114,21 +114,21 @@ const Validate_Note = () => {
   //   setSelectedRxId(rxId);
   // };
 
-  const isSelected = (index, rxId, faxId) => {
-    return selectedRxId.rxId === rxId && selectedRxId.index === index && selectedRxId.faxId == faxId;
+  const isSelected = (index, rxId, faxId,trnFaxId) => {
+    return selectedRxId.rxId === rxId && selectedRxId.index === index && selectedRxId.faxId == faxId && selectedRxId.trnFaxId == trnFaxId;
   };
 
-  const handleCheckboxChange = (index, rxId, faxId) => {
+  const handleCheckboxChange = (index, rxId, faxId,trnFaxId) => {
     //setSelectedRxId({index: index , rxId: rxId, faxId : faxId});
 
     setSelectedRxId((prevSelectedRx) => {
       // If the clicked checkbox is already selected, deselect it
-      if (prevSelectedRx.index === index && prevSelectedRx.rxId === rxId && prevSelectedRx.faxId === faxId) {
+      if (prevSelectedRx.index === index && prevSelectedRx.rxId === rxId && prevSelectedRx.faxId === faxId && prevSelectedRx.trnFaxId === trnFaxId ) {
         return { id: null, index: null };
       }
 
       // Otherwise, select the new checkbox
-      return { index: index, rxId: rxId, faxId: faxId };
+      return { index: index, rxId: rxId, faxId: faxId ,trnFaxId: trnFaxId};
     });
   };
 
@@ -414,12 +414,12 @@ const Validate_Note = () => {
       .then((response) => {
         // Handle success
         console.log("Fax PDF sent successfully:", response.data);
-        window.location.reload();
         toast.success("Submitted successfully");
+        fetchNotesRxData();
       })
       .catch((error) => {
         // Handle error
-        console.error("Error sending fax PDF:", error);
+        console.error("Error attach notes rx:", error);
         toast.error("Failed to submit.");
       });
   };
@@ -480,28 +480,27 @@ const Validate_Note = () => {
   }, []);
 
 
+  const fetchNotesRxData = async () => {
+    try {
+      const userName = localStorage.getItem('userName');
+      const response = await axiosBaseURL.get(`/api/v1/fax/showNotesPrevRxHcp/${userName}/${trnFaxId}`);
+
+      // Assuming response.data contains the desired data
+      setRxNotesList(response.data.data);
+
+      // Accessing faxId from the first item in the array (index 0)
+      // if (response.data.data.length > 0) {
+      //   setFaxIds(response.data.data[0].faxId);
+      //   console.log(response.data.data[0].faxId);
+      // }
+
+      console.log("RxNotesList:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   
   useEffect(() => {
-    const fetchNotesRxData = async () => {
-      try {
-        const userName = localStorage.getItem('userName');
-        const response = await axiosBaseURL.get(`/api/v1/fax/showNotesPrevRxHcp/${userName}/${trnFaxId}`);
-
-        // Assuming response.data contains the desired data
-        setRxNotesList(response.data.data);
-
-        // Accessing faxId from the first item in the array (index 0)
-        // if (response.data.data.length > 0) {
-        //   setFaxIds(response.data.data[0].faxId);
-        //   console.log(response.data.data[0].faxId);
-        // }
-
-        console.log("RxNotesList:", response.data.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchNotesRxData();
   }, []);
 
@@ -527,14 +526,16 @@ const Validate_Note = () => {
       .then((response) => {
         // Handle success
         console.log(" Rx Notes Removed successfully:", response.data);
-        window.location.reload();
+        //window.location.reload();
         toast.success("Submitted successfully");
+        fetchNotesRxData();
       })
       .catch((error) => {
         // Handle error
         console.error("Error Rx Notes Remove:", error);
-        window.location.reload();
+       // window.location.reload();
         //toast.error("Failed to submit.");
+        fetchNotesRxData();
       });
   };
 
@@ -924,7 +925,7 @@ const Validate_Note = () => {
                       </p> ):(
                         null
                       )}
-                            {rxlist.length > 0 ? (
+                            {rxNoteslist.length > 0 ? (
                               <div className=" "> 
                                 <table className="w-full">
                                   <thead className=''>
@@ -1021,9 +1022,9 @@ const Validate_Note = () => {
                                           id={`checkbox-${index}`}
                                           //checked={rx.trnRxId}
                                           // checked={isSelected(index,rx.trnRxId)}
-                                          checked={isSelected(index, rx.trnRxId, rx.faxId)}
+                                          checked={isSelected(index, rx.trnRxId, rx.faxId,rx.trnFaxId)}
                                           //defaultChecked={rx.trnRxId}
-                                          onChange={() => handleCheckboxChange(index, rx.trnRxId, rx.faxId)}
+                                          onChange={() => handleCheckboxChange(index, rx.trnRxId, rx.faxId,rx.trnFaxId)}
                                         />
                                       </td>
                                       <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.trnRxId}</td>
