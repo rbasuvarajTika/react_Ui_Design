@@ -63,6 +63,7 @@ const Validate_Note = () => {
   const [showFaxForm, setShowFaxForm] = useState(false);
   const [faxIds, setFaxIds] = useState('');
   const [selectedRxId, setSelectedRxId] = useState({ rxId: null, faxId: null, index: null });
+  const [selectedNotesRxId, setSelectedNotesRxId] = useState({ rxNotesId: null, faxNotesId: null, indexNotes: null });
   const [noOfRxs, setNoOfRxs] = useState(0);
   const navigate = useNavigate();
   const previousPage = () => {
@@ -128,6 +129,24 @@ const Validate_Note = () => {
 
       // Otherwise, select the new checkbox
       return { index: index, rxId: rxId, faxId: faxId };
+    });
+  };
+
+  const isNotesSelected = (indexNotes, rxId, faxId) => {
+    return selectedNotesRxId.rxNotesId === rxId && selectedNotesRxId.indexNotes === indexNotes && selectedNotesRxId.faxNotesId == faxId;
+  };
+
+  const handleNotesCheckboxChange = (index, rxId, faxId) => {
+    //setSelectedRxId({index: index , rxId: rxId, faxId : faxId});
+
+    setSelectedNotesRxId((prevSelectedRx) => {
+      // If the clicked checkbox is already selected, deselect it
+      if (prevSelectedRx.indexNotes === index && prevSelectedRx.rxNotesId === rxId && prevSelectedRx.faxNotesId === faxId) {
+        return { id: null, index: null };
+      }
+
+      // Otherwise, select the new checkbox
+      return { indexNotes: index, rxNotesId: rxId, faxNotesId: faxId };
     });
   };
 
@@ -376,13 +395,16 @@ const Validate_Note = () => {
 
 
   const handleSubmit = () => {
+    if(rxNoteslist.length>0){
+      return toast.error("Failed to submit,remove notes.");
+    }
     const userName = localStorage.getItem('userName');
     console.log("duplicate fax Id:", selectedRxId.faxId);
     const retryData = {
 
       userName: userName,
-      faxIdMain: faxId,
-      faxIdDuplicate: selectedRxId.faxId,
+      faxIdMain: selectedRxId.faxId,
+      faxIdDuplicate: faxId,
     };
     //console.log("duplicate fax Id:", trnFaxIdDuplicate);
     axiosBaseURL
@@ -392,6 +414,7 @@ const Validate_Note = () => {
       .then((response) => {
         // Handle success
         console.log("Fax PDF sent successfully:", response.data);
+        window.location.reload();
         toast.success("Submitted successfully");
       })
       .catch((error) => {
@@ -489,12 +512,12 @@ const Validate_Note = () => {
 
   const handleRemoveNotesSubmit = () => {
     const userName = localStorage.getItem('userName');
-    console.log("duplicate fax Id:", selectedRxId.faxId);
+    console.log("duplicate fax Id:", selectedNotesRxId.faxNotesId);
     const retryData = {
 
       userName: userName,
-      faxIdMain: faxId,
-      faxIdDuplicate: selectedRxId.faxId,
+      faxIdMain: selectedNotesRxId.faxNotesId,
+      faxIdDuplicate: faxId,
     };
     //console.log("duplicate fax Id:", trnFaxIdDuplicate);
     axiosBaseURL
@@ -504,11 +527,13 @@ const Validate_Note = () => {
       .then((response) => {
         // Handle success
         console.log(" Rx Notes Removed successfully:", response.data);
+        window.location.reload();
         toast.success("Submitted successfully");
       })
       .catch((error) => {
         // Handle error
         console.error("Error Rx Notes Remove:", error);
+        window.location.reload();
         toast.error("Failed to submit.");
       });
   };
@@ -896,7 +921,7 @@ const Validate_Note = () => {
                             {rxlist.length > 0 ? (
                               <div className=" "> <div className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] 
                               rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3" onClick={handleRemoveNotesSubmit}>
-                              Remove Notes From Rx
+                              Remove Rx From Notes
                             </div>
                                 <table className="w-full">
                                   <thead className=''>
@@ -915,26 +940,26 @@ const Validate_Note = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {rxNoteslist.map((rx, index) => (
-                                      <tr key={index}>
+                                    {rxNoteslist.map((rxNotes, indexNotes) => (
+                                      <tr key={indexNotes}>
                                         <td className='bg-[#f2f2f2] text-gray-600 border px-14'>
                                           <input
                                             type="checkbox"
-                                            id={`checkbox-${index}`}
+                                            id={`checkbox-${indexNotes}`}
                                             //checked={rx.trnRxId}
                                             // checked={isSelected(index,rx.trnRxId)}
-                                            checked={isSelected(index, rx.trnRxId, rx.faxId)}
+                                            checked={isNotesSelected(indexNotes, rxNotes.trnRxId,rxNotes.faxId)}
                                             //defaultChecked={rx.trnRxId}
-                                            onChange={() => handleCheckboxChange(index, rx.trnRxId, rx.faxId)}
+                                            onChange={() => handleNotesCheckboxChange(indexNotes, rxNotes.trnRxId, rxNotes.faxId)}
                                           />
                                         </td>
-                                        <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.trnRxId}</td>
-                                        <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.caseId}</td>
+                                        <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rxNotes.trnRxId}</td>
+                                        <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rxNotes.caseId}</td>
 
-                                        <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.faxDate}</td>
+                                        <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rxNotes.faxDate}</td>
                                         {/* <td className='bg-[#f2f2f2] text-gray-600 border px-10'>{rx.hcpName}</td> */}
 
-                                        <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10 cursor-pointer' >{rx.faxId}</td>
+                                        <td className='bg-[#f2f2f2]  text-[#2683c2] border px-10 cursor-pointer' >{rxNotes.faxId}</td>
 
 
                                         {/* Add more cells based on your data structure */}

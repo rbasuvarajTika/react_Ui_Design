@@ -80,14 +80,16 @@ const TableList = ({ }) => {
     setSendFaxId(faxId);
     setSendNoOfRxs(noOfRxs);
 
+    console.log("hcp first name : ",hcpFirstName)
+    console.log("hcp last name : ",hcpLastName)
     if (noOfRxs === 0) {
-      if (patientFirstName.trim() == '')
+      if (patientFirstName=='' || patientFirstName.trim() == '')
         patientFirstName = null
-      if (patientLastName.trim() == '')
+      if (patientLastName=='' || patientLastName.trim() == '')
         patientLastName = null
-      if (hcpFirstName.trim() == '')
+      if (hcpFirstName=='' )
         hcpFirstName = null
-      if (hcpLastName.trim() == '')
+      if (hcpLastName=='')
         hcpLastName = null
       // If noOfRxs is 0, navigate to "/nsrxmgt/validatenote"
       navigate(`/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}/${patientFirstName}/${patientLastName}/${hcpFirstName}/${hcpLastName}`);
