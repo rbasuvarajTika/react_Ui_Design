@@ -83,13 +83,13 @@ const TableList = ({ }) => {
     console.log("hcp first name : ",hcpFirstName)
     console.log("hcp last name : ",hcpLastName)
     if (noOfRxs === 0) {
-      if (patientFirstName=='')
+      if (patientFirstName =='' || patientFirstName == null)
         patientFirstName = null
-      if (patientLastName=='' )
+      if (patientLastName=='' || patientLastName == null)
         patientLastName = null
-      if (hcpFirstName=='' )
+      if (hcpFirstName=='' || hcpFirstName == null)
         hcpFirstName = null
-      if (hcpLastName=='')
+      if (hcpLastName=='' || hcpLastName == null) 
         hcpLastName = null
       // If noOfRxs is 0, navigate to "/nsrxmgt/validatenote"
       navigate(`/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}/${patientFirstName}/${patientLastName}/${hcpFirstName}/${hcpLastName}`);
