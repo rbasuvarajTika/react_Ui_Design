@@ -918,11 +918,14 @@ const Validate_Note = () => {
                             List Of Notes Rx
                           </p>
                           <div className='top-30 bottom-10 pt-5'>
+                            {rxNoteslist.length > 0 ? (
+                          <p className="text-center bg-orange-300	 text-orange-600 m-1">
+                          {`This note is currently attached to this following rx `}
+                      </p> ):(
+                        null
+                      )}
                             {rxlist.length > 0 ? (
-                              <div className=" "> <div className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] 
-                              rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3" onClick={handleRemoveNotesSubmit}>
-                              Remove Rx From Notes
-                            </div>
+                              <div className=" "> 
                                 <table className="w-full">
                                   <thead className=''>
                                     <tr className='text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl'>
@@ -938,8 +941,10 @@ const Validate_Note = () => {
 
                                       {/* Add more headers based on your data structure */}
                                     </tr>
+                                   
                                   </thead>
                                   <tbody>
+                                  
                                     {rxNoteslist.map((rxNotes, indexNotes) => (
                                       <tr key={indexNotes}>
                                         <td className='bg-[#f2f2f2] text-gray-600 border px-14'>
@@ -967,7 +972,12 @@ const Validate_Note = () => {
                                     ))}
                                   </tbody>
                                 </table>
+                                <div className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] 
+                              rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3 m-2" onClick={handleRemoveNotesSubmit}>
+                              Remove Rx From Notes
+                            </div>
                               </div>
+                              
                             ) : (
                               <p className="text-center text-gray-600">No data available</p>
                             )}
