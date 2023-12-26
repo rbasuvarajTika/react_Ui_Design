@@ -435,6 +435,20 @@ const Validate_Note = () => {
       toast.error('Please enter HCP Name.');
       return;
     }
+    axiosBaseURL
+      .get(`/api/v1/fax/showNotesPrevRxNameSearch/${patientNames}/${hcpNames}`)
+      .then((response1) => {
+        setRxNotesList(response1.data.data);
+        // Handle success
+        console.log("search notes list:", response1.data.data);     
+          setRxNotesList(response1.data.data);
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error search notes list:", error);
+        //toast.error("Failed to submit.");
+      });
+   // setRxNotesList('');
     setWarningMessage('');
     axiosBaseURL
       .get(`/api/v1/fax/showPrevRxNameSearch/${patientNames}/${hcpNames}`)
