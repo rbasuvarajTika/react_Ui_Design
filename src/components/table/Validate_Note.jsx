@@ -766,7 +766,7 @@ const Validate_Note = () => {
                   {/* </div> */}
                   <div className=" md:w-[50%] w-full relative">
                     <div className="flex flex-col h-full justify-betwee gap-5">
-                      <div className="absolute hidde   right-1 z-50  w-full  md:h-2/5 h-[calc(100vh-25rem)] overflow-x-scroll bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
+                      <div className="absolute hidde   right-1 z-50  w-full  md:h-3/6 h-[calc(100vh-25rem)] overflow-x-scroll bg-white rounded-2xl border-2 shadow-xl relativ overflow-y-auto">
                         <div className="flex justify-center ">
                           <hr className="h-px border-[#e36c09] border w-32 absolute   " />
                         </div>
@@ -894,10 +894,10 @@ const Validate_Note = () => {
                           </p>
                           <div className='top-30 bottom-10 pt-5'>
                             {rxlist.length > 0 ? (
-                              <div className=" "> <button className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] 
+                              <div className=" "> <div className=" text-white sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00aee6] 
                               rounded-lg flex justify-center md:text-base text-xs cursor-pointer mr-3" onClick={handleRemoveNotesSubmit}>
                               Remove Notes From Rx
-                            </button>
+                            </div>
                                 <table className="w-full">
                                   <thead className=''>
                                     <tr className='text-xs text-[#ffffff] font-bold bg-[#246180] rounded-2xl'>
@@ -915,7 +915,7 @@ const Validate_Note = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {rxNoteslist.map((rx, index) => (
+                                    {rxlist.map((rx, index) => (
                                       <tr key={index}>
                                         <td className='bg-[#f2f2f2] text-gray-600 border px-14'>
                                           <input
