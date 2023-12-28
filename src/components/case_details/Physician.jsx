@@ -119,7 +119,7 @@ const Physician = () => {
 
   useEffect(() => {
     try {
-      axios.get("https://dev.tika.mobi:8443/next-service/api/v1/fax/faxList", {
+      axios.get("https://demo.tika.mobi:8443/next-service/api/v1/fax/faxList", {
         headers: { "Content-Type": "application/json" }
       })
         .then((res) => {

@@ -38,7 +38,7 @@ const Fax_show_project = () => {
             setIsLoading(true)
             try {
                 const response = await axios.get(
-                    "https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370",
+                    "https://demo.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370",
                     { responseType: 'arraybuffer' }
                 );
                 const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -60,7 +60,7 @@ const Fax_show_project = () => {
             // Fetch the content of the selected page and update the state
             if (selectedPage !== null) {
                 const pageContentResponse = await axios.get(
-                    `https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370`,
+                    `https://demo.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370`,
                     { responseType: 'arraybuffer' }
                 );
                 console.log("pageContentResponse", pageContentResponse);

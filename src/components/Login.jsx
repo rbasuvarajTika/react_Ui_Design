@@ -37,7 +37,7 @@ function Login() {
             let userDetails = { userName, password };
             try {
                 setLoading(true)
-                await axios.post('https://dev.tika.mobi:8443/next-service/api/v1/auth/signin',
+                await axios.post('https://demo.tika.mobi:8443/next-service/api/v1/auth/signin',
                     JSON.stringify({ userName, password }),
                     {
                         headers: {

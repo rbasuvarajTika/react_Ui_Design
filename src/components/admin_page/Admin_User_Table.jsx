@@ -28,7 +28,7 @@ const Admin_User_Table = () => {
             const token = localStorage.getItem('tokenTika');
 
             // Include the token in the request headers
-            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/users/usersList", {
+            axios.get("https://demo.tika.mobi:8443/next-service/api/v1/users/usersList", {
                 headers: { "Content-Type": "application/json" }
             })
                 .then((res) => {

@@ -52,7 +52,7 @@ const FaxId_Form = ({ close_Form, sendFaxId }) => {
  
   // useEffect(() => {
   //   try {
-  //     axios.get("https://dev.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370", {
+  //     axios.get("https://demo.tika.mobi:8443/next-service/api/v1/fax/getFaxPdf/1509414370", {
   //       headers: { "Content-Type": "application/pdf" }
   //     })
 
