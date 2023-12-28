@@ -48,12 +48,13 @@ function Login() {
                     
                 ).then((res) => {                
                         if (res.data && res.data.token) {
-                            const { token,userId,userName } = res.data;
+                            const { token,userId,userName,role } = res.data;
                             localStorage.setItem('token', token);
                             localStorage.setItem('tokenTika', token);
                             
                             localStorage.setItem('userId', userId);
                             localStorage.setItem('userName', userName);
+                            localStorage.setItem('role', role);
                             console.log('userId', userId);
                             console.log( 'userName', userName);
                          // Store "Remember Me" in cookies
@@ -67,7 +68,11 @@ function Login() {
                             Cookies.remove('password');
                         }
 
-                        navigate("/nsrxmgt/admin-user-list")
+                        if (role === 'User') {
+                            navigate("/nsrxmgt/fax-list");
+                        } else if (role === 'Admin') {
+                            navigate("/nsrxmgt/admin-user-list");
+                        }
                         console.log(res);
                     }
                     setLoading(false)
