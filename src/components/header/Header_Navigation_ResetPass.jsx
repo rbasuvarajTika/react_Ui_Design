@@ -105,7 +105,10 @@ function Header_Navigation_ResetPass() {
         navigate("/nsrxmgt")
     }
 
-
+    const isAdmin = () => {
+        const userRole = localStorage.getItem("role");
+        return userRole === "Admin";
+    };
     return (
             <div className="w-full text-xs flex items-center justify-between py-1 font-bold z-50">
                 <div className="flex items-center gap-6">
@@ -129,10 +132,12 @@ function Header_Navigation_ResetPass() {
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
-                <span className=" text-white flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
-                    <RiAdminFill size={21} />
-                    <span className="text-white hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
-                </span>
+                {isAdmin() && (
+                    <span className=" text-white flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
+                        <RiAdminFill size={21} />
+                        <span className="text-white hidden md:block z-50" onClick={openAdminUserList} >Admin</span>
+                    </span>
+                )}
                     <span className="text-white flex items-center z-50 cursor-pointer" onClick={fax_handleClick}>
                         <FaxIcon />
                         <span className="text-white hidden md:block z-50" onClick={fax_handleClick}>Fax List</span>
