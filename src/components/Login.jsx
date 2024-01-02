@@ -6,6 +6,7 @@ import axios from "axios"
 import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie'; 
+import axiosBaseURL from "./axios";
 
 function Login() {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ function Login() {
             let userDetails = { userName, password };
             try {
                 setLoading(true)
-                await axios.post('https://dev.tika.mobi:8443/next-service/api/v1/auth/signin',
+                await axiosBaseURL.post('/api/v1/auth/signin',
                     JSON.stringify({ userName, password }),
                     {
                         headers: {

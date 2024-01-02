@@ -6,6 +6,7 @@ import { AdminContext } from "../../context/AdminContext";
 import { EditUserContext } from "../../context/EditUserContext";
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
+import axiosBaseURL from "../axios";
 
 
 const Admin_User_Table = () => {
@@ -28,7 +29,7 @@ const Admin_User_Table = () => {
             const token = localStorage.getItem('tokenTika');
 
             // Include the token in the request headers
-            axios.get("https://dev.tika.mobi:8443/next-service/api/v1/users/usersList", {
+            axiosBaseURL.get("/api/v1/users/usersList", {
                 headers: { "Content-Type": "application/json" }
             })
                 .then((res) => {
