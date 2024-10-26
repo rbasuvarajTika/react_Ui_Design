@@ -117,7 +117,7 @@ function Header_Navigation_Admin() {
                         <span className="bg-white rounded-full z-50">
                             <ArrowBack className="text-teal-400 cursor-pointer" onClick={() => navigate(-1)} />
                         </span>
-                        <span className="text-white hidden md:block z-50" onClick={() => navigate(-1)}>Next science</span>
+                        <span className="text-white hidden md:block z-50" onClick={() => navigate(-1)}>ABC Co.</span>
                     </span>
                     {userData && (
                     <span className="text-white flex items-center gap-1 z-50" onClick={openEditUserProfile}>

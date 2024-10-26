@@ -19,7 +19,7 @@ const Forgot_Password = () => {
           // Send a POST request to your API with the email data
           const response = await axiosBaseURL.post('/api/v1/notification/emails/forgotpassword', {
             email: email,
-            resetLink:'https://dev.tika.mobi/nsrxmgt/forgot'
+            resetLink:'https://dev2.tika.mobi/nsrxmgt/forgot'
           });
     
           if (response.data.message == 'Email Sent Successfully') {

@@ -39,10 +39,6 @@ const isAdmin = () => {
   return userRole === "Admin";
 };
 
-
-
-
-
 function App() {
   const [openDuplicate, setOpenDuplicate] = useState(false);
   const [showForms, setShoeForms] = useState(false);
@@ -98,7 +94,6 @@ function App() {
             </Routes> );
     const adminRoutes = (
       <Routes>
-        <Route path="/*" element={<NotFound />} /> 
       <Route path="/nsrxmgt/admin-user-list" element={<PrivateRoute element={<Admin_User_List />} />} />
             <Route path="/nsrxmgt/admin-create-user" element={<PrivateRoute element={<Admin_Create_New_User />} />} />
             <Route path="/nsrxmgt/admin-edit-user/:userId" element={<PrivateRoute element={<Admin_Edit_User />} />} />
