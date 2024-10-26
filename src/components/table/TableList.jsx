@@ -589,7 +589,9 @@ const TableList = ({ }) => {
                             {item.faxId}
                           </div>
                         </td>
-                        <td className="px-1 py-1 max-w-[150px] w-[250px] overflow-hidden overflow-ellipsis">{item.caseId}</td>
+                       
+                          <td className="px-1 py-1 max-w-[150px] w-[250px] overflow-hidden overflow-ellipsis">{item.caseId||"-"}</td>
+                        
                         <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.faxStatus}
                         </td>

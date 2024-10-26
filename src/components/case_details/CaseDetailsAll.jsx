@@ -244,6 +244,7 @@ const CaseDetailsAll = () => {
 
   const handlePatientSave = async () => {
     // Get the token from localStorage
+ 
     const token = localStorage.getItem('token');
     console.log("Patient Save Data Call")
     setLoading(true);
@@ -290,7 +291,7 @@ const CaseDetailsAll = () => {
        
         console.log('Auth Type:', response.status);
         toast.success("Patient Details Saved Sucessfully")
-      
+        setLoading(false);
         setOnDirtyPatientSave(false);
       } else {
         setOnDirtyPatientSave(false);
