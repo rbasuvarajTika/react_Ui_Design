@@ -128,7 +128,7 @@ function Table() {
                         <span className="bg-white rounded-full z-50">
                             <ArrowBack className="text-teal-400" onClick={() => navigate(-1)} />
                         </span>
-                        <span className="hidden md:block z-50">Next science</span>
+                        <span className="hidden md:block z-50">ABC Co.</span>
                     </span>
                     <span className="flex items-center gap-1 z-50" onClick={openEditUserProfile}>
                         <AccountCircle />

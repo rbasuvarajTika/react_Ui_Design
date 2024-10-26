@@ -105,6 +105,10 @@ function Header_Navigation_Validate_Fax() {
         navigate("/nsrxmgt")
     }
 
+    const isAdmin = () => {
+        const userRole = localStorage.getItem("role");
+        return userRole === "Admin";
+    };
 
     return (
             <div className="w-full text-xs flex items-center justify-between py-1 font-bold z-50">
@@ -114,7 +118,7 @@ function Header_Navigation_Validate_Fax() {
                         <span className="bg-white rounded-full z-50">
                             <ArrowBack className=" cursor-pointer text-teal-400" onClick={() => navigate(-1)} />
                         </span>
-                        <span className="text-white hidden md:block z-50" onClick={() => navigate(-1)}>Next science</span>
+                        <span className="text-white hidden md:block z-50" onClick={() => navigate(-1)}>ABC Co.</span>
                     </span>
                     {userData && (
                     <span className="text-white flex items-center gap-1 z-50" onClick={openEditUserProfile}>
@@ -130,10 +134,12 @@ function Header_Navigation_Validate_Fax() {
                     </span>
                 </div>
                 <div className="flex items-center gap-5">
-                <span className=" text-white flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
-                    <RiAdminFill size={21} />
-                    <span className="text-white hidden md:block z-50"  onClick={openAdminUserList} >Admin</span>
-                </span>
+                {isAdmin() && (
+                    <span className=" text-white flex items-center gap-1 z-50 cursor-pointer" onClick={openAdminUserList}>
+                        <RiAdminFill size={21} />
+                        <span className="text-white hidden md:block z-50" onClick={openAdminUserList} >Admin</span>
+                    </span>
+                )}
                     <span className="text-white flex items-center z-50 cursor-pointer" onClick={fax_handleClick}>
                         <FaxIcon />
                         <span className="text-white hidden md:block z-50" onClick={fax_handleClick}>Fax List</span>
