@@ -1,5 +1,6 @@
 .responsive-pdf-container {
     width: 100%; /* Full width by default */
+
   
     /* Media query for screens wider than 768px */
     @media (min-width: 768px) {
@@ -10,5 +11,5 @@
     @media (min-height: 1024px) {
       height: 75vh; /* Set a height of 75vh on taller screens */
     }
-  }
   
+  }
