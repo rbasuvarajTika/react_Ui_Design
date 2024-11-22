@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import FaxId_Form_New from "./FaxId_Form_New";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 
-const TableList = ({ }) => {
+const TableList = ({}) => {
   const [currentpage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostPerPage] = useState(10);
   const [showForm, setShoeForm] = useState(false);
@@ -76,23 +76,32 @@ const TableList = ({ }) => {
     }
   }, []);
 
-  const handleFaxStatus = (status, faxId, noOfRxs, trnFaxId, patientFirstName, patientLastName, hcpFirstName, hcpLastName) => {
+  const handleFaxStatus = (
+    status,
+    faxId,
+    noOfRxs,
+    trnFaxId,
+    patientFirstName,
+    patientLastName,
+    hcpFirstName,
+    hcpLastName
+  ) => {
     setSendFaxId(faxId);
     setSendNoOfRxs(noOfRxs);
 
-    console.log("hcp first name : ",hcpFirstName)
-    console.log("hcp last name : ",hcpLastName)
+    console.log("hcp first name : ", hcpFirstName);
+    console.log("hcp last name : ", hcpLastName);
     if (noOfRxs === 0) {
-      if (patientFirstName =='' || patientFirstName == null)
-        patientFirstName = null
-      if (patientLastName=='' || patientLastName == null)
-        patientLastName = null
-      if (hcpFirstName=='' || hcpFirstName == null)
-        hcpFirstName = null
-      if (hcpLastName=='' || hcpLastName == null) 
-        hcpLastName = null
+      if (patientFirstName == "" || patientFirstName == null)
+        patientFirstName = null;
+      if (patientLastName == "" || patientLastName == null)
+        patientLastName = null;
+      if (hcpFirstName == "" || hcpFirstName == null) hcpFirstName = null;
+      if (hcpLastName == "" || hcpLastName == null) hcpLastName = null;
       // If noOfRxs is 0, navigate to "/nsrxmgt/validatenote"
-      navigate(`/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}/${patientFirstName}/${patientLastName}/${hcpFirstName}/${hcpLastName}`);
+      navigate(
+        `/nsrxmgt/validatenote/${faxId}/${noOfRxs}/${trnFaxId}/${patientFirstName}/${patientLastName}/${hcpFirstName}/${hcpLastName}`
+      );
     } else if (status === "Duplicate") {
       // If noOfRxs is greater than 0 and status is "Duplicate", navigate to "/nsrxmgt/duplicate-fax/:faxId"
       navigate(`/nsrxmgt/duplicate-fax/${faxId}`);
@@ -170,12 +179,12 @@ const TableList = ({ }) => {
   return (
     <>
       <ToastContainer />
-      <div className="w-ful pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
+      <div className="w-full min-h-fit mt-8 sm:mt-3 sm:max-h-[670px] md:max-h[700px] lg:h-full pt-5 relative overflow-x-auto rounded-xl bg-white p-1 max-h-[630px h-[calc(100%-4rem)] overflow-y-scroll no-scrollbar">
         {
           <>
-            <div className="w-full h-ful flex justify-between items-center p-2 ">
-              <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
+            <div className="w-full  flex flex-wrap  items-center gap-2 p-2 justify-between ml-0">
+              <div className="flex gap-5 items-center ">
+                <span className=" md:flex md:block items-center gap-0 z-70 text-[#194a69] text-xs  relative">
                   Fax Status:
                   <select
                     className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black text-cen py-0.5 text-xs t-1"
@@ -192,8 +201,8 @@ const TableList = ({ }) => {
                   </select>
                 </span>
               </div>
-              <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-0 z-70 text-[#194a69] text-xs  relative">
+              <div className="flex gap-5 lg:gap-1 lg:flex-row md:flex-row flex-col ">
+                <span className=" md:flex items-center  text-[#194a69] text-xs  relative">
                   OCR Status:
                   <select
                     className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-40 text-black py-0.5 text-xs t-1"
@@ -210,8 +219,8 @@ const TableList = ({ }) => {
                   </select>
                 </span>
               </div>
-              <div className="flex gap-5">
-                <span className="hidden md:flex items-center gap-0 z-50 text-[#194a69] text-sm  relative">
+              <div className="flex basis-0.5 gap-1 z-50 relative justify-start  ">
+                <span className="flex flex-row basis-0.5 items-center lg:flex gap-0 sm:gap-1 z-50 text-[#194a69] text-sm  relative">
                   <label className="text-xs text-black  text-start" htmlFor="">
                     Search Fax ID:
                   </label>
@@ -221,7 +230,7 @@ const TableList = ({ }) => {
                     className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                   />
                 </span>
-                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                <span className="hidden flex-col lg:flex lg:flex-row  items-center gap-1 z-50 text-[#194a69] text-sm  relative">
                   <label className="text-xs text-black  text-start" htmlFor="">
                     Search HCP:
                   </label>
@@ -232,7 +241,7 @@ const TableList = ({ }) => {
                   />
                 </span>
 
-                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                <span className="hidden lg:flex flex-row items-center gap-1 z-50 text-[#194a69] text-sm  relative">
                   <label className="text-xs text-black  text-start" htmlFor="">
                     Search Account:
                   </label>
@@ -242,7 +251,7 @@ const TableList = ({ }) => {
                     className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                   />
                 </span>
-                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative">
+                <span className="hidden lg:flex flex-row  items-center gap-1 z-50 text-[#194a69] text-sm  relative">
                   <label className="text-xs text-black  text-start" htmlFor="">
                     Search Patient:
                   </label>
@@ -252,8 +261,8 @@ const TableList = ({ }) => {
                     className="border  px-4 shadow-lg rounded-xl py-1 placeholder:text-black text-gray-500"
                   />
                 </span>
-
-                <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative"></span>
+              </div>
+              <div className="flex ml-auto justify-end">
                 <Pagination
                   totalPosts={faxData.length}
                   postsPerPage={postsPerPage}
@@ -270,7 +279,7 @@ const TableList = ({ }) => {
                 <thead className="">
                   <tr className="text-sm text-[#2b5b7a] font-bold bg-[#a3d3ffa4] rounded-2xl ">
                     <th className="px-1 py-1 max-w-[150px]  w-[150px] overflow-hidden overflow-ellipsis ">
-                      <div>  Fax ID{" "}</div>
+                      <div> Fax ID </div>
                       <div
                         onClick={() => handleSort("faxId")}
                         className="cursor-pointer"
@@ -520,30 +529,38 @@ const TableList = ({ }) => {
                         )}
                       </div>
                     </th>
-
                   </tr>
                 </thead>
                 <tbody>
                   {sortedData
                     .filter((item) => {
                       const matchesSearch =
-                        search === "" || (item.faxId && item.faxId.includes(search));
+                        search === "" ||
+                        (item.faxId && item.faxId.includes(search));
                       const matchesOcrStatus =
                         selectedOcrStatus === "All Status" ||
-                        (item.ocrStatus && item.ocrStatus === selectedOcrStatus);
+                        (item.ocrStatus &&
+                          item.ocrStatus === selectedOcrStatus);
                       const matchesFaxStatus =
                         selectedFaxStatus === "All Status" ||
-                        (item.faxStatus && item.faxStatus === selectedFaxStatus);
+                        (item.faxStatus &&
+                          item.faxStatus === selectedFaxStatus);
                       const matchesHCP =
                         searchHCP === "" ||
                         (item.hcpFirstName &&
-                          item.hcpFirstName.toLowerCase().includes(searchHCP.toLowerCase())) ||
+                          item.hcpFirstName
+                            .toLowerCase()
+                            .includes(searchHCP.toLowerCase())) ||
                         (item.hcpLastName &&
-                          item.hcpLastName.toLowerCase().includes(searchHCP.toLowerCase()));
+                          item.hcpLastName
+                            .toLowerCase()
+                            .includes(searchHCP.toLowerCase()));
                       const matchesAccount =
                         searchAccount === "" ||
                         (item.accountName &&
-                          item.accountName.toLowerCase().includes(searchAccount.toLowerCase()));
+                          item.accountName
+                            .toLowerCase()
+                            .includes(searchAccount.toLowerCase()));
                       const matchesPatient =
                         searchPatient === "" ||
                         (item.patientFirstName &&
@@ -564,11 +581,13 @@ const TableList = ({ }) => {
                         matchesPatient
                       );
                     })
-                    .slice(firstPostIndex, lastPostIndex).map((item, index) => (
+                    .slice(firstPostIndex, lastPostIndex)
+                    .map((item, index) => (
                       <tr
                         key={index}
-                        className={`${index % 2 === 0 ? "" : "bg-[#f2f3f5] "
-                          } bg-white text-black/70 text-xs`}
+                        className={`${
+                          index % 2 === 0 ? "" : "bg-[#f2f3f5] "
+                        } bg-white text-black/70 text-xs`}
                       >
                         <td className="px-6 py-4 text-[#2683c2] underline font-medium whitespace-nowrap">
                           <div
@@ -589,17 +608,23 @@ const TableList = ({ }) => {
                             {item.faxId}
                           </div>
                         </td>
-                       
-                          <td className="px-1 py-1 max-w-[150px] w-[250px] overflow-hidden overflow-ellipsis">{item.caseId||"-"}</td>
-                        
+
+                        <td className="px-1 py-1 max-w-[150px] w-[250px] overflow-hidden overflow-ellipsis">
+                          {item.caseId || "-"}
+                        </td>
+
                         <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.faxStatus}
                         </td>
                         <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.noOfRxs}
                         </td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.verifiedFlag}</td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.dupeFaxId}</td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
+                          {item.verifiedFlag}
+                        </td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
+                          {item.dupeFaxId}
+                        </td>
                         <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
                           {item.patientFirstName}
                           {item.patientLastName}
@@ -608,11 +633,21 @@ const TableList = ({ }) => {
                           {item.hcpFirstName}
                           {item.hcpLastName}
                         </td>
-                        <td className="px-1 py-1 max-w-[20px] overflow-hidden overflow-ellipsis">{item.accountName}</td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.faxDate}</td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.faxDateTime}</td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">{item.faxNumber}</td>
-                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis  ">{item.ocrStatus}</td>
+                        <td className="px-1 py-1 max-w-[20px] overflow-hidden overflow-ellipsis">
+                          {item.accountName}
+                        </td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
+                          {item.faxDate}
+                        </td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
+                          {item.faxDateTime}
+                        </td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis">
+                          {item.faxNumber}
+                        </td>
+                        <td className="px-1 py-1 max-w-[150px] overflow-hidden overflow-ellipsis ">
+                          {item.ocrStatus}
+                        </td>
                       </tr>
                     ))}
                 </tbody>

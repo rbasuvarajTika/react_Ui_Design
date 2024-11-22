@@ -5,7 +5,7 @@ const SearchableDropdown = ({
   label,
   id,
   selectedVal,
-  handleChange
+  handleChange,
 }) => {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -34,20 +34,21 @@ const SearchableDropdown = ({
     return "";
   };
 
- const filter = (options) => {
-  if (options && Array.isArray(options)) {
-    return options.filter((option) => {
-      const optionLabel = option[label] || ''; // Handle undefined or null label
-      return optionLabel.toLowerCase().indexOf(query.toLowerCase()) > -1;
-    });
-  }
-  return [];
-};
+  const filter = (options) => {
+    if (options && Array.isArray(options)) {
+      return options.filter((option) => {
+        const optionLabel = option[label] || ""; // Handle undefined or null label
+        return optionLabel.toLowerCase().indexOf(query.toLowerCase()) > -1;
+      });
+    }
+    return [];
+  };
   return (
-    <div className="dropdown">
+    <div className="dropdown ">
       <div className="control">
         <div className="selected-value">
           <input
+            className="bg-[#f2f2f2] rounded-2xl border border-gray-300 w-56 text-black py-0.5 text-xs t-1"
             ref={inputRef}
             type="text"
             value={getDisplayValue()}
