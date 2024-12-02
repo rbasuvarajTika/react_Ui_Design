@@ -136,7 +136,7 @@ const Rx_Tracker_List = () => {
             <Header_Navigation_RxTracker />
             <Background />
             <>
-              <div className="w-full min-h-fit mt-8 sm:mt-3 sm:max-h-[670px] md:max-h[700px] lg:h-full   pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
+              <div className="w-full min-h-fit mt-8 sm:mt-3 sm:max-h-[670px] md:max-h[700px] lg:h-full pt-5 relative overflow-x-auto rounded-xl bg-white p-1  overflow-y-scroll max-h-[630px h-[calc(100%-4rem)] no-scrollbar">
                 <div className="flex flex-wrap  items-center gap-2 p-2 justify-between ml-0">
                   <div className="flex gap-5 items-center">
                     <span className="md:block md:flex items-center gap-1 z-70 text-[#194a69] text-xs  relative">

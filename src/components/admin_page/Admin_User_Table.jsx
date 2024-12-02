@@ -120,7 +120,7 @@ const Admin_User_Table = () => {
     <>
       {
         <>
-          <div className="w-ful min-h-fit mt-8 sm:mt-3   m:max-h-[670px] md:max-h[700px] lg:h-full pt-5 relative overflow-x-auto  rounded-xl bg-white p-1  overflow-y-scroll  no-scrollbar">
+          <div className="w-ful min-h-fit mt-8 sm:mt-3  max-h-[630px h-[calc(100%-4rem)] m:max-h-[670px] md:max-h[700px] lg:h-full pt-5 relative overflow-x-auto  rounded-xl bg-white p-1  overflow-y-scroll  no-scrollbar">
             <div className="">
               <div className="w-full  h-full flex flex-wrap justify-between items-center p-2 gap-3 ">
                 <div className=" flex flex-wrap lg:flex-row flex-col lg:gap-5 gap-1">
@@ -158,7 +158,7 @@ const Admin_User_Table = () => {
                     <span className="hidden md:flex items-center gap-1 z-50 text-[#194a69] text-sm  relative"></span>
                   </div>
                 </div>
-                <div className="lg:block hidde">
+                <div className="lg:block ">
                   <div className="flex items-center xl:gap-10 gap-4 ">
                     <div className="flex lg:flex-row flex-col gap-1">
                       <span className="hidde md:flex items-center gap-1 z-50 text-[#ffffff] text-sm  relative">
@@ -170,17 +170,17 @@ const Admin_User_Table = () => {
                         </div>
                       </span>
                     </div>
-                    <div className=" sm:block hidden">
-                      <Pagination
-                        totalPosts={faxData.length}
-                        postsPerPage={postsPerPage}
-                        setCurrentPage={setCurrentPage}
-                        currentPage={currentpage}
-                        lastPostIndex={lastPostIndex}
-                        npage={npage}
-                      />
-                    </div>
                   </div>
+                </div>
+                <div className="sm:block ml-auto justify-end">
+                  <Pagination
+                    totalPosts={faxData.length}
+                    postsPerPage={postsPerPage}
+                    setCurrentPage={setCurrentPage}
+                    currentPage={currentpage}
+                    lastPostIndex={lastPostIndex}
+                    npage={npage}
+                  />
                 </div>
               </div>
             </div>
@@ -360,12 +360,12 @@ const Admin_User_Table = () => {
                         )}
                       </div>
                     </th>
-                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis">
+                    <th className="px-1 py-1 max-w-[150px] w-[150px] overflow-hidden overflow-ellipsis ">
                       Edit
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="item-center">
                   {sortedData
                     .filter((item) => {
                       const searchTerm = search.toLowerCase();
@@ -416,7 +416,7 @@ const Admin_User_Table = () => {
                         <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">
                           {item.userStatusFlag}
                         </td>
-                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">
+                        <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis item-center flex justify-center">
                           <MdEditDocument
                             className="text-[#1b5d7d] cursor-pointer"
                             size={25}
