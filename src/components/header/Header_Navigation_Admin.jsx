@@ -105,7 +105,7 @@ function Header_Navigation_Admin() {
   };
   return (
     <div className="w-full text-xs flex items-center justify-between py-1 font-bold z-50">
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3">
         <span
           className="uppercase flex items-center gap-1"
           onClick={() => navigate(-1)}
@@ -138,12 +138,12 @@ function Header_Navigation_Admin() {
           </span>
         )}
       </div>
-      <div>
+      <div className="item-center text-center">
         <span className="uppercase  text-[#FE7D00] text-sm font-bold z-50">
           User List
         </span>
       </div>
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3">
         {isAdmin() && (
           <span
             className=" text-white flex items-center gap-1 z-50 cursor-pointer"
