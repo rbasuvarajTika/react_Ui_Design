@@ -5,6 +5,7 @@ import axiosBaseURL from "../axios";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const Edit_Profile = () => {
   const [userData, setUserData] = useState({
     firstName: "",
@@ -16,7 +17,11 @@ const Edit_Profile = () => {
     zip: "",
     phone: "",
   });
+
   const navigate = useNavigate();
+  const ResetPassword = () => {
+    navigate(`/nsrxmgt/reset-password`);
+  };
 
   const [userEditData, setUserEditData] = useState();
 
@@ -237,7 +242,7 @@ const Edit_Profile = () => {
             <div className="px-5 pt-5">
               <div className="flex w-full md:flex-row xl:flex-row flex-col md:gap-5 xl:gap-5 gap-1 justify-between ">
                 <div className="flex justify-start flex-col w-full">
-                  <div className=" flex items-center flex-col md:flex-row w-full g ">
+                  <div className=" flex items-center flex-col md:flex-row w-full  ">
                     <div className=" flex  justify-start  flex-col w-full ">
                       <label
                         className="text-xs text-black w-28 text-start"
@@ -255,8 +260,8 @@ const Edit_Profile = () => {
                     </div>
                     <label
                       className="bg-orange-500 rounded-2xl border border-gray-300 md:w-56 text-white mt-4 py-1 px-7 text-xs cursor-pointer"
-                      onClick={() => navigate("/nsrxmgt/reset")}
-                      htmlFor=""
+                      onClick={ResetPassword}
+                      htmlFor="reserpassword"
                     >
                       Reset Password
                     </label>
@@ -265,7 +270,7 @@ const Edit_Profile = () => {
               </div>
             </div>
           </div>
-          <div className="pt-1 flex justify-center"></div>
+
           <div className="flex justify-center item pt-5">
             <div
               className="sm:w-44 csm:w-32 vsm:w-20 w-28 py-2 bg-[#00ab06] rounded-xl flex justify-center md:text-sm text-xs cursor-pointer"
