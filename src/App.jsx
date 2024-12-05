@@ -80,6 +80,7 @@ function App() {
         />
         <Route path="/nsrxmgt/forgot" element={<Forgot_Page />} />
         <Route path="/nsrxmgt/forgotpassword" element={<Forgot_Password />} />
+
         <Route path="/nsrxmgt/forgotuserid" element={<Forgot_UserId />} />
         <Route
           path="/nsrxmgt/fax-list"
@@ -120,6 +121,10 @@ function App() {
         <Route
           path="/nsrxmgt/admin-edit-profile/:userId"
           element={<PrivateRoute element={<Admin_Edit_Profile />} />}
+        />
+        <Route
+          path="/nsrxmgt/reset-password"
+          element={<PrivateRoute element={<ResetPassword />} />}
         />
       </Routes>
     );

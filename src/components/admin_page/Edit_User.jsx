@@ -398,7 +398,6 @@ const Edit_User = () => {
                   </div>
                 </div>
               </div>
-
               <div className="px-5 pt-10">
                 <div className="flex w-full md:flex-row xl:flex-row flex-col md:gap-5 xl:gap-5 gap-1 justify-between ">
                   <div className="flex flex-col">
