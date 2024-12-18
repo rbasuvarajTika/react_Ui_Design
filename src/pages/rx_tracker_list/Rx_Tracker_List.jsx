@@ -42,24 +42,28 @@ const Rx_Tracker_List = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("tokenTika");
-    const config = {
-      headers: {
-        //Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Set the content type to JSON
-      },
-    };
-    console.log("config", config);
+    const fetchRxTrackerData = async () => {
+      const token = localStorage.getItem("tokenTika");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // Set the content type to JSON
+        },
+      };
+      console.log("config", config);
 
-    const params = {
-      pageNo: firstPostIndex,
-      pageSize: lastPostIndex,
-      sortBy: trnRxId,
-      orderType: "ASC",
-    };
-    axiosBaseURL
-      .get("/api/v1/fax/rxTrackerDetailList", { ...config, params })
-      .then((response) => {
+      const params = {
+        pageNo: firstPostIndex,
+        pageSize: lastPostIndex,
+        sortBy: trnRxId,
+        orderType: "ASC",
+      };
+      try {
+        const response = await axiosBaseURL.get(
+          "/api/v1/fax/rxTrackerDetailList",
+          { ...config, params }
+        );
+
         setRxTrackerData(response.data.data);
         setSortedData(response.data.data);
         console.log(response.data.data);
@@ -67,11 +71,12 @@ const Rx_Tracker_List = () => {
         settrnRxId(response.data.data[0].trnRxId);
         setLoading(false); // Set loading to false
         console.log("firstPostIndex", params);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false); // Set loading to false
-      });
+      }
+    };
+    fetchRxTrackerData();
   }, []); // The empty array ensures the effect runs only once on component mount
 
   const handleRxId = (trnRxId, paramFaxId, netSuitId, paramPatientId) => {
@@ -481,7 +486,7 @@ const Rx_Tracker_List = () => {
                             <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">
                               {item.hcpName}
                             </td>
-                            <td className="px-6 py-4 max-w-[20px] overflow-hidden overflow-ellipsis">
+                            <td className="px-6 py-4 max-w-[200px] overflow-hidden overflow-ellipsis">
                               {item.accountName}
                             </td>
                           </tr>
